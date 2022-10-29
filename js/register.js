@@ -1,12 +1,14 @@
-let errorSpans = document.querySelectorAll(".error"),
-  stepsDivs = document.querySelectorAll(".steps div"),
+let stepsDivs = document.querySelectorAll(".steps div"),
   inputsSlider = document.getElementById("inputsSlider"),
+  formProgress = document.querySelector(".form-progress"),
   fillProgress = document.getElementById("fillSpan"),
+  lastStepTitle = document.querySelector(".last-step"),
   fillProgWidth = 0,
   sectionFieldIndex = 0,
   transformXPixels = 0,
   nextBtn = document.getElementById("next"),
   prevBtn = document.getElementById("prev"),
+  lastSection = document.getElementById("lastSection"),
   showIcon = document.getElementById("showPassIcon"),
   ImageINput = document.getElementById("photoInp"),
   UploadFileContainer = document.querySelector(".img-profile-wrapper"),
@@ -133,9 +135,62 @@ function validateMotDePasse() {
   return Errors;
 }
 
+function validateBioPmail() {
+  let pmailInp = document.getElementById("pmail"),
+    specInp = document.getElementById("spec"),
+    bioTextarea = document.getElementById("bio"),
+    emailRe = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+    Errors = [];
+
+  if (!pmailInp.value.match(emailRe)) {
+    Errors.push({
+      id: "error-pmail",
+      msg: "L'email que vous saisi est invalide",
+    });
+  }
+
+  if (pmailInp.value == "" || pmailInp.value == null) {
+    Errors.push({
+      id: "error-pmail",
+      msg: "L'é-mail de Paypal est obligatoire",
+    });
+  }
+
+  if (specInp.value == "aucun" || specInp.value == null) {
+    Errors.push({ id: "error-spec", msg: "Choisissez une spécialité" });
+  }
+
+  if (bioTextarea.value.length < 130 || bioTextarea.value == null) {
+    Errors.push({
+      id: "error-bio",
+      msg: "le résumé doit avoir au moins 130 caractères !",
+    });
+  }
+
+  if (bioTextarea.value.length > 500) {
+    Errors.push({
+      id: "error-bio",
+      msg: "La Biography doit comporter au maximum 500 caractères",
+    });
+  }
+
+  return Errors;
+}
+
+function formateurOrEtudiant() {
+  let formateur = document.getElementById("formateur"),
+    etudiant = document.getElementById("etudiant");
+
+  if (formateur.checked) {
+    return true;
+  }
+  return false;
+}
+
 // =================================== Prev & Next Events & Show Pass Icon ==================
 nextBtn.addEventListener("click", (e) => {
   // Clear All Error Messages
+  let errorSpans = document.querySelectorAll(".error");
   errorSpans.forEach((span) => {
     span.textContent = "";
   });
@@ -150,10 +205,11 @@ nextBtn.addEventListener("click", (e) => {
     Errors = validateMotDePasse();
   } else if (sectionFieldIndex == 3) {
     Errors = imageINputErrors;
+  } else if (sectionFieldIndex == 4) {
+    Errors = validateBioPmail();
   } else {
     Errors = [];
   }
-
   // Controll Error And Input Slider
   if (Errors.length != 0) {
     e.preventDefault();
@@ -162,6 +218,53 @@ nextBtn.addEventListener("click", (e) => {
     });
   } else {
     if (sectionFieldIndex == 3) {
+      if (formateurOrEtudiant()) {
+        lastSection.innerHTML = `
+				<div class="input-box">
+                        <div class="field">
+                            <label for="pmail">Email Paypal :</label>
+                            <input type="email" id="pmail" name="pmail">
+                            <span class="error" id="error-pmail"></span>
+                        </div>
+                        <div class="field">
+                            <label spec="bio">Spécialité :</label>
+                            <select name="specialite" id="spec">
+                                <option value="aucun">Aucun</option>
+                                <option value="dev">Devlopment Web</option>
+                                <option value="wd">Web Design</option>
+                                <option value="uiux">UI/UX Design</option>
+                            </select>
+                            <span class="error" id="error-spec"></span>
+                        </div>
+                        <div class="field">
+                            <label for="bio">Biography :</label>
+                            <textarea name="biography" id="bio"></textarea>
+                            <span class="error" id="error-bio"></span>
+                        </div>
+                    </div>
+				`;
+        if (
+          lastStepTitle.classList.contains("hide") &&
+          !formProgress.classList.contains("hide")
+        ) {
+          lastStepTitle.classList.remove("hide");
+          formProgress.classList.add("hide");
+        }
+      } else {
+        lastSection.innerHTML = `
+				<div class="alert-regiter-msg">
+					Vous avez terminé l'opération d'inscription
+					merci de valider
+                </div>
+				`;
+        if (
+          !lastStepTitle.classList.contains("hide") &&
+          formProgress.classList.contains("hide")
+        ) {
+          lastStepTitle.classList.add("hide");
+          formProgress.classList.remove("hide");
+        }
+      }
       nextBtn.textContent = "Valider";
     } else {
       nextBtn.textContent = "Suivant";
@@ -193,6 +296,19 @@ prevBtn.addEventListener("click", (e) => {
   e.preventDefault();
   if (sectionFieldIndex != 3) {
     nextBtn.textContent = "Suivant";
+    lastSection.innerHTML = `
+		<div class="alert-regiter-msg">
+			Vous avez terminé l'opération d'inscription
+			merci de valider
+		</div>
+		`;
+    if (
+      !lastStepTitle.classList.contains("hide") &&
+      formProgress.classList.contains("hide")
+    ) {
+      lastStepTitle.classList.add("hide");
+      formProgress.classList.remove("hide");
+    }
   }
 
   sectionFieldIndex == 0 ? sectionFieldIndex : sectionFieldIndex--;
