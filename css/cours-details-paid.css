@@ -33,12 +33,6 @@ body {
 	background-color: #DFF6FF;
 }
 
-.container .main-video iframe {
-  height: 500px;
-  width: 100%;
-  border-radius: 8px;
-}
-
 .container .playlist-videos .videos-list ul {
 	list-style: none;
 	padding-left: 0;
