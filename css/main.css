@@ -226,8 +226,8 @@ header .container ul li.search-bar{
 @media (max-width:761px){
     header .container ul li.search-bar{
         position: absolute;
-        top: -5px;
-        right: 50px;
+        top: -76px;
+        right: 34px;
         height: 50px;
     }
 }
@@ -254,6 +254,11 @@ header .container ul li.search-bar form input{
     border: 1px solid var(--color-one);
     background-color: #fff;
     outline: none !important;
+}
+@media (max-width:761px){
+    header .container ul li.search-bar form input{
+        width: 160px;
+    }
 }
 header .container ul li.search-bar form input:focus{
     box-shadow: none !important;
