@@ -33,6 +33,151 @@ body {
 	background-color: #DFF6FF;
 }
 
+/*======================*/
+
+.media-header img{
+  height: 250px;
+  width: 100%;
+  box-shadow: 0 0 2px 2px #000;
+  object-fit: cover;
+}
+
+.media-header .title {
+  font-weight: 500;
+}
+
+.media-header .group span{
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 15px;
+  background-color: var(--color-three);
+}
+
+.media-header .group .formateur-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid var(--color-four);
+}
+
+.media-header .group .specialite{
+  color: #256D85;
+}
+
+.media-header .group .masse-h {
+  color: var(--color-four);
+}
+
+.media-header .info-plus > div {
+  padding: 10px 0;
+  border-radius: 8px;
+  background-color: rgba(37, 109, 133, 0.5);
+}
+
+.media-header .group {
+  padding: 10px 20px;
+  background-color: rgba(37, 109, 133, 0.5);
+  height: 100%;
+  border-radius: 8px;
+}
+
+.media-header .group .instructor {
+  padding: 6px 15px;
+  border-radius: 10px;
+  background-color: var(--color-one);
+}
+
+.media-header .group .love-ses-formations a {
+  text-decoration: none;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 4px;
+}
+
+.media-header .group .love-ses-formations a:hover {
+  background-color: #256D85;
+  transition: var(--main-transition);
+  background-color: #000;
+  border: 1px solid #000;
+}
+
+
+.media-header .group .love-ses-formations i {
+  font-size: 25px;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.media-header .info-plus p {
+  margin-bottom: 0;
+}
+
+.media-header .info-plus .nbr {
+  font-weight: 800;
+}
+
+.media-header .info-plus .fomation-niveau {
+  padding-top: 30px;
+}
+
+/* ========= Icon Level ==========*/
+.a, .b, .c {
+  border: 1px solid;
+}
+
+.a {
+  height: 5px;
+  background-color:yellow;
+}
+
+.b {
+  padding-top: 10px;
+}
+
+.c {
+  padding-top: 20px;
+}
+
+/* Heart */
+
+.group .instructor .love-ses-formations i {
+  transition: color var(--main-transition);
+}
+
+
+/* `lg` applies to medium devices (tablets, less than 992px) */
+@media (max-width: 1200px) {
+  .media-header img {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .group {
+    margin-top: 1rem;
+  }
+
+  .media-header .video-preview video{
+    width: 100%;
+  }
+
+  .media-header .info-plus .apprenants-nbr {
+    margin-top: 30px;
+  }
+
+}
+
+@media (max-width: 576px) {
+  .media-header .group > div {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+
+
+/* ======================= */
 .container .playlist-videos .videos-list ul {
 	list-style: none;
 	padding-left: 0;
@@ -47,7 +192,7 @@ body {
   cursor: pointer;
 }
 
-.container .playlist-videos .videos-list ul li:hover {
+.container .playlist-videos .videos-list ul li:not(.selected):hover {
 	background-color: rgba(37, 109, 133, 0.5);
 }
 
@@ -55,10 +200,13 @@ body {
 	font-size: 20px;
 }
 
+.container .playlist-videos .videos-list i:not(.fa-solid):hover {
+  color: #1D1CE5;
+}
 
 @media (max-width: 576px) {
   .container .playlist-videos .videos-list ul li span.video-name {
-    width: 21ch;
+    width: 19ch;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -67,33 +215,28 @@ body {
 
 @media (min-width: 576px) and (max-width: 768px) {
   .container .playlist-videos .videos-list ul li span.video-name {
-    width: 30ch;
+    width: 28ch;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 }
 
-
-
 li.selected {
 	background-color: #256D85;
-	font-weight: 700;
+	font-weight: 600;
 }
 
 .container .playlist-videos {
 	padding: 20px;
 }
 
-.tooltip-bookmark {
+.tooltip-bookmark, .tooltip-circle-check {
     position: relative;
 }
 
-.tooltip-bookmark::after {
-  content: "Ajouter au dernier vidéo regardée";
+.tooltip-bookmark::after, .tooltip-circle-check::after{
   position: absolute;
-  left: -125px;
-  top: -7px;
   padding: 0.5rem;
   transform: translate(-50%, 1rem);
   visibility: hidden;
@@ -106,7 +249,19 @@ li.selected {
   transition-duration: 0.35s;
 }
 
-.tooltip-bookmark:hover::after {
+.tooltip-bookmark::after{
+  content: "Ajouter aux favoris";
+  left: -125px;
+  top: -7px;
+}
+
+.tooltip-circle-check::after {
+  content: "Marquer comme vu";
+  left: -80px;
+  top: -7px;
+}
+
+.tooltip-bookmark:hover::after, .tooltip-circle-check:hover::after{
   visibility: visible;
   opacity: 1;
   transform: translate(-50%, 0);
@@ -152,26 +307,19 @@ li.selected {
 
 .ressources a{
   font-size: 20px;
-   background-color: #82CD47;
-   padding: 10px;
-   border-radius: 10px;
-   text-decoration: none;
-   color: #000;
-}
-
-.ressources a:hover{
-  transition: .5s ease;
-  background-color: #00ABB3;
+  text-decoration: none;
 }
 
 .comments-section .my-comments .etudiant-comment {
   background-color: var(--color-one);
   padding: 8px;
+  border-radius: 0 10px 10px 10px;
 }
 
 .comments-section .my-comments .formateur-comment {
   background-color: #98A8F8;
   padding: 8px;
+  border-radius: 10px 0 10px 10px;
 }
 
 .comments-section .my-comments img {
@@ -191,6 +339,7 @@ li.selected {
 
 .comment-entry textarea {
   resize: none;
+  height: 44px;
 }
 
 .submit-btn{

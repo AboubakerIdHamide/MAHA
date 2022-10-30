@@ -76,18 +76,6 @@ window.onresize= ()=>{hideNavBar()}
 window.onload= ()=>{hideNavBar()}
 window.onscroll= ()=>{hideNavBar();hideDropMenu(MenuDropped)}
 
-// heart btn
-
-let $heartBtn = $('.love-ses-formations i');
-
-$heartBtn.click(function (e) {
-    let $heart = $(this);
-    if($heart.hasClass('fa-regular'))
-        $heart.removeClass('fa-regular').addClass('fa-solid');
-    else
-        $heart.addClass('fa-regular').removeClass('fa-solid');
-});
-
 // to-tp button
 
 let $toTop = $('.to-top');

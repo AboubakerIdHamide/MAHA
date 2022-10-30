@@ -385,7 +385,10 @@ header .container ul li.sign-in:hover::before{
 }
 
 .media-header .group span{
-  color: #00ABB3;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 15px;
+  background-color: var(--color-three);
 }
 
 .media-header .group .formateur-img {
@@ -406,7 +409,7 @@ header .container ul li.sign-in:hover::before{
 .media-header .info-plus > div {
   padding: 10px 0;
   border-radius: 8px;
-  background-color: #DFF6FF;;
+  background-color: #DFF6FF;
 }
 
 .media-header .group, .video-description .preview-prix {
@@ -422,7 +425,7 @@ header .container ul li.sign-in:hover::before{
   background-color: var(--color-one);
 }
 
-.media-header .group .love-ses-formations a {
+.media-header .group .voir-profil a {
   text-decoration: none;
   border: 1px solid #fff;
   color: #fff;
@@ -430,19 +433,11 @@ header .container ul li.sign-in:hover::before{
   border-radius: 4px;
 }
 
-.media-header .group .love-ses-formations a:hover {
+.media-header .group .voir-profil a:hover {
   background-color: #256D85;
   transition: var(--main-transition);
   background-color: #000;
   border: 1px solid #000;
-}
-
-
-.media-header .group .love-ses-formations i {
-  font-size: 25px;
-  padding: 8px;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 .media-header .info-plus p {
@@ -476,9 +471,6 @@ header .container ul li.sign-in:hover::before{
 }
 
 /* ======================= */
-.video-description .desc {
-  text-align: justify;
-}
 
 .video-description .video-preview video{
   width: 100%;
@@ -490,15 +482,24 @@ header .container ul li.sign-in:hover::before{
 }
 
 .playlist-formation .lesson {
-  border: 1px solid #06283D;
-  padding: 20px;
+  box-sizing: border-box;
+  padding: 10px;
   border-radius: 8px;
+  background-color: #5F88A2;
+  border: 2px solid #5F88A2;
+  cursor: pointer;
+  transition: border .5s;
+}
+
+.playlist-formation .lesson:hover {
+  border: 2px solid #000;
 }
 
 /* `lg` applies to medium devices (tablets, less than 992px) */
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .media-header img {
     width: 100%;
+    margin-bottom: 5px;
   }
 
   .group {
@@ -509,18 +510,18 @@ header .container ul li.sign-in:hover::before{
     width: 100%;
   }
 
-  .media-header .info-plus > div {
-    margin-top: 20px;
+  .media-header .info-plus .apprenants-nbr {
+    margin-top: 30px;
   }
 
-  /*.media-header .info-plus .text-center*/
+}
 
+@media (max-width: 576px) {
   .media-header .group > div {
     flex-direction: column;
     gap: 1.5rem;
   }
 }
-
 /* ======================================== */
 
 
