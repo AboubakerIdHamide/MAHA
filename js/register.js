@@ -9,6 +9,8 @@ let stepsDivs = document.querySelectorAll(".steps div"),
   nextBtn = document.getElementById("next"),
   prevBtn = document.getElementById("prev"),
   lastSection = document.getElementById("lastSection"),
+  lastSectionEtudiant = document.getElementById("lastSectionEtudiant"),
+  lastSectionFormateur = document.getElementById("lastSectionFormateur"),
   showIcon = document.getElementById("showPassIcon"),
   ImageINput = document.getElementById("photoInp"),
   UploadFileContainer = document.querySelector(".img-profile-wrapper"),
@@ -206,7 +208,11 @@ nextBtn.addEventListener("click", (e) => {
   } else if (sectionFieldIndex == 3) {
     Errors = imageINputErrors;
   } else if (sectionFieldIndex == 4) {
-    Errors = validateBioPmail();
+    if(formateurOrEtudiant()){
+      Errors = validateBioPmail();
+    }else {
+      Errors = [];
+    }
   } else {
     Errors = [];
   }
@@ -219,51 +225,15 @@ nextBtn.addEventListener("click", (e) => {
   } else {
     if (sectionFieldIndex == 3) {
       if (formateurOrEtudiant()) {
-        lastSection.innerHTML = `
-				<div class="input-box">
-                        <div class="field">
-                            <label for="pmail">Email Paypal :</label>
-                            <input type="email" id="pmail" name="pmail">
-                            <span class="error" id="error-pmail"></span>
-                        </div>
-                        <div class="field">
-                            <label spec="bio">Spécialité :</label>
-                            <select name="specialite" id="spec">
-                                <option value="aucun">Aucun</option>
-                                <option value="dev">Devlopment Web</option>
-                                <option value="wd">Web Design</option>
-                                <option value="uiux">UI/UX Design</option>
-                            </select>
-                            <span class="error" id="error-spec"></span>
-                        </div>
-                        <div class="field">
-                            <label for="bio">Biography :</label>
-                            <textarea name="biography" id="bio"></textarea>
-                            <span class="error" id="error-bio"></span>
-                        </div>
-                    </div>
-				`;
-        if (
-          lastStepTitle.classList.contains("hide") &&
-          !formProgress.classList.contains("hide")
-        ) {
-          lastStepTitle.classList.remove("hide");
-          formProgress.classList.add("hide");
-        }
+        lastSectionFormateur.classList.remove("hide");
+        lastSectionEtudiant.classList.add("hide");
+        lastStepTitle.classList.remove("hide");
+        formProgress.classList.add("hide");
       } else {
-        lastSection.innerHTML = `
-				<div class="alert-regiter-msg">
-					Vous avez terminé l'opération d'inscription
-					merci de valider
-                </div>
-				`;
-        if (
-          !lastStepTitle.classList.contains("hide") &&
-          formProgress.classList.contains("hide")
-        ) {
-          lastStepTitle.classList.add("hide");
-          formProgress.classList.remove("hide");
-        }
+        lastSectionFormateur.classList.add("hide");
+        lastSectionEtudiant.classList.remove("hide");
+        lastStepTitle.classList.add("hide");
+        formProgress.classList.remove("hide");
       }
       nextBtn.textContent = "Valider";
     } else {
@@ -296,19 +266,10 @@ prevBtn.addEventListener("click", (e) => {
   e.preventDefault();
   if (sectionFieldIndex != 3) {
     nextBtn.textContent = "Suivant";
-    lastSection.innerHTML = `
-		<div class="alert-regiter-msg">
-			Vous avez terminé l'opération d'inscription
-			merci de valider
-		</div>
-		`;
-    if (
-      !lastStepTitle.classList.contains("hide") &&
-      formProgress.classList.contains("hide")
-    ) {
-      lastStepTitle.classList.add("hide");
-      formProgress.classList.remove("hide");
-    }
+    lastSectionFormateur.classList.add("hide");
+    lastSectionEtudiant.classList.remove("hide");
+    lastStepTitle.classList.add("hide");
+    formProgress.classList.remove("hide");
   }
 
   sectionFieldIndex == 0 ? sectionFieldIndex : sectionFieldIndex--;

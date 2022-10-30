@@ -89,9 +89,31 @@
 
 
                     <div class="input-box" id="lastSection">
-                        <div class="alert-regiter-msg">
+                        <div class="alert-regiter-msg" id="lastSectionEtudiant">
                             Vous avez terminé l'opération d'inscription
                             merci de valider
+                        </div>
+                        <div class="input-box hide" id="lastSectionFormateur">
+                            <div class="field">
+                                <label for="pmail">Email Paypal :</label>
+                                <input type="email" id="pmail" name="pmail">
+                                <span class="error" id="error-pmail"></span>
+                            </div>
+                            <div class="field">
+                                <label spec="bio">Spécialité :</label>
+                                <select name="specialite" id="spec">
+                                    <option value="aucun">Aucun</option>
+                                    <option value="dev">Devlopment Web</option>
+                                    <option value="wd">Web Design</option>
+                                    <option value="uiux">UI/UX Design</option>
+                                </select>
+                                <span class="error" id="error-spec"></span>
+                            </div>
+                            <div class="field">
+                                <label for="bio">Biography :</label>
+                                <textarea name="biography" id="bio"></textarea>
+                                <span class="error" id="error-bio"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
