@@ -118,34 +118,11 @@ body {
   font-weight: 800;
 }
 
-.media-header .info-plus .fomation-niveau {
-  padding-top: 30px;
-}
-
-/* ========= Icon Level ==========*/
-.a, .b, .c {
-  border: 1px solid;
-}
-
-.a {
-  height: 5px;
-  background-color:yellow;
-}
-
-.b {
-  padding-top: 10px;
-}
-
-.c {
-  padding-top: 20px;
-}
-
 /* Heart */
 
 .group .instructor .love-ses-formations i {
   transition: color var(--main-transition);
 }
-
 
 /* `lg` applies to medium devices (tablets, less than 992px) */
 @media (max-width: 1200px) {
