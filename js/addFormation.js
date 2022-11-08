@@ -253,13 +253,20 @@ let folderName = "Yasser",
 // New Folder For The User
 client.createfolder(folderName, 15171390512)
 	.then((result) => {
-		theFolderId = result.folderid;
-		window.localStorage.setItem("folder_id", theFolderId);
+		theFolderId = result.folderid;// setting id of the new folder
 	})
 	.catch((err) => {
-		if (window.localStorage.getItem("folder_id")) {
-			theFolderId = window.localStorage.getItem("folder_id");
-		}
+		client.listfolder(15171390512) 
+		.then((result)=>{
+			let subFolders=[...result.contents];
+			subFolders.forEach((folder)=>{
+				if(folder.name==folderName){
+					theFolderId=folder.folderid;// setting id of the folder if already exists
+				}
+			})
+		}).catch((error)=>{
+			theFolderId=15175160528;
+		});
 	});
 
 // Upload Video Function
