@@ -159,7 +159,7 @@ function add_courses(name_formation, img_formation, name_formateur, img_formateu
         <!-- end card -->
     `;
 }
-add_courses('Name formation', 'images/istockphoto-836667296-1024x1024.jpg', 'Nom', 'images/avatar-05.png', 112, 'Developement', '10:00', 'desciption', 20, 50);
+// add_courses('Name formation', 'images/istockphoto-836667296-1024x1024.jpg', 'Nom', 'images/avatar-05.png', 112, 'Developement', '10:00', 'desciption', 20, 50);
 // strat function add card coures
 // start overflow p description
 let $p_decription = $('.card_coures p');
