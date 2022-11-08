@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.4/swiper-bundle.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <!-- integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" -->
+    <link rel="stylesheet" href="css/pageFormations.css" />
+    <link rel="stylesheet" href="css/main.css">
+   
+</head>
+<body>
+   <!-- Header -->
+    <header>
+        <div class="loding-bar"></div>
+        <div class="container">
+            <h1 class="logo"><a href="#">M<span>A</span>H<span>A</span></a></h1>
+            <div class="burger-icon" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul id="navBarUl" class="hide">
+                <li><a href="#landing">Accueil</a></li>
+                <li><a href="#catalogue">Catalogue</a></li>
+                <li class="menu-drop-down">
+                  <span id="dropMenu">Autre <i class='fa fa-chevron-down'></i></span>
+                  <ul id="droppedMenu" class="hide">
+                    <li><a href="#">S'inscrire</a></li>
+                    <li><a href="#popular">Les Plus Populaires</a></li>
+                    <li><a href="#equipe">Notre équipe </a></li>
+                    <li><a href="#contact">Contactez-Nous</a></li>
+                    <li><a href="#">Formations</a></li>
+                  </ul>
+                </li>
+                <li class="search-bar">
+                  <i class="fa fa-search" id="searchIcon"></i>
+                    <form action="" class="hide" id="seacrhForm">
+                        <input type="text">
+                    </form>
+                </li>
+                <li class="sign-in"><a href="#">Se Connecter</a></li>
+            </ul>
+        </div>
+    </header>
+    <!-- Fin Header -->
+    <!-- start page formations -->
+    <section class="pageFormation">
+        <div class="header_page_formation">
+            <h2>Les Formations</h2>
+            <p>Une erreur, fût-elle vieille de cent mille ans, par cela même qu'elle est vieille, ne constitue pas une vérité ! la foule invariablement suit la routine. C'est au contraire, le petit nombre qui mène le progrès.</p>
+        </div>
+        <div class="container">
+            <div class="filter">
+                <div class="main-filter">
+                    <i class="fa fa-filter" aria-hidden="true"></i> <span>Filter</span>
+                </div>
+                <div class="filter-par">
+                    <span>Trier par :</span>
+                    <select name="trier">
+                        <option value="plus-puplaire">Les Plus Populaires</option>
+                        <option value="plus-amais">Les Plus Amais</option>
+                        <option value="plus-.">Les Plus ...</option>
+                        <option value="plus-..">Les Plus ...</option>
+                    </select>
+                    <select name="lang">
+                        <option value="an">Anglais</option>
+                        <option value="ar">Arabe</option>
+                        <option value="fr">Francais</option>
+                    </select>
+                </div>
+                <!-- start main filter -->
+                <ul class="ops hide">
+                    <li id="3d" class="chow-ops">
+                        <i class="fa-brands fa-unity"></i> <span>3D</span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="at-ops hide">
+                        <!-- start options 3d -->
+                        <ul id="ul-3d">
+                            <li>Coix 1</li>
+                            <li>Coix 2</li>
+                            <li>Coix 3</li>
+                            <li>Coix 4</li>
+                            <li>Coix 5</li>
+                            <!-- <li>Coix 6</li>
+                            <li>Coix 7</li>
+                            <li>Coix 8</li>
+                            <li>Coix 9</li>
+                            <li>Coix 10</li> -->
+                        </ul>
+                        <!-- end options 3d -->
+                    </li>
+                    <li id="architectureBIM"  class="chow-ops">
+                        <i class="fa-solid fa-ruler-combined"></i> <span>Architecture & BIM</span> 
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="at-ops hide">
+                        <!-- start options architecture&BIM -->
+                        <ul id="ul-architectureBIM">
+                            <li>Coix 1</li>
+                            <li>Coix 2</li>
+                            <li>Coix 3</li>
+                            <li>Coix 4</li>
+                            <li>Coix 5</li>
+                            <li>Coix 6</li>
+                            <li>Coix 7</li>
+                            <li>Coix 8</li>
+                            <li>Coix 9</li>
+                            <li>Coix 10</li>
+                        </ul>
+                        <!-- end options architecture&BIM -->
+                    </li>
+                    <li id="audio-MAO"  class="chow-ops">
+                        <i class="fa-solid fa-sliders"></i> <span>Audio-MAO</span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="at-ops hide">
+                        <!-- start options audio-MAO -->
+                        <ul id="ul-audio-MAO">
+                            <li>Coix 1</li>
+                            <li>Coix 2</li>
+                            <li>Coix 3</li>
+                            <li>Coix 4</li>
+                            <li>Coix 5</li>
+                            <li>Coix 6</li>
+                            <li>Coix 7</li>
+                            <li>Coix 8</li>
+                            <li>Coix 9</li>
+                            <li>Coix 10</li>
+                        </ul>
+                        <!-- end options audio-MAO -->
+                    </li>
+                    <li id="bureautique"  class="chow-ops">
+                        <i class="fa-solid fa-computer-mouse"></i> <span>Bureautique</span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="at-ops hide">
+                        <!-- start options bureautique -->
+                        <ul id="ul-bureautique">
+                            <li>Coix 1</li>
+                            <li>Coix 2</li>
+                            <li>Coix 3</li>
+                            <li>Coix 4</li>
+                            <li>Coix 5</li>
+                            <li>Coix 6</li>
+                            <li>Coix 7</li>
+                            <li>Coix 8</li>
+                            <li>Coix 9</li>
+                            <li>Coix 10</li>
+                        </ul>
+                        <!-- end options bureautique -->
+                    </li>
+                    <li id="businessEfficaciteProfessionnelle"  class="chow-ops">
+                        <i class="fa-sharp fa-solid fa-briefcase"></i> <span>Business & Efficacité professionnelle</span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="at-ops hide">
+                        <!-- start options business&EfficacitéProfessionnelle -->
+                        <ul id="ul-businessEfficaciteProfessionnelle">
+                            <li>Coix 1</li>
+                            <li>Coix 2</li>
+                            <li>Coix 3</li>
+                            <li>Coix 4</li>
+                            <li>Coix 5</li>
+                            <li>Coix 6</li>
+                            <li>Coix 7</li>
+                            <li>Coix 8</li>
+                            <li>Coix 9</li>
+                            <li>Coix 10</li>
+                        </ul>
+                        <!-- end options business&EfficacitéProfessionnelle -->
+                    </li>
+                    <li id="code"  class="chow-ops">
+                        <i class="fa-sharp fa-solid fa-briefcase"></i> <span>Code</span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="at-ops hide">
+                        <!-- start options code -->
+                        <ul id="ul-code">
+                            <li>Coix 1</li>
+                            <li>Coix 2</li>
+                            <li>Coix 3</li>
+                            <li>Coix 4</li>
+                            <li>Coix 5</li>
+                            <li>Coix 6</li>
+                            <li>Coix 7</li>
+                            <li>Coix 8</li>
+                            <li>Coix 9</li>
+                            <li>Coix 10</li>
+                        </ul>
+                        <!-- end options code -->
+                    </li>
+                    <li id="infographie"  class="chow-ops">
+                        <i class="fa-sharp fa-solid fa-pen-nib"></i> <span>Infographie</span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="at-ops hide">
+                         <!-- start options infographie -->
+                         <ul id="ul-infographie">
+                            <li>Coix 1</li>
+                            <li>Coix 2</li>
+                            <li>Coix 3</li>
+                            <li>Coix 4</li>
+                            <li>Coix 5</li>
+                            <li>Coix 6</li>
+                            <li>Coix 7</li>
+                            <li>Coix 8</li>
+                            <li>Coix 9</li>
+                            <li>Coix 10</li>
+                        </ul>
+                        <!-- end options infographie -->
+                    </li>
+                    <li id="photographie"  class="chow-ops">
+                        <i class="fa-solid fa-camera-retro"></i> <span>Photographie</span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="at-ops hide">
+                        <!-- start options photographie -->
+                        <ul id="ul-photographie">
+                            <li>Coix 1</li>
+                            <li>Coix 2</li>
+                            <li>Coix 3</li>
+                            <li>Coix 4</li>
+                            <li>Coix 5</li>
+                            <li>Coix 6</li>
+                            <li>Coix 7</li>
+                            <li>Coix 8</li>
+                            <li>Coix 9</li>
+                            <li>Coix 10</li>
+                        </ul>
+                        <!-- end options photographie -->
+                    </li>
+                    <li id="videoCompositing"  class="chow-ops">
+                        <i class="fa-solid fa-video"></i> <span>Vidéo-Compositing</span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="at-ops hide">
+                        <!-- start options videoCompositing -->
+                        <ul id="ul-videoCompositing">
+                            <li>Coix 1</li>
+                            <li>Coix 2</li>
+                            <li>Coix 3</li>
+                            <li>Coix 4</li>
+                            <li>Coix 5</li>
+                            <li>Coix 6</li>
+                            <li>Coix 7</li>
+                            <li>Coix 8</li>
+                            <li>Coix 9</li>
+                            <li>Coix 10</li>
+                        </ul>
+                        <!-- end options videoCompositing -->
+                    </li>
+                    <li id="webmarketing"  class="chow-ops">
+                        <i class="fa-solid fa-chart-simple"></i><span>Webmarketing</span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="at-ops hide">
+                        <!-- start options webmarketing -->
+                        <ul id="ul-webmarketing">
+                            <li>Coix 1</li>
+                            <li>Coix 2</li>
+                            <li>Coix 3</li>
+                            <li>Coix 4</li>
+                            <li>Coix 5</li>
+                            <li>Coix 6</li>
+                            <li>Coix 7</li>
+                            <li>Coix 8</li>
+                            <li>Coix 9</li>
+                            <li>Coix 10</li>
+                        </ul>
+                        <!-- end options webmarketing -->
+                    </li>
+                    <li id="reseauxInformatique"  class="chow-ops">
+                        <i class="fa-solid fa-network-wired"></i> <span>Réseaux informatique</span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="at-ops hide">
+                        <!-- start options reseauxInformatique -->
+                        <ul id="ul-reseauxInformatique">
+                            <li>Coix 1</li>
+                            <li>Coix 2</li>
+                            <li>Coix 3</li>
+                            <li>Coix 4</li>
+                            <li>Coix 5</li>
+                            <li>Coix 6</li>
+                            <li>Coix 7</li>
+                            <li>Coix 8</li>
+                            <li>Coix 9</li>
+                            <li>Coix 10</li>
+                        </ul>
+                        <!-- end options reseauxInformatique -->
+                    </li>
+                    <li id="management"  class="chow-ops">
+                        <i class="fa-solid fa-list-check"></i> <span>Management</span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="at-ops hide">
+                        <!-- start options management -->
+                        <ul id="ul-management">
+                            <li>Coix 1</li>
+                            <li>Coix 2</li>
+                            <li>Coix 3</li>
+                            <li>Coix 4</li>
+                            <li>Coix 5</li>
+                            <li>Coix 6</li>
+                            <li>Coix 7</li>
+                            <li>Coix 8</li>
+                            <li>Coix 9</li>
+                            <li>Coix 10</li>
+                        </ul>
+                        <!-- end options management -->
+                    </li>
+                </ul>
+                <!-- end main filter -->
+            </div>
+            <div class="formations">
+                <!-- start card -->
+                <div class="card_coures">
+                    <!-- img formation -->
+                    <div class="img">
+                        <img src="images/istockphoto-836667296-1024x1024.jpg" alt="photo">
+                        <div class="duree">
+                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                            <div class="time">10:00</div>
+                        </div>
+                    </div>
+                    <!-- informations formation -->
+                    <div class="info_formation">
+                        <div class="categorie">Development</div>
+                        <div class="prix">150</div>
+                    </div>
+                    <!-- name formation -->
+                    <h1>Name fromation</h1>
+                    <!-- description -->
+                    <div class="description">
+                        <p>djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv</p>
+                    </div>
+                    <div class="footer">
+                        <!-- infotrmation formateur -->
+                        <div class="formateur">
+                            <div class="img_formateur">
+                                <img src="images/avatar-05.png" alt="photo">
+                            </div>
+                            <h2>Nom</h2>
+                        </div>
+                        <!-- informations -->
+                        <div class="info">
+                            <div class="etd">30</div>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            <div class="likes">50</div>
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card -->
+                <!-- start card -->
+                <div class="card_coures">
+                    <!-- img formation -->
+                    <div class="img">
+                        <img src="images/istockphoto-836667296-1024x1024.jpg" alt="photo">
+                        <div class="duree">
+                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                            <div class="time">10:00</div>
+                        </div>
+                    </div>
+                    <!-- informations formation -->
+                    <div class="info_formation">
+                        <div class="categorie">Development</div>
+                        <div class="prix">150</div>
+                    </div>
+                    <!-- name formation -->
+                    <h1>Name fromation</h1>
+                    <!-- description -->
+                    <div class="description">
+                        <p>djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv</p>
+                    </div>
+                    <div class="footer">
+                        <!-- infotrmation formateur -->
+                        <div class="formateur">
+                            <div class="img_formateur">
+                                <img src="images/avatar-05.png" alt="photo">
+                            </div>
+                            <h2>Nom</h2>
+                        </div>
+                        <!-- informations -->
+                        <div class="info">
+                            <div class="etd">30</div>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            <div class="likes">50</div>
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card -->
+                <!-- start card -->
+                <div class="card_coures">
+                    <!-- img formation -->
+                    <div class="img">
+                        <img src="images/istockphoto-836667296-1024x1024.jpg" alt="photo">
+                        <div class="duree">
+                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                            <div class="time">10:00</div>
+                        </div>
+                    </div>
+                    <!-- informations formation -->
+                    <div class="info_formation">
+                        <div class="categorie">Development</div>
+                        <div class="prix">150</div>
+                    </div>
+                    <!-- name formation -->
+                    <h1>Name fromation</h1>
+                    <!-- description -->
+                    <div class="description">
+                        <p>djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv</p>
+                    </div>
+                    <div class="footer">
+                        <!-- infotrmation formateur -->
+                        <div class="formateur">
+                            <div class="img_formateur">
+                                <img src="images/avatar-05.png" alt="photo">
+                            </div>
+                            <h2>Nom</h2>
+                        </div>
+                        <!-- informations -->
+                        <div class="info">
+                            <div class="etd">30</div>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            <div class="likes">50</div>
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card -->
+                <!-- start card -->
+                <div class="card_coures">
+                    <!-- img formation -->
+                    <div class="img">
+                        <img src="images/istockphoto-836667296-1024x1024.jpg" alt="photo">
+                        <div class="duree">
+                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                            <div class="time">10:00</div>
+                        </div>
+                    </div>
+                    <!-- informations formation -->
+                    <div class="info_formation">
+                        <div class="categorie">Development</div>
+                        <div class="prix">150</div>
+                    </div>
+                    <!-- name formation -->
+                    <h1>Name fromation</h1>
+                    <!-- description -->
+                    <div class="description">
+                        <p>djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv</p>
+                    </div>
+                    <div class="footer">
+                        <!-- infotrmation formateur -->
+                        <div class="formateur">
+                            <div class="img_formateur">
+                                <img src="images/avatar-05.png" alt="photo">
+                            </div>
+                            <h2>Nom</h2>
+                        </div>
+                        <!-- informations -->
+                        <div class="info">
+                            <div class="etd">30</div>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            <div class="likes">50</div>
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card -->
+                <!-- start card -->
+                <div class="card_coures">
+                    <!-- img formation -->
+                    <div class="img">
+                        <img src="images/istockphoto-836667296-1024x1024.jpg" alt="photo">
+                        <div class="duree">
+                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                            <div class="time">10:00</div>
+                        </div>
+                    </div>
+                    <!-- informations formation -->
+                    <div class="info_formation">
+                        <div class="categorie">Development</div>
+                        <div class="prix">150</div>
+                    </div>
+                    <!-- name formation -->
+                    <h1>Name fromation</h1>
+                    <!-- description -->
+                    <div class="description">
+                        <p>djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv</p>
+                    </div>
+                    <div class="footer">
+                        <!-- infotrmation formateur -->
+                        <div class="formateur">
+                            <div class="img_formateur">
+                                <img src="images/avatar-05.png" alt="photo">
+                            </div>
+                            <h2>Nom</h2>
+                        </div>
+                        <!-- informations -->
+                        <div class="info">
+                            <div class="etd">30</div>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            <div class="likes">50</div>
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card -->
+                <!-- start card -->
+                <div class="card_coures">
+                    <!-- img formation -->
+                    <div class="img">
+                        <img src="images/istockphoto-836667296-1024x1024.jpg" alt="photo">
+                        <div class="duree">
+                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                            <div class="time">10:00</div>
+                        </div>
+                    </div>
+                    <!-- informations formation -->
+                    <div class="info_formation">
+                        <div class="categorie">Development</div>
+                        <div class="prix">150</div>
+                    </div>
+                    <!-- name formation -->
+                    <h1>Name fromation</h1>
+                    <!-- description -->
+                    <div class="description">
+                        <p>djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv</p>
+                    </div>
+                    <div class="footer">
+                        <!-- infotrmation formateur -->
+                        <div class="formateur">
+                            <div class="img_formateur">
+                                <img src="images/avatar-05.png" alt="photo">
+                            </div>
+                            <h2>Nom</h2>
+                        </div>
+                        <!-- informations -->
+                        <div class="info">
+                            <div class="etd">30</div>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            <div class="likes">50</div>
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card -->
+                <!-- start card -->
+                <div class="card_coures">
+                    <!-- img formation -->
+                    <div class="img">
+                        <img src="images/istockphoto-836667296-1024x1024.jpg" alt="photo">
+                        <div class="duree">
+                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                            <div class="time">10:00</div>
+                        </div>
+                    </div>
+                    <!-- informations formation -->
+                    <div class="info_formation">
+                        <div class="categorie">Development</div>
+                        <div class="prix">150</div>
+                    </div>
+                    <!-- name formation -->
+                    <h1>Name fromation</h1>
+                    <!-- description -->
+                    <div class="description">
+                        <p>djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv</p>
+                    </div>
+                    <div class="footer">
+                        <!-- infotrmation formateur -->
+                        <div class="formateur">
+                            <div class="img_formateur">
+                                <img src="images/avatar-05.png" alt="photo">
+                            </div>
+                            <h2>Nom</h2>
+                        </div>
+                        <!-- informations -->
+                        <div class="info">
+                            <div class="etd">30</div>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            <div class="likes">50</div>
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card -->
+                <!-- start card -->
+                <div class="card_coures">
+                    <!-- img formation -->
+                    <div class="img">
+                        <img src="images/istockphoto-836667296-1024x1024.jpg" alt="photo">
+                        <div class="duree">
+                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                            <div class="time">10:00</div>
+                        </div>
+                    </div>
+                    <!-- informations formation -->
+                    <div class="info_formation">
+                        <div class="categorie">Development</div>
+                        <div class="prix">150</div>
+                    </div>
+                    <!-- name formation -->
+                    <h1>Name fromation</h1>
+                    <!-- description -->
+                    <div class="description">
+                        <p>djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv</p>
+                    </div>
+                    <div class="footer">
+                        <!-- infotrmation formateur -->
+                        <div class="formateur">
+                            <div class="img_formateur">
+                                <img src="images/avatar-05.png" alt="photo">
+                            </div>
+                            <h2>Nom</h2>
+                        </div>
+                        <!-- informations -->
+                        <div class="info">
+                            <div class="etd">30</div>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            <div class="likes">50</div>
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card -->
+                <!-- start card -->
+                <div class="card_coures">
+                    <!-- img formation -->
+                    <div class="img">
+                        <img src="images/istockphoto-836667296-1024x1024.jpg" alt="photo">
+                        <div class="duree">
+                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                            <div class="time">10:00</div>
+                        </div>
+                    </div>
+                    <!-- informations formation -->
+                    <div class="info_formation">
+                        <div class="categorie">Development</div>
+                        <div class="prix">150</div>
+                    </div>
+                    <!-- name formation -->
+                    <h1>Name fromation</h1>
+                    <!-- description -->
+                    <div class="description">
+                        <p>djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv</p>
+                    </div>
+                    <div class="footer">
+                        <!-- infotrmation formateur -->
+                        <div class="formateur">
+                            <div class="img_formateur">
+                                <img src="images/avatar-05.png" alt="photo">
+                            </div>
+                            <h2>Nom</h2>
+                        </div>
+                        <!-- informations -->
+                        <div class="info">
+                            <div class="etd">30</div>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            <div class="likes">50</div>
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card -->
+                <!-- start card -->
+                <div class="card_coures">
+                    <!-- img formation -->
+                    <div class="img">
+                        <img src="images/istockphoto-836667296-1024x1024.jpg" alt="photo">
+                        <div class="duree">
+                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                            <div class="time">10:00</div>
+                        </div>
+                    </div>
+                    <!-- informations formation -->
+                    <div class="info_formation">
+                        <div class="categorie">Development</div>
+                        <div class="prix">150</div>
+                    </div>
+                    <!-- name formation -->
+                    <h1>Name fromation</h1>
+                    <!-- description -->
+                    <div class="description">
+                        <p>djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv</p>
+                    </div>
+                    <div class="footer">
+                        <!-- infotrmation formateur -->
+                        <div class="formateur">
+                            <div class="img_formateur">
+                                <img src="images/avatar-05.png" alt="photo">
+                            </div>
+                            <h2>Nom</h2>
+                        </div>
+                        <!-- informations -->
+                        <div class="info">
+                            <div class="etd">30</div>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            <div class="likes">50</div>
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card -->
+                <!-- start card -->
+                <div class="card_coures">
+                    <!-- img formation -->
+                    <div class="img">
+                        <img src="images/istockphoto-836667296-1024x1024.jpg" alt="photo">
+                        <div class="duree">
+                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                            <div class="time">10:00</div>
+                        </div>
+                    </div>
+                    <!-- informations formation -->
+                    <div class="info_formation">
+                        <div class="categorie">Development</div>
+                        <div class="prix">150</div>
+                    </div>
+                    <!-- name formation -->
+                    <h1>Name fromation</h1>
+                    <!-- description -->
+                    <div class="description">
+                        <p>djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv</p>
+                    </div>
+                    <div class="footer">
+                        <!-- infotrmation formateur -->
+                        <div class="formateur">
+                            <div class="img_formateur">
+                                <img src="images/avatar-05.png" alt="photo">
+                            </div>
+                            <h2>Nom</h2>
+                        </div>
+                        <!-- informations -->
+                        <div class="info">
+                            <div class="etd">30</div>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            <div class="likes">50</div>
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card -->
+                <!-- start card -->
+                <div class="card_coures">
+                    <!-- img formation -->
+                    <div class="img">
+                        <img src="images/istockphoto-836667296-1024x1024.jpg" alt="photo">
+                        <div class="duree">
+                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                            <div class="time">10:00</div>
+                        </div>
+                    </div>
+                    <!-- informations formation -->
+                    <div class="info_formation">
+                        <div class="categorie">Development</div>
+                        <div class="prix">150</div>
+                    </div>
+                    <!-- name formation -->
+                    <h1>Name fromation</h1>
+                    <!-- description -->
+                    <div class="description">
+                        <p>djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv</p>
+                    </div>
+                    <div class="footer">
+                        <!-- infotrmation formateur -->
+                        <div class="formateur">
+                            <div class="img_formateur">
+                                <img src="images/avatar-05.png" alt="photo">
+                            </div>
+                            <h2>Nom</h2>
+                        </div>
+                        <!-- informations -->
+                        <div class="info">
+                            <div class="etd">30</div>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            <div class="likes">50</div>
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- start footer page formations -->
+            <div class="footer_page_formations">
+                <div id="pagination"></div>
+            </div>
+            <!-- start footer page formations -->
+        </div>
+    </section>
+    <!-- end page formations -->
+    <!-- Footer -->
+    <footer class="mt-5" id="footer">
+
+        <div class="footer-top">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-4 col-md-4 footer-contact">
+                <h1 class="logo"><a href="#">M<span>A</span>H<span>A</span></a></h1>
+                <p>
+                  Boulevard de Mohammedia <br>
+                  QI Azli 40150<br>
+                  Maroc <br><br>
+                  <strong>Phone:</strong> (+212) 524 34 50 57<br>
+                  <strong>Email:</strong> info@maha.com<br>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container d-md-flex py-4">
+          <div class="me-md-auto text-center text-md-start">
+            <div class="copyright">
+              © Copyright <strong><span>MAHA</span></strong>. All Rights Reserved
+            </div>
+          </div>
+        </div>
+    </footer>
+    <!-- Fin Footer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.4/swiper-bundle.min.js"></script>
+    <script src="jQuery/jquery-3.6.0.min.js"></script>
+    <script src="js/formations.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>
