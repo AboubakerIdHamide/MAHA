@@ -1,0 +1,101 @@
+:root{
+    --main-padding:100px;
+    --main-transition:0.3s;
+    --color-one:#47B5FF;
+    --color-two:#DFF6FF;
+    --color-three:#256D85;
+    --color-four:#06283D;
+    --transparent-color:rgb(15 116 143 / 70%);
+}
+
+body {
+	font-family: Inter;
+}
+
+/*--------------------------------------------------------------
+# Sections Head
+--------------------------------------------------------------*/
+
+.section-title h4 {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 0;
+  line-height: 1px;
+  margin: 0 0 5px 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #aaaaaa;
+}
+
+.section-title h4::after {
+  content: "";
+  width: 120px;
+  height: 1px;
+  display: inline-block;
+  background: #aaa;
+  margin: 4px 10px;
+}
+
+.section-title p {
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #37423b;
+}
+/*===================================================*/
+
+.profil img#avatar-profil {
+  object-fit: cover;
+  width: 150px;
+  border-radius: 50%;
+  margin-top: 10px;
+  padding: 3px;
+  border-right: 6px solid var(--color-one);
+  border-bottom: 3px solid var(--color-one);
+}
+
+.card {
+  box-shadow: 0 0 5px 3px #ded;
+}
+
+.input-group span {
+  background-color: #fff;
+}
+
+.input-group input:not(#email) {
+  border-right: none;
+}
+
+i {
+  cursor: pointer;
+}
+
+small.error {
+  font-size: 12px;
+}
+
+.profil .type-account {
+  font-size: 14px;
+}
+
+
+
+
+
+
+
+
+@media (min-width: 768px) {
+  .section-title {
+    margin-left: 100px;
+  }
+  
+  .profil-row {
+    margin-left: calc(8.5rem * 0.5);
+  }
+
+  .alert-success {
+    margin-left: calc(10rem * 0.5)
+  }
+}
+

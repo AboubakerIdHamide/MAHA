@@ -1,0 +1,75 @@
+body {
+	font-family: Inter;
+	background-color: #f7f8fb;
+}
+
+.bg-color {
+	background-color: #fff;
+}
+
+main .formation-title {
+	font-weight: 600;
+}
+
+main a {
+	text-decoration: none;
+	color: #000;
+}
+
+main a:hover {
+	color: #000;
+}
+
+main .formation-img {
+	object-fit: cover;
+}
+
+main .sort-by {
+	font-weight: 500;
+	font-size: 0.75rem;
+	text-indent: 20px;
+	color: gray;
+}
+
+main a.critere {
+	padding: 10px 0;
+	text-indent: 20px;
+	transition: background-color .3s;
+}
+
+main a.critere:hover{
+	background-color: #777;
+}
+
+.widgetbox {
+	background-color: #fff;
+	color: #0d6efd;
+}
+
+.widgetbox small {
+	white-space: nowrap;
+	font-weight: 600;
+}
+
+.widgetbox .nombre {
+	font-weight: 800;
+}
+
+.table thead {
+	border-top : 4px solid #0d6efd;
+}
+
+.table {
+	font-size: 13px;
+}
+
+.titre, .desc{
+	white-space: nowrap;
+	width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.counts-selected {
+	font-size: 12px;
+}
