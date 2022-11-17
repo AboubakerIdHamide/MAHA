@@ -1,0 +1,57 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "01988ee0242dc4b5ae7cbedb2acf2140",
+    "packages": [
+        {
+            "name": "pcloud/pcloud-php-sdk",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pCloud/pcloud-sdk-php.git",
+                "reference": "61fb9b98ca2db11ead4423ef16ce0ac5ea16225b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pCloud/pcloud-sdk-php/zipball/61fb9b98ca2db11ead4423ef16ce0ac5ea16225b",
+                "reference": "61fb9b98ca2db11ead4423ef16ce0ac5ea16225b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "9.5.11"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "pCloud\\Sdk\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "pCloud SDK for PHP",
+            "support": {
+                "issues": "https://github.com/pCloud/pcloud-sdk-php/issues",
+                "source": "https://github.com/pCloud/pcloud-sdk-php/tree/v3"
+            },
+            "time": "2022-10-06T13:02:11+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}
