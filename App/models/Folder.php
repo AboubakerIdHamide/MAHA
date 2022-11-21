@@ -21,8 +21,7 @@
 		}
 
         public function insertFolder($userFolderId, $fImagesId, $fVideosId, $fRessourcesId, $userEmail){
-			$req=$this->connect->prepare("INSERT INTO folders(userFolderId, imagesId, videosId, ressourcesId, userEmail) 
-            VALUES (:userFolderId, :imagesId, :videosId, :ressourcesId, :userEmail)");
+			$req=$this->connect->prepare("INSERT INTO folders(userFolderId, imagesId, videosId, ressourcesId, userEmail) VALUES (:userFolderId, :imagesId, :videosId, :ressourcesId, :userEmail)");
 			$req->bindParam(':userFolderId', $userFolderId);
 			$req->bindParam(':imagesId', $fImagesId);
 			$req->bindParam(':videosId', $fVideosId);

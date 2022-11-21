@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2022 at 08:39 AM
+-- Generation Time: Nov 21, 2022 at 06:30 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -87,19 +87,12 @@ CREATE TABLE `etudiants` (
 
 CREATE TABLE `folders` (
   `id` int(11) NOT NULL,
-  `userFolderId` int(11) DEFAULT NULL,
-  `imagesId` int(11) DEFAULT NULL,
-  `videosId` int(11) DEFAULT NULL,
-  `ressourcesId` int(11) DEFAULT NULL,
+  `userFolderId` varchar(255) DEFAULT NULL,
+  `imagesId` varchar(255) DEFAULT NULL,
+  `videosId` varchar(255) DEFAULT NULL,
+  `ressourcesId` varchar(255) DEFAULT NULL,
   `userEmail` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `folders`
---
-
-INSERT INTO `folders` (`id`, `userFolderId`, `imagesId`, `videosId`, `ressourcesId`, `userEmail`) VALUES
-(25, 2147483647, 2147483647, 2147483647, 2147483647, 'idhamidea@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -121,13 +114,6 @@ CREATE TABLE `formateurs` (
   `specialiteId` int(11) DEFAULT NULL,
   `balance` float DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `formateurs`
---
-
-INSERT INTO `formateurs` (`id_formateur`, `nom_formateur`, `prenom_formateur`, `email_formateur`, `tel_formateur`, `date_creation_formateur`, `img_formateur`, `mot_de_passe`, `paypalMail`, `biography`, `specialiteId`, `balance`) VALUES
-(8, 'idhamide', 'aboubaker', 'idhamidea@gmail.com', '0659854779', '2022-11-17 13:10:27', 'images/default.jpg', '$2y$10$EMqBaPplHZ0j29fNT2jse.E/.Spc/P21DigccNnE.D2eIGrAsXSA6', 'idhamidea@gmail.com', 'qzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzoqzjzsozosjzo', 7, 0);
 
 -- --------------------------------------------------------
 
@@ -300,31 +286,31 @@ ALTER TABLE `videos`
 -- AUTO_INCREMENT for table `etudiants`
 --
 ALTER TABLE `etudiants`
-  MODIFY `id_etudiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_etudiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `folders`
 --
 ALTER TABLE `folders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `formateurs`
 --
 ALTER TABLE `formateurs`
-  MODIFY `id_formateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_formateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `formations`
 --
 ALTER TABLE `formations`
-  MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `videos`
 --
 ALTER TABLE `videos`
-  MODIFY `id_video` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_video` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- Constraints for dumped tables

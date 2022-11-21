@@ -9,8 +9,6 @@ use pCloud\Sdk\App;
 use pCloud\Sdk\Folder;
 use pCloud\Sdk\File;
 
-ini_set("default_socket_timeout", 300);
-
 // PHP Mailler Classes Autolader
 require APPROOT.'/mailing/vendor/autoload.php';
 
@@ -209,13 +207,13 @@ class Users extends Controller{
                 $this->createUserFolders($userFolderName, $data[0]["email"]);
 
                 // Upload The Image
-                if($data[0]["img"]!="images/default.jpg"){
+                if($data[0]["img"]!=URLROOT."/Public/images/default.jpg"){
                     $imagesFolderId=$this->folderModel->getFolderByEmail($data[0]["email"]);
                     $imagesFolderId=$imagesFolderId["imagesId"];
-                    $imagePath=URLROOT."/Public/".$data[0]["img"];
-                    $this->pcloudFile()->upload($imagePath, $imagesFolderId);
-                    $fileName=preg_replace("/\s/", "%20", $data[0]["img"]["name"]);
-                    $data[0]["img"]="https://filedn.com/l1sJvviJhEwJbwl4JNQhunX/".$userFolderName."/Images/".$fileName;
+                    $imagePath=$data[0]["img"];
+                    $metaData=$this->pcloudFile()->upload($imagePath, $imagesFolderId);
+                    unlink($imagePath);
+                    $data[0]["img"]=$this->pcloudFile()->getLink($metaData->metadata->fileid);
                 }
 
                 // Insert The User 
@@ -477,7 +475,7 @@ class Users extends Controller{
             $userFolderId =$this->pcloudFolder()->create($userFolderName, $globalFolderId);
             $imagesFolderId = $this->pcloudFolder()->create("Images", $userFolderId);
             $ressourcesFolderId = $this->pcloudFolder()->create("Ressources", $userFolderId);
-            $videosFolderId = $this->pcloudFolder()->create("Videos", $userFolderId);
+            $videosFolderId =$this->pcloudFolder()->create("Videos", $userFolderId);
             $res=$this->folderModel->insertFolder($userFolderId, $imagesFolderId, $videosFolderId, $ressourcesFolderId, $email);
             return $res;
         }catch(Error $e){
@@ -627,8 +625,8 @@ class Users extends Controller{
     
             if (in_array($fileRealExt, $allowed)) {
                 if ($fileError === 0) {
-                    $fileNameNew = uniqid('', true) . "." . $fileRealExt;
-                    $fileDestination = 'images/users_images/' . $fileNameNew;
+                    $fileNameNew = substr(number_format(time() * rand(), 0, '', ''), 0, 5).".". $fileRealExt;
+                    $fileDestination = 'images\\userImage\\' . $fileNameNew;
                     move_uploaded_file($fileTmpName, $fileDestination);
                     $data["img"]=$fileDestination;
                 } else {
@@ -640,7 +638,7 @@ class Users extends Controller{
                 $data["img_err"]="Vous ne pouvez pas télécharger ce fichier uniquement (jpg | jpeg | png | ico) autorisé";
             }
         }else{
-            $data["img"]="images/default.jpg";
+            $data["img"]=URLROOT."/Public/images/default.jpg";
         }
 
         return $data;

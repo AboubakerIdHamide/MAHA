@@ -9,7 +9,7 @@ use stdClass;
  * The main purpose of this class is to organise the cURL response data into recognizable bundle
  *
  * @package pCloud\Sdk
- */
+ */ 
 class Response
 {
 

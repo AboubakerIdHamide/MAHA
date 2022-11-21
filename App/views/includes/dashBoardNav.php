@@ -14,7 +14,7 @@
 	<header>
 		<span id="overlay"></span>
 		<div class="logo">
-			<img src="<?= URLROOT.'/public/'.$_SESSION['user']['avatar'] ?>" alt="avatar">
+			<img src="<?= $_SESSION['user']['avatar'] ?>" alt="avatar">
 		</div>
 		<nav>
 			<div class="menu-i">

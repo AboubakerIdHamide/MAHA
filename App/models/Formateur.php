@@ -33,7 +33,7 @@
 		}
 
 		public function getFormateurByEmail($email){
-			$request = $this->connect->prepare("SELECT * FROM formateurs WHERE email_formateur = :email");
+			$request = $this->connect->prepare("SELECT *, img_formateur as avatar FROM formateurs WHERE email_formateur = :email");
 			$request->bindParam(':email', $email);
 			$request->execute();
 			$formateur = $request->fetch();
