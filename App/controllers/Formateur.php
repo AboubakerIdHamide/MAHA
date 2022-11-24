@@ -22,4 +22,9 @@ class Formateur extends Controller {
 
 		$this->view('formateur/index', $data);
 	}
+
+	public function addFormation()
+	{
+		echo "add Formation";
+	}
 }

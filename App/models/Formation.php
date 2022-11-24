@@ -3,6 +3,7 @@
 	 * class Model Formation
 	 */
 
+
 	class Formation
 	{
 		private $connect;
@@ -64,7 +65,7 @@
             $request->bindParam(":id_formation", $id_formation);
             $request->bindParam(":id_formateur", $id_formateur);
             $request->execute();
-            $response=$request->fetch();
+            $response = $request->fetch();
             return $response;
         }
 
@@ -75,6 +76,7 @@
             return $response;
         }
 
+        // fichiers_att AS zipFile
         public function getAllFormationsOfFormateur($id_formateur, $words = '')
         {
             $request= $this->connect->prepare("
@@ -85,7 +87,6 @@
                     DATE(date_creation_formation) AS dateUploaded,
                     prix_formation AS prix,
                     description,
-                    fichiers_att AS zipFile,
                     likes,
                     id_langue AS langue,
                     niveau_formation AS niveauFormation,

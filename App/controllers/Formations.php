@@ -9,6 +9,7 @@ class Formations extends Controller {
 
 		$this->formationModel = $this->model("Formation");
 		$this->stockedModel = $this->model("Stocked");
+		$this->videosModel = $this->model("Video");
 	}
 
 	private function validFormation($data)
@@ -17,7 +18,7 @@ class Formations extends Controller {
 		if(empty($this->formationModel->getFormation($id_formation, $_SESSION['user_id']))){
 			return 'This Course is not yours !!!';
 		}
-		// echo "error 1";
+
 		// title
 		$titre = $data['titre'];
 		$countTitre = strlen($titre);
@@ -32,7 +33,6 @@ class Formations extends Controller {
 		else
 			return 'Veuillez remplir le champ titre !!!';
 
-		// echo "error 2";
 		// description
 		$description = $data['description'];
 		$countDesc = strlen($description);
@@ -50,13 +50,12 @@ class Formations extends Controller {
 		// prix
 		$prix = $data['prix'];
 		if(strlen($prix) > 0){
-			if(!preg_match_all('/^[1-9]+(\.[0-9])?$/', $prix))
+			if(!preg_match_all('/^(?!0\d)\d*(\.\d+)?$/m', $prix))
 				return 'incorrect number !!!';
 		}
 		else
 			return 'Veuillez remplir le champ prix !!!';
 
-		// echo "error 3";
 		//categorie
 		$categorie = $data['categorie'];
 		if(empty($this->stockedModel->getCategorieById($categorie)))
@@ -83,11 +82,24 @@ class Formations extends Controller {
 				unset($error);
 				// update formation
 				$this->formationModel->updateFormation($_POST);
-				$success = 'Modification a ete passer avec success !!!';
-				redirect('privatePages/formateur/index');
+				flash('updateFormation', 'La Modification a ete faites avec success !!!');
+				redirect('formateur/dashboard');
 			}
-
-			echo $error;
+			flash('updateFormation', $error);
+			redirect('formateur/dashboard');
 		}	
+	}
+
+	public function videos($id_formation)
+	{
+		// check if this formateur has this formation.
+		$hasFormation = $this->formationModel->getFormation($id_formation, $_SESSION['user_id']);
+		if(!empty($hasFormation)){
+			$data = $this->videosModel->getVideosOfFormation($id_formation);
+			$this->view('formateur/videos');
+			// render view passing this data to it.
+		}else{
+			die('Error 404 !!!');
+		}
 	}
 }

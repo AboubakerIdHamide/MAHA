@@ -29,17 +29,29 @@
 			return $response;
 		}
 
-		public function getVideo($idFormation, $idVideo){
-			$request = $this->connect->prepare("SELECT * FROM videos WHERE id_formation = :id_formation AND id_video = :id_video");
+		// public function getVideo($idFormation, $idVideo){
+		// 	$request = $this->connect->prepare("SELECT * FROM videos WHERE id_formation = :id_formation AND id_video = :id_video");
+
+		// 	$request->bindParam(':id_formation', $idFormation);
+		// 	$request->bindParam(':id_video', $idVideo);
+		// 	$request->execute();
+
+		// 	$video = $request->fetch();
+		// 	return $video;
+		// }
+		
+		public function getVideosOfFormation($idFormation){
+			$request = $this->connect->prepare("
+				SELECT * FROM videos 
+				WHERE id_formation = :id_formation");
 
 			$request->bindParam(':id_formation', $idFormation);
-			$request->bindParam(':id_video', $idVideo);
 			$request->execute();
 
-			$video = $request->fetch();
-			return $video;
+			$videos = $request->fetchAll(PDO::FETCH_OBJ);
+			return $videos;
 		}
-		
+
 		public function updateVideo($dataVideo){
 			$request = $this->connect->prepare("
 								UPDATE videos

@@ -1,4 +1,5 @@
 <?php
+
 class Ajax extends Controller{
     public function __construct()
     {
@@ -63,7 +64,7 @@ class Ajax extends Controller{
             foreach ($_POST['id'] as $key => $id_formation) {
                 $this->formationModel->deleteFormation($id_formation);
             }
-            echo "Success";
+            echo 'La Formation a ete supprimer avec success !!!';
         }
     }
     
