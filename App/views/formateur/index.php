@@ -44,11 +44,12 @@
 			</div>
 		</div>
 	</section>
+	<?php flash('formationAdded')?>
 	<main class="container ps-5 pe-5 me-lg-5 p-md-0 mt-3 bg-color p-lg-3 rounded">
 		<div class="row mb-3 pt-5 pt-lg-0">
 			<div class="col-12 col-lg ps-5">
 				<div>
-					<a href="addFormation" class="btn btn-primary">Add Formation <i class="fa-solid fa-folder-plus"></i></a>
+					<a href="<?= URLROOT."/formations/addFormation"?>" class="btn btn-primary">Add Formation <i class="fa-solid fa-folder-plus"></i></a>
 				</div>
 			</div>
 			<div class="col col-lg mt-3 mt-lg-0 px-5">
@@ -99,7 +100,7 @@
 	</main>
 
 	<section>
-				<!-- Modal -->
+		<!-- Modal -->
 		<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
@@ -121,7 +122,7 @@
 	</div>
 
 		<section>
-				<!-- Modal -->
+		<!-- Modal -->
 		<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-scrollable">
 		    <div class="modal-content">

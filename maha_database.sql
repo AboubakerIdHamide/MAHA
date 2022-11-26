@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2022 at 06:30 PM
+-- Generation Time: Nov 26, 2022 at 07:42 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -48,7 +48,9 @@ INSERT INTO `categories` (`id_categorie`, `nom_categorie`) VALUES
 (9, 'Webmarketing'),
 (10, 'Réseaux informatique'),
 (11, 'Management'),
-(12, 'Bureautique');
+(12, 'Bureautique'),
+(13, 'Développement Web'),
+(14, 'Développement Mobile');
 
 -- --------------------------------------------------------
 
@@ -94,6 +96,13 @@ CREATE TABLE `folders` (
   `userEmail` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `folders`
+--
+
+INSERT INTO `folders` (`id`, `userFolderId`, `imagesId`, `videosId`, `ressourcesId`, `userEmail`) VALUES
+(63, '15400365532', '15400365627', '15400365873', '15400365731', 'idhamidea@gmail.com');
+
 -- --------------------------------------------------------
 
 --
@@ -115,6 +124,13 @@ CREATE TABLE `formateurs` (
   `balance` float DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `formateurs`
+--
+
+INSERT INTO `formateurs` (`id_formateur`, `nom_formateur`, `prenom_formateur`, `email_formateur`, `tel_formateur`, `date_creation_formateur`, `img_formateur`, `mot_de_passe`, `paypalMail`, `biography`, `specialiteId`, `balance`) VALUES
+(15, 'idhamide', 'aboubaker', 'idhamidea@gmail.com', '0659854779', '2022-11-24 23:05:06', '45336658223', '$2y$10$TqeUcK.dGMtAD2femP.0u.80nkCnjWqs0UyW33t6cxAPQT1b55PfO', 'idhamidea@gmail.com', 'hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello', 1, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -132,7 +148,7 @@ CREATE TABLE `formations` (
   `date_creation_formation` datetime DEFAULT current_timestamp(),
   `prix_formation` float(8,2) DEFAULT NULL,
   `description` text NOT NULL,
-  `id_langue` int(11) DEFAULT NULL,
+  `id_langue` int(11) DEFAULT 1,
   `likes` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -167,7 +183,8 @@ CREATE TABLE `langues` (
 INSERT INTO `langues` (`id_langue`, `nom_langue`) VALUES
 (1, 'Français'),
 (2, 'Anglais'),
-(3, 'Espagnol');
+(3, 'Espagnol'),
+(4, 'العربية');
 
 -- --------------------------------------------------------
 
@@ -201,7 +218,6 @@ CREATE TABLE `videos` (
   `nom_video` varchar(100) NOT NULL,
   `url_video` varchar(200) NOT NULL,
   `duree_video` time NOT NULL,
-  `miniature_video` varchar(200) DEFAULT NULL,
   `description_video` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -286,31 +302,31 @@ ALTER TABLE `videos`
 -- AUTO_INCREMENT for table `etudiants`
 --
 ALTER TABLE `etudiants`
-  MODIFY `id_etudiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `id_etudiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `folders`
 --
 ALTER TABLE `folders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `formateurs`
 --
 ALTER TABLE `formateurs`
-  MODIFY `id_formateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `id_formateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `formations`
 --
 ALTER TABLE `formations`
-  MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `videos`
 --
 ALTER TABLE `videos`
-  MODIFY `id_video` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `id_video` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables

@@ -22,4 +22,10 @@ class Formateur extends Controller {
 
 		$this->view('formateur/index', $data);
 	}
+
+	// default method
+	public function index()
+	{
+		$this->dashboard();
+	}
 }

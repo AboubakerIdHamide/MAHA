@@ -27,6 +27,9 @@
             $request->bindParam(":description", $dataFormation["description"]);
 
             $response=$request->execute();
+            if($response){
+                return $this->connect->lastInsertId();
+            }
             return $response;
         }
 

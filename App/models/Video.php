@@ -14,15 +14,14 @@
 
 		public function insertVideo($dataVideo){
 			$request = $this->connect->prepare("INSERT INTO 
-				videos(id_formation, nom_video, url_video, duree_video, miniature_video, description_video) 
-				VALUES (:formation, :nom, :url, :duree, :miniature, :description)"
+				videos(id_formation, nom_video, url_video, duree_video, description_video) 
+				VALUES (:formation, :nom, :url, :duree, :description)"
 			);
 
 			$request->bindParam(':formation', $dataVideo['Idformation']);
 			$request->bindParam(':nom', $dataVideo['nomVideo']);
 			$request->bindParam(':url', $dataVideo['url']);
 			$request->bindParam(':duree', $dataVideo['duree']);
-			$request->bindParam(':miniature', $dataVideo['img']);
 			$request->bindParam(':description', $dataVideo['desc']);
 			$response = $request->execute();
 
