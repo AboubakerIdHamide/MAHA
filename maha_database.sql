@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2022 at 07:42 PM
+-- Generation Time: Nov 26, 2022 at 08:57 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -222,6 +222,28 @@ CREATE TABLE `videos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Triggers `videos`
+--
+DELIMITER $$
+CREATE TRIGGER `calcDuree` AFTER INSERT ON `videos` FOR EACH ROW BEGIN
+	UPDATE formations f SET mass_horaire=
+    (SELECT  SEC_TO_TIME(SUM(TIME_TO_SEC(v.duree_video))) 
+    FROM videos v WHERE v.id_formation=NEW.id_formation)
+    WHERE f.id_formation=NEW.id_formation;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `calcDureeOnUpdate` AFTER UPDATE ON `videos` FOR EACH ROW BEGIN
+	UPDATE formations f SET mass_horaire=
+    (SELECT  SEC_TO_TIME(SUM(TIME_TO_SEC(v.duree_video))) 
+    FROM videos v WHERE v.id_formation=NEW.id_formation)
+    WHERE f.id_formation=NEW.id_formation;
+END
+$$
+DELIMITER ;
+
+--
 -- Indexes for dumped tables
 --
 
@@ -326,7 +348,7 @@ ALTER TABLE `formations`
 -- AUTO_INCREMENT for table `videos`
 --
 ALTER TABLE `videos`
-  MODIFY `id_video` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_video` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Constraints for dumped tables
