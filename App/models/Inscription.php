@@ -1,6 +1,6 @@
 <?php
 
-// Start class Inscription
+// class Inscription
 
 class Inscription{
     private $connect;
@@ -46,17 +46,7 @@ class Inscription{
         $response=$request->fetch();
         return $response;
     }
-
-
-
-
-
-
-
-
-
-
-
+	
     // public function getApprenantsByFormateur($id_formateur)
     // {
     //     $request = $this->connect->prepare("
@@ -68,12 +58,6 @@ class Inscription{
     //     $data = $request->fetch(PDO::FETCH_OBJ);
     //     return $data;
     // }
-
-
-
-
-
-
 
     public function deteleInscription($id_formation, $id_etudiant, $id_formateur){
 			$request = $this->connect->prepare("DELETE FROM inscriptions
