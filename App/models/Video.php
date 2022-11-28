@@ -8,6 +8,7 @@ class Video
 {
 	private $connect;
 
+<<<<<<< HEAD
 	public function __construct($database)
 	{
 		$this->connect = $database;
@@ -28,6 +29,20 @@ class Video
 		$request->bindParam(':miniature', $dataVideo['img']);
 		$request->bindParam(':description', $dataVideo['desc']);
 		$response = $request->execute();
+=======
+		public function insertVideo($dataVideo){
+			$request = $this->connect->prepare("INSERT INTO 
+				videos(id_formation, nom_video, url_video, duree_video, description_video) 
+				VALUES (:formation, :nom, :url, :duree, :description)"
+			);
+
+			$request->bindParam(':formation', $dataVideo['Idformation']);
+			$request->bindParam(':nom', $dataVideo['nomVideo']);
+			$request->bindParam(':url', $dataVideo['url']);
+			$request->bindParam(':duree', $dataVideo['duree']);
+			$request->bindParam(':description', $dataVideo['desc']);
+			$response = $request->execute();
+>>>>>>> 4015d1c6449891054e8aa91d8efbcd5fb863e5df
 
 		return $response;
 	}

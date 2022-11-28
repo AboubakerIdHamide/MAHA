@@ -1,4 +1,14 @@
 <?php
+// pCloud Classes
+use pCloud\Sdk\App;
+use pCloud\Sdk\Folder;
+use pCloud\Sdk\File;
+
+// pCloud Classes Autolader
+require APPROOT.'/pCloud/vendor/autoload.php';
+
+
+
 class Controller
 {
     // Load Model
@@ -31,5 +41,26 @@ class Controller
         } else {
             die("View Does Not Exists !");
         }
+    }
+
+    // pcloud Methods
+    public function pCloudApp()
+    {
+        $pCloudApp = new App();
+        $pCloudApp->setAccessToken("RMiu7ZMHkx8X1cEMzZM8uWc7ZJVsOoA1ivS8mjThYfGA97ytfhmh7");
+        $pCloudApp->setLocationId(1);
+        return $pCloudApp;
+    }
+
+    public function pcloudFolder()
+    {
+        $pcloudFolder = new Folder($this->pCloudApp());
+        return $pcloudFolder;
+    }
+
+    public function pcloudFile()
+    {
+        $pcloudFile = new File($this->pCloudApp());
+        return $pcloudFile;
     }
 }

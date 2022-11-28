@@ -5,12 +5,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <link rel="stylesheet" href="./css/addFormation.css">
-    <title>Ajouter Formation</title>
+    <!-- Style -->
+    <link rel="stylesheet" href="<?= URLROOT."/Public/css/addFormation.css"?>">
+    <title><?= SITENAME?></title>
 </head>
 
 <body>
+    <?php require_once APPROOT."/views/includes/dashBoardNav.php";?>
     <div class="container">
         <form action="" enctype="multipart/form-data" method="post" id="form">
             <input type="hidden" name="JsonVideos" id="jsonVideos">
@@ -25,12 +28,12 @@
                         <div class="field-box">
                             <div class="input-field">
                                 <label for="nom">Nom De Formation :</label>
-                                <input type="text" id="nom" name="nom">
-                                <span class="error" id="error_nom"></span>
+                                <input type="text" id="nom" name="nom" value="<?= $data["nom_formation"]?>">
+                                <span class="error" id="error_nom"><?= $data["error"]?></span>
                             </div>
                             <div class="input-field">
                                 <label for="prix">Prix De Formation En $:</label>
-                                <input type="text" id="prix" name="prix">
+                                <input type="text" id="prix" name="prix" value="<?= $data["prix_formation"]?>">
                                 <span class="error" id="error_prix"></span>
                             </div>
                         </div>
@@ -38,22 +41,22 @@
                             <div class="input-field">
                                 <label for="niveau">Niveau De Formation :</label>
                                 <select name="niveau" id="niveau">
-                                    <option value="aucun">Aucun</option>
-                                    <option value="facile">Facile</option>
-                                    <option value="moyen">Moyen</option>
-                                    <option value="difficile">Difficile</option>
+                                    <option value="">Aucun</option>
+                                    <?php foreach($data["levels"] as $level){
+                                        echo '<option value="'.$level->id_niveau.'">'.$level->nom_niveau.'</option>';
+                                    }?>
                                 </select>
-                                <span class="error" id="error_niveau"></span>
+                                <span class="error" id="error_niveau"><?php $data["error"]?></span>
                             </div>
                             <div class="input-field">
                                 <label for="categorie">Catégorie De Formation :</label>
                                 <select name="categorie" id="categorie">
-                                    <option value="aucun">Aucun</option>
-                                    <option value="webdev">Web Development</option>
-                                    <option value="uiux">UI / UX</option>
-                                    <option value="webdesign">Web Design</option>
+                                    <option value="">Aucun</option>
+                                    <?php foreach($data["allcategories"] as $cat){
+                                        echo '<option value="'.$cat->id_categorie.'">'.$cat->nom_categorie.'</option>';
+                                    }?>
                                 </select>
-                                <span class="error" id="error_categorie"></span>
+                                <span class="error" id="error_categorie"><?php $data["error"]?></span>
                             </div>
                         </div>
                     </div>
@@ -70,7 +73,7 @@
                             <div class="input-field">
                                 <label for="description">Description De Formation :</label>
                                 <div class="textarea-container">
-                                    <textarea name="description" id="description" placeholder="..."></textarea>
+                                    <textarea name="description" id="description" placeholder="..."><?= $data["description"]?></textarea>
                                     <div class="length-textarea" id="txtLen">0/700</div>
                                 </div>
                                 <span class="error" id="error_description"></span>
@@ -103,8 +106,13 @@
             </div>
         </form>
     </div>
+    <!-- Pcloud Script -->
     <script type="text/javascript" src="https://unpkg.com/pcloud-sdk-js@latest/dist/pcloudsdk.js"></script>
-    
-    <script src="./js/addFormation.js"></script>
+    <!-- Scripts -->
+    <script>
+        let theFolderId = <?= $data["folders"]["videosId"]?>;
+    </script>
+    <script src="<?= URLROOT."/Public/js/addFormation.js"?>"></script>
+    <script src="<?php echo URLROOT;?>/public/js/dashBoardNav.js"></script>
 </body>
 </html>

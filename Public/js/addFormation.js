@@ -168,18 +168,18 @@ function validateSectionOne() {
 
 	if (
 		nomForamtionInp.value == "" ||
-		nomForamtionInp.value.length < 3 ||
+		nomForamtionInp.value.length < 5 ||
 		nomForamtionInp.value == null
 	) {
 		Errors.push({
 			id: "error_nom",
-			msg: "Le nom de formation doit comporter au moins 3 caractères",
+			msg: "Le nom de formation doit comporter au moins 5 caractères",
 		});
 	}
-	if (nomForamtionInp.value.length > 100) {
+	if (nomForamtionInp.value.length > 50) {
 		Errors.push({
 			id: "error_nom",
-			msg: "Le nom doit comporter au maximum 100 caractères",
+			msg: "Le nom doit comporter au maximum 50 caractères",
 		});
 	}
 	if (
@@ -204,11 +204,11 @@ function validateSectionOne() {
 			msg: "Le prix devrait être inférieur à 10000$",
 		});
 	}
-	if (niveauForamtionInp.value == "aucun" || niveauForamtionInp.value == null) {
+	if (niveauForamtionInp.value == "" || niveauForamtionInp.value == null) {
 		Errors.push({ id: "error_niveau", msg: "choisir le niveau de formation" });
 	}
 	if (
-		categorieForamtionInp.value == "aucun" ||
+		categorieForamtionInp.value == "" ||
 		categorieForamtionInp.value == null
 	) {
 		Errors.push({
@@ -223,10 +223,10 @@ function validateSectionTwo() {
 	let textareaDesc = document.getElementById("description"),
 		Errors = [];
 
-	if (textareaDesc.value.length < 150 || textareaDesc.value == null) {
+	if (textareaDesc.value.length < 80 || textareaDesc.value == null) {
 		Errors.push({
 			id: "error_description",
-			msg: "La description de formation doit avoir au moins 150 caractères",
+			msg: "La description de formation doit avoir au moins 60 caractères",
 		});
 	}
 
@@ -247,27 +247,6 @@ const locationid = 1;
 const client = pcloudSdk.createClient(
 	"RMiu7ZMHkx8X1cEMzZM8uWc7ZJVsOoA1ivS8mjThYfGA97ytfhmh7"
 );
-let folderName = "Yasser",
-	theFolderId = 15175160528; // Default Folder Id
-
-// New Folder For The User
-client.createfolder(folderName, 15171390512)
-	.then((result) => {
-		theFolderId = result.folderid;// setting id of the new folder
-	})
-	.catch((err) => {
-		client.listfolder(15171390512) 
-		.then((result)=>{
-			let subFolders=[...result.contents];
-			subFolders.forEach((folder)=>{
-				if(folder.name==folderName){
-					theFolderId=folder.folderid;// setting id of the folder if already exists
-				}
-			})
-		}).catch((error)=>{
-			theFolderId=15175160528;
-		});
-	});
 
 // Upload Video Function
 function uploadVideo(file) {
@@ -285,8 +264,7 @@ function uploadVideo(file) {
 		},
 		onFinish: function (fileMetadata) {
 			// video info in variables
-			let videoName = fileMetadata.metadata.name.replace(/\s/g, "%20"),
-				videoPath = `https://filedn.com/l1sJvviJhEwJbwl4JNQhunX/${folderName}/${videoName}`,
+			let videoName = fileMetadata.metadata.name,
 				duration = fileMetadata.metadata.duration,
 				fileId = fileMetadata.metadata.fileid,
 				fileAlreadyExist = false;
@@ -307,7 +285,6 @@ function uploadVideo(file) {
 			if (!fileAlreadyExist) {
 				videoJsObjects.push({
 					name: videoName,
-					path: videoPath,
 					duree: duration,
 					file_id: fileId,
 				});

@@ -20,6 +20,7 @@ class Formation
             ( niveau_formation, id_formateur, categorie, nom_formation, image_formation, mass_horaire,  prix_formation, description)VALUES
             (:niveau_formation, :id_formateur, :categorie, :nom_formation, :img_formation, :mass_horaire, :prix_formation, :description);");
 
+<<<<<<< HEAD
         $request->bindParam(":niveau_formation", $dataFormation["niveau_formation"]);
         $request->bindParam(":id_formateur", $dataFormation["id_formateur"]);
         $request->bindParam(":categorie", $dataFormation["categorie"]);
@@ -36,6 +37,26 @@ class Formation
     public function updateFormation($dataFormation)
     {
         $request = $this->connect->prepare("UPDATE formations 
+=======
+            $request->bindParam(":niveau_formation", $dataFormation["niveau_formation"]);
+            $request->bindParam(":id_formateur", $dataFormation["id_formateur"]);
+            $request->bindParam(":categorie", $dataFormation["categorie"]);
+            $request->bindParam(":nom_formation", $dataFormation["nom_formation"]);
+            $request->bindParam(":img_formation", $dataFormation["img_formation"]);
+            $request->bindParam(":mass_horaire", $dataFormation["masse_horaire"]);
+            $request->bindParam(":prix_formation", $dataFormation["prix_formation"]);
+            $request->bindParam(":description", $dataFormation["description"]);
+
+            $response=$request->execute();
+            if($response){
+                return $this->connect->lastInsertId();
+            }
+            return $response;
+        }
+
+        public function updateFormation($dataFormation){
+            $request=$this->connect->prepare("UPDATE formations 
+>>>>>>> 4015d1c6449891054e8aa91d8efbcd5fb863e5df
             SET niveau_formation=:niveau_formation, categorie=:categorie, nom_formation=:nom_formation, prix_formation=:prix_formation, description=:description, id_langue=:langue 
             WHERE  id_formation=:id");
 

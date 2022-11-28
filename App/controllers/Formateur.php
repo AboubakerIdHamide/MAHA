@@ -30,8 +30,17 @@ class Formateur extends Controller
 		$this->view('formateur/index', $data);
 	}
 
+<<<<<<< HEAD
 	public function addFormation()
 	{
 		echo "add Formation";
 	}
 }
+=======
+	// default method
+	public function index()
+	{
+		$this->dashboard();
+	}
+}
+>>>>>>> 4015d1c6449891054e8aa91d8efbcd5fb863e5df
