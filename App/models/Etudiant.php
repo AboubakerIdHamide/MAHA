@@ -31,7 +31,11 @@
 		}
 
 		public function getEtudiantByEmail($email){
+<<<<<<< HEAD
 			$request = $this->connect->prepare("SELECT *, img_etudiant as avatar FROM etudiants WHERE email_etudiant = :email");
+=======
+			$request = $this->connect->prepare("SELECT *, img_etudiant as avatar, email_etudiant as email FROM etudiants WHERE email_etudiant = :email");
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 			$request->bindParam(':email', $email);
 			$request->execute();
 			$etudiant = $request->fetch();

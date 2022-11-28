@@ -15,14 +15,24 @@ $(document).ready(function(){
 		for(let course of courses){
 			let tr = `
 			<tr>
+<<<<<<< HEAD
 				<td class="text-center"><input id=${course.id} type="checkbox" class="form-check-input fs-5 select"></td>
+=======
+				<td class="text-center"><input value=${course.id} type="checkbox" class="form-check-input fs-5 select"></td>
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 				<td><p class="titre">${course.titre}</p></td>
 				<td class="text-center" style="font-weight: 600;">${course.likes}</td>
 				<td><p class="desc">${course.description}</p></td>
 				<td class="text-center" style="font-weight: 600;">${course.apprenants}</td>
+<<<<<<< HEAD
 				<td class="text-center"><a href='${'http://localhost/maha/public/' + course.zipFile}' class="btn btn-success btn-sm" download>Telecharger</a></td>
 				<td class="text-center">${course.dateUploaded}</td>
 				<td class="text-center"><a href="${course.videos}" class="btn btn-warning btn-sm">Leçons</a></td>
+=======
+				<td class="text-center"><a href='#' class="btn btn-success btn-sm" download>Telecharger</a></td>
+				<td class="text-center">${course.dateUploaded}</td>
+				<td class="text-center"><a href="http://localhost/maha/formations/videos/${course.id}" class="btn btn-warning btn-sm">Leçons</a></td>
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 				<td class="text-center"><strong>${course.prix} $</strong></td>
 			</tr>
 			`;
@@ -37,6 +47,7 @@ $(document).ready(function(){
 		$('#nbr-apprenants').text(cptApprenants);
 
 		$('.form-check-input').change(function (event) {
+<<<<<<< HEAD
 			const id = $(this).attr('id');
 			if(event.target.checked){
 				coursesSelected.push(id);
@@ -45,6 +56,16 @@ $(document).ready(function(){
 			else
 				if(coursesSelected.includes(id)){
 					coursesSelected.splice(coursesSelected.indexOf(id), 1);
+=======
+			const value = $(this).val();
+			if(event.target.checked){
+				coursesSelected.push(value);
+				event.target.parentElement.parentElement.style.backgroundColor = '#dee2e6';
+			}
+			else
+				if(coursesSelected.includes(value)){
+					coursesSelected.splice(coursesSelected.indexOf(value), 1);
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 					event.target.parentElement.parentElement.style.backgroundColor = '#fff';
 				}
 

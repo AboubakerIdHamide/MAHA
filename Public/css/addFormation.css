@@ -245,12 +245,12 @@ ul{
 .container form .field-container .field-section .field-box .input-field textarea{
     resize: none;
     padding: 20px 10px;
-    height: 220px;
+    height: 200px;
     width: 100%;
 }
 .container form .field-container .field-section .field-box .input-field .textarea-container{
     position: relative;
-    width: 95%;
+    width: 90%;
 }
 @media (max-width:767px) {
     .container form .field-container .field-section .field-box .input-field .textarea-container,

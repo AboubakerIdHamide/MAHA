@@ -3,7 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+<<<<<<< HEAD
 -- Generation Time: Nov 21, 2022 at 06:30 PM
+=======
+-- Generation Time: Nov 26, 2022 at 08:57 PM
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -48,7 +52,13 @@ INSERT INTO `categories` (`id_categorie`, `nom_categorie`) VALUES
 (9, 'Webmarketing'),
 (10, 'Réseaux informatique'),
 (11, 'Management'),
+<<<<<<< HEAD
 (12, 'Bureautique');
+=======
+(12, 'Bureautique'),
+(13, 'Développement Web'),
+(14, 'Développement Mobile');
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 
 -- --------------------------------------------------------
 
@@ -94,6 +104,16 @@ CREATE TABLE `folders` (
   `userEmail` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `folders`
+--
+
+INSERT INTO `folders` (`id`, `userFolderId`, `imagesId`, `videosId`, `ressourcesId`, `userEmail`) VALUES
+(63, '15400365532', '15400365627', '15400365873', '15400365731', 'idhamidea@gmail.com');
+
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 -- --------------------------------------------------------
 
 --
@@ -115,6 +135,16 @@ CREATE TABLE `formateurs` (
   `balance` float DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `formateurs`
+--
+
+INSERT INTO `formateurs` (`id_formateur`, `nom_formateur`, `prenom_formateur`, `email_formateur`, `tel_formateur`, `date_creation_formateur`, `img_formateur`, `mot_de_passe`, `paypalMail`, `biography`, `specialiteId`, `balance`) VALUES
+(15, 'idhamide', 'aboubaker', 'idhamidea@gmail.com', '0659854779', '2022-11-24 23:05:06', '45336658223', '$2y$10$TqeUcK.dGMtAD2femP.0u.80nkCnjWqs0UyW33t6cxAPQT1b55PfO', 'idhamidea@gmail.com', 'hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello', 1, 0);
+
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 -- --------------------------------------------------------
 
 --
@@ -132,7 +162,11 @@ CREATE TABLE `formations` (
   `date_creation_formation` datetime DEFAULT current_timestamp(),
   `prix_formation` float(8,2) DEFAULT NULL,
   `description` text NOT NULL,
+<<<<<<< HEAD
   `id_langue` int(11) DEFAULT NULL,
+=======
+  `id_langue` int(11) DEFAULT 1,
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
   `likes` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -167,7 +201,12 @@ CREATE TABLE `langues` (
 INSERT INTO `langues` (`id_langue`, `nom_langue`) VALUES
 (1, 'Français'),
 (2, 'Anglais'),
+<<<<<<< HEAD
 (3, 'Espagnol');
+=======
+(3, 'Espagnol'),
+(4, 'العربية');
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 
 -- --------------------------------------------------------
 
@@ -201,11 +240,39 @@ CREATE TABLE `videos` (
   `nom_video` varchar(100) NOT NULL,
   `url_video` varchar(200) NOT NULL,
   `duree_video` time NOT NULL,
+<<<<<<< HEAD
   `miniature_video` varchar(200) DEFAULT NULL,
+=======
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
   `description_video` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+<<<<<<< HEAD
+=======
+-- Triggers `videos`
+--
+DELIMITER $$
+CREATE TRIGGER `calcDuree` AFTER INSERT ON `videos` FOR EACH ROW BEGIN
+	UPDATE formations f SET mass_horaire=
+    (SELECT  SEC_TO_TIME(SUM(TIME_TO_SEC(v.duree_video))) 
+    FROM videos v WHERE v.id_formation=NEW.id_formation)
+    WHERE f.id_formation=NEW.id_formation;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `calcDureeOnUpdate` AFTER UPDATE ON `videos` FOR EACH ROW BEGIN
+	UPDATE formations f SET mass_horaire=
+    (SELECT  SEC_TO_TIME(SUM(TIME_TO_SEC(v.duree_video))) 
+    FROM videos v WHERE v.id_formation=NEW.id_formation)
+    WHERE f.id_formation=NEW.id_formation;
+END
+$$
+DELIMITER ;
+
+--
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 -- Indexes for dumped tables
 --
 
@@ -286,31 +353,51 @@ ALTER TABLE `videos`
 -- AUTO_INCREMENT for table `etudiants`
 --
 ALTER TABLE `etudiants`
+<<<<<<< HEAD
   MODIFY `id_etudiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+=======
+  MODIFY `id_etudiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 
 --
 -- AUTO_INCREMENT for table `folders`
 --
 ALTER TABLE `folders`
+<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+=======
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 
 --
 -- AUTO_INCREMENT for table `formateurs`
 --
 ALTER TABLE `formateurs`
+<<<<<<< HEAD
   MODIFY `id_formateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+=======
+  MODIFY `id_formateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 
 --
 -- AUTO_INCREMENT for table `formations`
 --
 ALTER TABLE `formations`
+<<<<<<< HEAD
   MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+=======
+  MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 
 --
 -- AUTO_INCREMENT for table `videos`
 --
 ALTER TABLE `videos`
+<<<<<<< HEAD
   MODIFY `id_video` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+=======
+  MODIFY `id_video` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 
 --
 -- Constraints for dumped tables

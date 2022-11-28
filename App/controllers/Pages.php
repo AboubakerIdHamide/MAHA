@@ -1,6 +1,7 @@
 <?php
 	
 class Pages extends Controller {
+<<<<<<< HEAD
     public function __construct()
     {
         $this->fomateurModel = $this->model("Formateur");
@@ -15,5 +16,10 @@ class Pages extends Controller {
             'info' => $info
         ];
         $this->view("pages/index", $data);
+=======
+	public function index()
+    {
+        $this->view("pages/index");
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
     }
 }

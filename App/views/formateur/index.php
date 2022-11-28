@@ -2,9 +2,13 @@
 	<div class="container me-5">
 		<section class="statistics container mt-4">
 		<div class="row">
+<<<<<<< HEAD
 			<?php if(isset($success)) : ?>
 				<div class="alert alert-success"><?= $success ?></div>
 			<?php endif; ?>
+=======
+			<?php flash('updateFormation') ?>
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 			<div class="col-6 col-lg">
 				<div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
 					<div>
@@ -44,11 +48,12 @@
 			</div>
 		</div>
 	</section>
+	<?php flash('formationAdded')?>
 	<main class="container ps-5 pe-5 me-lg-5 p-md-0 mt-3 bg-color p-lg-3 rounded">
 		<div class="row mb-3 pt-5 pt-lg-0">
 			<div class="col-12 col-lg ps-5">
 				<div>
-					<a href="addFormation" class="btn btn-primary">Add Formation <i class="fa-solid fa-folder-plus"></i></a>
+					<a href="<?= URLROOT."/formations/addFormation"?>" class="btn btn-primary">Add Formation <i class="fa-solid fa-folder-plus"></i></a>
 				</div>
 			</div>
 			<div class="col col-lg mt-3 mt-lg-0 px-5">
@@ -99,7 +104,7 @@
 	</main>
 
 	<section>
-				<!-- Modal -->
+		<!-- Modal -->
 		<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
@@ -121,7 +126,7 @@
 	</div>
 
 		<section>
-				<!-- Modal -->
+		<!-- Modal -->
 		<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-scrollable">
 		    <div class="modal-content">
@@ -224,6 +229,7 @@
 		    </div>
 		  </div>
 		</div>
+<<<<<<< HEAD
 	</section>	
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
@@ -232,3 +238,7 @@
 	<script src="<?php echo URLROOT;?>/public/js/dashboard-formateur.js"></script>
 </body>
 </html>
+=======
+	</section>
+<?php require_once APPROOT."/views/includes/footerDashboard.php";?>
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125

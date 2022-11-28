@@ -45,3 +45,12 @@ header=document.querySelector("header");
 header.addEventListener("mouseenter", ()=>{overLay.classList.add("header-overlay")});
 overLay.addEventListener("mouseenter", ()=>{overLay.classList.remove("header-overlay")});
 
+
+// destro flash messages
+function destroyMsg(){
+    let msgContainer=document.querySelector(".alert-info");
+    if(msgContainer){
+        window.setInterval(()=>{msgContainer.remove()}, 5000);
+    }
+}
+destroyMsg();

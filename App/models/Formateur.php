@@ -33,7 +33,11 @@
 		}
 
 		public function getFormateurByEmail($email){
+<<<<<<< HEAD
 			$request = $this->connect->prepare("SELECT *, img_formateur as avatar FROM formateurs WHERE email_formateur = :email");
+=======
+			$request = $this->connect->prepare("SELECT *, img_formateur as avatar, email_formateur as email FROM formateurs WHERE email_formateur = :email");
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 			$request->bindParam(':email', $email);
 			$request->execute();
 			$formateur = $request->fetch();
@@ -90,6 +94,7 @@
 			$response = $request->execute();
 			return $response;
 		}
+<<<<<<< HEAD
 
 		public function getFormateurById($id){
 			$request = $this->connect->prepare("SELECT formateurs.id_formateur as 'IdFormateur',
@@ -118,6 +123,8 @@
 			$formateur = $request->fetch();
 			return $formateur;
 		}
+=======
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 	}
 
 

@@ -1,4 +1,8 @@
 <?php
+<<<<<<< HEAD
+=======
+
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 class Ajax extends Controller{
     public function __construct()
     {
@@ -29,7 +33,11 @@ class Ajax extends Controller{
     }
 
     public function checkPaypalEmail(){
+<<<<<<< HEAD
         $data=[
+=======
+        $data = [
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
             "thereIsError"=>false,
             "error"=>"",
         ];
@@ -63,11 +71,18 @@ class Ajax extends Controller{
             foreach ($_POST['id'] as $key => $id_formation) {
                 $this->formationModel->deleteFormation($id_formation);
             }
+<<<<<<< HEAD
             echo "Success";
+=======
+            echo 'La Formation a ete supprimer avec success !!!';
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
         }
     }
     
 }
+<<<<<<< HEAD
 
 
 ?>
+=======
+>>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
