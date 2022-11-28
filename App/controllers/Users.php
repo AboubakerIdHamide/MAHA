@@ -4,25 +4,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-<<<<<<< HEAD
-// pCloud Classes
-use pCloud\Sdk\App;
-use pCloud\Sdk\Folder;
-use pCloud\Sdk\File;
-
 // PHP Mailler Classes Autolader
 require APPROOT.'/mailing/vendor/autoload.php';
 
-// pCloud Classes Autolader
-require APPROOT.'/pCloud/vendor/autoload.php';
-
-
-
-=======
-// PHP Mailler Classes Autolader
-require APPROOT.'/mailing/vendor/autoload.php';
-
->>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 class Users extends Controller{
     public function __construct()
     {
@@ -31,15 +15,11 @@ class Users extends Controller{
         $this->stockedModel=$this->model("Stocked");
         $this->folderModel=$this->model("Folder");
     }
-<<<<<<< HEAD
-=======
     
-    // default method
     public function index()
     {
         $this->login();
     }
->>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
 
     public function login()
     {
@@ -222,21 +202,13 @@ class Users extends Controller{
                 $this->createUserFolders($userFolderName, $data[0]["email"]);
 
                 // Upload The Image
-<<<<<<< HEAD
-                if($data[0]["img"]!=URLROOT."/Public/images/default.jpg"){
-=======
                 if($data[0]["img"]!=45393256813){
->>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
                     $imagesFolderId=$this->folderModel->getFolderByEmail($data[0]["email"]);
                     $imagesFolderId=$imagesFolderId["imagesId"];
                     $imagePath=$data[0]["img"];
                     $metaData=$this->pcloudFile()->upload($imagePath, $imagesFolderId);
                     unlink($imagePath);
-<<<<<<< HEAD
-                    $data[0]["img"]=$this->pcloudFile()->getLink($metaData->metadata->fileid);
-=======
                     $data[0]["img"]=$metaData->metadata->fileid;
->>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
                 }
 
                 // Insert The User 
@@ -411,11 +383,8 @@ class Users extends Controller{
         if($user['type'] == 'formateur'){
             $_SESSION['user_id'] = $user['id_formateur'];
             $_SESSION['user'] = $user;
-<<<<<<< HEAD
-=======
             // setting up the image link
             $_SESSION['user']['avatar']=$this->pcloudFile()->getLink($_SESSION['user']['avatar']);
->>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
             redirect('formateur/dashboard');
         }
         else{
@@ -476,29 +445,6 @@ class Users extends Controller{
         }
     }
 
-<<<<<<< HEAD
-    private function pCloudApp()
-    {
-        $pCloudApp = new App();
-        $pCloudApp->setAccessToken("RMiu7ZMHkx8X1cEMzZM8uWc7ZJVsOoA1ivS8mjThYfGA97ytfhmh7");
-        $pCloudApp->setLocationId(1);
-        return $pCloudApp;
-    }
-
-    private function pcloudFolder()
-    {
-        $pcloudFolder = new Folder($this->pCloudApp());
-        return $pcloudFolder;
-    }
-
-    private function pcloudFile()
-    {
-        $pcloudFile = new File($this->pCloudApp());
-        return $pcloudFile;
-    }
-
-=======
->>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
     private function createUserFolders($userFolderName, $email){
         // Create User Folders
         try{
@@ -669,11 +615,7 @@ class Users extends Controller{
                 $data["img_err"]="Vous ne pouvez pas télécharger ce fichier uniquement (jpg | jpeg | png | ico) autorisé";
             }
         }else{
-<<<<<<< HEAD
-            $data["img"]=URLROOT."/Public/images/default.jpg";
-=======
             $data["img"]=45393256813;
->>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
         }
 
         return $data;
