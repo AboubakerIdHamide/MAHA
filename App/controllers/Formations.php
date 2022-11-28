@@ -12,12 +12,12 @@ class Formations extends Controller
 		$this->formationModel = $this->model("Formation");
 		$this->videoModel = $this->model("Video");
 		$this->stockedModel = $this->model("Stocked");
+		$this->folderModel = $this->model("Folder");
 	}
 
 	public function index()
 	{
 		redirect('formateur/dashboard');
-		$this->folderModel = $this->model("Folder");
 	}
 
 	private function validFormation($data)
