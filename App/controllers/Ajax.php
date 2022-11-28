@@ -30,7 +30,7 @@ class Ajax extends Controller{
     }
 
     public function checkPaypalEmail(){
-        $data=[
+        $data = [
             "thereIsError"=>false,
             "error"=>"",
         ];
@@ -69,6 +69,3 @@ class Ajax extends Controller{
     }
     
 }
-
-
-?>

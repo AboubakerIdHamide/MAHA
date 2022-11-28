@@ -1,85 +1,91 @@
-<?php 
-	/**
-	 * class Model Formation
-	 */
+<?php
+
+/**
+ * class Model Formation
+ */
 
 
-	class Formation
-	{
-		private $connect;
+class Formation
+{
+    private $connect;
 
-		public function __construct($database)
-		{
-			$this->connect = $database;
-		}
+    public function __construct($database)
+    {
+        $this->connect = $database;
+    }
 
-		public function insertFormation($dataFormation){
-            $request=$this->connect->prepare("INSERT INTO formations
+    public function insertFormation($dataFormation)
+    {
+        $request = $this->connect->prepare("INSERT INTO formations
             ( niveau_formation, id_formateur, categorie, nom_formation, image_formation, mass_horaire,  prix_formation, description)VALUES
             (:niveau_formation, :id_formateur, :categorie, :nom_formation, :img_formation, :mass_horaire, :prix_formation, :description);");
 
-            $request->bindParam(":niveau_formation", $dataFormation["niveau_formation"]);
-            $request->bindParam(":id_formateur", $dataFormation["id_formateur"]);
-            $request->bindParam(":categorie", $dataFormation["categorie"]);
-            $request->bindParam(":nom_formation", $dataFormation["nom_formation"]);
-            $request->bindParam(":img_formation", $dataFormation["img_formation"]);
-            $request->bindParam(":mass_horaire", $dataFormation["masse_horaire"]);
-            $request->bindParam(":prix_formation", $dataFormation["prix_formation"]);
-            $request->bindParam(":description", $dataFormation["description"]);
+        $request->bindParam(":niveau_formation", $dataFormation["niveau_formation"]);
+        $request->bindParam(":id_formateur", $dataFormation["id_formateur"]);
+        $request->bindParam(":categorie", $dataFormation["categorie"]);
+        $request->bindParam(":nom_formation", $dataFormation["nom_formation"]);
+        $request->bindParam(":img_formation", $dataFormation["img_formation"]);
+        $request->bindParam(":mass_horaire", $dataFormation["masse_horaire"]);
+        $request->bindParam(":prix_formation", $dataFormation["prix_formation"]);
+        $request->bindParam(":description", $dataFormation["description"]);
 
-            $response=$request->execute();
-            return $response;
-        }
+        $response = $request->execute();
+        return $response;
+    }
 
-        public function updateFormation($dataFormation){
-            $request=$this->connect->prepare("UPDATE formations 
+    public function updateFormation($dataFormation)
+    {
+        $request = $this->connect->prepare("UPDATE formations 
             SET niveau_formation=:niveau_formation, categorie=:categorie, nom_formation=:nom_formation, prix_formation=:prix_formation, description=:description, id_langue=:langue 
             WHERE  id_formation=:id");
 
-            $request->bindParam(":niveau_formation", htmlspecialchars($dataFormation["niveauFormation"]));
-            $request->bindParam(":langue", htmlspecialchars($dataFormation["langue"]));
-            $request->bindParam(":categorie", htmlspecialchars($dataFormation["categorie"]));
-            $request->bindParam(":nom_formation", htmlspecialchars($dataFormation["titre"]));
-            $request->bindParam(":prix_formation", htmlspecialchars($dataFormation["prix"]));
-            $request->bindParam(":description", htmlspecialchars($dataFormation["description"]));
-            $request->bindParam(":id", htmlspecialchars($dataFormation["id_formation"]));
+        $request->bindParam(":niveau_formation", htmlspecialchars($dataFormation["niveauFormation"]));
+        $request->bindParam(":langue", htmlspecialchars($dataFormation["langue"]));
+        $request->bindParam(":categorie", htmlspecialchars($dataFormation["categorie"]));
+        $request->bindParam(":nom_formation", htmlspecialchars($dataFormation["titre"]));
+        $request->bindParam(":prix_formation", htmlspecialchars($dataFormation["prix"]));
+        $request->bindParam(":description", htmlspecialchars($dataFormation["description"]));
+        $request->bindParam(":id", htmlspecialchars($dataFormation["id_formation"]));
 
-            $response=$request->execute();
-            return $response;
-        }
+        $response = $request->execute();
+        return $response;
+    }
 
-        function deleteFormation($id){
-            $request= $this->connect->prepare("
+    function deleteFormation($id)
+    {
+        $request = $this->connect->prepare("
                 SET foreign_key_checks = 0;
                 DELETE FROM formations WHERE id_formation=:id;
                 SET foreign_key_checks = 1;");
-            $request->bindParam(":id", $id);
-            
-            $response=$request->execute();
-            return $response;
-        }
+        $request->bindParam(":id", $id);
+
+        $response = $request->execute();
+        return $response;
+    }
 
 
-        function getFormation($id_formation, $id_formateur){
-            $request= $this->connect->prepare("SELECT * FROM formations WHERE id_formation=:id_formation AND id_formateur=:id_formateur");
-            $request->bindParam(":id_formation", $id_formation);
-            $request->bindParam(":id_formateur", $id_formateur);
-            $request->execute();
-            $response = $request->fetch();
-            return $response;
-        }
+    function getFormation($id_formation, $id_formateur)
+    {
+        $request = $this->connect->prepare("SELECT * FROM formations WHERE id_formation=:id_formation AND id_formateur=:id_formateur");
+        $request->bindParam(":id_formation", $id_formation);
+        $request->bindParam(":id_formateur", $id_formateur);
+        $request->execute();
+        $response = $request->fetch();
+        return $response;
+    }
 
-        function getAllFormations(){
-            $request= $this->connect->prepare("SELECT * FROM formations");
-            $request->execute();
-            $response=$request->fetchAll();
-            return $response;
-        }
+    function getAllFormations()
+    {
+        $request = $this->connect->prepare("SELECT * FROM formations");
+        $request->execute();
+        $response = $request->fetchAll();
+        return $response;
+    }
 
-        // fichiers_att AS zipFile
-        public function getAllFormationsOfFormateur($id_formateur, $words = '')
-        {
-            $request= $this->connect->prepare("
+    // fichiers_att AS zipFile
+    public function getAllFormationsOfFormateur($id_formateur, $words = '')
+    {
+        $request = $this->connect->prepare("
                 SELECT 
                     id_formation AS id,
                     nom_formation AS titre,
@@ -96,10 +102,10 @@
                 WHERE id_formateur = :id
                 AND nom_formation LIKE CONCAT('%', :words, '%');
             ");
-            $request->bindParam(":id", $id_formateur);
-            $request->bindParam(":words", $words);
-            $request->execute();
-            $response=$request->fetchAll(PDO::FETCH_OBJ);
-            return $response;
-        }
-	}
+        $request->bindParam(":id", $id_formateur);
+        $request->bindParam(":words", $words);
+        $request->execute();
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+}
