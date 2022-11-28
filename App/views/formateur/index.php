@@ -17,7 +17,7 @@
 			<div class="col-6 col-lg">
 				<div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
 					<div>
-						<span class="d-block fs-2 nombre" id="nbr-formations"></span>
+						<span class="d-block fs-2 nombre" id="nbr-formations">0</span>
 						<small class="text-muted">Formations</small>
 					</div>
 					<i class="fa-solid fa-person-chalkboard fs-1"></i>
@@ -26,7 +26,7 @@
 			<div class="col col-lg mt-3 mt-lg-0">
 				<div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
 					<div>
-						<span id="nbr-likes" class="d-block fs-2 nombre"></span>
+						<span id="nbr-likes" class="d-block fs-2 nombre">0</span>
 						<small class="text-muted">Likes</small>
 					</div>
 					<i class="fa-solid fa-heart fs-1"></i>
@@ -35,7 +35,7 @@
 			<div class="col col-lg mt-3 mt-lg-0">
 				<div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
 					<div>
-						<span class="d-block fs-2 nombre " id="nbr-apprenants"></span>
+						<span class="d-block fs-2 nombre " id="nbr-apprenants">0</span>
 						<small class="text-muted">Apprenants</small>
 					</div>
 					<i class="fa-solid fa-graduation-cap fs-1"></i>

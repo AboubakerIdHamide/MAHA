@@ -126,7 +126,6 @@ class Formation
                 where formations.id_formateur = formateurs.id_formateur
                 group by formations.likes
                 limit 1,10;
-                SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
             ");
             $request->execute();
             $response=$request->fetchAll(PDO::FETCH_OBJ);
