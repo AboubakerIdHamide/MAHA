@@ -152,34 +152,20 @@
         <div class="slide-container swiper container">
             <!-- container courses -->
             <div class="slide-content">
-<<<<<<< HEAD
             <div class="card-wrapper swiper-wrapper courses">
               <?php foreach($data['info'] as $info) : ?>
-=======
-            <!-- icon lift -->
-            <!-- <i class="fa fa-chevron-left" aria-hidden="true"></i> -->
-            <div class="card-wrapper swiper-wrapper courses">
->>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
                 <!-- start card -->
                 <div class="card swiper-slide card_coures">
                     <!-- img formation -->
                     <div class="img">
-<<<<<<< HEAD
                         <img src="<?php echo $info->imgFormation; ?>" alt="photo">
                         <div class="duree">
                             <i class="fa-solid fa-clock" aria-hidden="true"></i>
                             <div class="time"><?php echo $info->duree; ?></div>
-=======
-                        <img src="<?php echo URLROOT."/Public"?>/images/istockphoto-836667296-1024x1024.jpg" alt="photo">
-                        <div class="duree">
-                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
-                            <div class="time">10:00</div>
->>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
                         </div>
                     </div>
                     <!-- informations formation -->
                     <div class="info_formation">
-<<<<<<< HEAD
                         <div class="categorie"><?php echo $info->categorie; ?></div>
                         <div class="prix"><?php echo $info->prix; ?></div>
                     </div>
@@ -196,164 +182,19 @@
                                 <img src="<?php echo $info->imgFormateur; ?>" alt="photo">
                             </div>
                             <h2><?php echo $info->nomFormateur; ?> <?php echo $info->prenomFormateur; ?></h2>
-=======
-                        <div class="categorie">Development</div>
-                        <div class="prix">150</div>
-                    </div>
-                    <!-- name formation -->
-                    <h1>Name fromation</h1>
-                    <!-- description -->
-                    <div class="description">
-                        <p>djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv djfsddj djdjfjdjdfd kjfkhkdnd jfdjfjndjkfb jkvkbzc vbkbvkbd vbkvbkcbjkv bcbvjkjbcjkb vjkc jkvkbvk bckbvk bckbv</p>
-                    </div>
-                    <div class="footer">
-                        <!-- infotrmation formateur -->
-                        <div class="formateur">
-                            <div class="img_formateur">
-                                <img src="<?php echo URLROOT."/Public"?>/images/avatar-05.png" alt="photo">
-                            </div>
-                            <h2>Nom</h2>
->>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
                         </div>
                         <!-- informations -->
                         <div class="info">
                             <div class="etd">30</div>
                             <i class="fa fa-heart" aria-hidden="true"></i>
-<<<<<<< HEAD
                             <div class="likes"><?php echo $info->likes; ?></div>
-=======
-                            <div class="likes">50</div>
                             <i class="fa fa-users" aria-hidden="true"></i>
                         </div>
                     </div>
                 </div>
                 <!-- end card -->
-                <!-- start card -->
-                <div class="card swiper-slide card_coures">
-                    <!-- img formation -->
-                    <div class="img">
-                        <img src="<?php echo URLROOT."/Public"?>/images/istockphoto-836667296-1024x1024.jpg" alt="photo">
-                        <div class="duree">
-                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
-                            <div class="time">10:00</div>
-                        </div>
-                    </div>
-                    <!-- informations formation -->
-                    <div class="info_formation">
-                        <div class="categorie">Development</div>
-                        <div class="prix">180</div>
-                    </div>
-                    <!-- name formation -->
-                    <h1>Name fromation</h1>
-                    <!-- description -->
-                    <div class="description">
-                        <p>djfsddjdjdjfjdjdfdkjfkhkdndjfdjfjndjkfbjk vkbzc vbkbvkbdvbkvbkcbjkvbcbvjkjbcjkbvjkc jkvkbvkbckbvkbckbv</p>
-                    </div>
-                    <div class="footer">
-                        <!-- infotrmation formateur -->
-                        <div class="formateur">
-                            <div class="img_formateur">
-                                <img src="<?php echo URLROOT."/Public"?>/images/avatar-05.png" alt="photo">
-                            </div>
-                            <h2>Nom</h2>
-                        </div>
-                        <!-- informations -->
-                        <div class="info">
-                            <div class="etd">30</div>
-                            <i class="fa fa-heart" aria-hidden="true"></i>
-                            <div class="likes">50</div>
-                            <i class="fa fa-users" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- end card -->
-                <!-- start card -->
-                <div class="card swiper-slide card_coures">
-                    <!-- img formation -->
-                    <div class="img">
-                        <img src="<?php echo URLROOT."/Public"?>/images/istockphoto-836667296-1024x1024.jpg" alt="photo">
-                        <div class="duree">
-                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
-                            <div class="time">10:00</div>
-                        </div>
-                    </div>
-                    <!-- informations formation -->
-                    <div class="info_formation">
-                        <div class="categorie">Development</div>
-                        <div class="prix">170</div>
-                    </div>
-                    <!-- name formation -->
-                    <h1>Name fromation</h1>
-                    <!-- description -->
-                    <div class="description">
-                        <p>djfsddjdjdjfjdjdfdkjfkhkdndjfdjfjndjkfbjk vkbzc vbkbvkbdvbkvbkcbjkvbcbvjkjbcjkbvjkc jkvkbvkbckbvkbckbv</p>
-                    </div>
-                    <div class="footer">
-                        <!-- infotrmation formateur -->
-                        <div class="formateur">
-                            <div class="img_formateur">
-                                <img src="<?php echo URLROOT."/Public"?>/images/avatar-05.png" alt="photo">
-                            </div>
-                            <h2>Nom</h2>
-                        </div>
-                        <!-- informations -->
-                        <div class="info">
-                            <div class="etd">30</div>
-                            <i class="fa fa-heart" aria-hidden="true"></i>
-                            <div class="likes">50</div>
-                            <i class="fa fa-users" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- end card -->
-                <!-- start card -->
-                <div class="card swiper-slide card_coures">
-                    <!-- img formation -->
-                    <div class="img">
-                        <img src="<?php echo URLROOT."/Public"?>/images/istockphoto-836667296-1024x1024.jpg" alt="photo">
-                        <div class="duree">
-                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
-                            <div class="time">10:00</div>
-                        </div>
-                    </div>
-                    <!-- informations formation -->
-                    <div class="info_formation">
-                        <div class="categorie">Development</div>
-                        <div class="prix">190</div>
-                    </div>
-                    <!-- name formation -->
-                    <h1>Name fromation</h1>
-                    <!-- description -->
-                    <div class="description">
-                        <p>djfsddjdjdjfjdjdfdkjfkhkdndjfdjfjndjkfbjk vkbzc vbkbvkbdvbkvbkcbjkvbcbvjkjbcjkbvjkc jkvkbvkbckbvkbckbv</p>
-                    </div>
-                    <div class="footer">
-                        <!-- infotrmation formateur -->
-                        <div class="formateur">
-                            <div class="img_formateur">
-                                <img src="<?php echo URLROOT."/Public"?>/images/avatar-05.png" alt="photo">
-                            </div>
-                            <h2>Nom</h2>
-                        </div>
-                        <!-- informations -->
-                        <div class="info">
-                            <div class="etd">30</div>
-                            <i class="fa fa-heart" aria-hidden="true"></i>
-                            <div class="likes">50</div>
->>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
-                            <i class="fa fa-users" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- end card -->
-<<<<<<< HEAD
               <?php endforeach; ?>
             </div>
-=======
-            </div>
-            <!-- icon right -->
-            <!-- <i class="fa fa-chevron-right" aria-hidden="true"></i> -->
->>>>>>> dd0c7cebe874638ddfed7dbcae2a8836d9f45125
         </div>
         </div>
         <div class="swiper-button-next swiper-navBtn"></div>
@@ -361,7 +202,7 @@
         <div class="swiper-pagination"></div>
     </div>
     <!-- end poplular courses -->
-     <!-- Equipe Head -->
+<!-- Equipe Head -->
     <section class="section-title mt-2" id="equipe">
       <div class="container">
         <div>
