@@ -136,107 +136,12 @@ class Formations extends Controller
 		}
 	}	
 
-	public function updateFormation()
-	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$error = $this->validFormation($_POST);
-			if ($error === false) {
-				unset($error);
-				// update formation
-				$this->formationModel->updateFormation($_POST);
-				flash('updateFormation', 'La Modification a ete faites avec success !!!');
-				redirect('formateur/dashboard');
-			}
-			flash('updateFormation', $error);
-			redirect('formateur/dashboard');
-		}
-	}
-
-	private function formatDate($dateTime)
-	{
-		$date = explode('-', date('d-F-Y', strtotime($dateTime)));
-		$day = $date[0];
-		$month = $date[1];
-		$year = $date[2];
-		$date = $month . ' ' . $day . ', ' . $year;
-		return $date;
-	}
-
-	public function videos(int $id_formation)
-	{
-		// to access to that formation in deleteVideo method
-		// I unset this variable when i go back to the dashboard 
-		$_SESSION['id_formation'] = $id_formation;
-		// check if this formateur has this formation.
-		$hasFormation = $this->formationModel->getFormation($id_formation, $_SESSION['user_id']);
-		if (!empty($hasFormation)) {
-			$data = $this->videosModel->getVideosOfFormation($id_formation);
-			if (!empty($data)) {
-				$data[0]->date_creation_formation = $this->formatDate($data[0]->date_creation_formation);
-				$this->view('formateur/videos', $data);
-			} else
-				die("This Formation doesn't have any videos !!!");
-		} else {
-			die('Error 404 !!!');
-		}
-	}
-
 	public function deleteVideo()
 	{
 		if (isset($_POST['id_video'])) {
 			$this->videosModel->deteleVideo($_SESSION['id_formation'], $_POST['id_video']);
 			flash('deteleVideo', 'La Formation a ete supprimer avec success !!!');
 			echo 'La Formation a ete supprimer avec success !!!';
-		}
-	}
-
-	private function validVideo($data)
-	{
-		// title
-		if (isset($data['titre'])) {
-			$titre = $data['titre'];
-			$countTitre = strlen($titre);
-			if ($countTitre > 0) {
-				if ($countTitre < 5)
-					return 'Mininum caracteres 5 !!!';
-				else
-					if ($countTitre > 50)
-					return 'Maxmimun caracteres 50 !!!';
-			} else
-				return 'Veuillez remplir le champ titre !!!';
-		}
-
-		// Description
-		if (isset($data['description'])) {
-			$description = $data['description'];
-			$countDesc = strlen($description);
-
-			if ($countDesc > 0) {
-				if ($countDesc < 6)
-					return 'Mininum caracteres 6 !!!';
-				else
-						if ($countDesc > 600)
-					return 'Maxmimun caracteres 600 !!!';
-			} else
-				return 'Veuillez remplir le champ description !!!';
-		}
-
-		return false;
-	}
-
-	public function updateVideo()
-	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$error = $this->validVideo($_POST);
-			if ($error === false) {
-				unset($error);
-				// update Video
-				$data = $_POST;
-				$data['id_formation'] = $_SESSION['id_formation'];
-				$this->videosModel->updateVideo($data);
-				flash('updateVideo', 'La Modification a ete faites avec success !!!');
-				echo 'La Modification a ete faites avec success !!!';
-			}
 		}
 	}
 	
@@ -345,15 +250,6 @@ class Formations extends Controller
 				die("This Formation doesn't have any videos !!!");
 		} else {
 			die('Error 404 !!!');
-		}
-	}
-
-	public function deleteVideo()
-	{
-		if (isset($_POST['id_video'])) {
-			$this->videosModel->deteleVideo($_SESSION['id_formation'], $_POST['id_video']);
-			flash('deteleVideo', 'La Formation a ete supprimer avec success !!!');
-			echo 'La Formation a ete supprimer avec success !!!';
 		}
 	}
 
