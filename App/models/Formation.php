@@ -109,22 +109,24 @@ class Formation
             return $response;
         }
         public function getPupalaireCourses(){
-            $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
-                                                        formations.image_formation as 'imgFormation',
-                                                        formations.mass_horaire as 'duree',
-                                                        formations.categorie as 'categorie',
-                                                        formations.nom_formation as 'nomFormation',
-                                                        formations.prix_formation as 'prix',
-                                                        formations.description as 'description',
-                                                        formations.likes as 'likes',
-                                                        formateurs.id_formateur as 'IdFormteur',
-                                                        formateurs.nom_formateur as 'nomFormateur',
-                                                        formateurs.prenom_formateur as 'prenomFormateur',
-                                                        formateurs.img_formateur as 'imgFormateur'
-                                                from formations, formateurs
-                                                where formations.id_formateur = formateurs.id_formateur
-                                                group by formations.likes
-                                                limit 1,10;
+            $request= $this->connect->prepare("
+                SELECT formations.id_formation as 'IdFormation',
+                        formations.image_formation as 'imgFormation',
+                        formations.mass_horaire as 'duree',
+                        formations.categorie as 'categorie',
+                        formations.nom_formation as 'nomFormation',
+                        formations.prix_formation as 'prix',
+                        formations.description as 'description',
+                        formations.likes as 'likes',
+                        formateurs.id_formateur as 'IdFormteur',
+                        formateurs.nom_formateur as 'nomFormateur',
+                        formateurs.prenom_formateur as 'prenomFormateur',
+                        formateurs.img_formateur as 'imgFormateur'
+                from formations, formateurs
+                where formations.id_formateur = formateurs.id_formateur
+                group by formations.likes
+                limit 1,10;
+                SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
             ");
             $request->execute();
             $response=$request->fetchAll(PDO::FETCH_OBJ);
