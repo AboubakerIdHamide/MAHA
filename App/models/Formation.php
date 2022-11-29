@@ -124,7 +124,8 @@ class Formation
                         formateurs.img_formateur as 'imgFormateur'
                 from formations, formateurs
                 where formations.id_formateur = formateurs.id_formateur
-                group by formations.likes
+                group by formations.likes 
+                order by formations.likes desc
                 limit 1,10;
             ");
             $request->execute();
