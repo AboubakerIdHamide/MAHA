@@ -139,7 +139,7 @@ class Formations extends Controller
 	public function deleteVideo()
 	{
 		if (isset($_POST['id_video'])) {
-			$this->videosModel->deteleVideo($_SESSION['id_formation'], $_POST['id_video']);
+			$this->videoModel->deteleVideo($_SESSION['id_formation'], $_POST['id_video']);
 			flash('deteleVideo', 'La Formation a ete supprimer avec success !!!');
 			echo 'La Formation a ete supprimer avec success !!!';
 		}
@@ -242,7 +242,7 @@ class Formations extends Controller
 		// check if this formateur has this formation.
 		$hasFormation = $this->formationModel->getFormation($id_formation, $_SESSION['user_id']);
 		if (!empty($hasFormation)) {
-			$data = $this->videosModel->getVideosOfFormation($id_formation);
+			$data = $this->videoModel->getVideosOfFormation($id_formation);
 			if (!empty($data)) {
 				$data[0]->date_creation_formation = $this->formatDate($data[0]->date_creation_formation);
 				$this->view('formateur/videos', $data);
@@ -296,7 +296,7 @@ class Formations extends Controller
 				// update Video
 				$data = $_POST;
 				$data['id_formation'] = $_SESSION['id_formation'];
-				$this->videosModel->updateVideo($data);
+				$this->videoModel->updateVideo($data);
 				flash('updateVideo', 'La Modification a ete faites avec success !!!');
 				echo 'La Modification a ete faites avec success !!!';
 			}

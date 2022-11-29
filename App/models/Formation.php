@@ -92,7 +92,6 @@ class Formation
                     DATE(date_creation_formation) AS dateUploaded,
                     prix_formation AS prix,
                     description,
-                    fichiers_att AS zipFile,
                     likes,
                     id_langue AS langue,
                     niveau_formation AS niveauFormation,

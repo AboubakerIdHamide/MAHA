@@ -125,7 +125,7 @@ $(document).ready(function () {
                 console.log(response);
               },
             });
-            refreshPage();
+            // refreshPage();
           }
         } else {
           if (videoDescription !== desc.inputValue) {
@@ -141,7 +141,7 @@ $(document).ready(function () {
                   console.log(response);
                 },
               });
-              refreshPage();
+              // refreshPage();
             }
           } else {
             if (isInputValid(title)) {
@@ -156,7 +156,7 @@ $(document).ready(function () {
                   console.log(response);
                 },
               });
-              refreshPage();
+              // refreshPage();
             }
           }
         }
