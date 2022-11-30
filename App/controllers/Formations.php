@@ -196,14 +196,9 @@ class Formations extends Controller
 			return "this categorie doesn't exist in the DB !!!";
 
 		// level
-		$niveauFormation = $data['niveauFormation'];
+		$niveauFormation = $data['niveau_formation'];
 		if(empty($this->stockedModel->getLevelById($niveauFormation)))
 			return "this level doesn't exist in the DB !!!";
-
-		// langue
-		$langue = $data['langue'];
-		if(empty($this->stockedModel->getLangueById($langue)))
-			return "this language doesn't exist in the DB !!!";
 
 		return false;
 	}

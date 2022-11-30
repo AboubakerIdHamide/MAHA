@@ -52,10 +52,11 @@ class Ajax extends Controller{
 
         // don't forget to add APPROOT look at (js file (Miniature and Zipfile))
         foreach ($data as $key => $course) {
+            $course->miniature=$this->pcloudFile()->getLink($course->miniature);
             $course->apprenants = $this->inscriptionModel->countApprenantsOfFormation($_SESSION['user_id'], $course->id)[0];
         }
 
-        echo json_encode($data);  
+        echo json_encode($data);
     }
 
     public function deleteFormation()
