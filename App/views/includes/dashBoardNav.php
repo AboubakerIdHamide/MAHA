@@ -22,7 +22,7 @@
 	<!-- Header -->
 	<header>
 		<span id="overlay"></span>
-		<div class="logo" user-name="Aboubaker">
+		<div class="logo" user-name="<?=$_SESSION['user']['prenom']?>">
 			<img src="<?= $_SESSION['user']['avatar'] ?>" alt="avatar">
 		</div>
 		<nav>
