@@ -1,7 +1,7 @@
 $(document).ready(function () {
   // Stop the video when the modal closed
-  $("#voir").on("hidden.bs.modal", function (e) {
-    $("#voir video").attr("src", $("#voir video").attr("src"));
+  $("#modifier").on("hidden.bs.modal", function (e) {
+    $("#modifier video").attr("src", $("#modifier video").attr("src"));
   });
 
   function removeTags(str) {
