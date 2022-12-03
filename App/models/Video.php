@@ -45,7 +45,16 @@ class Video
 	public function getVideosOfFormation($idFormation)
 	{
 		$request = $this->connect->prepare("
-				SELECT * FROM videos
+				SELECT 
+					id_video,
+					id_formation,
+					nom_video,
+					url_video,
+					duree_video,
+					description_video,
+					date_creation_formation,
+					nom_formation
+				FROM videos
 				JOIN formations USING (id_formation)
 				WHERE id_formation = :id_formation");
 

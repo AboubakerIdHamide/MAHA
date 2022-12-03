@@ -50,9 +50,9 @@ class Ajax extends Controller{
         $data = $this->formationModel->getAllFormationsOfFormateur($_SESSION['user_id'], $words);
         
 
-        // don't forget to add APPROOT look at (js file (Miniature and Zipfile))
+        // don't forget to add Zipfile (Ressourses)
         foreach ($data as $key => $course) {
-            $course->miniature=$this->pcloudFile()->getLink($course->miniature);
+            $course->miniature = $this->pcloudFile()->getLink($course->miniature);
             $course->apprenants = $this->inscriptionModel->countApprenantsOfFormation($_SESSION['user_id'], $course->id)[0];
         }
 
