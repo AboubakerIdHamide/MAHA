@@ -124,7 +124,7 @@ $(document).ready(function () {
                 console.log(response);
               },
             });
-            // refreshPage();
+            refreshPage();
           }
         } else {
           if (videoDescription !== desc.inputValue) {
@@ -140,7 +140,7 @@ $(document).ready(function () {
                   console.log(response);
                 },
               });
-              // refreshPage();
+              refreshPage();
             }
           } else {
             if (isInputValid(title)) {
@@ -155,11 +155,50 @@ $(document).ready(function () {
                   console.log(response);
                 },
               });
-              // refreshPage();
+              refreshPage();
             }
           }
         }
       } else $(".btn-close").click();
+    }
+  });
+
+  // tries les videos
+  $(".order").click(function (event) {
+    const videosWithOrder = [];
+    const $idsOfVideos = $("button.edit");
+    const $orderOfVideos = $("input.order-video");
+    
+    const getOrder = index => {
+        if(Number($orderOfVideos[index].value) != $orderOfVideos[index].value || $orderOfVideos[index].value === "")
+            return null;
+        return Math.floor(Number($orderOfVideos[index].value));
+    }
+
+    let i = 0;
+    for (let idVideo of $idsOfVideos) {
+      if(getOrder(i) !== null){
+        const videoObj = {
+          id : idVideo.id,
+          order : getOrder(i)
+        }
+        videosWithOrder.push(videoObj);
+      }
+      i++;
+    }
+
+    if(videosWithOrder.length !== 0){
+      $.ajax({
+        url : 'http://localhost/maha/formations/setOrdreVideos',
+        method : 'POST',
+        data : {
+          "videosWithOrder" : JSON.stringify(videosWithOrder)
+        },
+        success : function (response) {
+          console.log(response);
+        }
+      });
+      refreshPage();
     }
   });
 });

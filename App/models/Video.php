@@ -42,6 +42,33 @@ class Video
 	// 	return $video;
 	// }
 
+	public function countMassHorraire($id_formation)
+	{
+		$request = $this->connect->prepare("
+					SELECT  SEC_TO_TIME(SUM(TIME_TO_SEC(duree_video))) AS mass_horaire  
+					FROM videos
+					WHERE id_formation = :id_formation
+					GROUP BY id_formation");
+		$request->bindParam(':id_formation', $id_formation);
+		$request->execute();
+		$time = $request->fetch(PDO::FETCH_OBJ);
+		return $time->mass_horaire;
+	}
+
+	public function setOrderVideos($data)
+	{
+		foreach ($data as $key => $value) {
+			$request = $this->connect->prepare("
+				UPDATE videos
+				SET 
+					order_video = :order_video
+				WHERE id_video = :id_video");
+			$request->bindParam(':order_video', $value->order);
+			$request->bindParam(':id_video', $value->id);
+			$response = $request->execute();
+		}
+	}
+
 	public function getVideosOfFormation($idFormation)
 	{
 		$request = $this->connect->prepare("
@@ -53,10 +80,12 @@ class Video
 					duree_video,
 					description_video,
 					date_creation_formation,
-					nom_formation
+					nom_formation,
+					mass_horaire
 				FROM videos
 				JOIN formations USING (id_formation)
-				WHERE id_formation = :id_formation");
+				WHERE id_formation = :id_formation
+				ORDER BY order_video");
 
 		$request->bindParam(':id_formation', $idFormation);
 		$request->execute();

@@ -231,18 +231,18 @@ class Formations extends Controller
 
 	public function videos(int $id_formation)
 	{
-		// to access to that formation in deleteVideo method
-		// I unset this variable when i go back to the dashboard 
-		$_SESSION['id_formation'] = $id_formation;
 		// check if this formateur has this formation.
 		$hasFormation = $this->formationModel->getFormation($id_formation, $_SESSION['user_id']);
 		if (!empty($hasFormation)) {
 			$data = $this->videoModel->getVideosOfFormation($id_formation);
 			if (!empty($data)) {
 				$data[0]->date_creation_formation = $this->formatDate($data[0]->date_creation_formation);
+				// to access to that formation in deleteVideo method
+				// I unset this variable when i go back to the dashboard 
+				$_SESSION['id_formation'] = $data[0]->id_formation;
+				$data[0]->masse_horaire = $this->videoModel->countMassHorraire($data[0]->id_formation);
 				foreach ($data as $key => $value) {
 					$data[$key]->url_video = $this->pcloudFile()->getLink($data[$key]->url_video);
-					$data[$key]->nom_video = substr($data[$key]->nom_video, 0, strlen($data[$key]->nom_video) - 4);
 				}
 				$this->view('formateur/videos', $data);
 			} else
@@ -339,5 +339,17 @@ class Formations extends Controller
         }
 
         return $data;
+    }
+
+    public function setOrdreVideos()
+    {
+    	if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    		if(isset($_POST['videosWithOrder'])){
+    			// Don't Forget Validation Back-end Order
+    			$this->videoModel->setOrderVideos(json_decode($_POST['videosWithOrder']));
+    			flash("orderApplied", "L'order a ete appliquer avec succes !!!");
+    			echo "DONE !!!";
+    		}
+    	}
     }
 }

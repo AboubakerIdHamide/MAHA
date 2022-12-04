@@ -7,7 +7,7 @@
 			<div class="col-6 col-md-7 col-lg-9">
 				<h1><?= $data[0]->nom_formation ?></h1>
 				<p><?= $data[0]->date_creation_formation ?></p>
-				<span>Total videos (<?= count($data) ?> videos)</span>
+				<span>Total videos (<?= count($data) ?> videos) · <span class="badge bg-primary"><i class="fas fa-clock"></i> <?= $data[0]->masse_horaire ?></span></span>
 			</div>
 			<div class="col">
 				<a href="#" class="btn btn-primary">Add Video <i class="fa-solid fa-file-circle-plus"></i></a>
@@ -16,6 +16,13 @@
 		<?php flash('deteleVideo') ?>
 		<?php flash('updateVideo') ?>
 		<?php $order = 1 ?>
+		<hr />
+		<div class="row mb-3">
+			<?php flash("orderApplied") ?>
+			<div class="col">
+				<button class="btn btn-primary btn-sm order">Appliquer L'ordre <i class="fa-solid fa-check-to-slot"></i></button>
+			</div>
+		</div>
 		<?php foreach ($data as $video) : ?>
 			<div class="row mb-3 align-items-center p-2 video rounded flex-sm-column flex-md-row ms-md-3 ms-lg-4 ms-xl-0">
 				<div class="col-1 p-0" style="width: 50px;">
