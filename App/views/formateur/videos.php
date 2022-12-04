@@ -10,7 +10,7 @@
 				<span>Total videos (<?= count($data) ?> videos)</span>
 			</div>
 			<div class="col">
-				<a href="#" class="btn btn-primary">Add Video <i class="fa-solid fa-file-circle-plus"></i></a>
+				<a href="<?= URLROOT?>/formations/addVideo/<?= $_SESSION['id_formation']?>" class="btn btn-primary">Add Video <i class="fa-solid fa-file-circle-plus"></i></a>
 			</div>
 		</div>
 		<?php flash('deteleVideo') ?>

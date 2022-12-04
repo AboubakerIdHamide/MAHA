@@ -118,7 +118,7 @@ class Formations extends Controller
 					$this->videoModel->insertVideo($videoData);
 				}
 				redirect("formateur/index");
-				flash("formationAdded", "Vos détails de cours sont insérés avec succès, vous devez donner une description à vos vidéos", "alert alert-info mt-5");
+				flash("formationAdded", "Vos détails de cours sont insérés avec succès, vous devez donner une description à vos vidéos", "alert alert-info mt-1");
 			}else{
 				$this->view("formation/addFormation", $data);
 			}
