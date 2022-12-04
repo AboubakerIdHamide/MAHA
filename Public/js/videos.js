@@ -52,8 +52,7 @@ $(document).ready(function () {
   $(".edit").click(function () {
     idVideo = $(this).attr("id");
     const $urlVideo = $(this).parent().parent().find("input#link-video").val();
-    videoTitle = $(this).parent().parent().find("span")[0].textContent;
-    videoTitle = videoTitle.split(".")[1].trim();
+    videoTitle = $(this).parent().parent().find("span.video-name")[0].textContent;
     videoDescription = $(this)
       .parent()
       .parent()
