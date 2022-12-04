@@ -16,7 +16,7 @@
             <input type="hidden" name="JsonVideos" id="jsonVideos">
             <div class="prog" id="prog_bar"></div>
             <div class="main-form-heading">
-                <h1 class="logo"><a href="index.html">M<span>A</span>H<span>A</span></a></h1>
+                <h1 class="logo"><a href="<?=URLROOT?>/pages/index">M<span>A</span>H<span>A</span></a></h1>
             </div>
 
             <div class="field-container">
@@ -48,7 +48,7 @@
         </form>
     </div>
     <script type="text/javascript" src="https://unpkg.com/pcloud-sdk-js@latest/dist/pcloudsdk.js"></script>
-    <script>let theFolderId = 15175160528;</script>
+    <script>let theFolderId =<?= $data["folders"]["videosId"]?>;</script>
     <script src="<?= URLROOT."/Public/js/addVideo.js"?>"></script>
     <script src="<?php echo URLROOT;?>/public/js/dashBoardNav.js"></script>
 </body>
