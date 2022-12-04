@@ -240,7 +240,10 @@ class Formations extends Controller
 			$data = $this->videoModel->getVideosOfFormation($id_formation);
 			if (!empty($data)) {
 				$data[0]->date_creation_formation = $this->formatDate($data[0]->date_creation_formation);
-				$data[0]->url_video = $this->pcloudFile()->getLink($data[0]->url_video);
+				foreach ($data as $key => $value) {
+					$data[$key]->url_video = $this->pcloudFile()->getLink($data[$key]->url_video);
+					$data[$key]->nom_video = substr($data[$key]->nom_video, 0, strlen($data[$key]->nom_video) - 4);
+				}
 				$this->view('formateur/videos', $data);
 			} else
 				die("This Formation doesn't have any videos !!!");

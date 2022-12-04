@@ -15,10 +15,14 @@
 		</div>
 		<?php flash('deteleVideo') ?>
 		<?php flash('updateVideo') ?>
+		<?php $order = 1 ?>
 		<?php foreach ($data as $video) : ?>
 			<div class="row mb-3 align-items-center p-2 video rounded flex-sm-column flex-md-row ms-md-3 ms-lg-4 ms-xl-0">
-				<div class="col-xl-8 col-lg-7 col-md-9 col-sm">
-					<span class="video-name"><?= $video->id_video ?>. <?= $video->nom_video ?></span>
+				<div class="col-1 p-0" style="width: 50px;">
+					<input style="width: 56px;text-align: center;" maxlength="3" type="text" class="order-video form-control" placeholder="<?= $order ?>" />
+				</div>
+				<div class="col-xl-7 col-lg-6 col-md-8 col-sm">
+					<span class="video-name"><?= $video->nom_video ?></span>
 					<span class="badge bg-secondary"><i class="fas fa-clock"></i> <?= $video->duree_video ?></span>
 				</div>
 				<input id="description-video" type="hidden" value="<?= $video->description_video ?>">
@@ -29,6 +33,7 @@
 					<button id="<?= $video->id_video ?>" class="btn btn-danger btn-sm delete" data-bs-toggle="modal" data-bs-target="#supprimer"><span class="label-btn">Supprimer</span> <i class="fa-solid fa-trash"></i></button>
 				</div>
 			</div>
+			<?php $order++; ?>
 		<?php endforeach; ?>
 
 	</main>
