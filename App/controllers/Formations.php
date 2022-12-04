@@ -118,7 +118,7 @@ class Formations extends Controller
 					$this->videoModel->insertVideo($videoData);
 				}
 				redirect("formateur/index");
-				flash("formationAdded", "Vos détails de cours sont insérés avec succès, vous devez donner une description à vos vidéos", "alert alert-info mt-5");
+				flash("formationAdded", "Vos détails de cours sont insérés avec succès, vous devez donner une description à vos vidéos", "alert alert-info mt-1");
 			}else{
 				$this->view("formation/addFormation", $data);
 			}
@@ -135,6 +135,41 @@ class Formations extends Controller
 			$this->view("formation/addFormation", $data);
 		}
 	}	
+
+	public function addVideo($idFormation=''){
+		// check the Id if exists
+		$formationData=$this->formationModel->getFormation($idFormation, $_SESSION['user_id']);
+		if(empty($idFormation) || empty($formationData)){
+			redirect("formateur/index");
+		}
+
+		// handling request
+		if($_SERVER['REQUEST_METHOD'] == 'POST'){
+			$data=[
+				"videosCollcetion"	=>json_decode($_POST["JsonVideos"]),
+			];
+
+			// insert data
+			$formationId=$idFormation;
+			foreach($data["videosCollcetion"] as $video){
+				$videoData=[
+					"Idformation"=>$formationId,
+					"nomVideo"=>$video->name,
+					"duree"=>$video->duree,
+					"url"=>$video->file_id,
+					"desc"=>"décrivez ces vidéos ou ajoutez des ressources !",
+				];
+				$this->videoModel->insertVideo($videoData);
+			}
+			redirect("formateur/index");
+			flash("videoAdded", "Vos vidéos ajoutées avec succès !", "alert alert-info mt-1");
+		}else{
+			$data=[
+				"folders"=>$this->folderModel->getFolderByEmail($_SESSION['user']['email']),
+			];
+			$this->view("formateur/addVideo", $data);
+		}
+	}
 
 	public function deleteVideo()
 	{
