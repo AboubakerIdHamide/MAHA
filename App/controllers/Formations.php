@@ -136,6 +136,10 @@ class Formations extends Controller
 		}
 	}	
 
+	public function addVideo(){
+		$this->view("formateur/addVideo");
+	}
+
 	public function deleteVideo()
 	{
 		if (isset($_POST['id_video'])) {
