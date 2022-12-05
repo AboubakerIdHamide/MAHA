@@ -18,7 +18,7 @@ class Formateur extends Controller
 
 	public function dashboard()
 	{
-		if(isset($_SESSION['id_formation'])) unset($_SESSION['id_formation']);
+		if (isset($_SESSION['id_formation'])) unset($_SESSION['id_formation']);
 		$categories = $this->stockedModel->getAllCategories();
 		$langues = $this->stockedModel->getAllLangues();
 		$levels = $this->stockedModel->getAllLevels();
