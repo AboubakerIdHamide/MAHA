@@ -14,6 +14,7 @@ class Admin extends Controller
         $this->formationModel = $this->model("Formation");
         $this->inscriptionModel = $this->model("Inscription");
         $this->adminModel = $this->model("Administrateur");
+        $this->requestPaymentModel = $this->model("requestPayment");
     }
 
     public function index()
@@ -99,14 +100,37 @@ class Admin extends Controller
         redirect('admin/dashboard');
     }
 
-    public function dashboard()
-    {
-        $this->view('admin/index');
-    }
 
     public function logout()
     {
         session_destroy();
         redirect('admin/login');
+    }
+
+    public function dashboard()
+    {
+        $data = $this->requestPaymentModel->getRequestsPaymentsByState("pending");
+        // get link of image formateur
+        // foreach ($data as $key => $request) {
+        //     $request->img_formateur = $this->pcloudFile()->getLink($request->img_formateur);
+        // }
+        $this->view('admin/index', $data);
+    }
+
+    public function getAllRequestsPayments($filter)
+    {
+        $arrayFilter = array(["pending", "accepted", "declined"]);
+        if (!in_array($filter, $arrayFilter)) {
+            $requestsPayment = $this->requestPaymentModel->getRequestsPaymentsByState($filter);
+            echo json_encode($requestsPayment);
+        }
+    }
+
+    public function setState()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->requestPaymentModel->setState($_POST['etat_request'], $_POST['id_payment']);
+            echo 'request payment changed !!!';
+        }
     }
 }
