@@ -109,11 +109,10 @@ class Admin extends Controller
 
     public function dashboard()
     {
-        $data = $this->requestPaymentModel->getRequestsPaymentsByState("pending");
-        // get link of image formateur
-        // foreach ($data as $key => $request) {
-        //     $request->img_formateur = $this->pcloudFile()->getLink($request->img_formateur);
-        // }
+        $data = [];
+        $data['countFormations'] = $this->formationModel->countFormations();
+        $data['countFormateurs'] = $this->fomateurModel->countFormateurs();
+        $data['countEtudiant'] = $this->etudiantModel->countEtudiant();
         $this->view('admin/index', $data);
     }
 
@@ -122,6 +121,10 @@ class Admin extends Controller
         $arrayFilter = array(["pending", "accepted", "declined"]);
         if (!in_array($filter, $arrayFilter)) {
             $requestsPayment = $this->requestPaymentModel->getRequestsPaymentsByState($filter);
+            // get link of image formateur
+            // foreach ($data as $key => $request) {
+            //     $request->img_formateur = $this->pcloudFile()->getLink($request->img_formateur);
+            // }
             echo json_encode($requestsPayment);
         }
     }
