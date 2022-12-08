@@ -107,15 +107,17 @@ class Formations extends Controller
 			// insert data
 			if($data["error"]==false){
 				$formationId= $this->formationModel->insertFormation($data);
-				foreach($data["videosCollcetion"] as $video){
-					$videoData=[
-						"Idformation"=>$formationId,
-						"nomVideo"=>$video->name,
-						"duree"=>$video->duree,
-						"url"=>$video->file_id,
-						"desc"=>"discribe this video or add a ressources !",
-					];
-					$this->videoModel->insertVideo($videoData);
+				if($formationId){
+					foreach($data["videosCollcetion"] as $video){
+						$videoData=[
+							"Idformation"=>$formationId,
+							"nomVideo"=>$video->name,
+							"duree"=>$video->duree,
+							"url"=>$video->file_id,
+							"desc"=>"discribe this video or add a ressources !",
+						];
+						$this->videoModel->insertVideo($videoData);
+					}
 				}
 				redirect("formateur/index");
 				flash("formationAdded", "Vos détails de cours sont insérés avec succès, vous devez donner une description à vos vidéos", "alert alert-info mt-1");
@@ -174,9 +176,17 @@ class Formations extends Controller
 	public function deleteVideo()
 	{
 		if (isset($_POST['id_video'])) {
-			$this->videoModel->deteleVideo($_SESSION['id_formation'], $_POST['id_video']);
-			flash('deteleVideo', 'La Formation a ete supprimer avec success !!!');
-			echo 'La Formation a ete supprimer avec success !!!';
+			// delete video in pcloud and our dataBase
+			$videoDataToDelete=$this->videoModel->getVideo($_SESSION['id_formation'], $_POST['id_video']);
+			$res=$this->videoModel->deteleVideo($_SESSION['id_formation'], $_POST['id_video']);
+			if($res){
+				$this->pcloudFile()->delete(intval($videoDataToDelete["url_video"]));
+				echo 'Le Video a ete supprimer avec success !!!';
+				flash('deteleVideo', 'Le Video a ete supprimer avec success !!!');
+			}else{
+				echo 'Une erreur ce produit lors de la suppression !!!';
+				flash('deteleVideo', 'Une erreur ce produit lors de la suppression !!!');
+			}
 		}
 	}
 	
@@ -281,9 +291,11 @@ class Formations extends Controller
 				}
 				$this->view('formateur/videos', $data);
 			} else
-				die("This Formation doesn't have any videos !!!");
+				flash("formationVide", "Votre cours ne contient aucune vidéo, ajoutez des vidéos", "alert alert-info");
+				redirect("formations/addVideo/".$id_formation);
 		} else {
-			die('Error 404 !!!');
+			flash("formationNotExists", "Cette formation n`existe pas", "alert alert-info");
+			redirect("formateur/index");
 		}
 	}
 

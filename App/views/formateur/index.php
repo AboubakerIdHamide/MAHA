@@ -5,6 +5,7 @@
 			<?php flash('updateFormation') ?>
 			<?php flash('formationAdded')?>
 			<?php flash('videoAdded')?>
+			<?php flash('formationNotExists')?>
 			<div class="col-6 col-lg">
 				<div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
 					<div>

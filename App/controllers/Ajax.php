@@ -6,6 +6,7 @@ class Ajax extends Controller{
         $this->fomateurModel = $this->model("Formateur");
         $this->etudiantModel = $this->model("Etudiant");
         $this->formationModel = $this->model("Formation");
+        $this->videoModel = $this->model("Video");
         $this->inscriptionModel = $this->model("Inscription");
     }
 
@@ -63,7 +64,13 @@ class Ajax extends Controller{
     {
         if(isset($_POST['id'])){
             foreach ($_POST['id'] as $key => $id_formation) {
+                $videos=$this->videoModel->getVideosOfFormation($id_formation);
                 $this->formationModel->deleteFormation($id_formation);
+                if(!empty($videos)){
+                    foreach($videos as $video){
+                        $this->videoModel->deteleVideo($video->id_formation, $video->id_video);
+                    }
+                }
             }
             echo 'La Formation a ete supprimer avec success !!!';
         }
