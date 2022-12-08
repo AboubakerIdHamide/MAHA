@@ -100,8 +100,6 @@ CREATE TABLE `folders` (
 -- Dumping data for table `folders`
 --
 
-INSERT INTO `folders` (`id`, `userFolderId`, `imagesId`, `videosId`, `ressourcesId`, `userEmail`) VALUES
-(67, '15558183806', '15558183931', '15558184171', '15558184053', 'idhamidea@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -124,12 +122,6 @@ CREATE TABLE `formateurs` (
   `balance` float DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `formateurs`
---
-
-INSERT INTO `formateurs` (`id_formateur`, `nom_formateur`, `prenom_formateur`, `email_formateur`, `tel_formateur`, `date_creation_formateur`, `img_formateur`, `mot_de_passe`, `paypalMail`, `biography`, `specialiteId`, `balance`) VALUES
-(16, 'idhamide', 'aboubaker', 'idhamidea@gmail.com', '0659854779', '2022-12-07 22:42:41', '45818639732', '$2y$10$DwYKyQ1qCCPjEJCTeRHQNOa3TkDIHLzJr2C6PlkdXYlacSl/xUbF.', 'idhamidea@gmail.com', 'Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev', 13, 0);
 
 -- --------------------------------------------------------
 
