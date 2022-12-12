@@ -26,13 +26,18 @@
 			return $response;
 		}
 
-		// public function getCommentaireById($id){
-		// 	$request = $this->connect->prepare("SELECT * FROM commentaires WHERE id_commentaire = :id");
-		// 	$request->bindParam(':id', $id);
-		// 	$request->execute();
-		// 	$commentaire = $request->fetch();
-		// 	return $commentaire;
-		// }
+		public function getCommentaireByVideoId($videoId){
+			$request = $this->connect->prepare("
+			SELECT id_etudiant, id_video, nom_etudiant, prenom_etudiant, img_etudiant, commentaire, created_at 
+			FROM commentaires 
+			JOIN etudiants USING(id_etudiant)
+			WHERE id_video = :videoId"
+			);
+			$request->bindParam(':videoId', $videoId);
+			$request->execute();
+			$commentaire = $request->fetchAll(PDO::FETCH_OBJ);
+			return $commentaire;
+		}
 		
 		public function updateCommentaire($dataCommentaire){
 			$request = $this->connect->prepare("

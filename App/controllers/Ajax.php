@@ -8,6 +8,7 @@ class Ajax extends Controller{
         $this->formationModel = $this->model("Formation");
         $this->videoModel = $this->model("Video");
         $this->inscriptionModel = $this->model("Inscription");
+        $this->commentaireModel = $this->model("Commentaire");
     }
 
     public function checkEmail(){
@@ -73,6 +74,59 @@ class Ajax extends Controller{
                 }
             }
             echo 'La Formation a ete supprimer avec success !!!';
+        }
+    }
+
+    public function likeToformation(){
+        $id_etudiant=$_POST["idEtudiant"];
+        $id_formation=$_POST["idFormation"];
+        $res=$this->formationModel->setLike($id_etudiant, $id_formation);
+        $likes=$this->formationModel->getLikesOfFormation($id_formation)->likes;
+        $data=["success"=>$res, "likes"=>$likes];
+        echo json_encode($data);
+    }
+
+    public function watchVideo()
+    {   
+        $etudiantId=$_POST["idEtudiant"];
+        $videoId=$_POST["idVideo"];
+        $automatic=$_POST["automatic"];
+        $res=false;
+        if(filter_var($automatic, FILTER_VALIDATE_BOOLEAN)){
+            $watched=$this->videoModel->watchedBefore($etudiantId, $videoId);
+            if(!$watched){
+                $res=$this->videoModel->setWatch($etudiantId, $videoId);
+            }
+        }else{
+            $res=$this->videoModel->setWatch($etudiantId, $videoId);
+        }
+        $data=["success"=>$res];
+        echo json_encode($data);
+    }
+
+    public function markVideo()
+    {
+        $etudiantId=$_POST["idEtudiant"];
+        $videoId=$_POST["idVideo"];
+        $res=$this->videoModel->setBookmark($etudiantId, $videoId);
+        $data=["success"=>$res];
+        echo json_encode($data);
+    }
+
+    public function addComment()
+    {
+        $data=[
+            "idEtudiant"=>$_POST["etudiant_id"],
+            "idVideo"=>$_POST["videoId"],
+            "commentaire"=>$_POST["comment"],
+        ];
+        $res=$this->commentaireModel->insertCommentaire($data);
+        if($res){
+            $comments=$this->commentaireModel->getCommentaireByVideoId($data["idVideo"]);
+            foreach($comments as $comment){
+				$comment->img_etudiant=$this->pcloudFile()->getLink($comment->img_etudiant);
+			}
+            echo json_encode(["success"=>$res, "comments"=>$comments]);
         }
     }
     

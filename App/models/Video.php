@@ -81,7 +81,8 @@ class Video
 					description_video,
 					date_creation_formation,
 					nom_formation,
-					mass_horaire
+					mass_horaire,
+					order_video
 				FROM videos
 				JOIN formations USING (id_formation)
 				WHERE id_formation = :id_formation
@@ -136,5 +137,93 @@ class Video
 		$request->bindParam(':id_video', $idVideo);
 		$response = $request->execute();
 		return $response;
+	}
+
+	public function setWatch($etudiant_id, $video_id)
+	{
+		// watch or unwatch
+        $watched=$this->watchedBefore($etudiant_id, $video_id);
+        if($watched){
+            // watch
+            $req=$this->connect->prepare("DELETE FROM watched WHERE id_etudiant=:eId AND id_video=:vId");
+        }else{
+            // unwatch
+            $req=$this->connect->prepare("INSERT INTO watched(id_etudiant, id_video) VALUES (:eId,:vId)");
+        }
+        $req->bindParam(':eId', $etudiant_id);
+        $req->bindParam(':vId', $video_id);
+        $res=$req->execute();
+        return $res;
+	}
+
+	public function watchedBefore($etudiant_id, $video_id)
+	{
+		$req=$this->connect->prepare("SELECT * FROM watched WHERE id_etudiant=:eId AND id_video=:vId");
+        $req->bindParam(':eId', $etudiant_id);
+        $req->bindParam(':vId', $video_id);
+        $req->execute();
+        $res=$req->fetch();
+        if(!empty($res)){
+            return true;
+        }
+        return false;
+	}
+
+	public function getWatchedVideos($etudiant_id)
+	{
+		$request = $this->connect->prepare("SELECT * FROM watched w
+		JOIN videos USING(id_video) 
+		JOIN formations USING (id_formation)
+		WHERE w.id_etudiant=:id_etudiant");
+
+		$request->bindParam(':id_etudiant', $etudiant_id);
+		$request->execute();
+
+		$videos = $request->fetchAll(PDO::FETCH_OBJ);
+		return $videos;
+	}
+
+	public function setBookmark($etudiant_id, $video_id)
+	{
+		// watch or unwatch
+        $bookmarked=$this->bookmarked($etudiant_id, $video_id);
+        if($bookmarked){
+            // watch
+            $req=$this->connect->prepare("DELETE FROM bookmarks WHERE id_etudiant=:eId AND id_video=:vId");
+        }else{
+            // unwatch
+            $req=$this->connect->prepare("INSERT INTO bookmarks(id_etudiant, id_video) VALUES (:eId,:vId)");
+        }
+        $req->bindParam(':eId', $etudiant_id);
+        $req->bindParam(':vId', $video_id);
+        $res=$req->execute();
+        return $res;
+	}
+
+	public function bookmarked($etudiant_id, $video_id)
+	{
+		$req=$this->connect->prepare("SELECT * FROM bookmarks WHERE id_etudiant=:eId AND id_video=:vId");
+        $req->bindParam(':eId', $etudiant_id);
+        $req->bindParam(':vId', $video_id);
+        $req->execute();
+        $res=$req->fetch();
+        if(!empty($res)){
+            return true;
+        }
+        return false;
+	}
+
+	public function getBookmarkedVideos($etudiant_id)
+	{
+		$request = $this->connect->prepare("SELECT * FROM bookmarks b
+		JOIN videos USING(id_video) 
+		JOIN formations USING (id_formation)
+		WHERE b.id_etudiant=:id_etudiant");
+
+		$request->bindParam(':id_etudiant', $etudiant_id);
+		$request->execute();
+
+		$videos = $request->fetchAll(PDO::FETCH_OBJ);
+		return $videos;
 	}
 }

@@ -40,6 +40,7 @@
 
 
 		public function updateEtudiantPasswordByEmail($dataEtudiant){
+			$request = $this->connect->prepare("UPDATE etudiants SET mot_de_passe = :mdp WHERE email_etudiant = :email");
 			$request->bindParam(':email', $dataEtudiant['email']);
 			$request->bindParam(':mdp', $dataEtudiant['mdp']);
 			$response = $request->execute();

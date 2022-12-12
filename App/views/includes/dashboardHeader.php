@@ -1,7 +1,7 @@
 <!-- Header -->
 <header>
     <span id="overlay"></span>
-    <div class="logo" user-name="<?=$_SESSION['user']['prenom']?>">
+    <div class="logo" data-user-name="<?=$_SESSION['user']['prenom']?>">
         <img src="<?= $_SESSION['user']['avatar'] ?>" alt="avatar">
     </div>
     <nav>

@@ -101,7 +101,7 @@ header .logo{
     position: relative;
 }
 header .logo::before{
-    content: attr(user-name);
+    content: attr(data-user-name);
     position: absolute;
     bottom: -30px;
     left:50%;

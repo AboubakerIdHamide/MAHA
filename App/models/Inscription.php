@@ -69,4 +69,37 @@ class Inscription{
 			$response = $request->execute();
 			return $response;
 	}
+
+    public function getInscriptionByEtudiant($idEtudiant)
+    {
+        $request= $this->connect->prepare("
+            SELECT * FROM inscriptions
+            JOIN etudiants e USING(id_etudiant)
+            JOIN formateurs USING(id_formateur)
+            JOIN formations USING(id_formation)
+            WHERE e.id_etudiant=:id_etudiant
+        ");
+        $request->bindParam(":id_etudiant", $idEtudiant);
+        $request->execute();
+        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+
+    public function getInscriptionOfOneFormation($id_formation, $id_etudiant, $id_formateur){
+        $request = $this->connect->prepare("
+            SELECT * FROM inscriptions i
+            JOIN etudiants  USING(id_etudiant)
+            JOIN formateurs USING(id_formateur)
+            JOIN formations USING(id_formation)
+            WHERE i.id_formation = :id_formation 
+            and i.id_etudiant = :id_etudiant 
+            and i.id_formateur = :id_formateur"
+        );
+        $request->bindParam(':id_formation', $id_formation);
+        $request->bindParam(':id_etudiant', $id_etudiant);
+        $request->bindParam(':id_formateur', $id_formateur);
+        $request->execute();
+        $etudiant = $request->fetch(PDO::FETCH_OBJ);
+        return $etudiant;
+    }
 }

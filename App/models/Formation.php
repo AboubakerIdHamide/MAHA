@@ -34,9 +34,9 @@ class Formation
             if($response)
                 return $this->connect->lastInsertId();
             return $response;
-        }
+    }
 
-        public function updateFormation($dataFormation){
+    public function updateFormation($dataFormation){
             $request=$this->connect->prepare("UPDATE formations 
             SET niveau_formation=:niveau_formation, categorie=:categorie, nom_formation=:nom_formation, prix_formation=:prix_formation, description=:description, id_langue=:langue 
             WHERE  id_formation=:id");
@@ -51,9 +51,9 @@ class Formation
 
             $response=$request->execute();
             return $response;
-        }
+    }
 
-        function deleteFormation($id){
+    function deleteFormation($id){
             $request= $this->connect->prepare("
                 SET foreign_key_checks = 0;
                 DELETE FROM formations WHERE id_formation=:id;
@@ -62,10 +62,9 @@ class Formation
             
             $response=$request->execute();
             return $response;
-        }
+    }
 
-
-        function getFormation($id_formation, $id_formateur){
+    function getFormation($id_formation, $id_formateur){
             $request= $this->connect->prepare("SELECT * FROM formations WHERE id_formation=:id_formation AND id_formateur=:id_formateur");
             $request->bindParam(":id_formation", $id_formation);
             $request->bindParam(":id_formateur", $id_formateur);
@@ -79,7 +78,7 @@ class Formation
             $request->execute();
             $response=$request->fetchAll();
             return $response;
-        }
+    }
 
     // fichiers_att AS zipFile
     public function getAllFormationsOfFormateur($id_formateur, $words = '')
@@ -106,8 +105,9 @@ class Formation
             $request->execute();
             $response=$request->fetchAll(PDO::FETCH_OBJ);
             return $response;
-        }
-        public function getPupalaireCourses(){
+    }
+
+    public function getPupalaireCourses(){
             $request= $this->connect->prepare("
                 SELECT formations.id_formation as 'IdFormation',
                         formations.image_formation as 'imgFormation',
@@ -130,8 +130,9 @@ class Formation
             $request->execute();
             $response=$request->fetchAll(PDO::FETCH_OBJ);
             return $response;
-        }
-        public function getFormationsFormateurById($id){
+    }
+
+    public function getFormationsFormateurById($id){
             $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
                                                         formations.image_formation as 'imgFormation',
                                                         formations.mass_horaire as 'duree',
@@ -151,5 +152,45 @@ class Formation
             $request->execute();
             $response=$request->fetchAll(PDO::FETCH_OBJ);
             return $response;
+    }
+
+    public function setLike($etudiant_id, $formation_id)
+    {
+        // like or dislike
+        $liked=$this->likedBefore($etudiant_id, $formation_id);
+        if($liked){
+            // dislike
+            $req=$this->connect->prepare("DELETE FROM likes WHERE etudiant_id=:eId AND formation_id=:fId");
+        }else{
+            // like
+            $req=$this->connect->prepare("INSERT INTO likes(etudiant_id, formation_id) VALUES (:eId,:fId)");
         }
+        $req->bindParam(':eId', $etudiant_id);
+        $req->bindParam(':fId', $formation_id);
+        $res=$req->execute();
+        return $res;
+    }
+
+    public function likedBefore($etudiant_id, $formation_id)
+    {
+        $req=$this->connect->prepare("SELECT * FROM likes WHERE etudiant_id=:eId AND formation_id=:fId");
+        $req->bindParam(':eId', $etudiant_id);
+        $req->bindParam(':fId', $formation_id);
+        $req->execute();
+        $res=$req->fetch();
+        if(!empty($res)){
+            return true;
+        }
+        return false;
+    }
+
+    public function getLikesOfFormation($formationId)
+    {
+        $req=$this->connect->prepare("SELECT likes FROM formations WHERE  id_formation=:formationId");
+        $req->bindParam(':formationId', $formationId);
+        $req->execute();
+        $res=$req->fetch(PDO::FETCH_OBJ);
+        return $res;
+    }
+
 }

@@ -1,4 +1,16 @@
 $(document).ready(function () {
+	// video time
+	if(window.localStorage.getItem("videosTimeData")){
+		let videoTime=JSON.parse(window.localStorage.getItem("videosTimeData"));
+		videoTime.forEach((video)=>{
+			if(video.videoid==videoId){
+				document.getElementById("video").currentTime=video.time;
+			}
+		});
+	}
+
+
+
 	function removeTags(str) {
 	    if ((str===null) || (str===''))
 	        return '';
@@ -16,23 +28,28 @@ $(document).ready(function () {
 
 	$videosList.on('click', function (event) {
 		const $element = $(event.target);
+		let vId=$(this).find(".video-name").attr("data-video-id");
 
 		// bookmark video
 		if($element.hasClass('fa-bookmark')){
-			if($element.hasClass('fa-solid'))
+			if($element.hasClass('fa-solid')){
 				$element.removeClass('fa-solid').addClass('fa-regular');
-			else {
+				markVideo(etudiantId, vId);
+			}else{
 				$element.removeClass('fa-regular').addClass('fa-solid');
+				markVideo(etudiantId, vId);
 			}
 			return;
 		}
 
 		// watched videos
 		if($element.hasClass('fa-circle-check')){
-			if($element.hasClass('fa-solid'))
+			if($element.hasClass('fa-solid')){
 				$element.removeClass('fa-solid').addClass('fa-regular');
-			else {
+				watchVideo(etudiantId, vId);
+			}else{
 				$element.removeClass('fa-regular').addClass('fa-solid');
+				watchVideo(etudiantId, vId);
 			}
 			return;
 		}
@@ -49,15 +66,50 @@ $(document).ready(function () {
 			   .removeClass('fa-circle-play')
 			   .addClass('fa-circle-pause');
 
-		const $videoName = $('.selected .video-name').text();
-		$('.main-video video').attr('src', 'videos/'+$videoName+'.mp4');
-		$('.container .main-video-name').text($videoName);
+		const videoName = $(this).find('.video-name').text();
+		const videoDuration = $(this).find('.video-duration').text();
+		const videoDesc = $(this).find('.video-name').attr("data-video-desc");
+		const videoUrl = $(this).find(".video-duration").attr("data-video-url");
+		const videoComments = JSON.parse($(this).find(".video-duration").attr("data-video-comments"));
+		$('.main-video video').attr('src', videoUrl);
+		$('.container .main-video-name').text(videoName);
+		$('.main-video-duration').text(videoDuration);
+		$('p.desc').text(videoDesc);
+
+		// comments
+		let commentsText="";
+		videoComments.forEach((comment)=>{
+			commentsText+= `
+				<div class="d-flex gap-2 mb-2" data-video-id="${comment.id_video}" data-etudiant-id="${comment.id_etudiant}">
+					  <img class="align-self-start" src="${comment.img_etudiant}" alt="my-photo">
+					  <div class="d-flex flex-column etudiant-comment">
+						  <span class="my-name">${comment.nom_etudiant} ${comment.prenom_etudiant}</span>
+						  <p>${comment.commentaire}</p>
+						  <div class="d-flex justify-content-between">
+							<small>${comment.created_at}</small>
+						  </div>
+					  </div>
+				  </div>
+			`
+			videoId=comment.id_video;
+		});
+		$('.my-comments').html(commentsText);
+
+		// video time
+		if(window.localStorage.getItem("videosTimeData")){
+			let videoTime=JSON.parse(window.localStorage.getItem("videosTimeData"));
+			videoTime.forEach((video)=>{
+				if(video.videoid==videoId){
+					document.getElementById("video").currentTime=video.time;
+				}
+			});
+		}
 	});
 
 	// add comment
 	const $btn = $('.submit-btn');
 	$btn.click(function (event) {
-		let nomTotal = 'BOUDAL AHMED';
+		let nomTotal = etudiantFullName;
 		let $comment = removeTags($('.comment-text').val());
 		let time = new Date();
 
@@ -74,16 +126,16 @@ $(document).ready(function () {
 		}
 
 		const divComment = `
-		<div class="d-flex gap-2 mt-2">
-			<img class="align-self-start" src="./images/default.jpg" alt="my-photo">
-			<div class="d-flex flex-column etudiant-comment">
+		<div class="d-flex gap-2 mt-2 flex-row-reverse">
+			<img class="align-self-start" src="${etudiantImageSrc}" alt="my-photo">
+			<div class="d-flex flex-column formateur-comment">
 				<span class="my-name">${nomTotal}</span>
 				<p>${$comment}</p>
 				<small>${time}</small>
 			</div>
 		</div>
 		`;
-
+		addComment(etudiantId, videoId, $comment);
 		$('.comments-section .my-comments').append(divComment);
 	});
 
@@ -120,13 +172,88 @@ $(document).ready(function () {
 
 	$heartBtn.click(function (e) {
 	    const $heart = $(this);
-	    if($heart.hasClass('fa-regular'))
+	    if($heart.hasClass('fa-regular')){
 	        $heart.removeClass('fa-regular').addClass('fa-solid');
-	    else
+			likeToIt(etudiantId, formationId);
+		}else{
 	        $heart.addClass('fa-regular').removeClass('fa-solid');
+			likeToIt(etudiantId, formationId);
+		}
 	});
+
 });
 
+// video Time Trucking
+const videoTag=document.getElementById("video");
+videoTag.addEventListener("timeupdate", (e)=>{
+	// set as watch if finched
+	if(videoTag.currentTime==videoTag.duration){
+		watchVideo(etudiantId, videoId, true);
+	}
+	// tracking time
+	if(videoTag.currentTime!=0){
+		let trackingData=[],
+			videoTracked=false;
+		if(window.localStorage.getItem("videosTimeData")){
+			trackingData=JSON.parse(window.localStorage.getItem("videosTimeData"));
+		}else{
+			trackingData=[{videoid:videoId, time:videoTag.currentTime}];
+		}
+		trackingData.forEach((video)=>{
+			if(video.videoid==videoId){
+				video.time=videoTag.currentTime;
+				videoTracked=true;
+			}
+		})
+		if(videoTracked==false){
+			trackingData.push({videoid:videoId, time:videoTag.currentTime});
+		}
+		window.localStorage.setItem("videosTimeData", JSON.stringify(trackingData));
+	}
+})
 
-// <i class="fa-regular fa-circle-check"></i>
-// <i class="fa-solid fa-circle-check"></i>
+// ======================================== Ajax Calls =========================================
+function likeToIt(idEtudiant, idFormation){
+	$.post(
+		`${urlRoot}/ajax/likeToformation`,
+		{idEtudiant:idEtudiant, idFormation:idFormation},
+		function(res, status, xhr){
+			res=JSON.parse(res)
+			$(".formation-likes").text(res.likes);
+  		}
+	);
+}
+
+function addComment(idEtudiant, idVideo, commentaire){
+	$.post(
+		`${urlRoot}/ajax/addComment`,
+		{etudiant_id:idEtudiant, videoId:idVideo, comment:commentaire},
+		function(res, status, xhr){
+			res=JSON.parse(res);
+			$(`#video-${videoId}`).attr("data-video-comments", JSON.stringify(res.comments));
+  		}
+	);
+}
+
+function watchVideo(etudiantId, videoId, auto=false) {
+	$.post(
+		`${urlRoot}/ajax/watchVideo`,
+		{idEtudiant:etudiantId, idVideo:videoId, automatic:auto},
+		function(res, status, xhr){
+			res=JSON.parse(res);
+			if(res.success==true && auto==true){
+				document.querySelector(`#watch-${videoId}`).classList.replace("fa-regular", "fa-solid");
+			}
+  		}
+	);
+}
+
+function markVideo(etudiantId, videoId) {
+	$.post(
+		`${urlRoot}/ajax/markVideo`,
+		{idEtudiant:etudiantId, idVideo:videoId},
+		function(res, status, xhr){
+			res=JSON.parse(res);
+  		}
+	);
+}

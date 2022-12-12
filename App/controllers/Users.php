@@ -390,7 +390,9 @@ class Users extends Controller{
         else{
             $_SESSION['user_id'] = $user['id_etudiant'];
             $_SESSION['user'] = $user;
-            // redirect('formateur/dashboard');
+            // setting up the image link
+            $_SESSION['user']['avatar']=$this->pcloudFile()->getLink($_SESSION['user']['avatar']);
+            redirect('etudiant/dashboard');
         }
     }
 
