@@ -19,10 +19,13 @@ class Administrateur
 
     public function getAdminByEmail($email)
     {
-        $request = $this->connect->prepare("SELECT * FROM admin WHERE email_admin = :email");
+        $request = $this->connect->prepare("
+            SELECT * FROM admin 
+            WHERE email_admin = :email
+        ");
         $request->bindParam(':email', $email);
         $request->execute();
-        $admin = $request->fetch();
+        $admin = $request->fetch(PDO::FETCH_OBJ);
         return $admin;
     }
 

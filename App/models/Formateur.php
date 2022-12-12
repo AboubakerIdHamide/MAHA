@@ -21,6 +21,35 @@ class Formateur
 		return $response->total_formateurs;
 	}
 
+	public function getAllFormateur($q = '')
+	{
+		$request = $this->connect->prepare("
+			SELECT  
+				id_formateur,  
+				nom_formateur,  
+				prenom_formateur,  
+				email_formateur,  
+				tel_formateur,  
+				date_creation_formateur, 
+				img_formateur,    
+				paypalMail, 
+				biography,  
+				nom_categorie,  
+				balance,
+				c.id_categorie
+			FROM formateurs f
+			JOIN categories c ON f.specialiteId = c.id_categorie
+			WHERE nom_formateur LIKE CONCAT('%', :q,'%')
+			OR prenom_formateur LIKE CONCAT('%', :q,'%')
+
+		");
+		$q = htmlspecialchars($q);
+		$request->bindParam(':q', $q);
+		$request->execute();
+		$formateurs = $request->fetchAll(PDO::FETCH_OBJ);
+		return $formateurs;
+	}
+
 	public function insertFormateur($dataFormateur)
 	{
 		$request = $this->connect->prepare(
@@ -83,6 +112,41 @@ class Formateur
 
 		$response = $request->execute();
 
+		return $response;
+	}
+
+	public function editFormateur($dataFormateur)
+	{
+		$request = $this->connect->prepare("
+			UPDATE formateurs
+			SET nom_formateur = :nom_formateur,
+				prenom_formateur = :prenom_formateur, 
+				email_formateur = :email_formateur, 
+				tel_formateur = :tel_formateur,
+				paypalMail = :paypalMail,
+				specialiteId = :specialiteId,
+				biography = :biography
+			WHERE id_formateur = :id_formateur
+		");
+
+		$dataFormateur['nom_formateur'] = htmlspecialchars($dataFormateur['nom_formateur']);
+		$dataFormateur['prenom_formateur'] = htmlspecialchars($dataFormateur['prenom_formateur']);
+		$dataFormateur['email_formateur'] = htmlspecialchars($dataFormateur['email_formateur']);
+		$dataFormateur['tel_formateur'] = htmlspecialchars($dataFormateur['tel_formateur']);
+		$dataFormateur['paypalMail'] = htmlspecialchars($dataFormateur['paypalMail']);
+		$dataFormateur['specialiteId'] = htmlspecialchars($dataFormateur['specialiteId']);
+		$dataFormateur['biography'] = htmlspecialchars($dataFormateur['biography']);
+		$dataFormateur['id_formateur'] = htmlspecialchars($dataFormateur['id_formateur']);
+
+		$request->bindParam(':nom_formateur', $dataFormateur['nom_formateur']);
+		$request->bindParam(':prenom_formateur', $dataFormateur['prenom_formateur']);
+		$request->bindParam(':email_formateur', $dataFormateur['email_formateur']);
+		$request->bindParam(':tel_formateur', $dataFormateur['tel_formateur']);
+		$request->bindParam(':paypalMail', $dataFormateur['paypalMail']);
+		$request->bindParam(':specialiteId', $dataFormateur['specialiteId']);
+		$request->bindParam(':biography', $dataFormateur['biography']);
+		$request->bindParam(':id_formateur', $dataFormateur['id_formateur']);
+		$response = $request->execute();
 		return $response;
 	}
 

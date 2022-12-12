@@ -50,13 +50,21 @@ class Formation
             SET niveau_formation=:niveau_formation, categorie=:categorie, nom_formation=:nom_formation, prix_formation=:prix_formation, description=:description, id_langue=:langue 
             WHERE  id_formation=:id");
 
-        $request->bindParam(":niveau_formation", htmlspecialchars($dataFormation["niveauFormation"]));
-        $request->bindParam(":langue", htmlspecialchars($dataFormation["langue"]));
-        $request->bindParam(":categorie", htmlspecialchars($dataFormation["categorie"]));
-        $request->bindParam(":nom_formation", htmlspecialchars($dataFormation["titre"]));
-        $request->bindParam(":prix_formation", htmlspecialchars($dataFormation["prix"]));
-        $request->bindParam(":description", htmlspecialchars($dataFormation["description"]));
-        $request->bindParam(":id", htmlspecialchars($dataFormation["id_formation"]));
+        $dataFormation["niveauFormation"] = htmlspecialchars($dataFormation["niveauFormation"]);
+        $dataFormation["langue"] = htmlspecialchars($dataFormation["langue"]);
+        $dataFormation["categorie"] = htmlspecialchars($dataFormation["categorie"]);
+        $dataFormation["titre"] = htmlspecialchars($dataFormation["titre"]);
+        $dataFormation["prix"] = htmlspecialchars($dataFormation["prix"]);
+        $dataFormation["description"] = htmlspecialchars($dataFormation["description"]);
+        $dataFormation["id_formation"] = htmlspecialchars($dataFormation["id_formation"]);
+
+        $request->bindParam(":niveau_formation", $dataFormation["niveauFormation"]);
+        $request->bindParam(":langue", $dataFormation["langue"]);
+        $request->bindParam(":categorie", $dataFormation["categorie"]);
+        $request->bindParam(":nom_formation", $dataFormation["titre"]);
+        $request->bindParam(":prix_formation", $dataFormation["prix"]);
+        $request->bindParam(":description", $dataFormation["description"]);
+        $request->bindParam(":id", $dataFormation["id_formation"]);
 
         $response = $request->execute();
         return $response;
@@ -87,10 +95,19 @@ class Formation
 
     function getAllFormations()
     {
-        $request = $this->connect->prepare("SELECT * FROM formations");
+        $request = $this->connect->prepare("
+            SELECT 
+                *
+            FROM formations f
+            JOIN langues USING (id_langue)
+            JOIN niveaux n ON f.niveau_formation = n.id_niveau
+            JOIN formateurs USING (id_formateur)
+            JOIN categories c ON f.categorie = c.id_categorie
+            ORDER BY id_formation
+        ");
         $request->execute();
-        $response = $request->fetchAll();
-        return $response;
+        $formations = $request->fetchAll(PDO::FETCH_OBJ);
+        return $formations;
     }
 
     // fichiers_att AS zipFile
@@ -166,5 +183,45 @@ class Formation
         $request->execute();
         $response = $request->fetchAll(PDO::FETCH_OBJ);
         return $response;
+    }
+
+    public function getFormationByNomFormateur($q)
+    {
+        $request = $this->connect->prepare("
+            SELECT 
+            *
+            FROM formations f
+            JOIN langues USING (id_langue)
+            JOIN niveaux n ON f.niveau_formation = n.id_niveau
+            JOIN formateurs USING (id_formateur)
+            JOIN categories c ON f.categorie = c.id_categorie
+            WHERE nom_formateur LIKE CONCAT('%', :q,'%')
+            ORDER BY id_formation
+        ");
+        $q = htmlspecialchars($q);
+        $request->bindParam(":q", $q);
+        $request->execute();
+        $formations = $request->fetchAll(PDO::FETCH_OBJ);
+        return $formations;
+    }
+
+    public function getFormationByNomFormation($q)
+    {
+        $request = $this->connect->prepare("
+            SELECT 
+            *
+            FROM formations f
+            JOIN langues USING (id_langue)
+            JOIN niveaux n ON f.niveau_formation = n.id_niveau
+            JOIN formateurs USING (id_formateur)
+            JOIN categories c ON f.categorie = c.id_categorie
+            WHERE f.nom_formation LIKE CONCAT('%', :q,'%')
+            ORDER BY id_formation
+        ");
+        $q = htmlspecialchars($q);
+        $request->bindParam(":q", $q);
+        $request->execute();
+        $formations = $request->fetchAll(PDO::FETCH_OBJ);
+        return $formations;
     }
 }

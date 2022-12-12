@@ -45,15 +45,6 @@
             <i class="bi bi-eye-slash" id="togglePassword"></i>
           </div>
           <span class="error" id="error-mdp"><?php echo !empty($data["password_err"]) ? $data["password_err"] : ""; ?></span>
-          <div class="checkbox-text">
-            <div class="checkbox-content">
-              <input type="checkbox" id="logCheck" name="rememberMe" <?php echo isset($_COOKIE["useremail"]) ? "checked" : ""; ?> />
-              <label for="logCheck">se souvenir de moi</label>
-            </div>
-
-            <a href="<?= URLROOT ?>/users/forgotPassword" class="text">Mot de passe oublié ?</a>
-          </div>
-
           <div class="input-field button">
             <input type="submit" value="S'identifier" />
           </div>

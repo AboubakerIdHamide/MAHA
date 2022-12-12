@@ -4,17 +4,22 @@ class Admin extends Controller
 {
     public function __construct()
     {
-        // if (!isset($_SESSION['admin_id'])) {
-        //     redirect('admin/login');
-        //     return;
-        // }
-
         $this->fomateurModel = $this->model("Formateur");
         $this->etudiantModel = $this->model("Etudiant");
         $this->formationModel = $this->model("Formation");
         $this->inscriptionModel = $this->model("Inscription");
         $this->adminModel = $this->model("Administrateur");
         $this->requestPaymentModel = $this->model("requestPayment");
+        $this->stockedModel = $this->model("Stocked");
+        $this->videoModel = $this->model("Video");
+    }
+
+    private function checkSession()
+    {
+        if (!$this->isLoggedIn()) {
+            redirect('admin/login');
+            return;
+        }
     }
 
     public function index()
@@ -59,7 +64,7 @@ class Admin extends Controller
             // Shecking If That User Exists
             $admin = $this->adminModel->getAdminByEmail($data["email"]);
             if (!empty($admin)) {
-                if ($data["password"] == $admin["mot_de_passe"]) {
+                if ($data["password"] == $admin->mot_de_passe) {
                     $this->createAdminSession($admin);
                 } else {
                     $data["password_err"] = "Mot de passe incorrect";
@@ -68,7 +73,7 @@ class Admin extends Controller
                 $data["email_err"] = "Aucun utilisateur avec cet email";
             }
             if (empty($admin) || !empty($data["password_err"]) || !empty($data["email_err"])) {
-                $this->view("pages/login", $data);
+                $this->view("pages/loginAdmin", $data);
             }
         } else {
             $data = [
@@ -86,20 +91,20 @@ class Admin extends Controller
         }
     }
 
-    public function isLoggedIn()
+    private function isLoggedIn()
     {
         if (isset($_SESSION['admin_id']))
             return true;
         return false;
     }
 
-    public function createAdminSession($admin)
+    private function createAdminSession($admin)
     {
-        $_SESSION['admin_id'] = $admin['id_admin'];
+        $_SESSION['admin_id'] = $admin->id_admin;
         $_SESSION['admin'] = $admin;
+        $admin->img_admin = $this->pcloudFile()->getLink($admin->img_admin);
         redirect('admin/dashboard');
     }
-
 
     public function logout()
     {
@@ -109,15 +114,20 @@ class Admin extends Controller
 
     public function dashboard()
     {
+        $this->checkSession();
+
         $data = [];
         $data['countFormations'] = $this->formationModel->countFormations();
         $data['countFormateurs'] = $this->fomateurModel->countFormateurs();
         $data['countEtudiant'] = $this->etudiantModel->countEtudiant();
+        $data['balance'] = $this->adminModel->getAdminByEmail($_SESSION['admin']->email_admin)->balance;
         $this->view('admin/index', $data);
     }
 
     public function getAllRequestsPayments($filter)
     {
+        $this->checkSession();
+
         $arrayFilter = array(["pending", "accepted", "declined"]);
         if (!in_array($filter, $arrayFilter)) {
             $requestsPayment = $this->requestPaymentModel->getRequestsPaymentsByState($filter);
@@ -131,9 +141,230 @@ class Admin extends Controller
 
     public function setState()
     {
+        $this->checkSession();
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $this->requestPaymentModel->setState($_POST['etat_request'], $_POST['id_payment']);
             echo 'request payment changed !!!';
         }
+    }
+
+    public function formateurs()
+    {
+        $this->checkSession();
+
+        if (isset($_GET['q'])) {
+            $data['formateurs'] = $this->fomateurModel->getAllFormateur($_GET['q']);
+        } else {
+            $data['formateurs'] = $this->fomateurModel->getAllFormateur();
+        }
+
+        $data['specialite'] = $this->stockedModel->getAllCategories();
+        // get link of image formateur
+        foreach ($data['formateurs'] as $formateur) {
+            $formateur->img_formateur = $this->pcloudFile()->getLink($formateur->img_formateur);
+        }
+        $this->view("admin/formateurs", $data);
+    }
+
+    public function removeFormateur($id_formateur)
+    {
+        $this->checkSession();
+
+        $this->fomateurModel->deteleFormateur($id_formateur);
+        echo "Le Formateur Supprimer Avec Success !!!";
+    }
+
+    public function editFormateur()
+    {
+        $this->checkSession();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // don't forget validate data
+            $data = (array) json_decode($_POST['formateur']);
+            $this->fomateurModel->editFormateur($data);
+            echo "Le Formateur a été Modifier Avec Success !!!";
+        }
+    }
+
+    public function etudiants()
+    {
+        $this->checkSession();
+
+        if (isset($_GET['q'])) {
+            $data = $this->etudiantModel->getAllEtudiant($_GET['q']);
+        } else {
+            $data = $this->etudiantModel->getAllEtudiant();
+        }
+        // get link of image etudiant
+        foreach ($data as $etudiant) {
+            $etudiant->img_etudiant = $this->pcloudFile()->getLink($etudiant->img_etudiant);
+            $etudiant->total_inscription = $this->etudiantModel->countTotalInscriById($etudiant->id_etudiant);
+        }
+        $this->view("admin/etudiants", $data);
+    }
+
+    public function removeEtudiant($id_etudiant)
+    {
+        $this->checkSession();
+
+        $this->etudiantModel->deteleEtudiant($id_etudiant);
+        echo "L'etudiant a été supprimer avec success !!!";
+    }
+
+    public function editEtudiant()
+    {
+        $this->checkSession();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // don't forget validate data
+            $data = (array) json_decode($_POST['etudiant']);
+            $this->etudiantModel->editEtudiant($data);
+            echo "L'etudiant a été modifier avec success !!!";
+        }
+    }
+
+    public function formations()
+    {
+        $this->checkSession();
+
+        if (isset($_GET['critere']) && isset($_GET['q'])) {
+            $criteres = ['nom_formation', 'nom_formateur'];
+            $critere = $_GET['critere'];
+            if (in_array($critere, $criteres)) {
+                $q = $_GET['q'];
+                if ($critere == 'nom_formation') {
+                    $data['formations'] = $this->formationModel->getFormationByNomFormation($q);
+                } else {
+                    $data['formations'] = $this->formationModel->getFormationByNomFormateur($q);
+                }
+            } else {
+                $data['formations'] = $this->formationModel->getAllFormations();
+            }
+        } else {
+            $data['formations'] = $this->formationModel->getAllFormations();
+        }
+        // get link of image formateur
+        foreach ($data['formations'] as $formation) {
+            $formation->img_formateur = $this->pcloudFile()->getLink($formation->img_formateur);
+            $formation->image_formation = $this->pcloudFile()->getLink($formation->image_formation);
+        }
+
+        $data['categories'] = $this->stockedModel->getAllCategories();
+        $data['langues'] = $this->stockedModel->getAllLangues();
+        $data['levels'] = $this->stockedModel->getAllLevels();
+
+        $this->view("admin/formations", $data);
+    }
+
+    public function removeFormation($idFormation)
+    {
+        $this->checkSession();
+
+        $this->formationModel->deleteFormation($idFormation);
+        echo "La Formation Supprimer Avec Success !!!";
+    }
+
+    public function editFormation()
+    {
+        $this->checkSession();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // don't forget validate data
+            $data = (array) json_decode($_POST['formation']);
+            $this->formationModel->updateFormation($data);
+            echo "La Formation Modifier Avec Success !!!";
+        }
+    }
+
+    public function videos($id_formation)
+    {
+        $this->checkSession();
+        // test method post
+        $data = $this->videoModel->getVideosOfFormation($id_formation);
+        if (!empty($data)) {
+            foreach ($data as $video) {
+                $video->url_video = $this->pcloudFile()->getLink($video->url_video);
+            }
+            echo json_encode($data);
+        } else {
+            echo json_encode("This Formation doesn't have any videos !!!");
+        }
+    }
+
+    public function removeVideo($id_video)
+    {
+        $this->checkSession();
+
+        $this->videoModel->deteleVideoId($id_video);
+        echo "La Video Supprimer Avec Success !!!";
+    }
+
+    private function validVideo($data)
+    {
+        // title
+        if (isset($data['titre'])) {
+            $titre = $data['titre'];
+            $countTitre = strlen($titre);
+            if ($countTitre > 0) {
+                if ($countTitre < 5)
+                    return 'Mininum caracteres 5 !!!';
+                else
+					if ($countTitre > 50)
+                    return 'Maxmimun caracteres 50 !!!';
+            } else
+                return 'Veuillez remplir le champ titre !!!';
+        }
+
+        // Description
+        if (isset($data['description'])) {
+            $description = $data['description'];
+            $countDesc = strlen($description);
+
+            if ($countDesc > 0) {
+                if ($countDesc < 6)
+                    return 'Mininum caracteres 6 !!!';
+                else
+						if ($countDesc > 600)
+                    return 'Maxmimun caracteres 600 !!!';
+            } else
+                return 'Veuillez remplir le champ description !!!';
+        }
+
+        return false;
+    }
+
+    public function editVideo()
+    {
+        $this->checkSession();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $error = $this->validVideo($_POST);
+            if ($error === false) {
+                // update Video
+                $data = $_POST;
+                $this->videoModel->updateVideoId($data);
+                echo 'La Modification a ete faites avec success !!!';
+            }
+        }
+    }
+
+    public function getFormationsOfStudent($id_etudiant)
+    {
+        $this->checkSession();
+
+        $data = $this->inscriptionModel->getFormationsOfStudent($id_etudiant);
+        foreach ($data as $inscription) {
+            $inscription->img_formateur = $this->pcloudFile()->getLink($inscription->img_formateur);
+        }
+        echo json_encode($data);
+    }
+
+    public function removeInscription($id_inscription)
+    {
+        $this->checkSession();
+
+        $this->inscriptionModel->deteleInscription($id_inscription);
+        echo "L'inscription a été supprimer avec success !!!";
     }
 }

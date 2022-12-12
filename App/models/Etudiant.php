@@ -15,10 +15,50 @@ class Etudiant
 
 	public function countEtudiant()
 	{
-		$request = $this->connect->prepare("SELECT COUNT(*) AS total_etudiants FROM etudiants");
+		$request = $this->connect->prepare("
+			SELECT COUNT(*) AS total_etudiants 
+			FROM etudiants
+		");
 		$request->execute();
 		$response = $request->fetch(PDO::FETCH_OBJ);
 		return $response->total_etudiants;
+	}
+
+	public function getAllEtudiant($q = '')
+	{
+		$request = $this->connect->prepare("
+			SELECT  
+				id_etudiant,  
+				nom_etudiant,  
+				prenom_etudiant,  
+				email_etudiant,  
+				tel_etudiant,  
+				date_creation_etudiant, 
+				img_etudiant
+			FROM etudiants
+			WHERE nom_etudiant LIKE CONCAT('%', :q,'%')
+			OR prenom_etudiant LIKE CONCAT('%', :q,'%')
+		");
+		$q = htmlspecialchars($q);
+		$request->bindParam(':q', $q);
+		$request->execute();
+		$etudiants = $request->fetchAll(PDO::FETCH_OBJ);
+		return $etudiants;
+	}
+
+	public function countTotalInscriById($id_etudiant)
+	{
+		$request = $this->connect->prepare("
+			SELECT 
+				COUNT(*) AS total_inscription
+			FROM inscriptions
+			WHERE id_etudiant = :id_etudiant
+		");
+
+		$request->bindParam(':id_etudiant', $id_etudiant);
+		$request->execute();
+		$response = $request->fetch(PDO::FETCH_OBJ);
+		return $response->total_inscription;
 	}
 
 	public function insertEtudiant($dataEtudiant)
@@ -87,9 +127,36 @@ class Etudiant
 	public function deteleEtudiant($id)
 	{
 		$request = $this->connect->prepare("
-								DELETE FROM etudiants
-								WHERE id_etudiant = :id");
+			DELETE FROM etudiants
+			WHERE id_etudiant = :id
+		");
 		$request->bindParam(':id', $id);
+		$response = $request->execute();
+		return $response;
+	}
+
+	public function editEtudiant($dataEtudiant)
+	{
+		$request = $this->connect->prepare("
+			UPDATE etudiants
+			SET nom_etudiant = :nom_etudiant,
+				prenom_etudiant = :prenom_etudiant, 
+				email_etudiant = :email_etudiant, 
+				tel_etudiant = :tel_etudiant
+			WHERE id_etudiant = :id_etudiant
+		");
+
+		$dataEtudiant['nom_etudiant'] = htmlspecialchars($dataEtudiant['nom_etudiant']);
+		$dataEtudiant['prenom_etudiant'] = htmlspecialchars($dataEtudiant['prenom_etudiant']);
+		$dataEtudiant['email_etudiant'] = htmlspecialchars($dataEtudiant['email_etudiant']);
+		$dataEtudiant['tel_etudiant'] = htmlspecialchars($dataEtudiant['tel_etudiant']);
+		$dataEtudiant['id_etudiant'] = htmlspecialchars($dataEtudiant['id_etudiant']);
+
+		$request->bindParam(':nom_etudiant', $dataEtudiant['nom_etudiant']);
+		$request->bindParam(':prenom_etudiant', $dataEtudiant['prenom_etudiant']);
+		$request->bindParam(':email_etudiant', $dataEtudiant['email_etudiant']);
+		$request->bindParam(':tel_etudiant', $dataEtudiant['tel_etudiant']);
+		$request->bindParam(':id_etudiant', $dataEtudiant['id_etudiant']);
 		$response = $request->execute();
 		return $response;
 	}

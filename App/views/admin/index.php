@@ -5,7 +5,7 @@
             <div class="col-6 col-lg">
                 <div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
                     <div>
-                        <span class="d-block fs-2 nombre">$ <?= $_SESSION['admin']['balance'] ?></span>
+                        <span class="d-block fs-2 nombre">$ <?= $data['balance'] ?></span>
                         <small class="text-muted">Balance</small>
                     </div>
                     <i class="fa-solid fa-dollar-sign fs-1"></i>
@@ -57,4 +57,10 @@
         <hr />
         <section id="requests"></section>
     </main>
-    <?php require_once APPROOT . "/views/includes/footerAdmin.php"; ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script src="<?php echo URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
+    <script src="<?php echo URLROOT; ?>/public/js/dashBoardNav.js"></script>
+    <script src="<?php echo URLROOT; ?>/public/js/adminDashboard.js"></script>
+    </body>
+
+    </html>

@@ -23,8 +23,8 @@
     <!-- Header -->
     <header>
         <span id="overlay"></span>
-        <div class="logo" user-name="<?= $_SESSION['admin']['prenom_admin'] ?>">
-            <img src="<?= $_SESSION['admin']['img_admin'] ?>" alt="avatar">
+        <div class="logo" user-name="<?= $_SESSION['admin']->prenom_admin ?>">
+            <img src="<?= $_SESSION['admin']->img_admin ?>" alt="avatar">
         </div>
         <nav>
             <div class="menu-i">
@@ -35,10 +35,10 @@
 
             <ul class="hide-menu">
                 <li id="addnews"><a href="<?= URLROOT . '/admin/dashboard' ?>"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a></li>
-                <li><a href="#"><i class="fa-solid fa-chalkboard-user"></i><span>Formateurs</span></a></li>
-                <li><a href="#"><i class="fa-solid fa-person-chalkboard"></i><span>Formations</span></a></li>
-                <li><a href="#"><i class="fa-solid fa-graduation-cap"></i><span>Etudiants</span></a></li>
-                <li><a href="#"><i class="fas fa-user-gear"></i><span>Paramètre</span></a></li>
+                <li><a href="<?= URLROOT . '/admin/formateurs' ?>"><i class="fa-solid fa-chalkboard-user"></i><span>Formateurs</span></a></li>
+                <li><a href="<?= URLROOT . '/admin/formations' ?>"><i class="fa-solid fa-person-chalkboard"></i><span>Formations</span></a></li>
+                <li><a href="<?= URLROOT . '/admin/etudiants' ?>"><i class="fa-solid fa-graduation-cap"></i><span>Etudiants</span></a></li>
+                <li><a href="<?= URLROOT . '/admin/compte' ?>"><i class="fas fa-user-gear"></i><span>Paramètre</span></a></li>
                 <li id="disconnect"><a href="<?= URLROOT . '/admin/logout' ?>"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
             </ul>
         </nav>

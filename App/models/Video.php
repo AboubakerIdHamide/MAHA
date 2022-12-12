@@ -72,20 +72,23 @@ class Video
 	public function getVideosOfFormation($idFormation)
 	{
 		$request = $this->connect->prepare("
-				SELECT 
-					id_video,
-					id_formation,
-					nom_video,
-					url_video,
-					duree_video,
-					description_video,
-					date_creation_formation,
-					nom_formation,
-					mass_horaire
-				FROM videos
-				JOIN formations USING (id_formation)
-				WHERE id_formation = :id_formation
-				ORDER BY order_video");
+			SELECT 
+				v.id_video,
+				f.id_formation,
+				nom_video,
+				url_video,
+				duree_video,
+				description_video,
+				date_creation_formation,
+				nom_formation,
+				mass_horaire,
+				p.id_formation AS preview
+			FROM videos v
+			LEFT JOIN previews p ON v.id_video = p.id_video
+			JOIN formations f ON v.id_formation = f.id_formation
+			WHERE f.id_formation = 1
+			ORDER BY order_video
+		");
 
 		$request->bindParam(':id_formation', $idFormation);
 		$request->execute();
@@ -134,6 +137,49 @@ class Video
 								WHERE id_formation = :id_formation AND id_video = :id_video");
 		$request->bindParam(':id_formation', $idFormation);
 		$request->bindParam(':id_video', $idVideo);
+		$response = $request->execute();
+		return $response;
+	}
+	public function deteleVideoId($idVideo)
+	{
+		$request = $this->connect->prepare("
+			DELETE FROM videos
+			WHERE id_video = :id_video
+		");
+		$idVideo = htmlspecialchars($idVideo);
+		$request->bindParam(':id_video', $idVideo);
+		$response = $request->execute();
+		return $response;
+	}
+
+	public function updateVideoId($dataVideo)
+	{
+		if (isset($dataVideo['description']) && isset($dataVideo['titre'])) {
+			$request = $this->connect->prepare("
+				UPDATE videos
+				SET 
+					description_video = :description,
+					nom_video = :titre
+				WHERE id_video = :id_video");
+			$request->bindParam(':description', $dataVideo['description']);
+			$request->bindParam(':titre', $dataVideo['titre']);
+		} else {
+			if (isset($dataVideo['description'])) {
+				$request = $this->connect->prepare("
+					UPDATE videos
+					SET description_video = :description
+					WHERE id_video = :id_video");
+				$request->bindParam(':description', $dataVideo['description']);
+			} else {
+				$request = $this->connect->prepare("
+					UPDATE videos
+					SET nom_video = :titre
+					WHERE id_video = :id_video");
+				$request->bindParam(':titre', $dataVideo['titre']);
+			}
+		}
+
+		$request->bindParam(':id_video', $dataVideo['id_video']);
 		$response = $request->execute();
 		return $response;
 	}

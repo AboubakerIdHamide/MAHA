@@ -52,4 +52,43 @@ class requestPayment
         $response = $request->execute();
         return $response;
     }
+
+    public function insertRequestPayment($id_formateur, $request_prix)
+    {
+        $request = $this->connect->prepare("
+            INSERT INTO request_payment(id_formateur, request_prix)	
+			VALUES (:id_formateur, :request_prix)
+        ");
+
+        $request->bindParam(':id_formateur', $id_formateur);
+        $request->bindParam(':request_prix', $request_prix);
+        $response = $request->execute();
+        return $response;
+    }
+
+    public function getRequestsOfFormateur($id_formateur)
+    {
+        $request = $this->connect->prepare("
+            SELECT 
+                *
+            FROM request_payment
+            WHERE id_formateur = :id_formateur
+        ");
+        $request->bindParam(':id_formateur', $id_formateur);
+        $request->execute();
+        $requestPayments = $request->fetchAll(PDO::FETCH_OBJ);
+        return $requestPayments;
+    }
+
+    public function deleteRequest($id_req)
+    {
+        $request = $this->connect->prepare("
+            DELETE FROM request_payment 
+            WHERE id_payment = :id_req
+        ");
+
+        $request->bindParam(":id_req", $id_req);
+        $response = $request->execute();
+        return $response;
+    }
 }
