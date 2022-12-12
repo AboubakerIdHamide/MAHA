@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 08, 2022 at 04:59 PM
+-- Generation Time: Dec 12, 2022 at 10:04 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -20,6 +20,18 @@ SET time_zone = "+00:00";
 --
 -- Database: `maha`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bookmarks`
+--
+
+CREATE TABLE `bookmarks` (
+  `id_etudiant` int(11) DEFAULT NULL,
+  `id_video` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 -- --------------------------------------------------------
 
@@ -61,8 +73,11 @@ INSERT INTO `categories` (`id_categorie`, `nom_categorie`) VALUES
 CREATE TABLE `commentaires` (
   `id_etudiant` int(11) NOT NULL,
   `id_video` int(11) NOT NULL,
-  `commentaire` text NOT NULL
+  `commentaire` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
 
 -- --------------------------------------------------------
 
@@ -81,7 +96,7 @@ CREATE TABLE `etudiants` (
   `mot_de_passe` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
+
 
 --
 -- Table structure for table `folders`
@@ -96,12 +111,7 @@ CREATE TABLE `folders` (
   `userEmail` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `folders`
---
 
-INSERT INTO `folders` (`id`, `userFolderId`, `imagesId`, `videosId`, `ressourcesId`, `userEmail`) VALUES
-(67, '15558183806', '15558183931', '15558184171', '15558184053', 'idhamidea@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -124,13 +134,6 @@ CREATE TABLE `formateurs` (
   `balance` float DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `formateurs`
---
-
-INSERT INTO `formateurs` (`id_formateur`, `nom_formateur`, `prenom_formateur`, `email_formateur`, `tel_formateur`, `date_creation_formateur`, `img_formateur`, `mot_de_passe`, `paypalMail`, `biography`, `specialiteId`, `balance`) VALUES
-(16, 'idhamide', 'aboubaker', 'idhamidea@gmail.com', '0659854779', '2022-12-07 22:42:41', '45818639732', '$2y$10$DwYKyQ1qCCPjEJCTeRHQNOa3TkDIHLzJr2C6PlkdXYlacSl/xUbF.', 'idhamidea@gmail.com', 'Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev Web Dev', 13, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -152,6 +155,8 @@ CREATE TABLE `formations` (
   `likes` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+
 -- --------------------------------------------------------
 
 --
@@ -164,6 +169,7 @@ CREATE TABLE `inscriptions` (
   `id_formateur` int(11) NOT NULL,
   `date_inscription` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 -- --------------------------------------------------------
 
@@ -185,6 +191,38 @@ INSERT INTO `langues` (`id_langue`, `nom_langue`) VALUES
 (2, 'Anglais'),
 (3, 'Espagnol'),
 (4, 'العربية');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `likes`
+--
+
+CREATE TABLE `likes` (
+  `etudiant_id` int(11) DEFAULT NULL,
+  `formation_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+--
+-- Triggers `likes`
+--
+DELIMITER $$
+CREATE TRIGGER `calcLikeDelete` AFTER DELETE ON `likes` FOR EACH ROW BEGIN
+	DECLARE likesCount int DEFAULT 0;
+    SET likesCount=(SELECT count(*) FROM likes WHERE formation_id=OLD.formation_id);
+	UPDATE formations SET likes=likesCount WHERE id_formation=OLD.formation_id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `calcLikeInsert` AFTER INSERT ON `likes` FOR EACH ROW BEGIN
+	DECLARE likesCount int DEFAULT 0;
+    SET likesCount=(SELECT count(*) FROM likes WHERE formation_id=NEW.formation_id);
+	UPDATE formations f SET likes=likesCount WHERE id_formation=NEW.formation_id;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -219,7 +257,8 @@ CREATE TABLE `videos` (
   `url_video` varchar(200) NOT NULL,
   `duree_video` time NOT NULL,
   `description_video` text NOT NULL,
-  `order_video` int(11) DEFAULT NULL
+  `order_video` int(11) DEFAULT NULL,
+  `watched` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -252,6 +291,18 @@ CREATE TRIGGER `calcDureeOnUpdate` AFTER UPDATE ON `videos` FOR EACH ROW BEGIN
 END
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `watched`
+--
+
+CREATE TABLE `watched` (
+  `id_etudiant` int(11) DEFAULT NULL,
+  `id_video` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 --
 -- Indexes for dumped tables
@@ -314,6 +365,13 @@ ALTER TABLE `langues`
   ADD PRIMARY KEY (`id_langue`);
 
 --
+-- Indexes for table `likes`
+--
+ALTER TABLE `likes`
+  ADD KEY `fkLikes1` (`etudiant_id`),
+  ADD KEY `fkLikes2` (`formation_id`);
+
+--
 -- Indexes for table `niveaux`
 --
 ALTER TABLE `niveaux`
@@ -334,31 +392,31 @@ ALTER TABLE `videos`
 -- AUTO_INCREMENT for table `etudiants`
 --
 ALTER TABLE `etudiants`
-  MODIFY `id_etudiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_etudiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `folders`
 --
 ALTER TABLE `folders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `formateurs`
 --
 ALTER TABLE `formateurs`
-  MODIFY `id_formateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_formateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `formations`
 --
 ALTER TABLE `formations`
-  MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `videos`
 --
 ALTER TABLE `videos`
-  MODIFY `id_video` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id_video` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- Constraints for dumped tables
@@ -393,6 +451,13 @@ ALTER TABLE `inscriptions`
   ADD CONSTRAINT `inscriptions_ibfk_1` FOREIGN KEY (`id_formation`) REFERENCES `formations` (`id_formation`),
   ADD CONSTRAINT `inscriptions_ibfk_2` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiants` (`id_etudiant`),
   ADD CONSTRAINT `inscriptions_ibfk_3` FOREIGN KEY (`id_formateur`) REFERENCES `formateurs` (`id_formateur`);
+
+--
+-- Constraints for table `likes`
+--
+ALTER TABLE `likes`
+  ADD CONSTRAINT `fkLikes1` FOREIGN KEY (`etudiant_id`) REFERENCES `etudiants` (`id_etudiant`),
+  ADD CONSTRAINT `fkLikes2` FOREIGN KEY (`formation_id`) REFERENCES `formations` (`id_formation`);
 
 --
 -- Constraints for table `videos`
