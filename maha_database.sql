@@ -134,6 +134,10 @@ CREATE TABLE `formateurs` (
   `balance` float DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> fbe7cd387ebccbdec03f3c052b7ea04df3e97d44
 -- --------------------------------------------------------
 
 --

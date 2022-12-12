@@ -13,11 +13,12 @@ class Formations extends Controller
 		$this->videoModel = $this->model("Video");
 		$this->stockedModel = $this->model("Stocked");
 		$this->folderModel = $this->model("Folder");
+		$this->previewsModel = $this->model("Previews");
 	}
 
 	public function index()
 	{
-		redirect('formateur/dashboard');
+		redirect('formateurs/dashboard');
 	}
 
 	private function validFormation($data)
@@ -26,7 +27,7 @@ class Formations extends Controller
 		if (empty($this->formationModel->getFormation($id_formation, $_SESSION['user_id']))) {
 			return 'This Course is not yours !!!';
 		}
-		
+
 		// title
 		$titre = $data['titre'];
 		$countTitre = strlen($titre);
@@ -78,31 +79,32 @@ class Formations extends Controller
 
 		return false;
 	}
-		
-	public function addFormation(){
-		if($_SERVER['REQUEST_METHOD'] == 'POST'){
-			$data=[
-				"id_formateur"		=>$_SESSION['user_id'],
-				"nom_formation"		=>$_POST["nom"],
-				"prix_formation"	=>$_POST["prix"],
-				"niveau_formation"	=>$_POST["niveau"],
-				"categorie"			=>$_POST["categorie"],
-				"img_formation"		=>$_FILES["image"],
-				"description"		=>$_POST["description"],
-				"videosCollcetion"	=>json_decode($_POST["JsonVideos"]),
-				"masse_horaire"		=>0,
-				"error"				=>''
+
+	public function addFormation()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$data = [
+				"id_formateur"		=> $_SESSION['user_id'],
+				"nom_formation"		=> $_POST["nom"],
+				"prix_formation"	=> $_POST["prix"],
+				"niveau_formation"	=> $_POST["niveau"],
+				"categorie"			=> $_POST["categorie"],
+				"img_formation"		=> $_FILES["image"],
+				"description"		=> $_POST["description"],
+				"videosCollcetion"	=> json_decode($_POST["JsonVideos"]),
+				"masse_horaire"		=> 0,
+				"error"				=> ''
 			];
 			// some data for view
-			$data["folders"]=$this->folderModel->getFolderByEmail($_SESSION['user']['email']);
-			$data["allcategories"]=$this->stockedModel->getAllCategories($_SESSION['user']['email']);
-			$data["levels"]=$this->stockedModel->getAllLevels();
+			$data["folders"] = $this->folderModel->getFolderByEmail($_SESSION['user']['email']);
+			$data["allcategories"] = $this->stockedModel->getAllCategories($_SESSION['user']['email']);
+			$data["levels"] = $this->stockedModel->getAllLevels();
 
 			// validate data
-			$data['error']=$this->validateInsertedData($data);
+			$data['error'] = $this->validateInsertedData($data);
 
 			// upload formation Image
-			$data=$this->uploadImage($data);
+			$data = $this->uploadImage($data);
 
 			// insert data
 			if($data["error"]==false){
@@ -119,55 +121,56 @@ class Formations extends Controller
 						$this->videoModel->insertVideo($videoData);
 					}
 				}
-				redirect("formateur/index");
+				redirect("formateurs/index");
 				flash("formationAdded", "Vos détails de cours sont insérés avec succès, vous devez donner une description à vos vidéos", "alert alert-info mt-1");
-			}else{
+			} else {
 				$this->view("formation/addFormation", $data);
 			}
-		}else{
-			$data=[
-				"nom_formation"		=>"",
-				"prix_formation"	=>"",
-				"description"		=>"",
-				"error"				=>""
+		} else {
+			$data = [
+				"nom_formation"		=> "",
+				"prix_formation"	=> "",
+				"description"		=> "",
+				"error"				=> ""
 			];
-			$data["folders"]=$this->folderModel->getFolderByEmail($_SESSION['user']['email']);
-			$data["allcategories"]=$this->stockedModel->getAllCategories($_SESSION['user']['email']);
-			$data["levels"]=$this->stockedModel->getAllLevels();
+			$data["folders"] = $this->folderModel->getFolderByEmail($_SESSION['user']['email']);
+			$data["allcategories"] = $this->stockedModel->getAllCategories($_SESSION['user']['email']);
+			$data["levels"] = $this->stockedModel->getAllLevels();
 			$this->view("formation/addFormation", $data);
 		}
-	}	
+	}
 
-	public function addVideo($idFormation=''){
+	public function addVideo($idFormation = '')
+	{
 		// check the Id if exists
-		$formationData=$this->formationModel->getFormation($idFormation, $_SESSION['user_id']);
-		if(empty($idFormation) || empty($formationData)){
-			redirect("formateur/index");
+		$formationData = $this->formationModel->getFormation($idFormation, $_SESSION['user_id']);
+		if (empty($idFormation) || empty($formationData)) {
+			redirect("formateurs/index");
 		}
 
 		// handling request
-		if($_SERVER['REQUEST_METHOD'] == 'POST'){
-			$data=[
-				"videosCollcetion"	=>json_decode($_POST["JsonVideos"]),
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$data = [
+				"videosCollcetion"	=> json_decode($_POST["JsonVideos"]),
 			];
 
 			// insert data
-			$formationId=$idFormation;
-			foreach($data["videosCollcetion"] as $video){
-				$videoData=[
-					"Idformation"=>$formationId,
-					"nomVideo"=>$video->name,
-					"duree"=>$video->duree,
-					"url"=>$video->file_id,
-					"desc"=>"décrivez ces vidéos ou ajoutez des ressources !",
+			$formationId = $idFormation;
+			foreach ($data["videosCollcetion"] as $video) {
+				$videoData = [
+					"Idformation" => $formationId,
+					"nomVideo" => $video->name,
+					"duree" => $video->duree,
+					"url" => $video->file_id,
+					"desc" => "décrivez ces vidéos ou ajoutez des ressources !",
 				];
 				$this->videoModel->insertVideo($videoData);
 			}
-			redirect("formateur/index");
+			redirect("formateurs/index");
 			flash("videoAdded", "Vos vidéos ajoutées avec succès !", "alert alert-info mt-1");
-		}else{
-			$data=[
-				"folders"=>$this->folderModel->getFolderByEmail($_SESSION['user']['email']),
+		} else {
+			$data = [
+				"folders" => $this->folderModel->getFolderByEmail($_SESSION['user']['email']),
 			];
 			$this->view("formateur/addVideo", $data);
 		}
@@ -189,60 +192,58 @@ class Formations extends Controller
 			}
 		}
 	}
-	
-	public function isLoggedIn(){
-		if(isset($_SESSION['user_id']))
+
+	public function isLoggedIn()
+	{
+		if (isset($_SESSION['user_id']))
 			return true;
 		return false;
-  	}
-	
+	}
+
 	public function validateInsertedData($data)
 	{
 		// title
 		$titre = $data['nom_formation'];
 		$countTitre = strlen($titre);
 
-		if($countTitre > 0){
-			if($countTitre < 5)
+		if ($countTitre > 0) {
+			if ($countTitre < 5)
 				return 'Mininum caracteres 5 !!!';
 			else
-				if($countTitre > 50)
-					return 'Maxmimun caracteres 50 !!!';
-		}
-		else
+				if ($countTitre > 50)
+				return 'Maxmimun caracteres 50 !!!';
+		} else
 			return 'Veuillez remplir le champ titre !!!';
 
 		// description
 		$description = $data['description'];
 		$countDesc = strlen($description);
 
-		if($countDesc > 0){
-			if($countDesc < 60)
+		if ($countDesc > 0) {
+			if ($countDesc < 60)
 				return 'Mininum caracteres 60 !!!';
 			else
-				if($countDesc > 700)
-					return 'Maxmimun caracteres 700 !!!';
-		}
-		else
+				if ($countDesc > 700)
+				return 'Maxmimun caracteres 700 !!!';
+		} else
 			return 'Veuillez remplir le champ description !!!';
 
 		// prix
 		$prix = $data['prix_formation'];
-		if(strlen($prix) > 0){
-			if(!filter_var($prix, FILTER_VALIDATE_INT))
+		if (strlen($prix) > 0) {
+			if (!filter_var($prix, FILTER_VALIDATE_INT))
 				return 'incorrect number !!!';
-		}
-		else
+		} else
 			return 'Veuillez remplir le champ prix !!!';
 
 		//categorie
 		$categorie = $data['categorie'];
-		if(empty($this->stockedModel->getCategorieById($categorie)))
+		if (empty($this->stockedModel->getCategorieById($categorie)))
 			return "this categorie doesn't exist in the DB !!!";
 
 		// level
 		$niveauFormation = $data['niveau_formation'];
-		if(empty($this->stockedModel->getLevelById($niveauFormation)))
+		if (empty($this->stockedModel->getLevelById($niveauFormation)))
 			return "this level doesn't exist in the DB !!!";
 
 		return false;
@@ -257,13 +258,13 @@ class Formations extends Controller
 				// update formation
 				$this->formationModel->updateFormation($_POST);
 				flash('updateFormation', 'La Modification a ete faites avec success !!!');
-				redirect('formateur/dashboard');
+				redirect('formateurs/dashboard');
 			}
 			flash('updateFormation', $error);
-			redirect('formateur/dashboard');
+			redirect('formateurs/dashboard');
 		}
 	}
-	
+
 	private function formatDate($dateTime)
 	{
 		$date = explode('-', date('d-F-Y', strtotime($dateTime)));
@@ -295,7 +296,7 @@ class Formations extends Controller
 				redirect("formations/addVideo/".$id_formation);
 		} else {
 			flash("formationNotExists", "Cette formation n`existe pas", "alert alert-info");
-			redirect("formateur/index");
+			redirect("formateurs/index");
 		}
 	}
 
@@ -350,53 +351,68 @@ class Formations extends Controller
 	}
 
 	private  function uploadImage($data)
-   	{
-        $file = $data["img_formation"]; // Image Array
-        $fileName = $file["name"]; // name
-        $fileTmpName = $file["tmp_name"]; // location
-        $fileError = $file["error"]; // error
+	{
+		$file = $data["img_formation"]; // Image Array
+		$fileName = $file["name"]; // name
+		$fileTmpName = $file["tmp_name"]; // location
+		$fileError = $file["error"]; // error
 
-        if(!empty($fileTmpName)){
-            $fileExt = explode(".", $fileName);
-            $fileRealExt = strtolower(end($fileExt));
-            $allowed = array("jpg", "jpeg", "png");
-    
-    
-            if (in_array($fileRealExt, $allowed)) {
-                if ($fileError === 0 && $data["error"]==false) {
-                    $fileNameNew = substr(number_format(time() * rand(), 0, '', ''), 0, 5).".". $fileRealExt;
-                    $fileDestination = 'images\\userImage\\' . $fileNameNew;
-                    move_uploaded_file($fileTmpName, $fileDestination);
-                    $data["img_formation"]=$fileDestination;
+		if (!empty($fileTmpName)) {
+			$fileExt = explode(".", $fileName);
+			$fileRealExt = strtolower(end($fileExt));
+			$allowed = array("jpg", "jpeg", "png");
+
+
+			if (in_array($fileRealExt, $allowed)) {
+				if ($fileError === 0 && $data["error"] == false) {
+					$fileNameNew = substr(number_format(time() * rand(), 0, '', ''), 0, 5) . "." . $fileRealExt;
+					$fileDestination = 'images\\userImage\\' . $fileNameNew;
+					move_uploaded_file($fileTmpName, $fileDestination);
+					$data["img_formation"] = $fileDestination;
 
 					// upload it to pCloud
-                    $imagesFolderId=$data["folders"]["imagesId"];
-                    $metaData=$this->pcloudFile()->upload($fileDestination, $imagesFolderId);
-                    unlink($fileDestination);
-                    $data["img_formation"]=$metaData->metadata->fileid;
+					$imagesFolderId = $data["folders"]["imagesId"];
+					$metaData = $this->pcloudFile()->upload($fileDestination, $imagesFolderId);
+					unlink($fileDestination);
+					$data["img_formation"] = $metaData->metadata->fileid;
+				} else {
+					$data["error"] = "Une erreur s'est produite lors du téléchargement de votre image ";
+				}
+			} else {
+				$data["error"] = "Vous ne pouvez pas télécharger ce fichier uniquement (jpg | jpeg | png | ico) autorisé";
+			}
+		} else {
+			$data["img_formation"] = 45389586920;
+		}
 
-                } else {
-                    $data["error"]="Une erreur s'est produite lors du téléchargement de votre image ";
-                }
-            } else {
-                $data["error"]="Vous ne pouvez pas télécharger ce fichier uniquement (jpg | jpeg | png | ico) autorisé";
-            }
-        }else{
-            $data["img_formation"]=45389586920;
-        }
+		return $data;
+	}
 
-        return $data;
-    }
+	public function setOrdreVideos()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			if (isset($_POST['videosWithOrder'])) {
+				// Don't Forget Validation Back-end Order
+				$this->videoModel->setOrderVideos(json_decode($_POST['videosWithOrder']));
+				flash("orderApplied", "L'order a ete appliquer avec succes !!!");
+				echo "DONE !!!";
+			}
+		}
+	}
 
-    public function setOrdreVideos()
-    {
-    	if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    		if(isset($_POST['videosWithOrder'])){
-    			// Don't Forget Validation Back-end Order
-    			$this->videoModel->setOrderVideos(json_decode($_POST['videosWithOrder']));
-    			flash("orderApplied", "L'order a ete appliquer avec succes !!!");
-    			echo "DONE !!!";
-    		}
-    	}
-    }
+	public function updatePreviewVideo($id_video)
+	{
+		$this->previewsModel->updatePreview($id_video, $_SESSION['id_formation']);
+		echo 'Updated Well !!!';
+	}
+
+	public function insertPreviewVideo($id_video)
+	{
+		if (empty($this->previewsModel->getPreviewByFormation($_SESSION['id_formation']))) {
+			$this->previewsModel->insertPreviewVideo($id_video, $_SESSION['id_formation']);
+			echo 'Inserted WELL !!!';
+		} else {
+			$this->updatePreviewVideo($id_video);
+		}
+	}
 }

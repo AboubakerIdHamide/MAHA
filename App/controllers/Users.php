@@ -5,17 +5,18 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 // PHP Mailler Classes Autolader
-require APPROOT.'/mailing/vendor/autoload.php';
+require APPROOT . '/mailing/vendor/autoload.php';
 
-class Users extends Controller{
+class Users extends Controller
+{
     public function __construct()
     {
-        $this->fomateurModel=$this->model("Formateur");
-        $this->etudiantModel=$this->model("Etudiant");
-        $this->stockedModel=$this->model("Stocked");
-        $this->folderModel=$this->model("Folder");
+        $this->fomateurModel = $this->model("Formateur");
+        $this->etudiantModel = $this->model("Etudiant");
+        $this->stockedModel = $this->model("Stocked");
+        $this->folderModel = $this->model("Folder");
     }
-    
+
     public function index()
     {
         $this->login();
@@ -23,198 +24,198 @@ class Users extends Controller{
 
     public function login()
     {
-        if($this->isLoggedIn()){
-            redirect('formateur/dashboard');
+        if ($this->isLoggedIn()) {
+            redirect('formateurs/dashboard');
             exit;
         }
 
         // Checking If The User Submit
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            if(isset($_POST["rememberMe"]) && $_POST["rememberMe"]=="on"){
-                setcookie("useremail", $_POST["email"], time()+2592000);
-                setcookie("userpw", $_POST["password"], time()+2592000);
-            }else{
-                setcookie("useremail", $_POST["email"], time()+10);
-                setcookie("userpw", $_POST["password"], time()+10);
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (isset($_POST["rememberMe"]) && $_POST["rememberMe"] == "on") {
+                setcookie("useremail", $_POST["email"], time() + 2592000);
+                setcookie("userpw", $_POST["password"], time() + 2592000);
+            } else {
+                setcookie("useremail", $_POST["email"], time() + 10);
+                setcookie("userpw", $_POST["password"], time() + 10);
             }
-        
-            $data = [       
-            'email' => trim($_POST['email']),
-            'password' => $_POST['password'], 
-            'email_err' => '',
-            'password_err' => '',
+
+            $data = [
+                'email' => trim($_POST['email']),
+                'password' => $_POST['password'],
+                'email_err' => '',
+                'password_err' => '',
             ];
 
             // Validate Data
-            if(filter_var($data["email"] , FILTER_VALIDATE_EMAIL)){
-                if(!preg_match_all("/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/", $data["email"])){
-                    $data["email_err"]="L'e-mail inséré est invalide";
+            if (filter_var($data["email"], FILTER_VALIDATE_EMAIL)) {
+                if (!preg_match_all("/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/", $data["email"])) {
+                    $data["email_err"] = "L'e-mail inséré est invalide";
                 }
-            }else{
-                $data["email_err"]="L'e-mail inséré est invalide";
+            } else {
+                $data["email_err"] = "L'e-mail inséré est invalide";
             }
 
 
             // Shecking If That User Exists
-            $user=$this->etudiantModel->getEtudiantByEmail($data["email"]);
-            if(empty($user)){
-                $user=$this->fomateurModel->getFormateurByEmail($data["email"]);
-                if(!empty($user)){
-                    if(password_verify($data["password"], $user["mot_de_passe"])){
-                        $user["type"]="formateur";
+            $user = $this->etudiantModel->getEtudiantByEmail($data["email"]);
+            if (empty($user)) {
+                $user = $this->fomateurModel->getFormateurByEmail($data["email"]);
+                if (!empty($user)) {
+                    if (password_verify($data["password"], $user["mot_de_passe"])) {
+                        $user["type"] = "formateur";
                         $this->createUserSessios($user);
-                    }else{
-                        $data["password_err"]="Mot de passe incorrect";
+                    } else {
+                        $data["password_err"] = "Mot de passe incorrect";
                     }
-                }else{
-                    $data["email_err"]="Aucun utilisateur avec cet email";
+                } else {
+                    $data["email_err"] = "Aucun utilisateur avec cet email";
                 }
-            }else{
-                if(password_verify($data["password"], $user["mot_de_passe"])){
-                    $user["type"]="etudiant";
+            } else {
+                if (password_verify($data["password"], $user["mot_de_passe"])) {
+                    $user["type"] = "etudiant";
                     $this->createUserSessios($user);
-                }else{
-                    $data["password_err"]="Mot de passe incorrect";
+                } else {
+                    $data["password_err"] = "Mot de passe incorrect";
                 }
             }
-            if(empty($user) || !empty($data["password_err"]) || !empty($data["email_err"])){
-                $this->view("pages/login",$data);
+            if (empty($user) || !empty($data["password_err"]) || !empty($data["email_err"])) {
+                $this->view("pages/login", $data);
             }
-        }else{
-            $data = [       
+        } else {
+            $data = [
                 'email' => "",
-                'password' => "",        
+                'password' => "",
                 'email_err' => "",
-                'password_err' => "",       
+                'password_err' => "",
             ];
-            if(isset($_COOKIE["useremail"]) && isset($_COOKIE["userpw"])){
-                $data["email"]=$_COOKIE["useremail"];
-                $data["password"]=$_COOKIE["userpw"];
+            if (isset($_COOKIE["useremail"]) && isset($_COOKIE["userpw"])) {
+                $data["email"] = $_COOKIE["useremail"];
+                $data["password"] = $_COOKIE["userpw"];
             }
 
-            $this->view("pages/login",$data);
+            $this->view("pages/login", $data);
         }
     }
 
     public function register()
     {
         // all categories
-        $categories=$this->stockedModel->getAllCategories();
+        $categories = $this->stockedModel->getAllCategories();
 
         // Checking If The User Submit
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Prepare Data
-            $data=[
-                "nom"=>trim($_POST["nom"]),
-                "prenom"=>trim($_POST["prenom"]),
-                "email"=>trim($_POST["email"]),
-                "img"=>$_FILES["photo"],
-                "tel"=>trim($_POST["tele"]),
-                "mdp"=>$_POST["mdp"],
-                "vmdp"=>$_POST["vmdp"],
-                "type"=>$_POST["type"],
-                "pmail"=>trim($_POST["pmail"]),
-                "specId"=>trim($_POST["specialite"]),
-                "bio"=>trim($_POST["biography"]),
-                "nom_err"=>"",
-                "prenom_err"=>"",
-                "email_err"=>"",
-                "img_err"=>"",
-                "tel_err"=>"",
-                "mdp_err"=>"",
-                "vmdp_err"=>"",
-                "pmail_err"=>"",
-                "specId_err"=>"",
-                "bio_err"=>"",
-                "thereIsError"=>false,
+            $data = [
+                "nom" => trim($_POST["nom"]),
+                "prenom" => trim($_POST["prenom"]),
+                "email" => trim($_POST["email"]),
+                "img" => $_FILES["photo"],
+                "tel" => trim($_POST["tele"]),
+                "mdp" => $_POST["mdp"],
+                "vmdp" => $_POST["vmdp"],
+                "type" => $_POST["type"],
+                "pmail" => trim($_POST["pmail"]),
+                "specId" => trim($_POST["specialite"]),
+                "bio" => trim($_POST["biography"]),
+                "nom_err" => "",
+                "prenom_err" => "",
+                "email_err" => "",
+                "img_err" => "",
+                "tel_err" => "",
+                "mdp_err" => "",
+                "vmdp_err" => "",
+                "pmail_err" => "",
+                "specId_err" => "",
+                "bio_err" => "",
+                "thereIsError" => false,
             ];
 
             // Upload The Image In Our Server
-            $data=$this->uploadImage($data);
+            $data = $this->uploadImage($data);
 
             // Validate Data
-            $data=$this->validateData($data);
+            $data = $this->validateData($data);
 
             // Checking If There Is An Error
-            if($data["thereIsError"]==true){
-                $this->view("pages/register",[$data, $categories]);
-            }else{
+            if ($data["thereIsError"] == true) {
+                $this->view("pages/register", [$data, $categories]);
+            } else {
                 // Hashing Password
-                $data["mdp"]=password_hash($data["mdp"], PASSWORD_DEFAULT);
+                $data["mdp"] = password_hash($data["mdp"], PASSWORD_DEFAULT);
 
                 // Generating Verification Email Code
-                if(isset($_SESSION["vcode"])){
+                if (isset($_SESSION["vcode"])) {
                     $verification_code = $_SESSION["vcode"];
-                }else{
+                } else {
                     $verification_code = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
-                    $_SESSION["vcode"]=$verification_code;
-                    $_SESSION["resend"]=true;
+                    $_SESSION["vcode"] = $verification_code;
+                    $_SESSION["resend"] = true;
                 }
 
                 // To Email Verification
-                $_SESSION["user_data"]=$data;
+                $_SESSION["user_data"] = $data;
                 redirect("users/verifyEmail");
             }
-        }else{
-            $data=[
-                "nom"=>"",
-                "prenom"=>"",
-                "email"=>"",
-                "img"=>"",
-                "tel"=>"",
-                "mdp"=>"",
-                "vmdp"=>"",
-                "type"=>"",
-                "pmail"=>"",
-                "specId"=>"",
-                "bio"=>"",
-                "nom_err"=>"",
-                "prenom_err"=>"",
-                "email_err"=>"",
-                "img_err"=>"",
-                "tel_err"=>"",
-                "mdp_err"=>"",
-                "vmdp_err"=>"",
-                "pmail_err"=>"",
-                "specId_err"=>"",
-                "bio_err"=>"",
+        } else {
+            $data = [
+                "nom" => "",
+                "prenom" => "",
+                "email" => "",
+                "img" => "",
+                "tel" => "",
+                "mdp" => "",
+                "vmdp" => "",
+                "type" => "",
+                "pmail" => "",
+                "specId" => "",
+                "bio" => "",
+                "nom_err" => "",
+                "prenom_err" => "",
+                "email_err" => "",
+                "img_err" => "",
+                "tel_err" => "",
+                "mdp_err" => "",
+                "vmdp_err" => "",
+                "pmail_err" => "",
+                "specId_err" => "",
+                "bio_err" => "",
             ];
-            $this->view("pages/register",[$data, $categories]);
+            $this->view("pages/register", [$data, $categories]);
         }
     }
 
     public  function verifyEmail()
     {
         // redirect if there isn't a verification code
-        if(!isset($_SESSION["vcode"])){
+        if (!isset($_SESSION["vcode"])) {
             redirect("pages/index");
         }
 
         // preparing data
-        $data=[$_SESSION["user_data"], ["code"=>"", "code_err"=>""]];
+        $data = [$_SESSION["user_data"], ["code" => "", "code_err" => ""]];
 
         // checking Post Data
-        if(isset($_POST["code"])){
+        if (isset($_POST["code"])) {
             // if the code valide insert user
-            if($_POST["code"]==$_SESSION["vcode"]){
+            if ($_POST["code"] == $_SESSION["vcode"]) {
                 // Create User Folders
-                $userFolderName=$data[0]["type"]."_".$data[0]["email"];
+                $userFolderName = $data[0]["type"] . "_" . $data[0]["email"];
                 $this->createUserFolders($userFolderName, $data[0]["email"]);
 
                 // Upload The Image
-                if($data[0]["img"]!=45393256813){
-                    $imagesFolderId=$this->folderModel->getFolderByEmail($data[0]["email"]);
-                    $imagesFolderId=$imagesFolderId["imagesId"];
-                    $imagePath=$data[0]["img"];
-                    $metaData=$this->pcloudFile()->upload($imagePath, $imagesFolderId);
+                if ($data[0]["img"] != 45393256813) {
+                    $imagesFolderId = $this->folderModel->getFolderByEmail($data[0]["email"]);
+                    $imagesFolderId = $imagesFolderId["imagesId"];
+                    $imagePath = $data[0]["img"];
+                    $metaData = $this->pcloudFile()->upload($imagePath, $imagesFolderId);
                     unlink($imagePath);
-                    $data[0]["img"]=$metaData->metadata->fileid;
+                    $data[0]["img"] = $metaData->metadata->fileid;
                 }
 
                 // Insert The User 
-                if($data[0]["type"]=="formateur"){
+                if ($data[0]["type"] == "formateur") {
                     $this->fomateurModel->insertFormateur($data[0]);
-                }else{
+                } else {
                     $this->etudiantModel->insertEtudiant($data[0]);
                 }
                 unset($_SESSION["vcode"]);
@@ -222,91 +223,90 @@ class Users extends Controller{
                 unset($_SESSION["user_data"]);
                 flash("signupMsg", "Félicitations, votre compte a été créé avec succès.", "alert alert-primary");
                 redirect("users/login");
-            }else{
-                $data[1]["code"]=$_POST["code"];
-                $data[1]["code_err"]="Code invalide";
+            } else {
+                $data[1]["code"] = $_POST["code"];
+                $data[1]["code_err"] = "Code invalide";
                 $this->view("pages/emailVerification", $data);
             }
 
 
-            if(isset($_POST["resend"]) && $_POST["resend"]==true){
-                $_SESSION["resend"]=true;
+            if (isset($_POST["resend"]) && $_POST["resend"] == true) {
+                $_SESSION["resend"] = true;
             }
-        }else{
+        } else {
             $this->view("pages/emailVerification", $data);
         }
 
         // send Email
-        if(isset($_SESSION["vcode"])==true && $_SESSION["resend"]==true){
-            $this->sendEmailVerificationCode($data[0]["email"], $data[0]["prenom"], $_SESSION["vcode"], URLROOT."/pages/verifyEmail");
-            $_SESSION["resend"]=false;
+        if (isset($_SESSION["vcode"]) == true && $_SESSION["resend"] == true) {
+            $this->sendEmailVerificationCode($data[0]["email"], $data[0]["prenom"], $_SESSION["vcode"], URLROOT . "/pages/verifyEmail");
+            $_SESSION["resend"] = false;
         }
     }
 
     public function forgotPassword()
     {
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            $data=[
-                "email"=>trim($_POST["email"]),
-                "mdp"=>$_POST["mdp"],
-                "vmdp"=>$_POST["vmdp"],
-                "email_err"=>"",
-                "mdp_err"=>"",
-                "vmdp_err"=>""
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                "email" => trim($_POST["email"]),
+                "mdp" => $_POST["mdp"],
+                "vmdp" => $_POST["vmdp"],
+                "email_err" => "",
+                "mdp_err" => "",
+                "vmdp_err" => ""
             ];
 
             // Validate Email
-            if(filter_var($data["email"] , FILTER_VALIDATE_EMAIL)){
-                if(!preg_match_all("/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/", $data["email"])){
-                    $data["email_err"]="L'e-mail inséré est invalide";
+            if (filter_var($data["email"], FILTER_VALIDATE_EMAIL)) {
+                if (!preg_match_all("/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/", $data["email"])) {
+                    $data["email_err"] = "L'e-mail inséré est invalide";
                 }
-            }else{
-                $data["email_err"]="L'e-mail inséré est invalide";
+            } else {
+                $data["email_err"] = "L'e-mail inséré est invalide";
             }
             // Validate Password
-            if(empty($data["mdp"])){
-                $data["mdp_err"]="Le mot de passe doit comporter au moins 10 caractères";
+            if (empty($data["mdp"])) {
+                $data["mdp_err"] = "Le mot de passe doit comporter au moins 10 caractères";
             }
-            if(strlen($data["mdp"])>50){
-                $data["mdp_err"]="Le mot de passe doit comporter au maximum 50 caractères";
+            if (strlen($data["mdp"]) > 50) {
+                $data["mdp_err"] = "Le mot de passe doit comporter au maximum 50 caractères";
             }
-            if($data["mdp"]!=$data["vmdp"]){
-                $data["vmdp"]="Les deux mots de passe doivent être identiques";
+            if ($data["mdp"] != $data["vmdp"]) {
+                $data["vmdp"] = "Les deux mots de passe doivent être identiques";
             }
 
             // Shecking If That User Exists
-            $user=$this->etudiantModel->getEtudiantByEmail($data["email"]);
-            if(empty($user)){
-                $user=$this->fomateurModel->getFormateurByEmail($data["email"]);
-                if(!empty($user)){
-                    if(empty($data["mdp_err"]) && empty($data["vmdp_err"])){
-                        $_SESSION["changePasswordData"]=$data;
-                        $_SESSION["type"]="formateur";
+            $user = $this->etudiantModel->getEtudiantByEmail($data["email"]);
+            if (empty($user)) {
+                $user = $this->fomateurModel->getFormateurByEmail($data["email"]);
+                if (!empty($user)) {
+                    if (empty($data["mdp_err"]) && empty($data["vmdp_err"])) {
+                        $_SESSION["changePasswordData"] = $data;
+                        $_SESSION["type"] = "formateur";
                         redirect("users/changePassword");
                     }
-                }else{
-                    $data["email_err"]="Aucun utilisateur avec cet email";
+                } else {
+                    $data["email_err"] = "Aucun utilisateur avec cet email";
                 }
-            }else{
-                if(empty($data["mdp_err"]) && empty($data["vmdp_err"])){
-                    $_SESSION["changePasswordData"]=$data;
-                    $_SESSION["type"]="etudiant";
+            } else {
+                if (empty($data["mdp_err"]) && empty($data["vmdp_err"])) {
+                    $_SESSION["changePasswordData"] = $data;
+                    $_SESSION["type"] = "etudiant";
                     redirect("users/changePassword");
                 }
             }
-            
-            if(empty($user) || !empty($data["mdp_err"]) || !empty($data["email_err"]) || !empty($data["vmdp_err"])){
-                $this->view("pages/forgotpassword",$data);
-            }
 
-        }else{
-            $data=[
-                "email"=>"",
-                "mdp"=>"",
-                "vmdp"=>"",
-                "email_err"=>"",
-                "mdp_err"=>"",
-                "vmdp_err"=>""
+            if (empty($user) || !empty($data["mdp_err"]) || !empty($data["email_err"]) || !empty($data["vmdp_err"])) {
+                $this->view("pages/forgotpassword", $data);
+            }
+        } else {
+            $data = [
+                "email" => "",
+                "mdp" => "",
+                "vmdp" => "",
+                "email_err" => "",
+                "mdp_err" => "",
+                "vmdp_err" => ""
             ];
             $this->view("pages/forgotpassword", $data);
         }
@@ -315,33 +315,33 @@ class Users extends Controller{
     public function changePassword()
     {
         // redirect if there isn't a data
-        if(!isset($_SESSION["changePasswordData"])){
+        if (!isset($_SESSION["changePasswordData"])) {
             redirect("pages/index");
         }
 
         // prepare data
-        $data=[$_SESSION["changePasswordData"], ["code"=>"", "code_err"=>""]];
+        $data = [$_SESSION["changePasswordData"], ["code" => "", "code_err" => ""]];
 
         // Generating Verification Email Code
-        if(isset($_SESSION["vcode"])){
+        if (isset($_SESSION["vcode"])) {
             $verification_code = $_SESSION["vcode"];
-        }else{
+        } else {
             $verification_code = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
-            $_SESSION["vcode"]=$verification_code;
-            $_SESSION["resend"]=true;
+            $_SESSION["vcode"] = $verification_code;
+            $_SESSION["resend"] = true;
         }
 
         // checking for post data
-        if(isset($_POST["code"])){
+        if (isset($_POST["code"])) {
             // if the code valide update password
-            if($_POST["code"]==$_SESSION["vcode"]){
+            if ($_POST["code"] == $_SESSION["vcode"]) {
                 // hach the new password
-                $data[0]["mdp"]=password_hash($data[0]["mdp"], PASSWORD_DEFAULT);
+                $data[0]["mdp"] = password_hash($data[0]["mdp"], PASSWORD_DEFAULT);
 
                 // Upadte The Password
-                if($_SESSION["type"]=="formateur"){
+                if ($_SESSION["type"] == "formateur") {
                     $this->fomateurModel->updateFormateurPasswordByEmail($data[0]);
-                }else{
+                } else {
                     $this->etudiantModel->updateEtudiantPasswordByEmail($data[0]);
                 }
 
@@ -350,44 +350,45 @@ class Users extends Controller{
                 unset($_SESSION["changePasswordData"]);
                 flash("changePassMsg", "votre mot de passe changer avec succès.", "alert alert-primary");
                 redirect("users/login");
-            }else{
-                $data[1]["code"]=$_POST["code"];
-                $data[1]["code_err"]="Code invalide";
+            } else {
+                $data[1]["code"] = $_POST["code"];
+                $data[1]["code_err"] = "Code invalide";
                 $this->view("pages/emailVerification", $data);
             }
 
 
-            if(isset($_POST["resend"]) && $_POST["resend"]==true){
-                $_SESSION["resend"]=true;
+            if (isset($_POST["resend"]) && $_POST["resend"] == true) {
+                $_SESSION["resend"] = true;
             }
-        }else{
+        } else {
             $this->view("pages/emailVerification", $data);
         }
 
         // send Email
-        if(isset($_SESSION["vcode"])==true && $_SESSION["resend"]==true){
-            $this->sendEmailVerificationCode($data[0]["email"], "", $_SESSION["vcode"], URLROOT."/pages/changePassword");
-            $_SESSION["resend"]=false;
+        if (isset($_SESSION["vcode"]) == true && $_SESSION["resend"] == true) {
+            $this->sendEmailVerificationCode($data[0]["email"], "", $_SESSION["vcode"], URLROOT . "/pages/changePassword");
+            $_SESSION["resend"] = false;
         }
     }
 
-    public function isLoggedIn(){
-        if(isset($_SESSION['user_id'])){
-          return true;
+    public function isLoggedIn()
+    {
+        if (isset($_SESSION['user_id'])) {
+            return true;
         } else {
-          return false;
+            return false;
         }
     }
 
-    public function createUserSessios($user){
-        if($user['type'] == 'formateur'){
+    public function createUserSessios($user)
+    {
+        if ($user['type'] == 'formateur') {
             $_SESSION['user_id'] = $user['id_formateur'];
             $_SESSION['user'] = $user;
             // setting up the image link
             $_SESSION['user']['avatar']=$this->pcloudFile()->getLink($_SESSION['user']['avatar']);
-            redirect('formateur/dashboard');
-        }
-        else{
+            redirect('formateurs/dashboard');
+        } else {
             $_SESSION['user_id'] = $user['id_etudiant'];
             $_SESSION['user'] = $user;
             // setting up the image link
@@ -396,13 +397,13 @@ class Users extends Controller{
         }
     }
 
-    private function sendEmailVerificationCode($to, $name,$code, $link)
+    private function sendEmailVerificationCode($to, $name, $code, $link)
     {
         //Instantiation and passing `true` enables exceptions
         $mail = new PHPMailer(true);
         try {
             //Enable verbose debug output
-            $mail->SMTPDebug = 0;//SMTP::DEBUG_SERVER;
+            $mail->SMTPDebug = 0; //SMTP::DEBUG_SERVER;
 
             //Send using SMTP
             $mail->isSMTP();
@@ -434,9 +435,9 @@ class Users extends Controller{
             //Set email format to HTML
             $mail->isHTML(true);
             $mail->Subject = 'Email verification';
-            $mail->Body    = '<p>Salut '.$name.'</p>
+            $mail->Body    = '<p>Salut ' . $name . '</p>
             <p>Votre code de vérification est : <b style="font-size: 30px;color:#06283D;">' . $code . '</b><br/>
-            Entrez ce code <a href="'.$link.'" style="color:#47B5FF;">ici</a> pour vérifier votre identité .</p>
+            Entrez ce code <a href="' . $link . '" style="color:#47B5FF;">ici</a> pour vérifier votre identité .</p>
             <p>Par l\'equipe de <span style="font-size:18px;color:#47B5FF;">M<span style="color:#06283D;">A</span>H<span style="color:#06283D;">A</span></span> .</p>';
 
             // send it
@@ -447,17 +448,18 @@ class Users extends Controller{
         }
     }
 
-    private function createUserFolders($userFolderName, $email){
+    private function createUserFolders($userFolderName, $email)
+    {
         // Create User Folders
-        try{
-            $globalFolderId= 15171390512;
-            $userFolderId =$this->pcloudFolder()->create($userFolderName, $globalFolderId);
+        try {
+            $globalFolderId = 15171390512;
+            $userFolderId = $this->pcloudFolder()->create($userFolderName, $globalFolderId);
             $imagesFolderId = $this->pcloudFolder()->create("Images", $userFolderId);
             $ressourcesFolderId = $this->pcloudFolder()->create("Ressources", $userFolderId);
-            $videosFolderId =$this->pcloudFolder()->create("Videos", $userFolderId);
-            $res=$this->folderModel->insertFolder($userFolderId, $imagesFolderId, $videosFolderId, $ressourcesFolderId, $email);
+            $videosFolderId = $this->pcloudFolder()->create("Videos", $userFolderId);
+            $res = $this->folderModel->insertFolder($userFolderId, $imagesFolderId, $videosFolderId, $ressourcesFolderId, $email);
             return $res;
-        }catch(Error $e){
+        } catch (Error $e) {
             echo $e;
             die;
         }
@@ -469,121 +471,121 @@ class Users extends Controller{
         redirect('users/login');
     }
 
-    private function validateData($data){
+    private function validateData($data)
+    {
         // Validate Nom & Prenom
-        if(strlen($data["nom"])<3){
-            $data["thereIsError"]=true;
-            $data["nom_err"]="Le nom doit comporter au moins 3 caractères";
+        if (strlen($data["nom"]) < 3) {
+            $data["thereIsError"] = true;
+            $data["nom_err"] = "Le nom doit comporter au moins 3 caractères";
         }
-        if(strlen($data["prenom"])<3){
-            $data["thereIsError"]=true;
-            $data["prenom_err"]="Le prenom doit comporter au moins 3 caractères";
+        if (strlen($data["prenom"]) < 3) {
+            $data["thereIsError"] = true;
+            $data["prenom_err"] = "Le prenom doit comporter au moins 3 caractères";
         }
-        if(strlen($data["nom"])>30){
-            $data["thereIsError"]=true;
-            $data["nom_err"]="Le nom doit comporter au maximum 30 caractères";
+        if (strlen($data["nom"]) > 30) {
+            $data["thereIsError"] = true;
+            $data["nom_err"] = "Le nom doit comporter au maximum 30 caractères";
         }
-        if(strlen($data["prenom"])>30){
-            $data["thereIsError"]=true;
-            $data["prenom_err"]="Le prenom doit comporter au maximum 30 caractères";
+        if (strlen($data["prenom"]) > 30) {
+            $data["thereIsError"] = true;
+            $data["prenom_err"] = "Le prenom doit comporter au maximum 30 caractères";
         }
 
         // Validate Email
-        if(filter_var($data["email"] , FILTER_VALIDATE_EMAIL)){
-            if(!preg_match_all("/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/", $data["email"])){
-                $data["thereIsError"]=true;
-                $data["email_err"]="L'e-mail inséré est invalide";
+        if (filter_var($data["email"], FILTER_VALIDATE_EMAIL)) {
+            if (!preg_match_all("/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/", $data["email"])) {
+                $data["thereIsError"] = true;
+                $data["email_err"] = "L'e-mail inséré est invalide";
             }
-        }else{
-            $data["thereIsError"]=true;
-            $data["email_err"]="L'e-mail inséré est invalide";
+        } else {
+            $data["thereIsError"] = true;
+            $data["email_err"] = "L'e-mail inséré est invalide";
         }
-        if(!empty($this->etudiantModel->getEtudiantByEmail($data["email"]))){
-            $data["thereIsError"]=true;
-            $data["email_err"]="Adresse e-Mail déjà utilisée";
+        if (!empty($this->etudiantModel->getEtudiantByEmail($data["email"]))) {
+            $data["thereIsError"] = true;
+            $data["email_err"] = "Adresse e-Mail déjà utilisée";
         }
-        if(!empty($this->fomateurModel->getFormateurByEmail($data["email"]))){
-            $data["thereIsError"]=true;
-            $data["email_err"]="Adresse e-Mail déjà utilisée";
+        if (!empty($this->fomateurModel->getFormateurByEmail($data["email"]))) {
+            $data["thereIsError"] = true;
+            $data["email_err"] = "Adresse e-Mail déjà utilisée";
         }
-        
+
 
 
         // Validate Tele
-        if(!preg_match_all("/^((06|07)\d{8})+$/", $data["tel"])){
-            $data["thereIsError"]=true;
-            $data["tel_err"]="Le numéro de telephone que vous saisi est invalide";
+        if (!preg_match_all("/^((06|07)\d{8})+$/", $data["tel"])) {
+            $data["thereIsError"] = true;
+            $data["tel_err"] = "Le numéro de telephone que vous saisi est invalide";
         }
 
         // Validate Password
-        if(preg_match_all("/[!@#$%^&*()\-__+.]/", $data["mdp"])){
-            if(preg_match_all("/\d/", $data["mdp"])){
-                if(!preg_match_all("/[a-zA-Z]/", $data["mdp"])){
-                    $data["thereIsError"]=true;
-                    $data["mdp_err"]="Le mot de passe doit contenir au moins 1 lettre";
+        if (preg_match_all("/[!@#$%^&*()\-__+.]/", $data["mdp"])) {
+            if (preg_match_all("/\d/", $data["mdp"])) {
+                if (!preg_match_all("/[a-zA-Z]/", $data["mdp"])) {
+                    $data["thereIsError"] = true;
+                    $data["mdp_err"] = "Le mot de passe doit contenir au moins 1 lettre";
                 }
-            }else{
-                $data["thereIsError"]=true;
-                $data["mdp_err"]="Le mot de passe doit contenir au moins 1 chiffres";
+            } else {
+                $data["thereIsError"] = true;
+                $data["mdp_err"] = "Le mot de passe doit contenir au moins 1 chiffres";
             }
-        }else{
-            $data["thereIsError"]=true;
-            $data["mdp_err"]="Le mot de passe doit contient spécial character";
+        } else {
+            $data["thereIsError"] = true;
+            $data["mdp_err"] = "Le mot de passe doit contient spécial character";
         }
-        if(strlen($data["mdp"])>50){
-            $data["thereIsError"]=true;
-            $data["mdp_err"]="Le mot de passe doit comporter au maximum 50 caractères";
+        if (strlen($data["mdp"]) > 50) {
+            $data["thereIsError"] = true;
+            $data["mdp_err"] = "Le mot de passe doit comporter au maximum 50 caractères";
         }
-        if(strlen($data["mdp"])<10){
-            $data["thereIsError"]=true;
-            $data["mdp_err"]="Le mot de passe doit comporter au moins 10 caractères";
+        if (strlen($data["mdp"]) < 10) {
+            $data["thereIsError"] = true;
+            $data["mdp_err"] = "Le mot de passe doit comporter au moins 10 caractères";
         }
-        if($data["mdp"]!=$data["vmdp"]){
-            $data["thereIsError"]=true;
-            $data["mdp_err"]="Les deux mots de passe doivent être identiques";
+        if ($data["mdp"] != $data["vmdp"]) {
+            $data["thereIsError"] = true;
+            $data["mdp_err"] = "Les deux mots de passe doivent être identiques";
         }
 
 
         // Validate Type
-        if($data["type"]!="formateur" && $data["type"]!="etudiant"){
-            $data["thereIsError"]=true;
-            $data["img_err"]="Type Invalide";
+        if ($data["type"] != "formateur" && $data["type"] != "etudiant") {
+            $data["thereIsError"] = true;
+            $data["img_err"] = "Type Invalide";
         }
 
         // Validate Other Info If UserType Is Formateur
-        if($data["type"]=="formateur"){
+        if ($data["type"] == "formateur") {
             // Validate  Paypal Email
-            if(filter_var($data["pmail"] , FILTER_VALIDATE_EMAIL)){
-                if(!preg_match_all("/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/", $data["pmail"])){
-                    $data["thereIsError"]=true;
-                    $data["pmail_err"]="L'e-mail inséré est invalide";
+            if (filter_var($data["pmail"], FILTER_VALIDATE_EMAIL)) {
+                if (!preg_match_all("/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/", $data["pmail"])) {
+                    $data["thereIsError"] = true;
+                    $data["pmail_err"] = "L'e-mail inséré est invalide";
                 }
-            }else{
-                $data["thereIsError"]=true;
-                $data["pmail_err"]="L'e-mail inséré est invalide";
+            } else {
+                $data["thereIsError"] = true;
+                $data["pmail_err"] = "L'e-mail inséré est invalide";
             }
-            if(!empty($this->fomateurModel->getFormateurByPaypalEmail($data["pmail"]))){
-                $data["thereIsError"]=true;
-                $data["pmail_err"]="Adresse e-Mail de Paypal déjà utilisée";
+            if (!empty($this->fomateurModel->getFormateurByPaypalEmail($data["pmail"]))) {
+                $data["thereIsError"] = true;
+                $data["pmail_err"] = "Adresse e-Mail de Paypal déjà utilisée";
             }
-            
+
 
             // Validate Biography
-            if(strlen($data["bio"])>500){
-                $data["thereIsError"]=true;
-                $data["bio_err"]="La Biography doit comporter au maximum 500 caractères";  
+            if (strlen($data["bio"]) > 500) {
+                $data["thereIsError"] = true;
+                $data["bio_err"] = "La Biography doit comporter au maximum 500 caractères";
             }
-            if(strlen($data["bio"])<130){
-                $data["thereIsError"]=true;
-                $data["bio_err"]="Le résumé doit avoir au moins 130 caractères";
+            if (strlen($data["bio"]) < 130) {
+                $data["thereIsError"] = true;
+                $data["bio_err"] = "Le résumé doit avoir au moins 130 caractères";
             }
 
             // Validate Specialité
-            if(empty($this->stockedModel->getCategorieById($data["specId"]))){
-                $data["thereIsError"]=true;
-                $data["specId_err"]="Spécialité Invalide";
+            if (empty($this->stockedModel->getCategorieById($data["specId"]))) {
+                $data["thereIsError"] = true;
+                $data["specId_err"] = "Spécialité Invalide";
             }
-            
         }
 
         return $data;
@@ -596,33 +598,30 @@ class Users extends Controller{
         $fileTmpName = $file["tmp_name"]; // location
         $fileError = $file["error"]; // error
 
-        if(!empty($fileTmpName)){
+        if (!empty($fileTmpName)) {
             $fileExt = explode(".", $fileName);
             $fileRealExt = strtolower(end($fileExt));
             $allowed = array("jpg", "jpeg", "png");
-    
-    
+
+
             if (in_array($fileRealExt, $allowed)) {
                 if ($fileError === 0) {
-                    $fileNameNew = substr(number_format(time() * rand(), 0, '', ''), 0, 5).".". $fileRealExt;
+                    $fileNameNew = substr(number_format(time() * rand(), 0, '', ''), 0, 5) . "." . $fileRealExt;
                     $fileDestination = 'images\\userImage\\' . $fileNameNew;
                     move_uploaded_file($fileTmpName, $fileDestination);
-                    $data["img"]=$fileDestination;
+                    $data["img"] = $fileDestination;
                 } else {
-                    $data["thereIsError"]=true;
-                    $data["img_err"]="Une erreur s'est produite lors du téléchargement de votre image ";
+                    $data["thereIsError"] = true;
+                    $data["img_err"] = "Une erreur s'est produite lors du téléchargement de votre image ";
                 }
             } else {
-                $data["thereIsError"]=true;
-                $data["img_err"]="Vous ne pouvez pas télécharger ce fichier uniquement (jpg | jpeg | png | ico) autorisé";
+                $data["thereIsError"] = true;
+                $data["img_err"] = "Vous ne pouvez pas télécharger ce fichier uniquement (jpg | jpeg | png | ico) autorisé";
             }
-        }else{
-            $data["img"]=45393256813;
+        } else {
+            $data["img"] = 45393256813;
         }
 
         return $data;
     }
 }
-
-
-?>

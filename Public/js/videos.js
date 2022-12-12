@@ -52,7 +52,10 @@ $(document).ready(function () {
   $(".edit").click(function () {
     idVideo = $(this).attr("id");
     const $urlVideo = $(this).parent().parent().find("input#link-video").val();
-    videoTitle = $(this).parent().parent().find("span.video-name")[0].textContent;
+    videoTitle = $(this)
+      .parent()
+      .parent()
+      .find("span.video-name")[0].textContent;
     videoDescription = $(this)
       .parent()
       .parent()
@@ -168,37 +171,53 @@ $(document).ready(function () {
     const videosWithOrder = [];
     const $idsOfVideos = $("button.edit");
     const $orderOfVideos = $("input.order-video");
-    
-    const getOrder = index => {
-        if(Number($orderOfVideos[index].value) != $orderOfVideos[index].value || $orderOfVideos[index].value === "")
-            return null;
-        return Math.floor(Number($orderOfVideos[index].value));
-    }
+
+    const getOrder = (index) => {
+      if (
+        Number($orderOfVideos[index].value) != $orderOfVideos[index].value ||
+        $orderOfVideos[index].value === ""
+      )
+        return null;
+      return Math.floor(Number($orderOfVideos[index].value));
+    };
 
     let i = 0;
     for (let idVideo of $idsOfVideos) {
-      if(getOrder(i) !== null){
+      if (getOrder(i) !== null) {
         const videoObj = {
-          id : idVideo.id,
-          order : getOrder(i)
-        }
+          id: idVideo.id,
+          order: getOrder(i),
+        };
         videosWithOrder.push(videoObj);
       }
       i++;
     }
 
-    if(videosWithOrder.length !== 0){
+    if (videosWithOrder.length !== 0) {
       $.ajax({
-        url : 'http://localhost/maha/formations/setOrdreVideos',
-        method : 'POST',
-        data : {
-          "videosWithOrder" : JSON.stringify(videosWithOrder)
+        url: "http://localhost/maha/formations/setOrdreVideos",
+        method: "POST",
+        data: {
+          videosWithOrder: JSON.stringify(videosWithOrder),
         },
-        success : function (response) {
+        success: function (response) {
           console.log(response);
-        }
+        },
       });
       refreshPage();
     }
+  });
+
+  // preview video
+  $(".preview").click(function () {
+    $(".preview").removeAttr("disabled");
+    $(this).attr("disabled", true);
+    const idVideo = $(this).attr("id");
+    $.ajax({
+      url: "http://localhost/maha/formations/insertPreviewVideo/" + idVideo,
+      success: function (response) {
+        console.log(response);
+      },
+    });
   });
 });

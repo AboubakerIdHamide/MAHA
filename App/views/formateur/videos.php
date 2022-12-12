@@ -10,7 +10,7 @@
 				<span>Total videos (<?= count($data) ?> videos) · <span class="badge bg-primary"><i class="fas fa-clock"></i> <?= $data[0]->masse_horaire ?></span></span>
 			</div>
 			<div class="col">
-				<a href="<?= URLROOT?>/formations/addVideo/<?= $_SESSION['id_formation']?>" class="btn btn-primary">Add Video <i class="fa-solid fa-file-circle-plus"></i></a>
+				<a href="<?= URLROOT ?>/formations/addVideo/<?= $_SESSION['id_formation'] ?>" class="btn btn-primary">Add Video <i class="fa-solid fa-file-circle-plus"></i></a>
 			</div>
 		</div>
 		<?php flash('deteleVideo') ?>
@@ -37,6 +37,7 @@
 				<div class="col-lg col-md col-sm mt-3 mt-md-0">
 					<a href="<?= $video->url_video ?>" class="btn btn-warning btn-sm" download><span class="label-btn">Télécharger</span> <i class="fa-solid fa-download"></i></a>
 					<button id="<?= $video->id_video ?>" class="btn btn-info btn-sm edit" data-bs-toggle="modal" data-bs-target="#modifier"><span class="label-btn">Modifier</span> <i class="fa-solid fa-pen-to-square"></i></button>
+					<button id="<?= $video->id_video ?>" class="btn btn-primary btn-sm preview" <?php if ($video->preview == 1) echo 'disabled' ?>><span class="label-btn">Set Preview</span> <i class="fa-solid fa-video"></i></button>
 					<button id="<?= $video->id_video ?>" class="btn btn-danger btn-sm delete" data-bs-toggle="modal" data-bs-target="#supprimer"><span class="label-btn">Supprimer</span> <i class="fa-solid fa-trash"></i></button>
 				</div>
 			</div>
