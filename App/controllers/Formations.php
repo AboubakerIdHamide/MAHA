@@ -107,19 +107,6 @@ class Formations extends Controller
 			$data = $this->uploadImage($data);
 
 			// insert data
-<<<<<<< HEAD
-			if ($data["error"] == false) {
-				$formationId = $this->formationModel->insertFormation($data);
-				foreach ($data["videosCollcetion"] as $video) {
-					$videoData = [
-						"Idformation" => $formationId,
-						"nomVideo" => $video->name,
-						"duree" => $video->duree,
-						"url" => $video->file_id,
-						"desc" => "discribe this video or add a ressources !",
-					];
-					$this->videoModel->insertVideo($videoData);
-=======
 			if($data["error"]==false){
 				$formationId= $this->formationModel->insertFormation($data);
 				if($formationId){
@@ -133,7 +120,6 @@ class Formations extends Controller
 						];
 						$this->videoModel->insertVideo($videoData);
 					}
->>>>>>> d28cd0244f536a5177684cd3873fc2a3f9b0c33d
 				}
 				redirect("formateur/index");
 				flash("formationAdded", "Vos détails de cours sont insérés avec succès, vous devez donner une description à vos vidéos", "alert alert-info mt-1");
