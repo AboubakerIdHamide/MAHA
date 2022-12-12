@@ -3,8 +3,14 @@
 	<section class="statistics container mt-4">
 		<div class="row">
 			<?php flash('updateFormation') ?>
+<<<<<<< HEAD
 			<?php flash('formationAdded') ?>
 			<?php flash('videoAdded') ?>
+=======
+			<?php flash('formationAdded')?>
+			<?php flash('videoAdded')?>
+			<?php flash('formationNotExists')?>
+>>>>>>> d28cd0244f536a5177684cd3873fc2a3f9b0c33d
 			<div class="col-6 col-lg">
 				<div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
 					<div>

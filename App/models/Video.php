@@ -31,16 +31,16 @@ class Video
 		return $response;
 	}
 
-	// public function getVideo($idFormation, $idVideo){
-	// 	$request = $this->connect->prepare("SELECT * FROM videos WHERE id_formation = :id_formation AND id_video = :id_video");
+	public function getVideo($idFormation, $idVideo){
+		$request = $this->connect->prepare("SELECT * FROM videos WHERE id_formation = :id_formation AND id_video = :id_video");
 
-	// 	$request->bindParam(':id_formation', $idFormation);
-	// 	$request->bindParam(':id_video', $idVideo);
-	// 	$request->execute();
+		$request->bindParam(':id_formation', $idFormation);
+		$request->bindParam(':id_video', $idVideo);
+		$request->execute();
 
-	// 	$video = $request->fetch();
-	// 	return $video;
-	// }
+		$video = $request->fetch();
+		return $video;
+	}
 
 	public function countMassHorraire($id_formation)
 	{
