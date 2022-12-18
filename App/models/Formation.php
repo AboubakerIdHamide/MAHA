@@ -28,24 +28,25 @@ class Formation
             ( niveau_formation, id_formateur, categorie, nom_formation, image_formation, mass_horaire,  prix_formation, description)VALUES
             (:niveau_formation, :id_formateur, :categorie, :nom_formation, :img_formation, :mass_horaire, :prix_formation, :description);");
 
-            $request->bindParam(":niveau_formation", $dataFormation["niveau_formation"]);
-            $request->bindParam(":id_formateur", $dataFormation["id_formateur"]);
-            $request->bindParam(":categorie", $dataFormation["categorie"]);
-            $request->bindParam(":nom_formation", $dataFormation["nom_formation"]);
-            $request->bindParam(":img_formation", $dataFormation["img_formation"]);
-            $request->bindParam(":mass_horaire", $dataFormation["masse_horaire"]);
-            $request->bindParam(":prix_formation", $dataFormation["prix_formation"]);
-            $request->bindParam(":description", $dataFormation["description"]);
-	    
-            $response=$request->execute();
+        $request->bindParam(":niveau_formation", $dataFormation["niveau_formation"]);
+        $request->bindParam(":id_formateur", $dataFormation["id_formateur"]);
+        $request->bindParam(":categorie", $dataFormation["categorie"]);
+        $request->bindParam(":nom_formation", $dataFormation["nom_formation"]);
+        $request->bindParam(":img_formation", $dataFormation["img_formation"]);
+        $request->bindParam(":mass_horaire", $dataFormation["masse_horaire"]);
+        $request->bindParam(":prix_formation", $dataFormation["prix_formation"]);
+        $request->bindParam(":description", $dataFormation["description"]);
 
-            if($response)
-                return $this->connect->lastInsertId();
-            return $response;
+        $response = $request->execute();
+
+        if ($response)
+            return $this->connect->lastInsertId();
+        return $response;
     }
 
-    public function updateFormation($dataFormation){
-            $request=$this->connect->prepare("UPDATE formations 
+    public function updateFormation($dataFormation)
+    {
+        $request = $this->connect->prepare("UPDATE formations 
             SET niveau_formation=:niveau_formation, categorie=:categorie, nom_formation=:nom_formation, prix_formation=:prix_formation, description=:description, id_langue=:langue 
             WHERE  id_formation=:id");
 
@@ -129,38 +130,38 @@ class Formation
                 WHERE id_formateur = :id
                 AND nom_formation LIKE CONCAT('%', :words, '%');
             ");
-            $request->bindParam(":id", $id_formateur);
-            $request->bindParam(":words", $words);
-            $request->execute();
-            $response=$request->fetchAll(PDO::FETCH_OBJ);
-            return $response;
+        $request->bindParam(":id", $id_formateur);
+        $request->bindParam(":words", $words);
+        $request->execute();
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
     }
 
     public function setLike($etudiant_id, $formation_id)
     {
         // like or dislike
-        $liked=$this->likedBefore($etudiant_id, $formation_id);
-        if($liked){
+        $liked = $this->likedBefore($etudiant_id, $formation_id);
+        if ($liked) {
             // dislike
-            $req=$this->connect->prepare("DELETE FROM likes WHERE etudiant_id=:eId AND formation_id=:fId");
-        }else{
+            $req = $this->connect->prepare("DELETE FROM likes WHERE etudiant_id=:eId AND formation_id=:fId");
+        } else {
             // like
-            $req=$this->connect->prepare("INSERT INTO likes(etudiant_id, formation_id) VALUES (:eId,:fId)");
+            $req = $this->connect->prepare("INSERT INTO likes(etudiant_id, formation_id) VALUES (:eId,:fId)");
         }
         $req->bindParam(':eId', $etudiant_id);
         $req->bindParam(':fId', $formation_id);
-        $res=$req->execute();
+        $res = $req->execute();
         return $res;
     }
 
     public function likedBefore($etudiant_id, $formation_id)
     {
-        $req=$this->connect->prepare("SELECT * FROM likes WHERE etudiant_id=:eId AND formation_id=:fId");
+        $req = $this->connect->prepare("SELECT * FROM likes WHERE etudiant_id=:eId AND formation_id=:fId");
         $req->bindParam(':eId', $etudiant_id);
         $req->bindParam(':fId', $formation_id);
         $req->execute();
-        $res=$req->fetch();
-        if(!empty($res)){
+        $res = $req->fetch();
+        if (!empty($res)) {
             return true;
         }
         return false;
@@ -168,15 +169,16 @@ class Formation
 
     public function getLikesOfFormation($formationId)
     {
-        $req=$this->connect->prepare("SELECT likes FROM formations WHERE  id_formation=:formationId");
+        $req = $this->connect->prepare("SELECT likes FROM formations WHERE  id_formation=:formationId");
         $req->bindParam(':formationId', $formationId);
         $req->execute();
-        $res=$req->fetch(PDO::FETCH_OBJ);
+        $res = $req->fetch(PDO::FETCH_OBJ);
         return $res;
     }
 
-    public function getPupalaireCourses(){
-        $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
+    public function getPupalaireCourses()
+    {
+        $request = $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
                     formations.image_formation as 'imgFormation',
                     formations.mass_horaire as 'duree',
                     categories.nom_categorie as 'categorie',
@@ -195,10 +197,10 @@ class Formation
             limit 0,12;
         ");
         $request->execute();
-        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
         return $response;
     }
-    
+
     public function getFormationsFormateurById($id)
     {
         $request = $this->connect->prepare("
@@ -267,17 +269,18 @@ class Formation
     // ===================================== Insert Into Table Formations =====================
 
 
-    public function insertIntoTableFilter($type, $num, $arg1, $arg2){
+    public function insertIntoTableFilter($type, $num, $arg1, $arg2)
+    {
 
-        if($type == 'all'){
-            $request= $this->connect->prepare("delete from tablefilter;
+        if ($type == 'all') {
+            $request = $this->connect->prepare("delete from tablefilter;
                                 call insertItoTableFilterAll(:nb);
             ");
             $request->bindParam(":nb", $num);
             $request->execute();
         }
-        if($type == 'rech'){
-            $request= $this->connect->prepare("delete from tablefilter;
+        if ($type == 'rech') {
+            $request = $this->connect->prepare("delete from tablefilter;
                                     call insertItoTableFilterRech(:nb, :arg);
             ");
             $request->bindParam(":nb", $num);
@@ -285,11 +288,11 @@ class Formation
 
             $request->execute();
         }
-        if($type == 'filter'){
-            $request= $this->connect->prepare("delete from tablefilter;
+        if ($type == 'filter') {
+            $request = $this->connect->prepare("delete from tablefilter;
                         call insertItoTableFilterFilter(:nb, :arg1, :arg2);
             ");
-            $request->bindParam(":nb", $nb);
+            $request->bindParam(":nb", $num);
             $request->bindParam(":arg1", $arg1);
             $request->bindParam(":arg2", $arg2);
             $request->execute();
@@ -298,18 +301,20 @@ class Formation
 
     // ===================================== Insert Into Table Formations =====================
     // ========================== Delete From Table Filter ========================== 
-    
-    public function deleteFromTableFilter(){
 
-        $request= $this->connect->prepare("delete from tablefilter;");
-        
+    public function deleteFromTableFilter()
+    {
+
+        $request = $this->connect->prepare("delete from tablefilter;");
+
         $request->execute();
     }
     // ========================== Delete From Table Filter ========================== 
     // ================================ Get Formation By Id ================================
 
-    public function getFormationById($id){
-        $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
+    public function getFormationById($id)
+    {
+        $request = $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
                     formations.image_formation as 'imgFormation',
                     formations.mass_horaire as 'duree',
                     categories.nom_categorie as 'categorie',
@@ -338,19 +343,21 @@ class Formation
 
     // =============================== Filter + Trier + Recherche ==================================
 
-    public function countAllFormations(){
-        $request= $this->connect->prepare("SELECT count(formations.id_formation) as 'numbFormations'
+    public function countAllFormations()
+    {
+        $request = $this->connect->prepare("SELECT count(formations.id_formation) as 'numbFormations'
             from formations;
         ");
         $request->execute();
         $response = $request->fetch();
         return $response;
     }
-    
-    public function getPlusPopilairesFormations($offset){
+
+    public function getPlusPopilairesFormations($offset)
+    {
         $numbDeb = intval($offset);
 
-        $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
+        $request = $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
                     formations.image_formation as 'imgFormation',
                     formations.mass_horaire as 'duree',
                     categories.nom_categorie as 'categorie',
@@ -370,12 +377,13 @@ class Formation
         ");
         // $request->bindParam(":numbDeb", $numbDeb);
         $request->execute();
-        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
         return $response;
     }
-    
-    public function countFormationsFilter($cat, $choi){
-        $request= $this->connect->prepare("SELECT count(formations.id_formation) as 'numbFormations'
+
+    public function countFormationsFilter($cat, $choi)
+    {
+        $request = $this->connect->prepare("SELECT count(formations.id_formation) as 'numbFormations'
             from formations,categories
             where categories.id_categorie = formations.categorie
             and categories.nom_categorie = :categorie
@@ -390,10 +398,11 @@ class Formation
         return $response;
     }
 
-    public function getFormationsByFilter($cat, $choi, $offset){
+    public function getFormationsByFilter($cat, $choi, $offset)
+    {
         $numbDeb = intval($offset);
 
-        $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
+        $request = $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
                     formations.image_formation as 'imgFormation',
                     formations.mass_horaire as 'duree',
                     categories.nom_categorie as 'categorie',
@@ -418,13 +427,14 @@ class Formation
         $request->bindParam(":categorie", $cat);
         // $request->bindParam(":offset", $offset);
         $request->execute();
-        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
         return $response;
     }
 
-    public function countFormationsRech($val){
+    public function countFormationsRech($val)
+    {
 
-        $request= $this->connect->prepare("SELECT count(formations.id_formation) as 'numbFormations'
+        $request = $this->connect->prepare("SELECT count(formations.id_formation) as 'numbFormations'
             from formations, formateurs,categories
             where formations.id_formateur = formateurs.id_formateur
             and categories.id_categorie = formations.categorie
@@ -442,10 +452,11 @@ class Formation
     }
 
 
-    public function getFormationsByValRech($val, $offset){
+    public function getFormationsByValRech($val, $offset)
+    {
         $numbDeb = intval($offset);
 
-        $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
+        $request = $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
                 formations.image_formation as 'imgFormation',
                 formations.mass_horaire as 'duree',
                 categories.nom_categorie as 'categorie',
@@ -471,15 +482,16 @@ class Formation
         ");
         // $request->bindParam(":offset", $offset);
         $request->execute();
-        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
         return $response;
     }
 
 
-    public function getPlusFormationsAmais($offset){
+    public function getPlusFormationsAmais($offset)
+    {
         $numbDeb = intval($offset);
 
-        $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
+        $request = $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
                     formations.image_formation as 'imgFormation',
                     formations.mass_horaire as 'duree',
                     categories.nom_categorie as 'categorie',
@@ -499,14 +511,15 @@ class Formation
         ");
         // $request->bindParam(":offset", $offset);
         $request->execute();
-        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
         return $response;
     }
 
-    public function getPlusFormationsAchter($offset){
+    public function getPlusFormationsAchter($offset)
+    {
         $numbDeb = intval($offset);
 
-        $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
+        $request = $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
                     formations.image_formation as 'imgFormation',
                     formations.mass_horaire as 'duree',
                     categories.nom_categorie as 'categorie',
@@ -526,12 +539,13 @@ class Formation
         ");
         // $request->bindParam(":offset", $offset);
         $request->execute();
-        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
         return $response;
     }
 
-    public function countFormationsByLangage($lang){
-        $request= $this->connect->prepare("SELECT count(IdFormation) as 'numbFormations'
+    public function countFormationsByLangage($lang)
+    {
+        $request = $this->connect->prepare("SELECT count(IdFormation) as 'numbFormations'
             from tablefilter
             where idLangage = :langage;
         ");
@@ -541,10 +555,11 @@ class Formation
         return $response;
     }
 
-    public function getFormationsByLangage($lang, $offset){
+    public function getFormationsByLangage($lang, $offset)
+    {
         $numbDeb = intval($offset);
 
-        $request= $this->connect->prepare("SELECT IdFormation as 'IdFormation',
+        $request = $this->connect->prepare("SELECT IdFormation as 'IdFormation',
                     imgFormation as 'imgFormation',
                     duree as 'duree',
                     idCategore as 'idCategore',
@@ -572,12 +587,13 @@ class Formation
         $request->bindParam(":langage", $lang);
         // $request->bindParam(":offset", $offset);
         $request->execute();
-        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
         return $response;
     }
 
-    public function countFormationsByNiveau($niv){
-        $request= $this->connect->prepare("SELECT count(IdFormation) as 'numbFormations'
+    public function countFormationsByNiveau($niv)
+    {
+        $request = $this->connect->prepare("SELECT count(IdFormation) as 'numbFormations'
             from tablefilter
             where idNiv = :nivau;
         ");
@@ -587,10 +603,11 @@ class Formation
         return $response;
     }
 
-    public function getFormationsByNivau($niv, $offset){
+    public function getFormationsByNivau($niv, $offset)
+    {
         $numbDeb = intval($offset);
 
-        $request= $this->connect->prepare("SELECT IdFormation as 'IdFormation',
+        $request = $this->connect->prepare("SELECT IdFormation as 'IdFormation',
                     imgFormation as 'imgFormation',
                     duree as 'duree',
                     idCategore as 'idCategore',
@@ -618,12 +635,13 @@ class Formation
         $request->bindParam(":nivau", $niv);
         // $request->bindParam(":offset", $offset);
         $request->execute();
-        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
         return $response;
     }
 
-    public function countFormationsByDuree($deb, $fin){
-        $request= $this->connect->prepare("SELECT count(IdFormation) as 'numbFormations'
+    public function countFormationsByDuree($deb, $fin)
+    {
+        $request = $this->connect->prepare("SELECT count(IdFormation) as 'numbFormations'
             from tablefilter
             where duree BETWEEN time(concat('0', :deb, ':00:00')) and time(concat('0', :fin, ':00:00'));
         ");
@@ -634,10 +652,11 @@ class Formation
         return $response;
     }
 
-    public function getFormationsByDuree($deb, $fin, $offset){
+    public function getFormationsByDuree($deb, $fin, $offset)
+    {
         $numbDeb = intval($offset);
 
-        $request= $this->connect->prepare("SELECT IdFormation as 'IdFormation',
+        $request = $this->connect->prepare("SELECT IdFormation as 'IdFormation',
                     imgFormation as 'imgFormation',
                     duree as 'duree',
                     idCategore as 'idCategore',
@@ -666,7 +685,7 @@ class Formation
         $request->bindParam(":fin", $fin);
         // $request->bindParam(":offset", $offset);
         $request->execute();
-        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
         return $response;
     }
     // =============================== Filter + Trier + Recherche ==================================
