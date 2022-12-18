@@ -175,13 +175,11 @@ class Formation
         return $res;
     }
 
-    public function getPupalaireCourses()
-    {
-        $request = $this->connect->prepare("
-            SELECT formations.id_formation as 'IdFormation',
+    public function getPupalaireCourses(){
+        $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
                     formations.image_formation as 'imgFormation',
                     formations.mass_horaire as 'duree',
-                    formations.categorie as 'categorie',
+                    categories.nom_categorie as 'categorie',
                     formations.nom_formation as 'nomFormation',
                     formations.prix_formation as 'prix',
                     formations.description as 'description',
@@ -190,14 +188,14 @@ class Formation
                     formateurs.nom_formateur as 'nomFormateur',
                     formateurs.prenom_formateur as 'prenomFormateur',
                     formateurs.img_formateur as 'imgFormateur'
-            FROM formations, formateurs
-            WHERE formations.id_formateur = formateurs.id_formateur
-            GROUP BY formations.likes 
-            ORDER BY formations.likes desc
-            LIMIT 1,10
+            from formations, formateurs,categories, inscriptions
+            where formations.id_formateur = formateurs.id_formateur
+            and categories.id_categorie = formations.categorie
+            order by formations.likes desc
+            limit 0,12;
         ");
         $request->execute();
-        $response = $request->fetchAll(PDO::FETCH_OBJ);
+        $response=$request->fetchAll(PDO::FETCH_OBJ);
         return $response;
     }
     
@@ -205,19 +203,20 @@ class Formation
     {
         $request = $this->connect->prepare("
             SELECT formations.id_formation as 'IdFormation',
-                formations.image_formation as 'imgFormation',
-                formations.mass_horaire as 'duree',
-                formations.categorie as 'categorie',
-                formations.nom_formation as 'nomFormation',
-                formations.prix_formation as 'prix',
-                formations.description as 'description',
-                formations.likes as 'likes',
-                formateurs.id_formateur as 'IdFormteur',
-                formateurs.nom_formateur as 'nomFormateur',
-                formateurs.prenom_formateur as 'prenomFormateur',
-                formateurs.img_formateur as 'imgFormateur'
-            FROM formations, formateurs
-            WHERE formations.id_formateur = :id
+                    formations.image_formation as 'imgFormation',
+                    formations.mass_horaire as 'duree',
+                    categories.nom_categorie as 'categorie',
+                    formations.nom_formation as 'nomFormation',
+                    formations.prix_formation as 'prix',
+                    formations.description as 'description',
+                    formations.likes as 'likes',
+                    formateurs.id_formateur as 'IdFormteur',
+                    formateurs.nom_formateur as 'nomFormateur',
+                    formateurs.prenom_formateur as 'prenomFormateur',
+                    formateurs.img_formateur as 'imgFormateur'
+            from formations, formateurs, categories
+            where formations.id_formateur = formateurs.id_formateur and formations.id_formateur = :id
+            and categories.id_categorie = formations.categorie;
         ");
         $request->bindParam(":id", $id);
         $request->execute();
@@ -264,4 +263,411 @@ class Formation
         $formations = $request->fetchAll(PDO::FETCH_OBJ);
         return $formations;
     }
+
+    // ===================================== Insert Into Table Formations =====================
+
+
+    public function insertIntoTableFilter($type, $num, $arg1, $arg2){
+
+        if($type == 'all'){
+            $request= $this->connect->prepare("delete from tablefilter;
+                                call insertItoTableFilterAll(:nb);
+            ");
+            $request->bindParam(":nb", $num);
+            $request->execute();
+        }
+        if($type == 'rech'){
+            $request= $this->connect->prepare("delete from tablefilter;
+                                    call insertItoTableFilterRech(:nb, :arg);
+            ");
+            $request->bindParam(":nb", $num);
+            $request->bindParam(":arg", $arg1);
+
+            $request->execute();
+        }
+        if($type == 'filter'){
+            $request= $this->connect->prepare("delete from tablefilter;
+                        call insertItoTableFilterFilter(:nb, :arg1, :arg2);
+            ");
+            $request->bindParam(":nb", $nb);
+            $request->bindParam(":arg1", $arg1);
+            $request->bindParam(":arg2", $arg2);
+            $request->execute();
+        }
+    }
+
+    // ===================================== Insert Into Table Formations =====================
+    // ========================== Delete From Table Filter ========================== 
+    
+    public function deleteFromTableFilter(){
+
+        $request= $this->connect->prepare("delete from tablefilter;");
+        
+        $request->execute();
+    }
+    // ========================== Delete From Table Filter ========================== 
+    // ================================ Get Formation By Id ================================
+
+    public function getFormationById($id){
+        $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
+                    formations.image_formation as 'imgFormation',
+                    formations.mass_horaire as 'duree',
+                    categories.nom_categorie as 'categorie',
+                    formations.nom_formation as 'nomFormation',
+                    formations.prix_formation as 'prix',
+                    formations.description as 'description',
+                    formations.likes as 'likes',
+                    formateurs.id_formateur as 'IdFormteur',
+                    formateurs.nom_formateur as 'nomFormateur',
+                    formateurs.prenom_formateur as 'prenomFormateur',
+                    formateurs.specialiteId as 'specialiteId',
+                    formateurs.img_formateur as 'imgFormateur',
+                    date(formations.date_creation_formation) as 'dateCreationFormation',
+                    formations.niveau_formation as 'IdNiv',
+                    formations.id_langue as 'IdLang'
+            from formations, formateurs,categories
+            where formations.id_formateur = formateurs.id_formateur
+            and categories.id_categorie = formations.categorie
+            and formations.id_formation = :id;
+        ");
+        $request->bindParam(":id", $id);
+        $request->execute();
+        $response = $request->fetch();
+        return $response;
+    }
+
+    // =============================== Filter + Trier + Recherche ==================================
+
+    public function countAllFormations(){
+        $request= $this->connect->prepare("SELECT count(formations.id_formation) as 'numbFormations'
+            from formations;
+        ");
+        $request->execute();
+        $response = $request->fetch();
+        return $response;
+    }
+    
+    public function getPlusPopilairesFormations($offset){
+        $numbDeb = intval($offset);
+
+        $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
+                    formations.image_formation as 'imgFormation',
+                    formations.mass_horaire as 'duree',
+                    categories.nom_categorie as 'categorie',
+                    formations.nom_formation as 'nomFormation',
+                    formations.prix_formation as 'prix',
+                    formations.description as 'description',
+                    formations.likes as 'likes',
+                    formateurs.id_formateur as 'IdFormteur',
+                    formateurs.nom_formateur as 'nomFormateur',
+                    formateurs.prenom_formateur as 'prenomFormateur',
+                    formateurs.img_formateur as 'imgFormateur'
+            from formations, formateurs,categories
+            where formations.id_formateur = formateurs.id_formateur
+            and categories.id_categorie = formations.categorie
+            order by formations.likes desc
+            limit  {$numbDeb}, 10;
+        ");
+        // $request->bindParam(":numbDeb", $numbDeb);
+        $request->execute();
+        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+    
+    public function countFormationsFilter($cat, $choi){
+        $request= $this->connect->prepare("SELECT count(formations.id_formation) as 'numbFormations'
+            from formations,categories
+            where categories.id_categorie = formations.categorie
+            and categories.nom_categorie = :categorie
+            and (
+                formations.nom_formation like '%{$choi}%' 
+                or formations.description like '%{$choi}%'
+            );
+        ");
+        $request->bindParam(":categorie", $cat);
+        $request->execute();
+        $response = $request->fetch();
+        return $response;
+    }
+
+    public function getFormationsByFilter($cat, $choi, $offset){
+        $numbDeb = intval($offset);
+
+        $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
+                    formations.image_formation as 'imgFormation',
+                    formations.mass_horaire as 'duree',
+                    categories.nom_categorie as 'categorie',
+                    formations.nom_formation as 'nomFormation',
+                    formations.prix_formation as 'prix',
+                    formations.description as 'description',
+                    formations.likes as 'likes',
+                    formateurs.id_formateur as 'IdFormteur',
+                    formateurs.nom_formateur as 'nomFormateur',
+                    formateurs.prenom_formateur as 'prenomFormateur',
+                    formateurs.img_formateur as 'imgFormateur'
+            from formations, formateurs,categories
+            where formations.id_formateur = formateurs.id_formateur
+            and categories.id_categorie = formations.categorie
+            and categories.nom_categorie = :categorie
+            and (
+                formations.nom_formation like '%{$choi}%' 
+                or formations.description like '%{$choi}%'
+            )
+            limit  {$numbDeb} , 10;
+        ");
+        $request->bindParam(":categorie", $cat);
+        // $request->bindParam(":offset", $offset);
+        $request->execute();
+        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+
+    public function countFormationsRech($val){
+
+        $request= $this->connect->prepare("SELECT count(formations.id_formation) as 'numbFormations'
+            from formations, formateurs,categories
+            where formations.id_formateur = formateurs.id_formateur
+            and categories.id_categorie = formations.categorie
+            and (
+                categories.nom_categorie like '%{$val}%'
+                or formateurs.nom_formateur like '%{$val}%'
+                or formations.description like '%{$val}%'
+                or formations.nom_formation like '%{$val}%'
+                or formateurs.prenom_formateur like '%{$val}%'
+            );
+        ");
+        $request->execute();
+        $response = $request->fetch();
+        return $response;
+    }
+
+
+    public function getFormationsByValRech($val, $offset){
+        $numbDeb = intval($offset);
+
+        $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
+                formations.image_formation as 'imgFormation',
+                formations.mass_horaire as 'duree',
+                categories.nom_categorie as 'categorie',
+                formations.nom_formation as 'nomFormation',
+                formations.prix_formation as 'prix',
+                formations.description as 'description',
+                formations.likes as 'likes',
+                formateurs.id_formateur as 'IdFormteur',
+                formateurs.nom_formateur as 'nomFormateur',
+                formateurs.prenom_formateur as 'prenomFormateur',
+                formateurs.img_formateur as 'imgFormateur'
+            from formations, formateurs,categories
+            where formations.id_formateur = formateurs.id_formateur
+            and categories.id_categorie = formations.categorie
+            and (
+                categories.nom_categorie like '%{$val}%'
+                or formateurs.nom_formateur like '%{$val}%'
+                or formations.description like '%{$val}%'
+                or formations.nom_formation like '%{$val}%'
+                or formateurs.prenom_formateur like '%{$val}%'
+            )
+            limit  {$numbDeb} , 10;
+        ");
+        // $request->bindParam(":offset", $offset);
+        $request->execute();
+        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+
+
+    public function getPlusFormationsAmais($offset){
+        $numbDeb = intval($offset);
+
+        $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
+                    formations.image_formation as 'imgFormation',
+                    formations.mass_horaire as 'duree',
+                    categories.nom_categorie as 'categorie',
+                    formations.nom_formation as 'nomFormation',
+                    formations.prix_formation as 'prix',
+                    formations.description as 'description',
+                    formations.likes as 'likes',
+                    formateurs.id_formateur as 'IdFormteur',
+                    formateurs.nom_formateur as 'nomFormateur',
+                    formateurs.prenom_formateur as 'prenomFormateur',
+                    formateurs.img_formateur as 'imgFormateur'
+            from formations, formateurs,categories
+            where formations.id_formateur = formateurs.id_formateur
+            and categories.id_categorie = formations.categorie
+            order by formations.likes desc
+            limit  {$numbDeb} , 10;
+        ");
+        // $request->bindParam(":offset", $offset);
+        $request->execute();
+        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+
+    public function getPlusFormationsAchter($offset){
+        $numbDeb = intval($offset);
+
+        $request= $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
+                    formations.image_formation as 'imgFormation',
+                    formations.mass_horaire as 'duree',
+                    categories.nom_categorie as 'categorie',
+                    formations.nom_formation as 'nomFormation',
+                    formations.prix_formation as 'prix',
+                    formations.description as 'description',
+                    formations.likes as 'likes',
+                    formateurs.id_formateur as 'IdFormteur',
+                    formateurs.nom_formateur as 'nomFormateur',
+                    formateurs.prenom_formateur as 'prenomFormateur',
+                    formateurs.img_formateur as 'imgFormateur'
+            from formations, formateurs,categories
+            where formations.id_formateur = formateurs.id_formateur
+            and categories.id_categorie = formations.categorie
+            order by 'numbAcht' desc
+            limit  {$numbDeb} , 10;
+        ");
+        // $request->bindParam(":offset", $offset);
+        $request->execute();
+        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+
+    public function countFormationsByLangage($lang){
+        $request= $this->connect->prepare("SELECT count(IdFormation) as 'numbFormations'
+            from tablefilter
+            where idLangage = :langage;
+        ");
+        $request->bindParam(":langage", $lang);
+        $request->execute();
+        $response = $request->fetch();
+        return $response;
+    }
+
+    public function getFormationsByLangage($lang, $offset){
+        $numbDeb = intval($offset);
+
+        $request= $this->connect->prepare("SELECT IdFormation as 'IdFormation',
+                    imgFormation as 'imgFormation',
+                    duree as 'duree',
+                    idCategore as 'idCategore',
+                    categorie as 'categorie',
+                    nomFormation as 'nomFormation',
+                    prix as 'prix',
+                    `description` as 'description',
+                    likes as 'likes',
+                    IdFormteur as 'IdFormteur',
+                    nomFormateur as 'nomFormateur',
+                    prenomFormateur as 'prenomFormateur',
+                    specialiteId as 'specialiteId',
+                    specialite as 'specialite',
+                    imgFormateur as 'imgFormateur',
+                    numbAcht as 'numbAcht',
+                    dateCreationFormation as 'dateCreationFormation',
+                    idLangage as 'idLangage',
+                    langageFormation as 'langageFormation',
+                    idNiv as 'idNiv',
+                    niveauFormation as 'niveauFormation'
+            from tablefilter
+            where idLangage = :langage
+            limit  {$numbDeb} , 10;
+        ");
+        $request->bindParam(":langage", $lang);
+        // $request->bindParam(":offset", $offset);
+        $request->execute();
+        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+
+    public function countFormationsByNiveau($niv){
+        $request= $this->connect->prepare("SELECT count(IdFormation) as 'numbFormations'
+            from tablefilter
+            where idNiv = :nivau;
+        ");
+        $request->bindParam(":nivau", $niv);
+        $request->execute();
+        $response = $request->fetch();
+        return $response;
+    }
+
+    public function getFormationsByNivau($niv, $offset){
+        $numbDeb = intval($offset);
+
+        $request= $this->connect->prepare("SELECT IdFormation as 'IdFormation',
+                    imgFormation as 'imgFormation',
+                    duree as 'duree',
+                    idCategore as 'idCategore',
+                    categorie as 'categorie',
+                    nomFormation as 'nomFormation',
+                    prix as 'prix',
+                    `description` as 'description',
+                    likes as 'likes',
+                    IdFormteur as 'IdFormteur',
+                    nomFormateur as 'nomFormateur',
+                    prenomFormateur as 'prenomFormateur',
+                    specialiteId as 'specialiteId',
+                    specialite as 'specialite',
+                    imgFormateur as 'imgFormateur',
+                    numbAcht as 'numbAcht',
+                    dateCreationFormation as 'dateCreationFormation',
+                    idLangage as 'idLangage',
+                    langageFormation as 'langageFormation',
+                    idNiv as 'idNiv',
+                    niveauFormation as 'niveauFormation'
+            from tablefilter
+            where idNiv = :nivau
+            limit  {$numbDeb} , 10;
+        ");
+        $request->bindParam(":nivau", $niv);
+        // $request->bindParam(":offset", $offset);
+        $request->execute();
+        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+
+    public function countFormationsByDuree($deb, $fin){
+        $request= $this->connect->prepare("SELECT count(IdFormation) as 'numbFormations'
+            from tablefilter
+            where duree BETWEEN time(concat('0', :deb, ':00:00')) and time(concat('0', :fin, ':00:00'));
+        ");
+        $request->bindParam(":deb", $deb);
+        $request->bindParam(":fin", $fin);
+        $request->execute();
+        $response = $request->fetch();
+        return $response;
+    }
+
+    public function getFormationsByDuree($deb, $fin, $offset){
+        $numbDeb = intval($offset);
+
+        $request= $this->connect->prepare("SELECT IdFormation as 'IdFormation',
+                    imgFormation as 'imgFormation',
+                    duree as 'duree',
+                    idCategore as 'idCategore',
+                    categorie as 'categorie',
+                    nomFormation as 'nomFormation',
+                    prix as 'prix',
+                    `description` as 'description',
+                    likes as 'likes',
+                    IdFormteur as 'IdFormteur',
+                    nomFormateur as 'nomFormateur',
+                    prenomFormateur as 'prenomFormateur',
+                    specialiteId as 'specialiteId',
+                    specialite as 'specialite',
+                    imgFormateur as 'imgFormateur',
+                    numbAcht as 'numbAcht',
+                    dateCreationFormation as 'dateCreationFormation',
+                    idLangage as 'idLangage',
+                    langageFormation as 'langageFormation',
+                    idNiv as 'idNiv',
+                    niveauFormation as 'niveauFormation'
+            from tablefilter
+            where duree BETWEEN time(concat('0', :deb, ':00:00')) and time(concat('0', :fin, ':00:00'))
+            limit  {$numbDeb} , 10;
+        ");
+        $request->bindParam(":deb", $deb);
+        $request->bindParam(":fin", $fin);
+        // $request->bindParam(":offset", $offset);
+        $request->execute();
+        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+    // =============================== Filter + Trier + Recherche ==================================
 }

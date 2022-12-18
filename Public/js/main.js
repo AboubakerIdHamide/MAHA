@@ -66,6 +66,7 @@ function hideDropMenu(el){
 // Search Bar 
 let searchForm=document.getElementById("seacrhForm");
     searchIcon=document.getElementById("searchIcon");
+    inputSerch = searchForm.querySelector('input');
 
 searchIcon.addEventListener("click", ()=>{
     searchForm.classList.toggle("hide");
@@ -76,44 +77,18 @@ searchIcon.addEventListener("click", ()=>{
     }
 })
 
+searchForm.onsubmit = (e)=>{
+    let valRech = inputSerch.value;
+    if(!(valRech.length < 1 && valRech.length >200)){
+        window.location.href = `http://localhost/MAHA/pageFormations/rechercheFormations/${valRech}`;
+    }
+    e.preventDefault();
+}
+
 // Window Event
 window.onresize= ()=>{hideNavBar()}
 window.onload= ()=>{hideNavBar()}
 window.onscroll= ()=>{hideNavBar();hideDropMenu(MenuDropped)}
-
-// ==========================================
-var swiper = new Swiper(".slide-content", {
-    slidesPerView: 3,
-    spaceBetween: 25,
-    loop: true,
-    centerSlide: 'true',
-    fade: 'true',
-    grabCursor: 'true',
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-      dynamicBullets: true,
-    },
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-
-    breakpoints:{
-        0: {
-            slidesPerView: 1,
-        },
-        520: {
-            slidesPerView: 2,
-        },
-        950: {
-            slidesPerView: 3,
-        },
-    },
-    autoplay: {
-        delay: 4000,
-    },
-  });
 
 // start overflow p description
 let $p_decription = $('.card_coures p');

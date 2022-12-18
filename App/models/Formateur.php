@@ -170,19 +170,20 @@ class Formateur
 		return $response;
 	}
 
-	public function getFormateurById($id)
-	{
+	public function getFormateurById($id){
 		$request = $this->connect->prepare("SELECT formateurs.id_formateur as 'IdFormateur',
-													formateurs.nom_formateur as 'nomFormateur',
-													formateurs.prenom_formateur as 'prenomFormateur',
-													formateurs.img_formateur as 'img',
-													formateurs.biography as 'biography',
-													categories.nom_categorie as 'categorie',
-													formateurs.email_formateur as 'email',
-													formateurs.tel_formateur as 'tel'
-											from formateurs, categories
-											where formateurs.specialiteId = categories.id_categorie and formateurs.id_formateur = :id
-			");
+												formateurs.nom_formateur as 'nomFormateur',
+												formateurs.prenom_formateur as 'prenomFormateur',
+												formateurs.img_formateur as 'img',
+												formateurs.biography as 'biography',
+												categories.nom_categorie as 'categorie',
+												formateurs.specialiteId as 'id_categorie',
+												formateurs.email_formateur as 'email',
+												formateurs.tel_formateur as 'tel'
+										from formateurs, categories
+										where formateurs.specialiteId = categories.id_categorie 
+										and formateurs.id_formateur = :id;
+		");
 		$request->bindParam(':id', $id);
 		$request->execute();
 		$formateur = $request->fetch();
@@ -198,5 +199,15 @@ class Formateur
 		$request->execute();
 		$formateur = $request->fetch();
 		return $formateur;
+	}
+	public function getNumFormationAchtByIdFormateur($id){
+		$request = $this->connect->prepare("SELECT count(inscriptions.id_formation) as 'numAcht'
+											from inscriptions
+											where inscriptions.id_formateur = :id
+		");
+		$request->bindParam(':id', $id);
+		$request->execute();
+		$formations = $request->fetch();
+		return $formations;
 	}
 }

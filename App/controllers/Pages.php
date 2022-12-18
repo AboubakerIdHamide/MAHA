@@ -11,6 +11,9 @@ class Pages extends Controller {
 	public function index()
    	{
 		$info = $this->formationModel->getPupalaireCourses();
+		foreach($info as $row){
+            $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
+        }
 		$data = [
 		    'info' => $info
 		];

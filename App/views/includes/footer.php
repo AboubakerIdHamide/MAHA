@@ -28,7 +28,6 @@
 <!-- To-up Button -->
 <span class="to-top" href="#"><i class="fa fa-chevron-up"></i></span>
 <!-- To-up Button -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.4/swiper-bundle.min.js"></script>
 <script src="<?php echo URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
 <script src="<?php echo URLROOT; ?>/public/js/main.js"></script>
 <script src="<?php echo URLROOT; ?>/public/js/pageFormations.js"></script>

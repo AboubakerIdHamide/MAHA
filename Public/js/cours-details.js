@@ -61,6 +61,7 @@ function hideDropMenu(el){
 // Search Bar 
 let searchForm=document.getElementById("seacrhForm");
     searchIcon=document.getElementById("searchIcon");
+    inputSerch = searchForm.querySelector('input');
 
 searchIcon.addEventListener("click", ()=>{
     searchForm.classList.toggle("hide");
@@ -70,6 +71,14 @@ searchIcon.addEventListener("click", ()=>{
         searchIcon.classList.replace("fa-xmark", "fa-search");
     }
 })
+
+searchForm.onsubmit = (e)=>{
+    let valRech = inputSerch.value;
+    if(!(valRech.length < 1 && valRech.length >200)){
+        window.location.href = `http://localhost/MAHA/pageFormations/rechercheFormations/${valRech}`;
+    }
+    e.preventDefault();
+}
 
 // Window Event
 window.onresize= ()=>{hideNavBar()}

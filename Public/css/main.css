@@ -909,17 +909,9 @@ html::-webkit-scrollbar-thumb{
     position: relative;
 }
 .poplularCourses .container .courses{
-    align-items: center;
-    scroll-behavior: smooth;
-}
-.slide-container{
-    max-width: 1120px;
-    width: 100%;
-    padding: 40px 0;
-}
-.slide-content{
-    margin: 0 40px;
-    overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
 }
 .poplularCourses .container .courses .card_coures{
     border-radius: 10px;
@@ -1078,56 +1070,6 @@ html::-webkit-scrollbar-thumb{
     width: 18px;
     height: 18px;
     margin-right: 5px;
-}
-.swiper-button-next:after, 
-.swiper-button-prev:after {
-    color: var(--color-numb-4);
-    font-size: 50px;
-    font-weight: bold;
-    position: absolute;
-    top: 60%;
-}
-.swiper-horizontal>.swiper-pagination-bullets.swiper-pagination-bullets-dynamic .swiper-pagination-bullet, 
-.swiper-pagination-horizontal.swiper-pagination-bullets.swiper-pagination-bullets-dynamic .swiper-pagination-bullet {
-    height: 8px;
-    transition: .2s transform,.2s left;
-    width: 40px;
-    border-radius: 25px;
-    background: var(--color-numb-4);
-}
-@media(min-width:786px){
-    .swiper-button-next:after, 
-    .swiper-button-prev:after {
-        top: 50%;
-    }
-}
-@media(max-width:786px){
-    .swiper-button-next:after, 
-    .swiper-button-prev:after {
-        top: -130%;
-    }
-}
-@media(min-width:900px){
-    .swiper-button-next:after, 
-    .swiper-button-prev:after {
-        top: -15%;
-    }
-}
-
-@media(max-width:900px){
-    .swiper-button-next:after, 
-    .swiper-button-prev:after {
-        display: none;
-        
-    }
-
-}
-
-@media(max-width:520px){
-    .swiper-button-next:after, 
-    .swiper-button-prev:after {
-        display: none;
-    }
 }
 /* end poplular courses */
 

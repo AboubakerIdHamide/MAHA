@@ -473,3 +473,167 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+
+
+--- 3 Procedures :
+
+-----------------------------------------------------------------------------
+delimiter =;
+create procedure insertItoTableFilterAll(nb int)
+begin 
+	declare i int default 1;
+    declare IdFormation, idCategore, likes, IdFormteur, specialiteId, numbAcht, idLangage, idNiv int default 0;
+    declare prix float default 0;
+    declare imgFormation, categorie, nomFormation, nomFormateur, prenomFormateur, specialite, imgFormateur, langageFormation , niveauFormation varchar(300) default '';
+    declare description text default '';
+    declare dateCreationFormation date;
+    declare duree time;
+    declare cur cursor for (select formations.id_formation as 'IdFormation',
+                                    formations.image_formation as 'imgFormation',
+                                    formations.mass_horaire as 'duree',
+                            		formations.categorie as 'idCategore',
+                                    categories.nom_categorie as 'categorie',
+                                    formations.nom_formation as 'nomFormation',
+                                    formations.prix_formation as 'prix',
+                                    formations.description as 'description',
+                                    formations.likes as 'likes',
+                                    formateurs.id_formateur as 'IdFormteur',
+                                    formateurs.nom_formateur as 'nomFormateur',
+                                    formateurs.prenom_formateur as 'prenomFormateur',
+                                    formateurs.specialiteId as 'specialiteId',
+                                    formateurs.img_formateur as 'imgFormateur',
+                                    date(formations.date_creation_formation) as 'dateCreationFormation',
+                                    formations.id_langue as 'idLangageFormation',
+                                    formations.niveau_formation as 'idNiv'
+                    from formations, formateurs,categories
+                    where formations.id_formateur = formateurs.id_formateur
+                    and categories.id_categorie = formations.categorie
+    );
+	open cur;
+    	while (i<=nb) do 
+        	fetch cur into IdFormation, imgFormation, duree, idCategore, categorie, nomFormation, prix, description, likes, IdFormteur, nomFormateur, prenomFormateur, specialiteId, imgFormateur, dateCreationFormation, idLangage, idNiv;
+            
+            set specialite = (select categories.nom_categorie from categories where categories.id_categorie = specialiteId);
+            set langageFormation = (select langues.nom_langue from langues where langues.id_langue = idLangage);
+            set niveauFormation = (select niveaux.nom_niveau from niveaux where niveaux.id_niveau = idNiv);
+            set numbAcht = (select count(*) from inscriptions where inscriptions.id_formation = IdFormation and inscriptions.id_formateur = IdFormteur);
+           
+            INSERT INTO `tablefilter`(`IdFormation`, `imgFormation`, `duree`, `idCategore`, `categorie`, `nomFormation`, `prix`, `description`, `likes`, `IdFormteur`, `nomFormateur`, `prenomFormateur`, `specialiteId`, `specialite`, `imgFormateur`, `numbAcht`, `dateCreationFormation`, `idLangage`, `langageFormation`, `idNiv`, `niveauFormation`) 
+            VALUES (IdFormation, imgFormation, duree, idCategore, categorie, nomFormation, prix, description, likes, IdFormteur, nomFormateur, prenomFormateur, specialiteId, specialite, imgFormateur, numbAcht, dateCreationFormation, idLangage, langageFormation, idNiv, niveauFormation);
+        set i = i+1;
+        end while;
+    close cur;
+end =;
+-----------------------------------------------------------------------------
+
+delimiter =;
+create procedure insertItoTableFilterRech(nb int, arg varchar(200))
+begin 
+	declare i int default 1;
+    declare IdFormation, idCategore, likes, IdFormteur, specialiteId, numbAcht, idLangage, idNiv int default 0;
+    declare prix float default 0;
+    declare imgFormation, categorie, nomFormation, nomFormateur, prenomFormateur, specialite, imgFormateur, langageFormation , niveauFormation varchar(300) default '';
+    declare description text default '';
+    declare dateCreationFormation date;
+    declare duree time;
+    declare cur cursor for (select formations.id_formation as 'IdFormation',
+                                    formations.image_formation as 'imgFormation',
+                                    formations.mass_horaire as 'duree',
+                            		formations.categorie as 'idCategore',
+                                    categories.nom_categorie as 'categorie',
+                                    formations.nom_formation as 'nomFormation',
+                                    formations.prix_formation as 'prix',
+                                    formations.description as 'description',
+                                    formations.likes as 'likes',
+                                    formateurs.id_formateur as 'IdFormteur',
+                                    formateurs.nom_formateur as 'nomFormateur',
+                                    formateurs.prenom_formateur as 'prenomFormateur',
+                                    formateurs.specialiteId as 'specialiteId',
+                                    formateurs.img_formateur as 'imgFormateur',
+                                    date(formations.date_creation_formation) as 'dateCreationFormation',
+                                    formations.id_langue as 'idLangageFormation',
+                                    formations.niveau_formation as 'idNiv'
+                    from formations, formateurs,categories
+                    where formations.id_formateur = formateurs.id_formateur
+                    and categories.id_categorie = formations.categorie
+                    and (
+                    	categories.nom_categorie like concat('%',arg,'%')
+                    	or formateurs.nom_formateur like concat('%',arg,'%')
+                    	or formations.description like concat('%',arg,'%')
+                    	or formations.nom_formation like concat('%',arg,'%')
+                    	or formateurs.prenom_formateur like concat('%',arg,'%')
+                	)
+    );
+	open cur;
+    	while (i<=nb) do 
+        	fetch cur into IdFormation, imgFormation, duree, idCategore, categorie, nomFormation, prix, description, likes, IdFormteur, nomFormateur, prenomFormateur, specialiteId, imgFormateur, dateCreationFormation, idLangage, idNiv;
+            
+            set specialite = (select categories.nom_categorie from categories where categories.id_categorie = specialiteId);
+            set langageFormation = (select langues.nom_langue from langues where langues.id_langue = idLangage);
+            set niveauFormation = (select niveaux.nom_niveau from niveaux where niveaux.id_niveau = idNiv);
+            set numbAcht = (select count(*) from inscriptions where inscriptions.id_formation = IdFormation and inscriptions.id_formateur = IdFormteur);
+            
+            INSERT INTO `tablefilter`(`IdFormation`, `imgFormation`, `duree`, `idCategore`, `categorie`, `nomFormation`, 							`prix`, `description`, `likes`, `IdFormteur`, `nomFormateur`, `prenomFormateur`, `specialiteId`, 							`specialite`, `imgFormateur`, `numbAcht`, `dateCreationFormation`, `idLangage`, `langageFormation`, `idNiv`, `niveauFormation`) 
+            VALUES (IdFormation, imgFormation, duree, idCategore, categorie, nomFormation, prix, description, likes, IdFormteur, nomFormateur, prenomFormateur, specialiteId, specialite, imgFormateur, numbAcht, dateCreationFormation, idLangage, langageFormation, idNiv, niveauFormation);
+        set i = i+1;
+        end while;
+    close cur;
+end =;
+
+--------------------------------------------------------------------------------------------
+
+delimiter =;
+create procedure insertItoTableFilterFilter(nb int, arg1  varchar(200), arg2 varchar(200))
+begin 
+	declare i int default 1;
+    declare IdFormation, idCategore, likes, IdFormteur, specialiteId, numbAcht, idLangage, idNiv int default 0;
+    declare prix float default 0;
+    declare imgFormation, categorie, nomFormation, nomFormateur, prenomFormateur, specialite, imgFormateur, langageFormation , niveauFormation varchar(300) default '';
+    declare description text default '';
+    declare dateCreationFormation date;
+    declare duree time;
+    declare cur cursor for (select formations.id_formation as 'IdFormation',
+                                    formations.image_formation as 'imgFormation',
+                                    formations.mass_horaire as 'duree',
+                            		formations.categorie as 'idCategore',
+                                    categories.nom_categorie as 'categorie',
+                                    formations.nom_formation as 'nomFormation',
+                                    formations.prix_formation as 'prix',
+                                    formations.description as 'description',
+                                    formations.likes as 'likes',
+                                    formateurs.id_formateur as 'IdFormteur',
+                                    formateurs.nom_formateur as 'nomFormateur',
+                                    formateurs.prenom_formateur as 'prenomFormateur',
+                                    formateurs.specialiteId as 'specialiteId',
+                                    formateurs.img_formateur as 'imgFormateur',
+                                    date(formations.date_creation_formation) as 'dateCreationFormation',
+                                    formations.id_langue as 'idLangageFormation',
+                                    formations.niveau_formation as 'idNiv'
+                    from formations, formateurs,categories
+                    where formations.id_formateur = formateurs.id_formateur
+                    and categories.id_categorie = formations.categorie
+                    and categories.nom_categorie = arg1
+                    and (
+                		formations.nom_formation like concat('%',arg2,'%') 
+                    	or formations.description like concat('%',arg2,'%')
+                	)
+    );
+	open cur;
+    	while (i<=nb) do 
+        	fetch cur into IdFormation, imgFormation, duree, idCategore, categorie, nomFormation, prix, description, likes, IdFormteur, nomFormateur, prenomFormateur, specialiteId, imgFormateur, dateCreationFormation, idLangage, idNiv;
+            
+            set specialite = (select categories.nom_categorie from categories where categories.id_categorie = specialiteId);
+            set langageFormation = (select langues.nom_langue from langues where langues.id_langue = idLangage);
+            set niveauFormation = (select niveaux.nom_niveau from niveaux where niveaux.id_niveau = idNiv);
+            set numbAcht = (select count(*) from inscriptions where inscriptions.id_formation = IdFormation and inscriptions.id_formateur = IdFormteur);
+            
+            INSERT INTO `tablefilter`(`IdFormation`, `imgFormation`, `duree`, `idCategore`, `categorie`, `nomFormation`, 							`prix`, `description`, `likes`, `IdFormteur`, `nomFormateur`, `prenomFormateur`, `specialiteId`, 							`specialite`, `imgFormateur`, `numbAcht`, `dateCreationFormation`, `idLangage`, `langageFormation`, `idNiv`, `niveauFormation`) 
+            VALUES (IdFormation, imgFormation, duree, idCategore, categorie, nomFormation, prix, description, likes, IdFormteur, nomFormateur, prenomFormateur, specialiteId, specialite, imgFormateur, numbAcht, dateCreationFormation, idLangage, langageFormation, idNiv, niveauFormation);
+        set i = i+1;
+        end while;
+    close cur;
+end =;
+------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------

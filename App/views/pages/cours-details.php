@@ -3,10 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>COURS - PHP & MYSQL</title>
+	<title>COURS - <?php echo $data['info']['nomFormation'] ?></title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-	<link rel="stylesheet" href="./css/cours-details.css">
+  <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/cours-details.css" />
 </head>
 <body>
   <!-- Header -->
@@ -45,34 +45,34 @@
     <div class="container mt-3" >
       <div class="row">
         <div class="col-xl-3">
-          <img class="img-fluid" src="./images/thumb.jpg" alt="formation image">
+          <img class="img-fluid" src="<?php echo $data['info']['imgFormation']; ?>" alt="formation image">
         </div>
         <div class="col-xl-7">
           <div class="group d-flex flex-column justify-content-center">
-                <h3 class="title">Complete Intro to SQL & PostgreSQL</h3>
-                <p>Formation catégorie <span>Code</span></p>
+                <h3 class="title"><?php echo $data['info']['nomFormation']; ?></h3>
+                <p>Formation catégorie <span><?php echo $data['info']['categorie']; ?></span></p>
                 <div class="instructor d-flex align-items-center justify-content-between">
                   <div class="d-flex align-items-center gap-2">
-                    <img src="./images/membre.jpg" alt="" class="formateur-img">
+                    <img src="<?php echo $data['info']['imgFormateur']; ?>" alt="" class="formateur-img">
                   <div class="instructor-info">
-                    <h5>Brian Holt</h5>
-                    <p class="specialite mb-0">Full Stack Developer</p>
+                    <h5><?php echo $data['info']['nomFormateur']; ?> <?php echo $data['info']['prenomFormateur']; ?></h5>
+                    <p class="specialite mb-0"><?php echo $data['info']['specialite']; ?></p>
                   </div>
                   </div>
                   <div class="voir-profil d-flex align-items-center gap-2">
-                    <a href="#">Voir Profil</a>
+                    <a href="<?php echo URLROOT."/profilFormateur/index/".$data['info']['IdFormteur']?>">Voir Profil</a>
                   </div>
                 </div>
                 <div class="mt-3 masse-h d-flex flex-row justify-content-between">
-                  <p><i class="fa-solid fa-clock"></i> 7 hours, 20 minutes</p>
-                  <p><i class="fa-solid fa-language"></i> Francais</p>
+                  <p><i class="fa-solid fa-clock"></i> <?php echo $data['info']['duree']; ?></p>
+                  <p><i class="fa-solid fa-language"></i> <?php echo $data['info']['langageFormation']; ?></p>
                 </div>
           </div>
         </div>
           <div class="col-xl-2 align-self-center">
              <div class="info-plus">
                 <div class="text-center mb-1 apprenants-nbr">
-                  <p class="nbr">5,984</p>
+                  <p class="nbr"><?php echo $data['info']['numbAcht']; ?></p>
                   <p>Apprenants</p>
                 </div>
                 <div class="fomation-niveau text-center mb-1">
@@ -83,10 +83,10 @@
 
                     <svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="#E5E5E5" d="M9 4h6v2H9zM23 4h6v2h-6z"></path><circle cx="5" cy="5" r="5" fill="#8887FF"></circle><circle fill="#E5E5E5" cx="19" cy="5" r="5"></circle><circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle></svg>
                   </div>
-                  <p>Niveau Débutant</p>
+                  <p>Niveau <?php echo $data['info']['niveauFormation']; ?></p>
                 </div>
                 <div class="text-center">
-                  <p class="nbr">100</p>
+                  <p class="nbr"><?php echo $data['info']['likes']; ?></p>
                   <p>Likes</p>
                 </div>
               </div>
@@ -116,12 +116,9 @@
             </div>
           </div>
           <div class="col-lg-6 preview-prix">
-            <div class="description-formation pt-2">
-              <p>SQL is a timeless skillset you'll find in nearly every modern application! Using the popular PostgreSQL database, you'll learn to set up, model, and query your data through real-world projects. You'll also understand how to model complex relationships in your data and query data from large datasets.</p>
-            </div>
-            <p class="date-pub">Published: October 3, 2022</p>
+            <p class="date-pub">Published: <?php echo $data['info']['dateCreationFormation']; ?></p>
             <div class="pay pt-3">
-              <h2 class="text-center prix">$105</h2>
+              <h2 class="text-center prix">$ <?php echo $data['info']['prix']; ?></h2>
               <div>
                <div id="paypal-button-container"></div>
               </div>
@@ -143,20 +140,7 @@
         </div>
         <div class="row">
             <div class="col">
-              <p class="desc">Améliorez vos compétences en gestion de projet en compagnie du directeur de projets logiciels Matt Corroboy !
-
-Qu'est-ce qui distingue un bon gestionnaire de projet d'un excellent gestionnaire de projet ? La réponse se résume à une bonne communication et de bons échanges avec les parties prenantes clés d'un projet. Rejoignez Matt dans ce cours où il explique comment mieux comprendre, analyser et gérer les parties prenantes pour assurer la meilleure exécution possible de votre projet.
-
-Avec Matt, vous apprendrez à :
-
-    Mieux aligner les parties prenantes clés d'un projet en les comprenant, elles et leurs besoins
-    Analyser les parties prenantes clés d'un projet pour comprendre leurs besoins individuels
-    Interagir et gérer les parties prenantes pour assurer le succès du projet
-
-Peu importe l'ampleur de votre projet, ce cours vous aidera à optimiser les relations entre vos différentes parties prenantes clés des débuts à l'achèvement de votre projet.
-
-Le cours de Matt s'adresse aux chefs de projets de tous niveaux, mais tous les apprenants sont les bienvenus.</p>
-            </div>
+              <p class="desc"><?php echo $data['info']['description']; ?></div>
           </div>
       </div>
       </section>
@@ -170,7 +154,7 @@ Le cours de Matt s'adresse aux chefs de projets de tous niveaux, mais tous les a
               <div class="container">
                 <div>
                     <h2>Contenu du cours</h2>
-                    <p>50 leçons</p>
+                    <p><?php echo $data['numbVIdeo']['NumbVideo']; ?> leçons</p>
                 </div>
               </div>
             </section> 
@@ -181,46 +165,16 @@ Le cours de Matt s'adresse aux chefs de projets de tous niveaux, mais tous les a
       </section>
       <section class="playlist-formation">
         <div class="container">
+          <?php foreach($data['videos'] as $video) : ?>
           <div class="row mb-2">
-          <div class="col">
-            <div class="lesson d-flex justify-content-between">
-              <span class="lesson-titre">1. Intro to Course and Python</span>
-              <span class="lesson-time">2hr 12min</span>
+            <div class="col">
+              <div class="lesson d-flex justify-content-between">
+                <span class="lesson-titre"><?php echo $video->IdVideo; ?>. <?php echo $video->NomVideo; ?></span>
+                <span class="lesson-time"><?php echo $video->DureeVideo; ?></span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row my-2">
-          <div class="col">
-            <div class="lesson d-flex justify-content-between">
-              <span class="lesson-titre">2. Intro to Course and Python</span>
-              <span class="lesson-time">2hr 12min</span>
-            </div>
-          </div>
-        </div>
-        <div class="row my-2">
-          <div class="col">
-            <div class="lesson d-flex justify-content-between">
-              <span class="lesson-titre">3. Intro to Course and Python</span>
-              <span class="lesson-time">2hr 12min</span>
-            </div>
-          </div>
-        </div>
-        <div class="row my-2">
-          <div class="col">
-            <div class="lesson d-flex justify-content-between">
-              <span class="lesson-titre">4. Intro to Course and Python</span>
-              <span class="lesson-time">2hr 12min</span>
-            </div>
-          </div>
-        </div>
-        <div class="row my-2">
-          <div class="col">
-            <div class="lesson d-flex justify-content-between">
-              <span class="lesson-titre">5. Intro to Course and Python</span>
-              <span class="lesson-time">2hr 12min</span>
-            </div>
-          </div>
-        </div>
+          <?php endforeach; ?>
         </div>
       </section>
     
@@ -257,9 +211,11 @@ Le cours de Matt s'adresse aux chefs de projets de tous niveaux, mais tous les a
 <!-- To-up Button -->
   <!-- Fin Equipe -->
   <script src="jQuery/jquery-3.6.0.min.js"></script>
-  <script src="./js/cours-details.js"></script>
+  <script src="<?php echo URLROOT; ?>/public/js/cours-details.js"></script>
   <!-- Sample PayPal credentials (client-id) are included -->
   <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD&intent=capture&enable-funding=venmo" data-sdk-integration-source="integrationbuilder"></script>
-  <script src="./js/paypal.js"></script>
+  <script src="<?php echo URLROOT; ?>/public/js/main.js"></script>
+  <script src="<?php echo URLROOT; ?>/public/js/cours-details.js"></script>
+  <script src="<?php echo URLROOT; ?>/public/js/paypal.js"></script>
 </body>
 </html>

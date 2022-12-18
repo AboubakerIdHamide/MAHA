@@ -274,4 +274,36 @@ class Video
 		$response = $request->execute();
 		return $response;
 	}
+
+	public function getInfoVideosFormationById($id)
+	{
+		$request = $this->connect->prepare("
+				SELECT videos.id_video as 'IdVideo',
+						videos.nom_video as 'NomVideo',
+						videos.duree_video as 'DureeVideo'
+				FROM videos
+				JOIN formations USING (id_formation)
+				WHERE id_formation = :id_formation");
+
+		$request->bindParam(':id_formation', $id);
+		$request->execute();
+
+		$videos = $request->fetchAll(PDO::FETCH_OBJ);
+		return $videos;
+	}
+
+	public function countVideosFormationById($id)
+	{
+		$request = $this->connect->prepare("
+				SELECT 
+					count(videos.id_formation) as 'NumbVideo'
+				FROM videos
+				JOIN formations USING (id_formation)
+				WHERE id_formation = :id_formation");
+
+		$request->bindParam(':id_formation', $id);
+		$request->execute();
+		$videos = $request->fetch();
+		return $videos;
+	}
 }

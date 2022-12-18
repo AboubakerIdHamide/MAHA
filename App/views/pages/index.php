@@ -148,14 +148,13 @@
     </section>
     <!-- Fin Formation Head -->
     <!-- start poplular courses -->
-    <div class="poplularCourses">
-        <div class="slide-container swiper container">
-            <!-- container courses -->
-            <div class="slide-content">
-            <div class="card-wrapper swiper-wrapper courses">
+    <section class='poplularCourses'>
+        <div class='container'>
+            <div class="courses">
               <?php foreach($data['info'] as $info) : ?>
                 <!-- start card -->
-                <div class="card swiper-slide card_coures">
+                <div class="card_coures">
+                  <a href='<?php echo URLROOT."/pageFormations/coursDetails/".$info->IdFormation?>' style='display: block; text-decoration: none;'>
                     <!-- img formation -->
                     <div class="img">
                         <img src="<?php echo $info->imgFormation; ?>" alt="photo">
@@ -176,31 +175,30 @@
                         <p><?php echo $info->description; ?></p>
                     </div>
                     <div class="footer">
-                        <!-- infotrmation formateur -->
-                        <div class="formateur" onClick='<?php echo URLROOT."/profelFormateur/index/$info->IdFormteur"?>'>
-                            <div class="img_formateur">
-                                <img src="<?php echo $info->imgFormateur; ?>" alt="photo">
+                        <!-- infotrmations formateur -->
+                        <a href='<?php echo URLROOT."/profilFormateur/index/".$info->IdFormteur?>' style='display: block; text-decoration: none; z-index: 10;'>
+                            <div class="formateur">
+                                <div class="img_formateur">
+                                    <img src="<?php echo $info->imgFormateur; ?>" alt="photo">
+                                </div>
+                                <h2><?php echo $info->nomFormateur; ?> <?php echo $info->prenomFormateur; ?></h2>
                             </div>
-                            <h2><?php echo $info->nomFormateur; ?> <?php echo $info->prenomFormateur; ?></h2>
-                        </div>
+                        </a>
                         <!-- informations -->
                         <div class="info">
-                            <div class="etd">30</div>
+                            <div class="etd"><?php echo $info->numbAcht; ?></div>
                             <i class="fa fa-heart" aria-hidden="true"></i>
                             <div class="likes"><?php echo $info->likes; ?></div>
                             <i class="fa fa-users" aria-hidden="true"></i>
                         </div>
                     </div>
+                  </a>
                 </div>
                 <!-- end card -->
               <?php endforeach; ?>
-            </div>
         </div>
-        </div>
-        <div class="swiper-button-next swiper-navBtn"></div>
-        <div class="swiper-button-prev swiper-navBtn"></div>
-        <div class="swiper-pagination"></div>
-    </div>
+      </div>
+    </section>
     <!-- end poplular courses -->
 <!-- Equipe Head -->
     <section class="section-title mt-2" id="equipe">
