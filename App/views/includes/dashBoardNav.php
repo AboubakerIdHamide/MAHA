@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/dashBoardNav.css">
 	<link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/dashboard-formateur.css" />
 	<link rel="stylesheet" href="<?= URLROOT ?>/public/css/videos.css" />
+	<link rel="stylesheet" href="<?= URLROOT ?>/public/css/notifications.css" />
 	<!-- FontFamily -->
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
@@ -23,7 +24,7 @@
 	<!-- Header -->
 	<header>
 		<span id="overlay"></span>
-		<div class="logo" data-user-name="<?=$_SESSION['user']['prenom']?>">
+		<div class="logo" data-user-name="<?= $_SESSION['user']['prenom'] ?>">
 			<img src="<?= $_SESSION['user']['avatar'] ?>" alt="avatar">
 		</div>
 		<nav>
@@ -34,6 +35,17 @@
 			</div>
 
 			<ul class="hide-menu">
+				<li id="notifications" class="justify-content-center">
+					<a href="<?= URLROOT . '/formateurs/notifications' ?>">
+						<i style="font-size:25px;" class="fa-solid fa-bell position-relative">
+							<?php if (isset($data->totalNew) && $data->totalNew != 0) : ?>
+								<span style="font-size: 9px;" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger nbr-notifications">
+									<?= $data->totalNew ?>
+								</span>
+							<?php endif ?>
+						</i>
+					</a>
+				</li>
 				<li id="addnews"><a href="<?= URLROOT . '/formateurs/dashboard' ?>"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a></li>
 				<li id="paiment"><a href="<?= URLROOT . '/formateurs/requestPayment' ?>"><i class=" far fa-credit-card"></i><span>Paiement</span></a></li>
 				<li id="statistics"><a href="#"><i class="fas fa-user-gear"></i><span>Paramètre</span></a></li>

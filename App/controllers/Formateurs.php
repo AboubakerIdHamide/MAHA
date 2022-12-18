@@ -4,13 +4,14 @@ class Formateurs extends Controller
 {
 	public function __construct()
 	{
-		if (!isset($_SESSION['user_id'])) {
+		if (!isset($_SESSION['id_formateur'])) {
 			redirect('users/login');
 			return;
 		}
 		$this->stockedModel = $this->model("Stocked");
 		$this->fomateurModel = $this->model("Formateur");
 		$this->requestPaymentModel = $this->model("requestPayment");
+		$this->notificationModel = $this->model("Notification");
 	}
 
 	public function index()
@@ -41,7 +42,7 @@ class Formateurs extends Controller
 			$requestInfo = json_decode($_POST['data']);
 			if ($this->checkBalance($requestInfo)) {
 				// placer la demande
-				$this->requestPaymentModel->insertRequestPayment($_SESSION['user_id'], $requestInfo->montant);
+				$this->requestPaymentModel->insertRequestPayment($_SESSION['id_formateur'], $requestInfo->montant);
 				echo "votre demande a été placer avec success";
 			}
 		} else {
@@ -63,7 +64,7 @@ class Formateurs extends Controller
 
 	public function getPaymentsHistory()
 	{
-		$requestsPayments = $this->requestPaymentModel->getRequestsOfFormateur($_SESSION['user_id']);
+		$requestsPayments = $this->requestPaymentModel->getRequestsOfFormateur($_SESSION['id_formateur']);
 		echo json_encode($requestsPayments);
 	}
 
@@ -71,5 +72,29 @@ class Formateurs extends Controller
 	{
 		$this->requestPaymentModel->deleteRequest($id_req);
 		echo 'request deleted with success';
+	}
+
+	public function getAllNotifications()
+	{
+		$notifications = $this->notificationModel->getNotificationsOfFormateur($_SESSION['id_formateur']);
+		echo json_encode($notifications);
+	}
+
+	public function notifications()
+	{
+		$nbrNotifications = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
+		$this->view('pages/notifications', $nbrNotifications);
+	}
+
+	public function setStateToSeen($id_notification)
+	{
+		$this->notificationModel->setStateToSeen($id_notification);
+		echo 'DONE!!';
+	}
+
+	public function deleteSeenNotifications()
+	{
+		$this->notificationModel->deleteSeenNotifications();
+		echo 'DONE **';
 	}
 }

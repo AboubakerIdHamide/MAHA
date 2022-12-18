@@ -25,8 +25,11 @@ class Users extends Controller
     public function login()
     {
         if ($this->isLoggedIn()) {
-            redirect('formateurs/dashboard');
-            exit;
+            if ($this->isLoggedIn() == 'formateur') {
+                redirect('formateurs/dashboard');
+            } else {
+                redirect('etudiant/dashboard');
+            }
         }
 
         // Checking If The User Submit
@@ -373,26 +376,27 @@ class Users extends Controller
 
     public function isLoggedIn()
     {
-        if (isset($_SESSION['user_id'])) {
-            return true;
-        } else {
-            return false;
+        if (isset($_SESSION['id_formateur'])) {
+            return 'formateur';
+        } else if (isset($_SESSION['id_etudiant'])) {
+            return 'etudiant';
         }
+        return false;
     }
 
     public function createUserSessios($user)
     {
         if ($user['type'] == 'formateur') {
-            $_SESSION['user_id'] = $user['id_formateur'];
+            $_SESSION['id_formateur'] = $user['id_formateur'];
             $_SESSION['user'] = $user;
             // setting up the image link
-            $_SESSION['user']['avatar']=$this->pcloudFile()->getLink($_SESSION['user']['avatar']);
+            $_SESSION['user']['avatar'] = $this->pcloudFile()->getLink($_SESSION['user']['avatar']);
             redirect('formateurs/dashboard');
         } else {
-            $_SESSION['user_id'] = $user['id_etudiant'];
+            $_SESSION['id_etudiant'] = $user['id_etudiant'];
             $_SESSION['user'] = $user;
             // setting up the image link
-            $_SESSION['user']['avatar']=$this->pcloudFile()->getLink($_SESSION['user']['avatar']);
+            $_SESSION['user']['avatar'] = $this->pcloudFile()->getLink($_SESSION['user']['avatar']);
             redirect('etudiant/dashboard');
         }
     }
@@ -623,5 +627,10 @@ class Users extends Controller
         }
 
         return $data;
+    }
+
+    public function insertComment($ss)
+    {
+        # code...
     }
 }

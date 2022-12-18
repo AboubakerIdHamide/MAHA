@@ -4,7 +4,7 @@ class Formations extends Controller
 {
 	public function __construct()
 	{
-		if (!isset($_SESSION['user_id'])) {
+		if (!isset($_SESSION['id_formateur'])) {
 			redirect('users/login');
 			return;
 		}
@@ -24,7 +24,7 @@ class Formations extends Controller
 	private function validFormation($data)
 	{
 		$id_formation = $data['id_formation'];
-		if (empty($this->formationModel->getFormation($id_formation, $_SESSION['user_id']))) {
+		if (empty($this->formationModel->getFormation($id_formation, $_SESSION['id_formateur']))) {
 			return 'This Course is not yours !!!';
 		}
 
@@ -84,7 +84,7 @@ class Formations extends Controller
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$data = [
-				"id_formateur"		=> $_SESSION['user_id'],
+				"id_formateur"		=> $_SESSION['id_formateur'],
 				"nom_formation"		=> $_POST["nom"],
 				"prix_formation"	=> $_POST["prix"],
 				"niveau_formation"	=> $_POST["niveau"],
@@ -107,16 +107,16 @@ class Formations extends Controller
 			$data = $this->uploadImage($data);
 
 			// insert data
-			if($data["error"]==false){
-				$formationId= $this->formationModel->insertFormation($data);
-				if($formationId){
-					foreach($data["videosCollcetion"] as $video){
-						$videoData=[
-							"Idformation"=>$formationId,
-							"nomVideo"=>$video->name,
-							"duree"=>$video->duree,
-							"url"=>$video->file_id,
-							"desc"=>"discribe this video or add a ressources !",
+			if ($data["error"] == false) {
+				$formationId = $this->formationModel->insertFormation($data);
+				if ($formationId) {
+					foreach ($data["videosCollcetion"] as $video) {
+						$videoData = [
+							"Idformation" => $formationId,
+							"nomVideo" => $video->name,
+							"duree" => $video->duree,
+							"url" => $video->file_id,
+							"desc" => "discribe this video or add a ressources !",
 						];
 						$this->videoModel->insertVideo($videoData);
 					}
@@ -143,7 +143,7 @@ class Formations extends Controller
 	public function addVideo($idFormation = '')
 	{
 		// check the Id if exists
-		$formationData = $this->formationModel->getFormation($idFormation, $_SESSION['user_id']);
+		$formationData = $this->formationModel->getFormation($idFormation, $_SESSION['id_formateur']);
 		if (empty($idFormation) || empty($formationData)) {
 			redirect("formateurs/index");
 		}
@@ -180,13 +180,13 @@ class Formations extends Controller
 	{
 		if (isset($_POST['id_video'])) {
 			// delete video in pcloud and our dataBase
-			$videoDataToDelete=$this->videoModel->getVideo($_SESSION['id_formation'], $_POST['id_video']);
-			$res=$this->videoModel->deteleVideo($_SESSION['id_formation'], $_POST['id_video']);
-			if($res){
+			$videoDataToDelete = $this->videoModel->getVideo($_SESSION['id_formation'], $_POST['id_video']);
+			$res = $this->videoModel->deteleVideo($_SESSION['id_formation'], $_POST['id_video']);
+			if ($res) {
 				$this->pcloudFile()->delete(intval($videoDataToDelete["url_video"]));
 				echo 'Le Video a ete supprimer avec success !!!';
 				flash('deteleVideo', 'Le Video a ete supprimer avec success !!!');
-			}else{
+			} else {
 				echo 'Une erreur ce produit lors de la suppression !!!';
 				flash('deteleVideo', 'Une erreur ce produit lors de la suppression !!!');
 			}
@@ -195,7 +195,7 @@ class Formations extends Controller
 
 	public function isLoggedIn()
 	{
-		if (isset($_SESSION['user_id']))
+		if (isset($_SESSION['id_formateur']))
 			return true;
 		return false;
 	}
@@ -278,7 +278,7 @@ class Formations extends Controller
 	public function videos(int $id_formation)
 	{
 		// check if this formateur has this formation.
-		$hasFormation = $this->formationModel->getFormation($id_formation, $_SESSION['user_id']);
+		$hasFormation = $this->formationModel->getFormation($id_formation, $_SESSION['id_formateur']);
 		if (!empty($hasFormation)) {
 			$data = $this->videoModel->getVideosOfFormation($id_formation);
 			if (!empty($data)) {
@@ -293,7 +293,7 @@ class Formations extends Controller
 				$this->view('formateur/videos', $data);
 			} else
 				flash("formationVide", "Votre cours ne contient aucune vidéo, ajoutez des vidéos", "alert alert-info");
-				redirect("formations/addVideo/".$id_formation);
+			redirect("formations/addVideo/" . $id_formation);
 		} else {
 			flash("formationNotExists", "Cette formation n`existe pas", "alert alert-info");
 			redirect("formateurs/index");
