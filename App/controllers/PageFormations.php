@@ -10,6 +10,7 @@ class PageFormations extends Controller
         $this->inscriptionModel = $this->model("Inscription");
         $this->stockedModel = $this->model("Stocked");
         $this->videoModel = $this->model("Video");
+        $this->previewModel = $this->model("Previews");
     }
     public function index()
     {
@@ -52,10 +53,13 @@ class PageFormations extends Controller
         $info['niveauFormation'] = $this->stockedModel->getLevelById($info['IdNiv'])['nom_niveau'];
         $info['langageFormation'] = $this->stockedModel->getLangueById($info['IdLang'])['nom_langue'];
         $info['specialite'] = $this->stockedModel->getCategorieById($info['specialiteId'])['nom_categorie'];
+        $previewId = $this->previewModel->getPreviewVideo($info['IdFormation'])->url_video;
+        $previewUrl = $this->pcloudFile()->getLink($previewId);
         $data = [
             'info' => $info,
             'videos' => $videos,
-            'numbVIdeo' => $numVideos
+            'numbVIdeo' => $numVideos,
+            'previewVideo' => $previewUrl
         ];
         $this->view("pages/cours-details", $data);
     }

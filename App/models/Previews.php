@@ -38,6 +38,21 @@ class Previews
         return $preview;
     }
 
+    public function getPreviewVideo($id_formation)
+    {
+        $request = $this->connect->prepare("
+            SELECT  
+                url_video
+            FROM previews p
+            JOIN videos USING (id_video)
+            WHERE p.id_formation = :id_formation
+        ");
+        $request->bindParam(':id_formation', $id_formation);
+        $request->execute();
+        $previewVideo = $request->fetch(PDO::FETCH_OBJ);
+        return $previewVideo;
+    }
+
     public function updatePreview($id_video, $id_formation)
     {
         $request = $this->connect->prepare("
