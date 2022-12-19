@@ -628,9 +628,4 @@ class Users extends Controller
 
         return $data;
     }
-
-    public function insertComment($ss)
-    {
-        # code...
-    }
 }
