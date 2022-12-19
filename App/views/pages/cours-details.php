@@ -13,35 +13,34 @@
 <body>
   <!-- Header -->
   <header>
-    <div class="loding-bar"></div>
-    <div class="container">
-      <h1 class="logo"><a href="#">M<span>A</span>H<span>A</span></a></h1>
-      <div class="burger-icon" id="menuBtn">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <ul id="navBarUl" class="hide">
-        <li><a href="#landing">Accueil</a></li>
-        <li><a href="#catalogue">Catalogue</a></li>
-        <li class="menu-drop-down">
-          <span id="dropMenu">Autre <i class='fa fa-chevron-down'></i></span>
-          <ul id="droppedMenu" class="hide">
-            <li><a href="#">S'inscrire</a></li>
-            <li><a href="#popular">Les Plus Populaires</a></li>
-            <li><a href="#equipe">Notre équipe </a></li>
-            <li><a href="#contact">Contactez-Nous</a></li>
-            <li><a href="#">Formations</a></li>
-          </ul>
-        </li>
-        <li class="search-bar">
-          <i class="fa fa-search" id="searchIcon"></i>
-          <form action="" class="hide" id="seacrhForm"><input type="text"></form>
-        </li>
-        <li class="sign-in"><a href="#">Se Connecter</a></li>
-      </ul>
-    </div>
-  </header>
+        <div class="loding-bar"></div>
+        <div class="container">
+            <h1 class="logo"><a href="<?php echo URLROOT . "/pages/index" ?>">M<span>A</span>H<span>A</span></a></h1>
+            <div class="burger-icon" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul id="navBarUl" class="hide">
+                <li><a href="<?php echo URLROOT . "/#catalogue" ?>">Catalogue</a></li>
+                <li><a href="<?php echo URLROOT . "/pageFormations/" ?>">Formations</a></li>
+                <li class="menu-drop-down">
+                    <span id="dropMenu">Autre <i class='fa fa-chevron-down'></i></span>
+                    <ul id="droppedMenu" class="hide">
+                        <li><a href="<?php echo URLROOT . "/users/register" ?>">S'inscrire</a></li>
+                        <li><a href="<?php echo URLROOT . "/#popular" ?>">Les Plus Populaires</a></li>
+                        <li><a href="<?php echo URLROOT . "/#equipe" ?>">Notre équipe </a></li>
+                        <li><a href="<?php echo URLROOT . "/#contact" ?>">Contactez-Nous</a></li>
+                    </ul>
+                </li>
+                <li class="search-bar">
+                    <i class="fa fa-search" id="searchIcon"></i>
+                    <form action="" class="hide" id="seacrhForm"><input type="text"></form>
+                </li>
+                <li class="sign-in"><a href="<?php echo URLROOT . "/users/login" ?>">Se Connecter</a></li>
+            </ul>
+        </div>
+    </header>
   <!-- Fin Header -->
   <section class="media-header">
     <div class="container mt-3">
