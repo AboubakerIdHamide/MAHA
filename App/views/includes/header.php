@@ -30,8 +30,8 @@
                 <span></span>
             </div>
             <ul id="navBarUl" class="hide">
-                <li><a href="#landing">Accueil</a></li>
                 <li><a href="#catalogue">Catalogue</a></li>
+                <li><a href="#">Formations</a></li>
                 <li class="menu-drop-down">
                     <span id="dropMenu">Autre <i class='fa fa-chevron-down'></i></span>
                     <ul id="droppedMenu" class="hide">
@@ -39,7 +39,6 @@
                         <li><a href="#popular">Les Plus Populaires</a></li>
                         <li><a href="#equipe">Notre équipe </a></li>
                         <li><a href="#contact">Contactez-Nous</a></li>
-                        <li><a href="#">Formations</a></li>
                     </ul>
                 </li>
                 <li class="search-bar">

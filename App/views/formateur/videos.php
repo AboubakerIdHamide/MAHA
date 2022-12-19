@@ -2,7 +2,7 @@
 	<main class="container my-5 ps-md-5">
 		<div class="row mb-3 align-items-center ms-md-3 ms-xl-0 header">
 			<div class="col-2 col-md-2 col-lg-1">
-				<a href="<?= URLROOT ?>/formateur/dashboard"><i class="fas fa-chevron-left go-back rounded"></i></a>
+				<a href="<?= URLROOT ?>/formateurs/dashboard"><i class="fas fa-chevron-left go-back rounded"></i></a>
 			</div>
 			<div class="col-6 col-md-7 col-lg-9">
 				<h1><?= $data[0]->nom_formation ?></h1>
