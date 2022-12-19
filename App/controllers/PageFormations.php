@@ -1,7 +1,6 @@
 <?php
-
-class PageFormations extends Controller
-{
+	
+class PageFormations extends Controller {
     public function __construct()
     {
         $this->fomateurModel = $this->model("Formateur");
@@ -10,9 +9,8 @@ class PageFormations extends Controller
         $this->inscriptionModel = $this->model("Inscription");
         $this->stockedModel = $this->model("Stocked");
         $this->videoModel = $this->model("Video");
-        $this->previewModel = $this->model("Previews");
     }
-    public function index()
+	public function index()
     {
         $langages = $this->stockedModel->getAllLangues();
         $nivaux = $this->stockedModel->getAllLevels();
@@ -24,44 +22,43 @@ class PageFormations extends Controller
         $offset = $dataPages['offset'];
         $totalPages = $dataPages['total_pages'];
 
-        $this->formationModel->insertIntoTableFilter($type = 'all', $numbFormations['numbFormations'], $arg1 = '', $arg2 = '');
+        $this->formationModel->insertIntoTableFilter($type='all', $numbFormations['numbFormations'], $arg1='', $arg2='');
 
         $info = $this->formationModel->getPlusPopilairesFormations($offset);
-        foreach ($info as $row) {
+        foreach($info as $row){
             $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
+            $row->imgFormateur=$this->pcloudFile()->getLink($row->imgFormateur);
+			$row->imgFormation=$this->pcloudFile()->getLink($row->imgFormation);
         }
         $data = [
             'nivaux' => $nivaux,
             'langages' => $langages,
-            'numbFormations' => $numbFormations['numbFormations'],
+            'numbFormations'=>$numbFormations['numbFormations'],
             'info' => $info,
-            'pageno' => $pageno,
-            'totalPages' => $totalPages
+            'pageno'=>$pageno,
+            'totalPages'=>$totalPages
         ];
         $this->view("pages/pageFormations", $data);
     }
 
-    public function coursDetails($id = 1)
-    {
-
+    public function coursDetails($id= 1){
+        
         $info = $this->formationModel->getFormationById($id);
         $videos = $this->videoModel->getInfoVideosFormationById($id);
         $numVideos = $this->videoModel->countVideosFormationById($id);
-        $info['imgFormateur'] = $this->pcloudFile()->getLink($info['imgFormateur']);
-        $info['imgFormation'] = $this->pcloudFile()->getLink($info['imgFormation']);
-        $info['numbAcht'] = $this->inscriptionModel->countApprenantsOfFormation($info['IdFormteur'], $info['IdFormation'])['total_apprenants'];
+        $info['numbAcht'] = $this->inscriptionModel->countApprenantsOfFormation($info['IdFormteur'] , $info['IdFormation'])['total_apprenants'];
         $info['niveauFormation'] = $this->stockedModel->getLevelById($info['IdNiv'])['nom_niveau'];
         $info['langageFormation'] = $this->stockedModel->getLangueById($info['IdLang'])['nom_langue'];
         $info['specialite'] = $this->stockedModel->getCategorieById($info['specialiteId'])['nom_categorie'];
-        $previewId = $this->previewModel->getPreviewVideo($info['IdFormation'])->url_video;
-        $previewUrl = $this->pcloudFile()->getLink($previewId);
+        $info['imgFormateur']=$this->pcloudFile()->getLink($info['imgFormateur']);
+        $info['imgFormation']=$this->pcloudFile()->getLink($info['imgFormation']);
         $data = [
             'info' => $info,
             'videos' => $videos,
-            'numbVIdeo' => $numVideos,
-            'previewVideo' => $previewUrl
+            'numbVIdeo'=>$numVideos
         ];
         $this->view("pages/cours-details", $data);
+
     }
 
     public function rechercheFormations($valRech = '')
@@ -69,21 +66,21 @@ class PageFormations extends Controller
         $langages = $this->stockedModel->getAllLangues();
         $nivaux = $this->stockedModel->getAllLevels();
 
-        $errs = false;
-        // ================  Valide Valeur de Recherche  ================
-        $arrVal = str_split($valRech);
-        $newArrVal = [];
-        foreach ($arrVal as $car) {
-            if (preg_match('/[a-zA-Z]/', $car) == 1) {
-                array_push($newArrVal, $car);
-            }
+        $errs= false;
+       // ================  Valide Valeur de Recherche  ================
+       $arrVal = str_split($valRech);
+       $newArrVal = [];
+       foreach($arrVal as $car){            
+           if(preg_match('/[a-zA-Z]/', $car) == 1){
+               array_push($newArrVal, $car);
+           }
+       }
+       $valRecherche = implode($newArrVal);
+       // ================  Valide Valeur de Recherche  ================
+        if(strlen($valRecherche)>200 || strlen($valRecherche)<1){
+            $errs= true;
         }
-        $valRecherche = implode($newArrVal);
-        // ================  Valide Valeur de Recherche  ================
-        if (strlen($valRecherche) > 200 || strlen($valRecherche) < 1) {
-            $errs = true;
-        }
-        if ($errs == false) {
+        if ($errs == false){
             $numbFormations = $this->formationModel->countFormationsRech($valRecherche);
 
             $dataPages = $this->pagenition($numbFormations['numbFormations']);
@@ -92,41 +89,43 @@ class PageFormations extends Controller
             $offset = $dataPages['offset'];
             $totalPages = $dataPages['total_pages'];
 
-            if ($numbFormations['numbFormations'] == 0) {
+            if ($numbFormations['numbFormations'] == 0){
                 $this->formationModel->deleteFromTableFilter();
                 $data = [
                     'nivaux' => $nivaux,
                     'langages' => $langages,
-                    'numbFormations' => 0,
-                    'info' => 'Aucun Formations'
+                    'numbFormations'=>0,
+                    'info'=>'Aucun Formations'
                 ];
-
+    
                 $this->view("pages/pageFormations", $data);
-            } else {
-                $this->formationModel->insertIntoTableFilter($type = 'rech', $numbFormations['numbFormations'], $valRecherche, $arg2 = '');
+            }else{     
+                $this->formationModel->insertIntoTableFilter($type='rech', $numbFormations['numbFormations'], $valRecherche, $arg2='');
                 $formations = $this->formationModel->getFormationsByValRech($valRecherche, $offset);
-                foreach ($formations as $row) {
+                foreach($formations as $row){
                     $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
+                    $row->imgFormateur=$this->pcloudFile()->getLink($row->imgFormateur);
+                    $row->imgFormation=$this->pcloudFile()->getLink($row->imgFormation);
                 }
                 $data = [
                     'nivaux' => $nivaux,
                     'langages' => $langages,
-                    'numbFormations' => $numbFormations['numbFormations'],
-                    'info' => $formations,
-                    'pageno' => $pageno,
-                    'totalPages' => $totalPages
+                    'numbFormations'=>$numbFormations['numbFormations'],
+                    'info'=>$formations ,
+                    'pageno'=>$pageno,
+                    'totalPages'=>$totalPages
                 ];
-
+    
                 $this->view("pages/pageFormations", $data);
-            }
-        } else {
+            }    
+        }else{
             $this->formationModel->deleteFromTableFilter();
 
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
-                'numbFormations' => 0,
-                'info' => 'Aucun Formations'
+                'numbFormations'=>0,
+                'info'=>'Aucun Formations'
             ];
 
             $this->view("pages/pageFormations", $data);
@@ -146,31 +145,33 @@ class PageFormations extends Controller
         $offset = $dataPages['offset'];
         $totalPages = $dataPages['total_pages'];
 
-        if ($numbFormations['numbFormations'] == 0) {
+        if ($numbFormations['numbFormations'] == 0){
             $this->formationModel->deleteFromTableFilter();
 
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
-                'numbFormations' => 0,
-                'info' => 'Aucun Formations'
+                'numbFormations'=>0,
+                'info'=>'Aucun Formations'
             ];
 
             $this->view("pages/pageFormations", $data);
-        } else {
-            $this->formationModel->insertIntoTableFilter($type = 'filter', $numbFormations['numbFormations'], $cat, $choi);
+        }else{
+            $this->formationModel->insertIntoTableFilter($type='filter', $numbFormations['numbFormations'], $cat, $choi);
 
             $info = $this->formationModel->getFormationsByFilter($cat, $choi, $offset);
-            foreach ($info as $row) {
+            foreach($info as $row){
                 $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
+                $row->imgFormateur=$this->pcloudFile()->getLink($row->imgFormateur);
+                $row->imgFormation=$this->pcloudFile()->getLink($row->imgFormation);
             }
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
-                'numbFormations' => $numbFormations['numbFormations'],
+                'numbFormations'=>$numbFormations['numbFormations'],
                 'info' => $info,
-                'pageno' => $pageno,
-                'totalPages' => $totalPages
+                'pageno'=>$pageno,
+                'totalPages'=>$totalPages
             ];
             $this->view("pages/pageFormations", $data);
         }
@@ -188,33 +189,36 @@ class PageFormations extends Controller
         $offset = $dataPages['offset'];
         $totalPages = $dataPages['total_pages'];
 
-        if ($numbFormations['numbFormations'] == 0) {
+        if ($numbFormations['numbFormations'] == 0){
             $this->formationModel->deleteFromTableFilter();
 
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
-                'numbFormations' => 0,
-                'info' => 'Aucun Formations'
+                'numbFormations'=>0,
+                'info'=>'Aucun Formations'
             ];
 
             $this->view("pages/pageFormations", $data);
-        } else {
-            $this->formationModel->insertIntoTableFilter($type = 'all', $numbFormations['numbFormations'], $arg1 = '', $arg2 = '');
+        }else{
+            $this->formationModel->insertIntoTableFilter($type='all', $numbFormations['numbFormations'], $arg1='', $arg2='');
             $info = $this->formationModel->getPlusPopilairesFormations($offset);
-            foreach ($info as $row) {
+            foreach($info as $row){
                 $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
+                $row->imgFormateur=$this->pcloudFile()->getLink($row->imgFormateur);
+                $row->imgFormation=$this->pcloudFile()->getLink($row->imgFormation);
             }
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
-                'numbFormations' => $numbFormations['numbFormations'],
+                'numbFormations'=>$numbFormations['numbFormations'],
                 'info' => $info,
-                'pageno' => $pageno,
-                'totalPages' => $totalPages
+                'pageno'=>$pageno,
+                'totalPages'=>$totalPages
             ];
             $this->view("pages/pageFormations", $data);
         }
+        
     }
 
     public function plusFormationsAmais()
@@ -229,34 +233,37 @@ class PageFormations extends Controller
         $offset = $dataPages['offset'];
         $totalPages = $dataPages['total_pages'];
 
-        if ($numbFormations['numbFormations'] == 0) {
+        if ($numbFormations['numbFormations'] == 0){
             $this->formationModel->deleteFromTableFilter();
 
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
-                'numbFormations' => 0,
-                'info' => 'Aucun Formations'
+                'numbFormations'=>0,
+                'info'=>'Aucun Formations'
             ];
 
             $this->view("pages/pageFormations", $data);
-        } else {
-            $this->formationModel->insertIntoTableFilter($type = 'all', $numbFormations['numbFormations'], $arg1 = '', $arg2 = '');
+        }else{
+            $this->formationModel->insertIntoTableFilter($type='all', $numbFormations['numbFormations'], $arg1='', $arg2='');
 
             $info = $this->formationModel->getPlusFormationsAmais($offset);
-            foreach ($info as $row) {
+            foreach($info as $row){
                 $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
+                $row->imgFormateur=$this->pcloudFile()->getLink($row->imgFormateur);
+                $row->imgFormation=$this->pcloudFile()->getLink($row->imgFormation);
             }
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
-                'numbFormations' => $numbFormations['numbFormations'],
+                'numbFormations'=>$numbFormations['numbFormations'],
                 'info' => $info,
-                'pageno' => $pageno,
-                'totalPages' => $totalPages
+                'pageno'=>$pageno,
+                'totalPages'=>$totalPages
             ];
             $this->view("pages/pageFormations", $data);
         }
+        
     }
 
     public function plusFormationsAchter()
@@ -271,34 +278,36 @@ class PageFormations extends Controller
         $offset = $dataPages['offset'];
         $totalPages = $dataPages['total_pages'];
 
-        if ($numbFormations['numbFormations'] == 0) {
+        if ($numbFormations['numbFormations'] == 0){
             $this->formationModel->deleteFromTableFilter();
 
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
-                'numbFormations' => 0,
-                'info' => 'Aucun Formations'
+                'numbFormations'=>0,
+                'info'=>'Aucun Formations'
             ];
 
             $this->view("pages/pageFormations", $data);
-        } else {
-            $this->formationModel->insertIntoTableFilter($type = 'all', $numbFormations['numbFormations'], $arg1 = '', $arg2 = '');
+        }else{
+            $this->formationModel->insertIntoTableFilter($type='all', $numbFormations['numbFormations'], $arg1='', $arg2='');
 
             $info = $this->formationModel->getPlusFormationsAchter($offset);
-            foreach ($info as $row) {
+            foreach($info as $row){
                 $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
+                $row->imgFormateur=$this->pcloudFile()->getLink($row->imgFormateur);
+                $row->imgFormation=$this->pcloudFile()->getLink($row->imgFormation);
             }
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
-                'numbFormations' => $numbFormations['numbFormations'],
+                'numbFormations'=>$numbFormations['numbFormations'],
                 'info' => $info,
-                'pageno' => $pageno,
-                'totalPages' => $totalPages
+                'pageno'=>$pageno,
+                'totalPages'=>$totalPages
             ];
             $this->view("pages/pageFormations", $data);
-        }
+        } 
     }
 
     public function formationsByLangage($lang = '')
@@ -313,30 +322,33 @@ class PageFormations extends Controller
         $offset = $dataPages['offset'];
         $totalPages = $dataPages['total_pages'];
 
-        if ($numbFormations['numbFormations'] == 0) {
+        if ($numbFormations['numbFormations'] == 0){
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
-                'numbFormations' => 0,
-                'info' => 'Aucun Formations'
+                'numbFormations'=>0,
+                'info'=>'Aucun Formations'
             ];
 
             $this->view("pages/pageFormations", $data);
-        } else {
+        }else{
             $info = $this->formationModel->getFormationsByLangage($lang, $offset);
-            foreach ($info as $row) {
+            foreach($info as $row){
                 $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
+                $row->imgFormateur=$this->pcloudFile()->getLink($row->imgFormateur);
+                $row->imgFormation=$this->pcloudFile()->getLink($row->imgFormation);
             }
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
-                'numbFormations' => $numbFormations['numbFormations'],
+                'numbFormations'=>$numbFormations['numbFormations'],
                 'info' => $info,
-                'pageno' => $pageno,
-                'totalPages' => $totalPages
+                'pageno'=>$pageno,
+                'totalPages'=>$totalPages
             ];
             $this->view("pages/pageFormations", $data);
         }
+       
     }
 
     public function formationsByNivau($niv = '')
@@ -351,28 +363,30 @@ class PageFormations extends Controller
         $offset = $dataPages['offset'];
         $totalPages = $dataPages['total_pages'];
 
-        if ($numbFormations['numbFormations'] == 0) {
+        if ($numbFormations['numbFormations'] == 0){
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
-                'numbFormations' => 0,
-                'info' => 'Aucun Formations'
+                'numbFormations'=>0,
+                'info'=>'Aucun Formations'
             ];
 
             $this->view("pages/pageFormations", $data);
-        } else {
+        }else{
             $info = $this->formationModel->getFormationsByNivau($niv, $offset);
-            foreach ($info as $row) {
+            foreach($info as $row){
                 $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
+                $row->imgFormateur=$this->pcloudFile()->getLink($row->imgFormateur);
+                $row->imgFormation=$this->pcloudFile()->getLink($row->imgFormation);
             }
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
-                'numbFormations' => $numbFormations['numbFormations'],
+                'numbFormations'=>$numbFormations['numbFormations'],
                 'info' => $info
             ];
             $this->view("pages/pageFormations", $data);
-        }
+        } 
     }
 
     public function formationsByDuree($deb = '', $fin = '')
@@ -388,34 +402,35 @@ class PageFormations extends Controller
         $totalPages = $dataPages['total_pages'];
 
 
-        if ($numbFormations['numbFormations'] == 0) {
+        if ($numbFormations['numbFormations'] == 0){
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
-                'numbFormations' => 0,
-                'info' => 'Aucun Formations'
+                'numbFormations'=>0,
+                'info'=>'Aucun Formations'
             ];
 
             $this->view("pages/pageFormations", $data);
-        } else {
+        }else{
             $info = $this->formationModel->getFormationsByDuree($deb, $fin, $offset);
-            foreach ($info as $row) {
+            foreach($info as $row){
                 $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
+                $row->imgFormateur=$this->pcloudFile()->getLink($row->imgFormateur);
+                $row->imgFormation=$this->pcloudFile()->getLink($row->imgFormation);
             }
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
-                'numbFormations' => $numbFormations['numbFormations'],
+                'numbFormations'=>$numbFormations['numbFormations'],
                 'info' => $info,
-                'pageno' => $pageno,
-                'totalPages' => $totalPages
-            ];
+                'pageno'=>$pageno,
+                'totalPages'=>$totalPages
+            ]; 
             $this->view("pages/pageFormations", $data);
-        }
+        }  
     }
 
-    public function pagenition($num)
-    {
+    public function pagenition($num){
 
         if (isset($_GET['pageno'])) {
             $pageno = $_GET['pageno'];
@@ -424,15 +439,15 @@ class PageFormations extends Controller
         }
 
         $no_of_records_per_page = 10;
-        $offset = ($pageno - 1) * $no_of_records_per_page;
+        $offset = ($pageno-1) * $no_of_records_per_page;
 
-        $total_pages = ceil($num / $no_of_records_per_page);
+        $total_pages = ceil($num/$no_of_records_per_page);
 
 
-        $data = [
-            'pageno' => $pageno,
-            'offset' => $offset,
-            'total_pages' => $total_pages
+        $data=[
+            'pageno'=>$pageno,
+            'offset'=>$offset,
+            'total_pages'=>$total_pages
         ];
         return $data;
     }
