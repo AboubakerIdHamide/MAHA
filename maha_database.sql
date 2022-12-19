@@ -476,6 +476,32 @@ COMMIT;
 
 
 
+----------------- Table Filter -----------------
+
+create table tablefilter(
+	IdFormation int,
+    imgFormation varchar(200),
+    duree time,
+    idCategore int,
+    categorie varchar(50),
+    nomFormation varchar(100),
+    prix float,
+    description text,
+    likes int,
+    IdFormteur int,
+    nomFormateur varchar(50),
+    prenomFormateur varchar(50),
+    specialiteId int,
+    specialite varchar(50),
+    imgFormateur varchar(200),
+    numbAcht int,
+    dateCreationFormation date,
+    idLangage int,
+    langageFormation varchar(50),
+    idNiv int,
+    niveauFormation varchar(50)
+);
+
 
 --- 3 Procedures :
 
