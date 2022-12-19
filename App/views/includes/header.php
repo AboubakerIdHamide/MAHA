@@ -31,7 +31,7 @@
             </div>
             <ul id="navBarUl" class="hide">
                 <li><a href="#catalogue">Catalogue</a></li>
-                <li><a href="#">Formations</a></li>
+                <li><a href="<?php echo URLROOT . "/pageFormations/" ?>">Formations</a></li>
                 <li class="menu-drop-down">
                     <span id="dropMenu">Autre <i class='fa fa-chevron-down'></i></span>
                     <ul id="droppedMenu" class="hide">
