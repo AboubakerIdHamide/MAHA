@@ -90,29 +90,52 @@ class Formateur
 		return $formateur;
 	}
 
-	public function updateFormateur($dataFormateur)
-	{
+	public function updateFormateur($dataFormateur){
 		$request = $this->connect->prepare("
-								UPDATE formateurs
-								SET nom_formateur = :nom,
-								 	prenom_formateur = :prenom, 
-								 	email_formateur = :email, 
-								 	mot_de_passe = :mdp, 
-								 	img_formateur = :img, 
-								 	tel_formateur = :tel 
-								WHERE id_formateur = :id");
+							UPDATE formateurs
+							SET nom_formateur = :nom,
+								prenom_formateur = :prenom, 
+								tel_formateur = :tel,
+								biography = :bio,
+								specialiteId= :specialite,
+								mot_de_passe = :mdp
+							WHERE id_formateur = :id");
 
 		$request->bindParam(':nom', $dataFormateur['nom']);
 		$request->bindParam(':prenom', $dataFormateur['prenom']);
-		$request->bindParam(':email', $dataFormateur['email']);
-		$request->bindParam(':img', $dataFormateur['img']);
 		$request->bindParam(':tel', $dataFormateur['tel']);
-		$request->bindParam(':mdp', $dataFormateur['mdp']);
+		$request->bindParam(':bio', $dataFormateur['bio']);
+		$request->bindParam(':specialite', $dataFormateur['specId']);
+		$request->bindParam(':mdp', $dataFormateur['n_mdp']);
 		$request->bindParam(':id', $dataFormateur['id']);
+		$response = $request->execute();
+		return $response;
+	}
 
+	public function changeImg($img, $id){
+		$request = $this->connect->prepare("
+							UPDATE formateurs
+							SET image_formation = :img
+							WHERE id_formateur = :id");
+		
+		$request->bindParam(':img', $img);
+		$request->bindParam(':id', $id);
 		$response = $request->execute();
 
 		return $response;
+	}
+	
+	public function getMDPFormateurById($id){
+		$request = $this->connect->prepare("
+				SELECT formateurs.mot_de_passe as 'mdp'
+				FROM  formateurs
+				WHERE id_formateur = :id");
+
+		$request->bindParam(':id', $id);
+
+		$response = $request->execute();
+		$mdp = $request->fetch();
+		return $mdp;
 	}
 
 	public function editFormateur($dataFormateur)

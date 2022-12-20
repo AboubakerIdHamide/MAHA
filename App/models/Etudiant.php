@@ -100,30 +100,68 @@ class Etudiant
 	}
 
 
-	public function updateEtudiant($dataEtudiant)
+		public function updateEtudiant($dataEtudiant)
 	{
 		$request = $this->connect->prepare("
 								UPDATE etudiants
 								SET nom_etudiant = :nom,
 								 	prenom_etudiant = :prenom, 
-								 	email_etudiant = :email, 
 								 	mot_de_passe = :mdp, 
-								 	img_etudiant = :img, 
-								 	tel_etudiant = :tel 
+								 	tel_etudiant = :tel
 								WHERE id_etudiant = :id");
 
 		$request->bindParam(':nom', $dataEtudiant['nom']);
 		$request->bindParam(':prenom', $dataEtudiant['prenom']);
-		$request->bindParam(':email', $dataEtudiant['email']);
-		$request->bindParam(':img', $dataEtudiant['img']);
 		$request->bindParam(':tel', $dataEtudiant['tel']);
-		$request->bindParam(':mdp', $dataEtudiant['mdp']);
+		$request->bindParam(':mdp', $dataEtudiant['n_mdp']);
 		$request->bindParam(':id', $dataEtudiant['id']);
 
 		$response = $request->execute();
 
 		return $response;
 	}
+
+	public function changeImg($img, $id){
+		$request = $this->connect->prepare("
+							UPDATE etudiants
+							SET img_etudiant = :img
+							WHERE id_etudiant = :id");
+		
+		$request->bindParam(':img', $img);
+		$request->bindParam(':id', $id);
+		$response = $request->execute();
+
+		return $response;
+	}
+	
+	public function getMDPEtudiantById($id){
+		$request = $this->connect->prepare("
+				SELECT etudiants.mot_de_passe as 'mdp'
+				FROM  etudiants
+				WHERE id_etudiant = :id");
+
+		$request->bindParam(':id', $id);
+
+		$response = $request->execute();
+		$mdp = $request->fetch();
+		return $mdp;
+	}
+	public function getEtudiantById($id){
+		$request = $this->connect->prepare("SELECT etudiants.id_etudiant as 'IdEtudiant',
+												etudiants.nom_etudiant as 'nomEtudiant',
+												etudiants.prenom_etudiant as 'prenomEtudiant',
+												etudiants.img_etudiant as 'img',
+												etudiants.email_etudiant as 'email',
+												etudiants.tel_etudiant as 'tel'
+										from etudiants
+										where etudiants.id_etudiant = :id;
+		");
+		$request->bindParam(':id', $id);
+		$request->execute();
+		$etudiant = $request->fetch();
+		return $etudiant;
+	}
+
 
 	public function deteleEtudiant($id)
 	{

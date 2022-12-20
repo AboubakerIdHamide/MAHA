@@ -1,17 +1,19 @@
 <?php
 
-class Formateurs extends Controller
+class Etudiants extends Controller
 {
 	public function __construct()
 	{
-		if (!isset($_SESSION['id_formateur'])) {
+		if (!isset($_SESSION['id_etudiant'])) {
 			redirect('users/login');
 			return;
 		}
+		$this->inscriptionModel = $this->model("Inscription");
 		$this->stockedModel = $this->model("Stocked");
-		$this->fomateurModel = $this->model("Formateur");
-		$this->requestPaymentModel = $this->model("requestPayment");
-		$this->notificationModel = $this->model("Notification");
+		$this->videoModel = $this->model("Video");
+		$this->formationModel = $this->model("Formation");
+		$this->commentModel = $this->model("Commentaire");
+		$this->etudiantModel=$this->model("Etudiant");
         $this->folderModel = $this->model("Folder");
 		$this->id =  $_SESSION['user_id'];
 	}
@@ -23,107 +25,97 @@ class Formateurs extends Controller
 
 	public function dashboard()
 	{
-		if (isset($_SESSION['id_formation'])) unset($_SESSION['id_formation']);
-		$categories = $this->stockedModel->getAllCategories();
-		$langues = $this->stockedModel->getAllLangues();
-		$levels = $this->stockedModel->getAllLevels();
-		$balance = $this->fomateurModel->getFormateurByEmail($_SESSION['user']['email_formateur'])['balance'];
-		$data = [
-			'balance' => $balance,
-			'categories' => $categories,
-			'langues' => $langues,
-			'levels' => $levels,
-		];
-
-		$this->view('formateur/index', $data);
-	}
-
-	public function requestPayment()
-	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$requestInfo = json_decode($_POST['data']);
-			if ($this->checkBalance($requestInfo)) {
-				// placer la demande
-				$this->requestPaymentModel->insertRequestPayment($_SESSION['id_formateur'], $requestInfo->montant);
-				echo "votre demande a été placer avec success";
-			}
-		} else {
-			$this->view('formateur/requestPayment');
+		// preparing data
+		$data = $this->inscriptionModel->getInscriptionByEtudiant($_SESSION['id_etudiant']);
+		foreach ($data as $inscr) {
+			$inscr->img_formateur = $this->pcloudFile()->getLink($inscr->img_formateur);
+			$inscr->image_formation = $this->pcloudFile()->getLink($inscr->image_formation);
+			$inscr->categorie = $this->stockedModel->getCategorieById($inscr->categorie)["nom_categorie"];
+			$inscr->apprenants = $this->inscriptionModel->countApprenantsOfFormation($inscr->id_formateur, $inscr->id_formation)["total_apprenants"];
+			$inscr->liked = $this->formationModel->likedBefore($inscr->id_etudiant, $inscr->id_formation);
 		}
+		// loading the view
+		$this->view("etudiant/index", $data);
 	}
 
-	private function checkBalance($requestInfo)
+	public function coursVideos($idFormateur = "", $idFormation = "")
 	{
-		if ($requestInfo->paypalEmail == $_SESSION['user']['paypalMail']) {
-			if ($requestInfo->montant >= 10) {
-				$formateur_balance = $this->fomateurModel->getFormateurByEmail($_SESSION['user']['email_formateur'])['balance'];
-				if ($requestInfo->montant <= $formateur_balance)
-					return true;
-				return false;
+		if (empty($idFormateur) || empty($idFormation)) {
+			redirect("etudiant/index");
+		}
+		// preparing data
+		$data = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, $_SESSION['id_etudiant'], $idFormateur);
+		$data->img_formateur = $this->pcloudFile()->getLink($data->img_formateur);
+		$data->image_formation = $this->pcloudFile()->getLink($data->image_formation);
+		$data->img_etudiant = $this->pcloudFile()->getLink($data->img_etudiant);
+		$data->categorie = $this->stockedModel->getCategorieById($data->categorie)["nom_categorie"];
+		$data->specialiteId = $this->stockedModel->getCategorieById($data->specialiteId)["nom_categorie"];
+		$data->id_langue = $this->stockedModel->getLangueById($data->id_langue)["nom_langue"];
+		$data->niveau = $this->stockedModel->getLevelById($data->niveau_formation)["nom_niveau"];
+		$data->apprenants = $this->inscriptionModel->countApprenantsOfFormation($data->id_formateur, $data->id_formation)["total_apprenants"];
+		$data->videos = $this->videoModel->getVideosOfFormation($idFormation);
+		$data->liked = $this->formationModel->likedBefore($data->id_etudiant, $data->id_formation);
+
+		foreach ($data->videos as $video) {
+			// settingUp Video Link
+			$video->url_video = $this->pcloudFile()->getLink($video->url_video);
+			$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video);
+			$video->watched = $this->videoModel->watchedBefore($data->id_etudiant, $video->id_video);
+			$video->bookmarked = $this->videoModel->bookmarked($data->id_etudiant, $video->id_video);
+			// settingUp User image Link for comment
+			foreach ($video->comments as $comment) {
+				$comment->img_etudiant = $this->pcloudFile()->getLink($comment->img_etudiant);
 			}
 		}
+		// loading the view
+		$this->view("etudiant/coursVideos", $data);
 	}
 
-	public function getPaymentsHistory()
+	public function watchedVideos()
 	{
-		$requestsPayments = $this->requestPaymentModel->getRequestsOfFormateur($_SESSION['id_formateur']);
-		echo json_encode($requestsPayments);
+		// Preparing Data
+		$data = $this->videoModel->getWatchedVideos($_SESSION['id_etudiant']);
+		foreach ($data as $video) {
+			// settingUp Video Link
+			$video->url_video = $this->pcloudFile()->getLink($video->url_video);
+		}
+
+		// loading the view
+		$this->view("etudiant/videoCards", $data);
 	}
 
-	public function deleteRequest($id_req)
+	public function bockMarckedVideos()
 	{
-		$this->requestPaymentModel->deleteRequest($id_req);
-		echo 'request deleted with success';
-	}
+		// Preparing Data
+		$data = $this->videoModel->getBookmarkedVideos($_SESSION['id_etudiant']);
+		foreach ($data as $video) {
+			// settingUp Video Link
+			$video->url_video = $this->pcloudFile()->getLink($video->url_video);
+		}
 
-	public function getAllNotifications()
-	{
-		$notifications = $this->notificationModel->getNotificationsOfFormateur($_SESSION['id_formateur']);
-		echo json_encode($notifications);
-	}
-
-	public function notifications()
-	{
-		$nbrNotifications = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
-		$this->view('pages/notifications', $nbrNotifications);
-	}
-
-	public function setStateToSeen($id_notification)
-	{
-		$this->notificationModel->setStateToSeen($id_notification);
-		echo 'DONE!!';
-	}
-
-	public function deleteSeenNotifications()
-	{
-		$this->notificationModel->deleteSeenNotifications();
-		echo 'DONE **';
+		// loading the view
+		$this->view("etudiant/videoCards", $data);
 	}
 
 		// Update Profil 
 
 		public function updateInfos(){
-			$idFormateur = $this->id;
-			$info = $this->fomateurModel->getFormateurById($idFormateur);
+			$idEtudiant = $this->id;
+			$info = $this->etudiantModel->getEtudiantById($idEtudiant);
 			$info['img']=$this->pcloudFile()->getLink($info['img']);
-			$categories = $this->stockedModel->getAllCategories();
 	
 			if($_SERVER['REQUEST_METHOD'] == 'POST'){
 				// Prepare Data
 				$data=[
-					"id"=>$idFormateur,
+					"id"=>$idEtudiant,
 					"nom"=>trim($_POST["nom"]),
 					"prenom"=>trim($_POST["prenom"]),
 					"tel"=>trim($_POST["tel"]),
-					"specId"=>trim($_POST["specialite"]),
-					"bio"=>trim($_POST["biographie"]),
 					"c_mdp"=>trim($_POST["c_mdp"]),
 					"n_mdp"=>trim($_POST["n_mdp"]),
 					"nom_err"=>"",
 					"prenom_err"=>"",
 					"tel_err"=>"",
-					"specId_err"=>"",
-					"bio_err"=>"",
 					"c_mdp_err"=>"",
 					"n_mdp_err"=>"",
 					"thereIsError"=>false,
@@ -141,54 +133,42 @@ class Formateurs extends Controller
 					// Hashing Password
 					$data["n_mdp"] = password_hash($data["n_mdp"], PASSWORD_DEFAULT);
 	
-					$this->fomateurModel->updateFormateur($data);
+					$this->etudiantModel->updateEtudiant($data);
 	
 					$_SESSION["user_data"]=$data;
 	
-					$info = $this->fomateurModel->getFormateurById($idFormateur);
+					$info = $this->etudiantModel->getEtudiantById($idEtudiant);
 					$info['img']=$this->pcloudFile()->getLink($info['img']);
-	
 					$data=[
-						"nom"=> $info['nomFormateur'],
-						"prenom"=> $info['prenomFormateur'],
+						"nom"=> $info['nomEtudiant'],
+						"prenom"=> $info['prenomEtudiant'],
 						"email"=>$info['email'],
 						"tel"=>$info['tel'],
 						"img"=> $info['img'],
-						'categorie'=>$info['categorie'],
-						"specId"=>$info['id_categorie'],
-						"bio"=>$info['biography'],
 						"nom_err"=>"",
 						"prenom_err"=>"",
 						"img_err"=>"",
 						"tel_err"=>"",
-						"specId_err"=>"",
-						"bio_err"=>"",
 						"c_mdp_err"=>"",
 						"n_mdp_err"=>"",
 					];
-	
 					echo json_encode($data);
 				}
 			}else{
 				$data=[
-					"nom"=> $info['nomFormateur'],
-					"prenom"=> $info['prenomFormateur'],
+					"nom"=> $info['nomEtudiant'],
+					"prenom"=> $info['prenomEtudiant'],
 					"email"=>$info['email'],
 					"tel"=>$info['tel'],
 					"img"=> $info['img'],
-					'categorie'=>$info['categorie'],
-					"specId"=>$info['id_categorie'],
-					"bio"=>$info['biography'],
 					"nom_err"=>"",
 					"prenom_err"=>"",
 					"img_err"=>"",
 					"tel_err"=>"",
-					"specId_err"=>"",
-					"bio_err"=>"",
 					"c_mdp_err"=>"",
 					"n_mdp_err"=>"",
 				];
-				$this->view("formateur/updateInfos",[$data, $categories]);
+				$this->view("etudiant/updateInfos",$data);
 			}
 		}
 	
@@ -242,27 +222,12 @@ class Formateurs extends Controller
 				$data["n_mdp_err"] = "Le mot de passe doit comporter au moins 10 caractères";
 			}
 	
-			// Validate Biography
-			if (strlen($data["bio"]) > 500) {
-				$data["thereIsError"] = true;
-				$data["bio_err"] = "La Biography doit comporter au maximum 500 caractères";
-			}
-			if (strlen($data["bio"]) < 130) {
-				$data["thereIsError"] = true;
-				$data["bio_err"] = "Le résumé doit avoir au moins 130 caractères";
-			}
-	
-			// Validate Specialité
-			if (empty($this->stockedModel->getCategorieById($data["specId"]))) {
-				$data["thereIsError"] = true;
-				$data["specId_err"] = "Spécialité Invalide";
-			}
-	
 			return $data;
 		}
 	
 		public function validateMDP($data){
-			$data['mdpDb'] = $this->fomateurModel->getMDPFormateurById($data['id'])['mdp'];
+			$data['mdpDb'] = $this->etudiantModel->getMDPEtudiantById($data['id'])['mdp'];
+	
 			if (!(password_verify($data["c_mdp"], $data['mdpDb']))) {
 				$data["thereIsError"] = true;
 				$data["c_mdp_err"] = "Le mots de passe est incorrect.";
@@ -271,9 +236,10 @@ class Formateurs extends Controller
 		}
 	
 		public function changeImg(){
-			$idFormateur = $this->id;
-			$info = $this->fomateurModel->getFormateurById($idFormateur);
+			$idEtudiant = $this->id;
+			$info = $this->etudiantModel->getEtudiantById($idEtudiant);
 			$info['img']=$this->pcloudFile()->getLink($info['img']);
+	
 			
 			if($_SERVER['REQUEST_METHOD'] == 'POST'){
 				$data['img'] = $_FILES["img"];
@@ -300,11 +266,11 @@ class Formateurs extends Controller
 						$data["img"]=$metaData->metadata->fileid;
 					}
 	
-					$this->fomateurModel->changeImg($data["img"], $idFormateur);
+					$this->etudiantModel->changeImg($data["img"], $idEtudiant);
 	
 					$_SESSION["user_data"]=$data;
 	
-					$infos =$this->fomateurModel->getFormateurById($idFormateur);
+					$infos =$this->etudiantModel->getEtudiantById($idEtudiant);
 					$info['img']=$this->pcloudFile()->getLink($info['img']);
 					$data=[
 						"img"=> $infos['img'],
@@ -313,22 +279,18 @@ class Formateurs extends Controller
 				}
 			}else{
 				$data=[
-					"nom"=> $info->nomFormateur,
-					"prenom"=> $info->prenomFormateur,
+					"nom"=> $info->nomEtudiant,
+					"prenom"=> $info->prenomEtudiant,
 					"email"=>$info->email,
 					"tel"=>$info->tel,
-					"img"=> $info->img,
-					"specId"=>$info->id_categorie,
-					"bio"=>$info->biography,
+					"img"=> $info->img,     
 					"nom_err"=>"",
 					"prenom_err"=>"",
 					"email_err"=>"",
 					"img_err"=>"",
 					"tel_err"=>"",
-					"specId_err"=>"",
-					"bio_err"=>"",
 				];
-				$this->view("formateur/updateInfos",[$data, $categories]);
+				$this->view("etudiant/updateInfos",$data);
 			}
 		}
 	
