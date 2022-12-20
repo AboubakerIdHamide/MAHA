@@ -13,7 +13,10 @@ class Formateurs extends Controller
 		$this->requestPaymentModel = $this->model("requestPayment");
 		$this->notificationModel = $this->model("Notification");
 		$this->folderModel = $this->model("Folder");
-		$this->id = $_SESSION['id_formateur'];
+		$this->inscriptionModel = $this->model("Inscription");
+		$this->videoModel = $this->model("Video");
+		$this->formationModel = $this->model("Formation");
+		$this->commentModel = $this->model("Commentaire");
 	}
 
 	public function index()
@@ -104,7 +107,7 @@ class Formateurs extends Controller
 
 	public function updateInfos()
 	{
-		$idFormateur = $this->id;
+		$idFormateur = $_SESSION['id_formateur'];;
 		$info = $this->fomateurModel->getFormateurById($idFormateur);
 		$info['img'] = $this->pcloudFile()->getLink($info['img']);
 		$categories = $this->stockedModel->getAllCategories();
@@ -274,7 +277,7 @@ class Formateurs extends Controller
 
 	public function changeImg()
 	{
-		$idFormateur = $this->id;
+		$idFormateur = $_SESSION['id_formateur'];
 		$info = $this->fomateurModel->getFormateurById($idFormateur);
 		$info['img'] = $this->pcloudFile()->getLink($info['img']);
 
@@ -297,7 +300,7 @@ class Formateurs extends Controller
 					$imagesFolderId = $this->folderModel->getFolderByEmail($data['email']);
 					$imagesFolderId = $imagesFolderId["imagesId"];
 					$imagePath = $data["img"];
-					$this->pcloudFile()->delete($info['img']);
+					$this->pcloudFile()->delete((int) $info['img']);
 					$metaData = $this->pcloudFile()->upload($imagePath, $imagesFolderId);
 					unlink($imagePath);
 					$data["img"] = $metaData->metadata->fileid;
@@ -331,7 +334,7 @@ class Formateurs extends Controller
 				"specId_err" => "",
 				"bio_err" => "",
 			];
-			$this->view("formateur/updateInfos", [$data, $categories]);
+			$this->view("formateur/updateInfos", $data);
 		}
 	}
 
@@ -367,5 +370,35 @@ class Formateurs extends Controller
 		}
 
 		return $data;
+	}
+
+	public function coursVideos($idFormateur = "", $idFormation = "")
+	{
+		// preparing data
+		$data = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, 5, $idFormateur);
+		$data->img_formateur = $this->pcloudFile()->getLink($data->img_formateur);
+		$data->image_formation = $this->pcloudFile()->getLink($data->image_formation);
+		$data->img_etudiant = $this->pcloudFile()->getLink($data->img_etudiant);
+		$data->categorie = $this->stockedModel->getCategorieById($data->categorie)["nom_categorie"];
+		$data->specialiteId = $this->stockedModel->getCategorieById($data->specialiteId)["nom_categorie"];
+		$data->id_langue = $this->stockedModel->getLangueById($data->id_langue)["nom_langue"];
+		$data->niveau = $this->stockedModel->getLevelById($data->niveau_formation)["nom_niveau"];
+		$data->apprenants = $this->inscriptionModel->countApprenantsOfFormation($data->id_formateur, $data->id_formation)["total_apprenants"];
+		$data->videos = $this->videoModel->getVideosOfFormation($idFormation);
+		$data->liked = $this->formationModel->likedBefore($data->id_etudiant, $data->id_formation);
+
+		foreach ($data->videos as $video) {
+			// settingUp Video Link
+			$video->url_video = $this->pcloudFile()->getLink($video->url_video);
+			$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video);
+			$video->watched = $this->videoModel->watchedBefore($data->id_etudiant, $video->id_video);
+			$video->bookmarked = $this->videoModel->bookmarked($data->id_etudiant, $video->id_video);
+			// settingUp User image Link for comment
+			foreach ($video->comments as $comment) {
+				$comment->img_etudiant = $this->pcloudFile()->getLink($comment->img_etudiant);
+			}
+		}
+		// loading the view
+		$this->view("etudiant/coursVideos", $data);
 	}
 }

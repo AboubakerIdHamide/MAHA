@@ -6,7 +6,7 @@ use pCloud\Sdk\Folder;
 use pCloud\Sdk\File;
 
 // pCloud Classes Autolader
-require APPROOT.'/pCloud/vendor/autoload.php';
+require APPROOT . '/pCloud/vendor/autoload.php';
 
 class Controller
 {
@@ -15,12 +15,11 @@ class Controller
     {
         // DataBase Connection
         try {
-            $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME, DB_USER, DB_PASS);
+            $db = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASS);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } 
-        catch (PDOException $e) {
+        } catch (PDOException $e) {
             die('Erreur : ' . $e->getMessage());
-        }        
+        }
 
         // require that model
         require_once "../App/models/" . $model . ".php";
@@ -31,7 +30,7 @@ class Controller
     }
 
     // Load View
-    public function view($view, $data=[])
+    public function view($view, $data = [])
     {
         // check for view file
         if (file_exists('../App/views/' . $view . '.php')) {
@@ -41,7 +40,7 @@ class Controller
             die("View Does Not Exists !");
         }
     }
-    
+
     // pcloud Methods
     public function pCloudApp()
     {
@@ -62,10 +61,4 @@ class Controller
         $pcloudFile = new File($this->pCloudApp());
         return $pcloudFile;
     }
-    public function delete(int $fileId): stdClass
-	{
-		$response = $this->request->get("deletefile", array("fileid" => $fileId));
-
-		return property_exists($response, 'metadata') ? $response->metadata->isdeleted : $response;
-	}
 }

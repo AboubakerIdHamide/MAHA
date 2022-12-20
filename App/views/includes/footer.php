@@ -30,6 +30,6 @@
 <!-- To-up Button -->
 <script src="<?php echo URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
 <script src="<?php echo URLROOT; ?>/public/js/main.js"></script>
-<script src="<?php echo URLROOT; ?>/public/js/pageFormations.js"></script>
 </body>
+
 </html>
