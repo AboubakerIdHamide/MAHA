@@ -28,7 +28,7 @@ class Users extends Controller
             if ($this->isLoggedIn() == 'formateur') {
                 redirect('formateurs/dashboard');
             } else {
-                redirect('etudiant/dashboard');
+                redirect('etudiants/dashboard');
             }
         }
 

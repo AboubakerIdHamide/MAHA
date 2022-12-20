@@ -15,7 +15,7 @@ class Etudiants extends Controller
 		$this->commentModel = $this->model("Commentaire");
 		$this->etudiantModel = $this->model("Etudiant");
 		$this->folderModel = $this->model("Folder");
-		$this->id =  $_SESSION['id_etudiant'];
+		$this->id = $_SESSION['id_etudiant'];
 	}
 
 	public function index()
