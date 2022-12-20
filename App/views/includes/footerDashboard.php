@@ -6,6 +6,8 @@
 	<script src="<?php echo URLROOT; ?>/public/js/requestPayments.js"></script>
 	<script src="<?php echo URLROOT; ?>/public/js/notifications.js"></script>
 	<script src="<?= URLROOT ?>/public/js/videos.js"></script>
+	<script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+
 	</body>
 
 	</html>

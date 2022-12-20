@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/cours-details.css" />
+  <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -131,12 +132,19 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-6 align-self-center">
+        <div class="col-lg-6">
           <div class="video-preview pt-2">
-            <video src="<?= $data['previewVideo'] ?>" controls></video>
+            <video id="my-video" class="video-js" controls preload="auto" width="640" data-setup="{}">
+              <source src="<?= $data['previewVideo'] ?>" type="video/mp4" />
+              <p class="vjs-no-js">
+                To view this video please enable JavaScript, and consider upgrading to a
+                web browser that
+                <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+              </p>
+            </video>
           </div>
         </div>
-        <div class="col-lg-6 preview-prix">
+        <div class="col-lg-6 align-self-center preview-prix">
           <p class="date-pub">Published: <?php echo $data['info']['dateCreationFormation']; ?></p>
           <div class="pay pt-3">
             <h2 class="text-center prix">$ <?php echo $data['info']['prix']; ?></h2>
@@ -239,6 +247,7 @@
   <script src="<?php echo URLROOT; ?>/public/js/main.js"></script>
   <script src="<?php echo URLROOT; ?>/public/js/cours-details.js"></script>
   <script src="<?php echo URLROOT; ?>/public/js/paypal.js"></script>
+  <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
 </body>
 
 </html>

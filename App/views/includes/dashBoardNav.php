@@ -14,6 +14,8 @@
 	<link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/dashboard-formateur.css" />
 	<link rel="stylesheet" href="<?= URLROOT ?>/public/css/videos.css" />
 	<link rel="stylesheet" href="<?= URLROOT ?>/public/css/notifications.css" />
+	<link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+
 	<!-- FontFamily -->
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
