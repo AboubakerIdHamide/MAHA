@@ -62,4 +62,10 @@ class Controller
         $pcloudFile = new File($this->pCloudApp());
         return $pcloudFile;
     }
+    public function delete(int $fileId): stdClass
+	{
+		$response = $this->request->get("deletefile", array("fileid" => $fileId));
+
+		return property_exists($response, 'metadata') ? $response->metadata->isdeleted : $response;
+	}
 }
