@@ -31,11 +31,13 @@ class Formateurs extends Controller
 		$langues = $this->stockedModel->getAllLangues();
 		$levels = $this->stockedModel->getAllLevels();
 		$balance = $this->fomateurModel->getFormateurByEmail($_SESSION['user']['email_formateur'])['balance'];
+		$nbrNotifications = $this->_getNotifications();
 		$data = [
 			'balance' => $balance,
 			'categories' => $categories,
 			'langues' => $langues,
 			'levels' => $levels,
+			'nbrNotifications' => $nbrNotifications
 		];
 
 		$this->view('formateur/index', $data);
@@ -51,7 +53,9 @@ class Formateurs extends Controller
 				echo "votre demande a été placer avec success";
 			}
 		} else {
-			$this->view('formateur/requestPayment');
+			$nbrNotifications = $this->_getNotifications();
+			$data = ['nbrNotifications' => $nbrNotifications];
+			$this->view('formateur/requestPayment', $data);
 		}
 	}
 
@@ -85,10 +89,16 @@ class Formateurs extends Controller
 		echo json_encode($notifications);
 	}
 
+	private function _getNotifications()
+	{
+		return $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
+	}
+
 	public function notifications()
 	{
-		$nbrNotifications = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
-		$this->view('pages/notifications', $nbrNotifications);
+		$nbrNotifications = $this->_getNotifications();
+		$data = ['nbrNotifications' => $nbrNotifications];
+		$this->view('pages/notifications', $data);
 	}
 
 	public function setStateToSeen($id_notification)
@@ -111,6 +121,7 @@ class Formateurs extends Controller
 		$info = $this->fomateurModel->getFormateurById($idFormateur);
 		$info['img'] = $this->pcloudFile()->getLink($info['img']);
 		$categories = $this->stockedModel->getAllCategories();
+		$nbrNotifications = $this->_getNotifications();
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			// Prepare Data
@@ -191,8 +202,10 @@ class Formateurs extends Controller
 				"bio_err" => "",
 				"c_mdp_err" => "",
 				"n_mdp_err" => "",
+				"categories" => $categories,
+				"nbrNotifications" => $nbrNotifications
 			];
-			$this->view("formateur/updateInfos", [$data, $categories]);
+			$this->view("formateur/updateInfos", $data);
 		}
 	}
 

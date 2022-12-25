@@ -40,9 +40,9 @@
 				<li id="notifications" class="justify-content-center">
 					<a href="<?= URLROOT . '/formateurs/notifications' ?>">
 						<i style="font-size:25px;" class="fa-solid fa-bell position-relative">
-							<?php if (isset($data->totalNew) && $data->totalNew != 0) : ?>
+							<?php if ($data['nbrNotifications']->totalNew != 0) : ?>
 								<span style="font-size: 9px;" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger nbr-notifications">
-									<?= $data->totalNew ?>
+									<?= $data['nbrNotifications']->totalNew ?>
 								</span>
 							<?php endif ?>
 						</i>
