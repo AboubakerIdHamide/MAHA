@@ -16,24 +16,27 @@ class Commentaire
 	public function insertCommentaire($dataCommentaire)
 	{
 		$request = $this->connect->prepare("
-			INSERT INTO commentaires(id_user, id_video, commentaire, type_user) 
-			VALUES (:id_user, :id_video, :commentaire, :type_user)
+			INSERT INTO commentaires(from_user, to_user, id_video, commentaire, type_user) 
+			VALUES (:from_user, :to_user, :id_video, :commentaire, :type_user)
 		");
 
-		$request->bindParam(':id_user', $dataCommentaire['idEtudiant']);
 		$request->bindParam(':id_video', $dataCommentaire['idVideo']);
 		$request->bindParam(':commentaire', $dataCommentaire['commentaire']);
 		$request->bindParam(':type_user', $dataCommentaire['type_user']);
+		$request->bindParam(':from_user', $dataCommentaire['from_user']);
+		$request->bindParam(':to_user', $dataCommentaire['to_user']);
 		$response = $request->execute();
 
 		return $response;
 	}
 
-	public function getCommentaireByVideoId($videoId)
+
+	public function getCommentaireByVideoId($videoId, $formateurId, $etudiantId)
 	{
 		$request = $this->connect->prepare("	
 			SELECT 
-				id_user, 
+				from_user,
+				to_user, 
 				id_video, 
 				nom_etudiant AS nom, 
 				prenom_etudiant AS prenom, 
@@ -42,11 +45,12 @@ class Commentaire
 				created_at,
 				type_user
 			FROM commentaires c 
-			JOIN etudiants e ON c.id_user = e.id_etudiant
-			WHERE id_video = :videoId
+			JOIN etudiants e ON c.from_user = e.id_etudiant
+			WHERE id_video = :videoId AND to_user = :formateurId
 			UNION
 			SELECT 
-				id_user, 
+				from_user,
+				to_user, 
 				id_video, 
 				nom_formateur, 
 				prenom_formateur, 
@@ -55,10 +59,13 @@ class Commentaire
 				created_at,
 				type_user
 			FROM commentaires c 
-			JOIN formateurs f ON c.id_user = f.id_formateur
-			WHERE id_video = :videoId
+			JOIN formateurs f ON c.from_user = f.id_formateur
+			WHERE id_video = :videoId AND to_user = :etudiantId
+			ORDER BY created_at
 		");
 		$request->bindParam(':videoId', $videoId);
+		$request->bindParam(':formateurId', $formateurId);
+		$request->bindParam(':etudiantId', $etudiantId);
 		$request->execute();
 		$commentaire = $request->fetchAll(PDO::FETCH_OBJ);
 		return $commentaire;

@@ -20,7 +20,7 @@
     <section class="pageFormation">
         <div class="container">
             <div class="formations">
-                <?php foreach ($data as $item) { ?>
+                <?php foreach ($data["inscriptions"] as $item) { ?>
                     <a class="card_coures" href="<?= URLROOT . "/etudiants/coursVideos/" . $item->id_formateur . "/" . $item->id_formation ?>">
                         <!-- img formation -->
                         <div class="img">
@@ -62,6 +62,7 @@
             </div>
         </div>
     </section>
+
     <script>
         const urlRoot = "<?= URLROOT ?>";
     </script>

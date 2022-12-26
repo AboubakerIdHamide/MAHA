@@ -212,7 +212,7 @@
         </div>
       </div>
       <div class="col-lg-2 col-md-2 d-lg-block d-md-block d-flex justify-content-center">
-        <button data-type-user="<?= trim($_SESSION['user']['type']) ?>" type="submit" class="submit-btn">Envoyer</button>
+        <button data-to-user="<?= $data->id_etudiant ?>" data-type-user="<?= trim($_SESSION['user']['type']) ?>" type="submit" class="submit-btn">Envoyer</button>
       </div>
     </div>
   </section>
@@ -222,7 +222,7 @@
   <script>
     const urlRoot = "<?= URLROOT ?>";
     const formationId = <?= $data->id_formation ?>;
-    const etudiantId = "<?= $data->id_formateur ?>";
+    const fromUser = "<?= $data->id_formateur ?>";
     const etudiantImageSrc = "<?= $data->img_formateur ?>";
     const etudiantFullName = "<?= $data->nom_formateur . " " . $data->prenom_formateur ?>";
     let videoId = <?= $data->videos[0]->id_video ?>;

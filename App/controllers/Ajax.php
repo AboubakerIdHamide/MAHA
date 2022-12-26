@@ -120,17 +120,18 @@ class Ajax extends Controller
     public function addComment()
     {
         $data = [
-            "idEtudiant" => $_POST["idEtudiant"],
             "idVideo" => $_POST["videoId"],
             "commentaire" => $_POST["comment"],
-            "type_user" => $_SESSION['user']['type']
+            "type_user" => $_SESSION['user']['type'],
+            "from_user" => $_POST["from_user"],
+            "to_user" => $_POST["to_user"]
         ];
-        
+
         $res = $this->commentaireModel->insertCommentaire($data);
         if ($res) {
-            $comments = $this->commentaireModel->getCommentaireByVideoId($data["idVideo"]);
+            $comments = $this->commentaireModel->getCommentaireByVideoId($data["idVideo"], $data["to_user"], $data["from_user"]);
             foreach ($comments as $comment) {
-                $comment->img_etudiant = $this->pcloudFile()->getLink($comment->img_etudiant);
+                $comment->image = $this->pcloudFile()->getLink($comment->image);
             }
             echo json_encode(["success" => $res, "comments" => $comments]);
         }

@@ -15,6 +15,7 @@ class Etudiants extends Controller
 		$this->commentModel = $this->model("Commentaire");
 		$this->etudiantModel = $this->model("Etudiant");
 		$this->folderModel = $this->model("Folder");
+		$this->notificationModel = $this->model("Notification");
 		$this->id = $_SESSION['id_etudiant'];
 	}
 
@@ -26,14 +27,16 @@ class Etudiants extends Controller
 	public function dashboard()
 	{
 		// preparing data
-		$data = $this->inscriptionModel->getInscriptionByEtudiant($_SESSION['id_etudiant']);
-		foreach ($data as $inscr) {
+		$data["inscriptions"] = $this->inscriptionModel->getInscriptionByEtudiant($_SESSION['id_etudiant']);
+		foreach ($data["inscriptions"] as $inscr) {
 			$inscr->img_formateur = $this->pcloudFile()->getLink($inscr->img_formateur);
 			$inscr->image_formation = $this->pcloudFile()->getLink($inscr->image_formation);
 			$inscr->categorie = $this->stockedModel->getCategorieById($inscr->categorie)["nom_categorie"];
 			$inscr->apprenants = $this->inscriptionModel->countApprenantsOfFormation($inscr->id_formateur, $inscr->id_formation)["total_apprenants"];
 			$inscr->liked = $this->formationModel->likedBefore($inscr->id_etudiant, $inscr->id_formation);
 		}
+		$nbrNotifications = $this->_getNotifications();
+		$data['nbrNotifications'] = $nbrNotifications;
 		// loading the view
 		$this->view("etudiant/index", $data);
 	}
@@ -59,14 +62,15 @@ class Etudiants extends Controller
 		foreach ($data->videos as $video) {
 			// settingUp Video Link
 			$video->url_video = $this->pcloudFile()->getLink($video->url_video);
-			$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video);
+			$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video, $idFormateur, $_SESSION['id_etudiant']);
 			$video->watched = $this->videoModel->watchedBefore($data->id_etudiant, $video->id_video);
 			$video->bookmarked = $this->videoModel->bookmarked($data->id_etudiant, $video->id_video);
 			// settingUp User image Link for comment
 			foreach ($video->comments as $comment) {
-				$comment->img_etudiant = $this->pcloudFile()->getLink($comment->img_etudiant);
+				$comment->image = $this->pcloudFile()->getLink($comment->image);
 			}
 		}
+
 		// loading the view
 		$this->view("etudiant/coursVideos", $data);
 	}
@@ -329,5 +333,35 @@ class Etudiants extends Controller
 		}
 
 		return $data;
+	}
+
+	public function getAllNotifications()
+	{
+		$notifications = $this->notificationModel->getNotificationsOfEtudiant($_SESSION['id_etudiant']);
+		echo json_encode($notifications);
+	}
+
+	private function _getNotifications()
+	{
+		return $this->notificationModel->getNewNotificationsOfEtudiant($_SESSION['id_etudiant']);
+	}
+
+	public function notifications()
+	{
+		$nbrNotifications = $this->_getNotifications();
+		$data = ['nbrNotifications' => $nbrNotifications];
+		$this->view('etudiant/notifications', $data);
+	}
+
+	public function setStateToSeen($id_notification)
+	{
+		$this->notificationModel->setStateToSeen($id_notification);
+		echo 'DONE!!';
+	}
+
+	public function deleteSeenNotifications()
+	{
+		$this->notificationModel->deleteSeenNotifications();
+		echo 'DONE **';
 	}
 }

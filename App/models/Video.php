@@ -31,7 +31,8 @@ class Video
 		return $response;
 	}
 
-	public function getVideo($idFormation, $idVideo){
+	public function getVideo($idFormation, $idVideo)
+	{
 		$request = $this->connect->prepare("SELECT * FROM videos WHERE id_formation = :id_formation AND id_video = :id_video");
 
 		$request->bindParam(':id_formation', $idFormation);
@@ -145,31 +146,31 @@ class Video
 	public function setWatch($etudiant_id, $video_id)
 	{
 		// watch or unwatch
-        $watched=$this->watchedBefore($etudiant_id, $video_id);
-        if($watched){
-            // watch
-            $req=$this->connect->prepare("DELETE FROM watched WHERE id_etudiant=:eId AND id_video=:vId");
-        }else{
-            // unwatch
-            $req=$this->connect->prepare("INSERT INTO watched(id_etudiant, id_video) VALUES (:eId,:vId)");
-        }
-        $req->bindParam(':eId', $etudiant_id);
-        $req->bindParam(':vId', $video_id);
-        $res=$req->execute();
-        return $res;
+		$watched = $this->watchedBefore($etudiant_id, $video_id);
+		if ($watched) {
+			// watch
+			$req = $this->connect->prepare("DELETE FROM watched WHERE id_etudiant=:eId AND id_video=:vId");
+		} else {
+			// unwatch
+			$req = $this->connect->prepare("INSERT INTO watched(id_etudiant, id_video) VALUES (:eId,:vId)");
+		}
+		$req->bindParam(':eId', $etudiant_id);
+		$req->bindParam(':vId', $video_id);
+		$res = $req->execute();
+		return $res;
 	}
 
 	public function watchedBefore($etudiant_id, $video_id)
 	{
-		$req=$this->connect->prepare("SELECT * FROM watched WHERE id_etudiant=:eId AND id_video=:vId");
-        $req->bindParam(':eId', $etudiant_id);
-        $req->bindParam(':vId', $video_id);
-        $req->execute();
-        $res=$req->fetch();
-        if(!empty($res)){
-            return true;
-        }
-        return false;
+		$req = $this->connect->prepare("SELECT * FROM watched WHERE id_etudiant=:eId AND id_video=:vId");
+		$req->bindParam(':eId', $etudiant_id);
+		$req->bindParam(':vId', $video_id);
+		$req->execute();
+		$res = $req->fetch();
+		if (!empty($res)) {
+			return true;
+		}
+		return false;
 	}
 
 	public function getWatchedVideos($etudiant_id)
@@ -189,31 +190,31 @@ class Video
 	public function setBookmark($etudiant_id, $video_id)
 	{
 		// watch or unwatch
-        $bookmarked=$this->bookmarked($etudiant_id, $video_id);
-        if($bookmarked){
-            // watch
-            $req=$this->connect->prepare("DELETE FROM bookmarks WHERE id_etudiant=:eId AND id_video=:vId");
-        }else{
-            // unwatch
-            $req=$this->connect->prepare("INSERT INTO bookmarks(id_etudiant, id_video) VALUES (:eId,:vId)");
-        }
-        $req->bindParam(':eId', $etudiant_id);
-        $req->bindParam(':vId', $video_id);
-        $res=$req->execute();
-        return $res;
+		$bookmarked = $this->bookmarked($etudiant_id, $video_id);
+		if ($bookmarked) {
+			// watch
+			$req = $this->connect->prepare("DELETE FROM bookmarks WHERE id_etudiant=:eId AND id_video=:vId");
+		} else {
+			// unwatch
+			$req = $this->connect->prepare("INSERT INTO bookmarks(id_etudiant, id_video) VALUES (:eId,:vId)");
+		}
+		$req->bindParam(':eId', $etudiant_id);
+		$req->bindParam(':vId', $video_id);
+		$res = $req->execute();
+		return $res;
 	}
 
 	public function bookmarked($etudiant_id, $video_id)
 	{
-		$req=$this->connect->prepare("SELECT * FROM bookmarks WHERE id_etudiant=:eId AND id_video=:vId");
-        $req->bindParam(':eId', $etudiant_id);
-        $req->bindParam(':vId', $video_id);
-        $req->execute();
-        $res=$req->fetch();
-        if(!empty($res)){
-            return true;
-        }
-        return false;
+		$req = $this->connect->prepare("SELECT * FROM bookmarks WHERE id_etudiant=:eId AND id_video=:vId");
+		$req->bindParam(':eId', $etudiant_id);
+		$req->bindParam(':vId', $video_id);
+		$req->execute();
+		$res = $req->fetch();
+		if (!empty($res)) {
+			return true;
+		}
+		return false;
 	}
 
 	public function getBookmarkedVideos($etudiant_id)
@@ -305,5 +306,22 @@ class Video
 		$request->execute();
 		$videos = $request->fetch();
 		return $videos;
+	}
+
+	public function getFormateurOfVideo($videoId)
+	{
+		$request = $this->connect->prepare("
+			SELECT 
+				id_formateur
+			FROM videos
+			JOIN formations USING (id_formation)
+			JOIN formateurs USING (id_formateur)
+			WHERE id_video = :id_video
+		");
+
+		$request->bindParam(':id_video', $videoId);
+		$request->execute();
+		$formateur = $request->fetch(PDO::FETCH_OBJ);
+		return $formateur;
 	}
 }

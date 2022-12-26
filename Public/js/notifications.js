@@ -2,7 +2,7 @@ $(document).ready(function () {
   function getAllNotifications() {
     return $.parseJSON(
       $.ajax({
-        url: "http://localhost/maha/formateurs/getAllNotifications",
+        url: "http://localhost/maha/" + controller + "/getAllNotifications",
         dataType: "json",
         async: false,
       }).responseText
@@ -17,6 +17,7 @@ $(document).ready(function () {
   function renderNotification() {
     $(".notifications").html("");
     const notifications = getAllNotifications();
+    console.log(notifications);
     if (notifications.length === 0) {
       $("#clear-seen").remove();
       $(".notifications").html("");
@@ -25,10 +26,10 @@ $(document).ready(function () {
       $(".notifications").html(
         $(".notifications").html() +
           `
-          <a href="http://localhost/maha/formateurs/coursVideos/${
-            notification.id_formation
+          <a href="http://localhost/maha/${controller}/coursVideos/${
+            notification.id_user
           }/${
-            notification.id_etudiant
+            notification.id_formation
           }" class="row mb-3 bg-white rounded py-3 notification ${
             notification.etat_notification == 0 ? "seen" : ""
           }" data-id-notification="${notification.id_notification}">
@@ -53,8 +54,8 @@ $(document).ready(function () {
                     ·
                     <span class="nom-etudiant ms-2 me-2 ${removeRedColorToOldNotification(
                       notification.etat_notification
-                    )}">${notification.nom_etudiant.toUpperCase()} ${
-            notification.prenom_etudiant
+                    )}">${notification.nom.toUpperCase()} ${
+            notification.prenom
           }</span>
                     ·
                     <span class="ms-2 badge bg-light ${removeRedColorToOldNotification(
@@ -92,7 +93,10 @@ $(document).ready(function () {
       const idNotification = $(this).data("idNotification");
       $.ajax({
         url:
-          "http://localhost/maha/formateurs/setStateToSeen/" + idNotification,
+          "http://localhost/maha/" +
+          controller +
+          "/setStateToSeen/" +
+          idNotification,
         success: function (response) {
           console.log(response);
         },
@@ -111,7 +115,7 @@ $(document).ready(function () {
     const $notifications = $(".notifications");
     $notifications.find(".seen").fadeOut("slow");
     $.ajax({
-      url: "http://localhost/maha/formateurs/deleteSeenNotifications",
+      url: "http://localhost/maha/" + controller + "/deleteSeenNotifications",
       success: function (response) {
         console.log(response);
       },

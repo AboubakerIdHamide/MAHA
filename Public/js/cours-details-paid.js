@@ -31,10 +31,10 @@ $(document).ready(function () {
     if ($element.hasClass("fa-bookmark")) {
       if ($element.hasClass("fa-solid")) {
         $element.removeClass("fa-solid").addClass("fa-regular");
-        markVideo(etudiantId, vId);
+        markVideo(fromUser, vId);
       } else {
         $element.removeClass("fa-regular").addClass("fa-solid");
-        markVideo(etudiantId, vId);
+        markVideo(fromUser, vId);
       }
       return;
     }
@@ -43,10 +43,10 @@ $(document).ready(function () {
     if ($element.hasClass("fa-circle-check")) {
       if ($element.hasClass("fa-solid")) {
         $element.removeClass("fa-solid").addClass("fa-regular");
-        watchVideo(etudiantId, vId);
+        watchVideo(fromUser, vId);
       } else {
         $element.removeClass("fa-regular").addClass("fa-solid");
-        watchVideo(etudiantId, vId);
+        watchVideo(fromUser, vId);
       }
       return;
     }
@@ -131,6 +131,7 @@ $(document).ready(function () {
 
     // for style comment
     const $user_comment = $(this).data("typeUser");
+    const $toUser = $(this).data("toUser");
     const divComment = `
 		<div class="d-flex gap-2 mt-2 ${
       $user_comment === "formateur" && "flex-row-reverse"
@@ -143,7 +144,7 @@ $(document).ready(function () {
 			</div>
 		</div>
 		`;
-    addComment(etudiantId, videoId, $comment);
+    addComment(fromUser, $toUser, videoId, $comment);
     $(".comments-section .my-comments").append(divComment);
   });
 
@@ -181,10 +182,10 @@ $(document).ready(function () {
     const $heart = $(this);
     if ($heart.hasClass("fa-regular")) {
       $heart.removeClass("fa-regular").addClass("fa-solid");
-      likeToIt(etudiantId, formationId);
+      likeToIt(fromUser, formationId);
     } else {
       $heart.addClass("fa-regular").removeClass("fa-solid");
-      likeToIt(etudiantId, formationId);
+      likeToIt(fromUser, formationId);
     }
   });
 });
@@ -230,10 +231,15 @@ function likeToIt(idEtudiant, idFormation) {
   );
 }
 
-function addComment(idEtudiant, idVideo, commentaire) {
+function addComment(from_user, to_user, idVideo, commentaire) {
   $.post(
     `${urlRoot}/ajax/addComment`,
-    { idEtudiant: idEtudiant, videoId: idVideo, comment: commentaire },
+    {
+      from_user: from_user,
+      videoId: idVideo,
+      comment: commentaire,
+      to_user: to_user,
+    },
     function (res, status, xhr) {
       console.log(res);
       res = JSON.parse(res);

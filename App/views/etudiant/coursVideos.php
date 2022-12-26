@@ -185,10 +185,10 @@
       <div class="col">
         <div class="my-comments">
           <?php foreach ($data->videos[0]->comments as $comment) { ?>
-            <div class="d-flex gap-2 mb-2">
-              <img class="align-self-start" src="<?= $comment->img_etudiant ?>" alt="my-photo">
-              <div class="d-flex flex-column etudiant-comment">
-                <span class="my-name"><?= $comment->nom_etudiant . " " . $comment->prenom_etudiant ?></span>
+            <div class="d-flex gap-2 mb-2 <?php if ($comment->type_user === "formateur") echo "flex-row-reverse" ?>">
+              <img class="align-self-start" src="<?= $comment->image ?>" alt="my-photo">
+              <div class="d-flex flex-column <?php echo ($comment->type_user === "formateur") ? "formateur-comment" : "etudiant-comment" ?>">
+                <span class="my-name"><?= $comment->nom . " " . $comment->prenom ?></span>
                 <p><?= $comment->commentaire ?></p>
                 <div class="d-flex justify-content-between">
                   <small><?= $comment->created_at ?></small>
@@ -212,7 +212,7 @@
         </div>
       </div>
       <div class="col-lg-2 col-md-2 d-lg-block d-md-block d-flex justify-content-center">
-        <button data-type-user="<?= trim($_SESSION['user']['type']) ?>" type="submit" class="submit-btn">Envoyer</button>
+        <button data-to-user="<?= $data->id_formateur ?>" data-type-user="<?= trim($_SESSION['user']['type']) ?>" type="submit" class="submit-btn">Envoyer</button>
       </div>
     </div>
   </section>
@@ -222,7 +222,7 @@
   <script>
     const urlRoot = "<?= URLROOT ?>";
     const formationId = <?= $data->id_formation ?>;
-    const etudiantId = "<?= $data->id_etudiant ?>";
+    const fromUser = "<?= $data->id_etudiant ?>";
     const etudiantImageSrc = "<?= $data->img_etudiant ?>";
     const etudiantFullName = "<?= $data->nom_etudiant . " " . $data->prenom_etudiant ?>";
     let videoId = <?= $data->videos[0]->id_video ?>;

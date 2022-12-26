@@ -98,7 +98,7 @@ class Formateurs extends Controller
 	{
 		$nbrNotifications = $this->_getNotifications();
 		$data = ['nbrNotifications' => $nbrNotifications];
-		$this->view('pages/notifications', $data);
+		$this->view('formateur/notifications', $data);
 	}
 
 	public function setStateToSeen($id_notification)
@@ -392,7 +392,7 @@ class Formateurs extends Controller
 		return false;
 	}
 
-	public function coursVideos($idFormation = "", $id_etudiant = "")
+	public function coursVideos($id_etudiant = "", $idFormation = "")
 	{
 		if ($this->_isFormateurHaveThisFormation($idFormation)) {
 			// preparing data
@@ -411,7 +411,7 @@ class Formateurs extends Controller
 			foreach ($data->videos as $video) {
 				// settingUp Video Link
 				$video->url_video = $this->pcloudFile()->getLink($video->url_video);
-				$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video);
+				$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video, $_SESSION['id_formateur'], $id_etudiant);
 				$video->watched = $this->videoModel->watchedBefore($data->id_etudiant, $video->id_video);
 				$video->bookmarked = $this->videoModel->bookmarked($data->id_etudiant, $video->id_video);
 				// settingUp User image Link for comment
