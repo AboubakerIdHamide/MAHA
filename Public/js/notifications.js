@@ -19,13 +19,17 @@ $(document).ready(function () {
     const notifications = getAllNotifications();
     if (notifications.length === 0) {
       $("#clear-seen").remove();
-      $(".notifications").html("")
+      $(".notifications").html("");
     }
     for (let notification of notifications) {
       $(".notifications").html(
         $(".notifications").html() +
           `
-          <a href="#" class="row mb-3 bg-white rounded py-3 notification ${
+          <a href="http://localhost/maha/formateurs/coursVideos/${
+            notification.id_formation
+          }/${
+            notification.id_etudiant
+          }" class="row mb-3 bg-white rounded py-3 notification ${
             notification.etat_notification == 0 ? "seen" : ""
           }" data-id-notification="${notification.id_notification}">
             <div class="col-1 text-center align-self-center">

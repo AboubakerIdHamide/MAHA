@@ -385,33 +385,43 @@ class Formateurs extends Controller
 		return $data;
 	}
 
-	public function coursVideos($idFormateur = "", $idFormation = "")
+	private function _isFormateurHaveThisFormation($idFormation)
 	{
-		// preparing data
-		$data = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, 5, $idFormateur);
-		$data->img_formateur = $this->pcloudFile()->getLink($data->img_formateur);
-		$data->image_formation = $this->pcloudFile()->getLink($data->image_formation);
-		$data->img_etudiant = $this->pcloudFile()->getLink($data->img_etudiant);
-		$data->categorie = $this->stockedModel->getCategorieById($data->categorie)["nom_categorie"];
-		$data->specialiteId = $this->stockedModel->getCategorieById($data->specialiteId)["nom_categorie"];
-		$data->id_langue = $this->stockedModel->getLangueById($data->id_langue)["nom_langue"];
-		$data->niveau = $this->stockedModel->getLevelById($data->niveau_formation)["nom_niveau"];
-		$data->apprenants = $this->inscriptionModel->countApprenantsOfFormation($data->id_formateur, $data->id_formation)["total_apprenants"];
-		$data->videos = $this->videoModel->getVideosOfFormation($idFormation);
-		$data->liked = $this->formationModel->likedBefore($data->id_etudiant, $data->id_formation);
+		$formation = $this->formationModel->getFormation($idFormation, $_SESSION['id_formateur']);
+		if (!empty($formation)) return true;
+		return false;
+	}
 
-		foreach ($data->videos as $video) {
-			// settingUp Video Link
-			$video->url_video = $this->pcloudFile()->getLink($video->url_video);
-			$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video);
-			$video->watched = $this->videoModel->watchedBefore($data->id_etudiant, $video->id_video);
-			$video->bookmarked = $this->videoModel->bookmarked($data->id_etudiant, $video->id_video);
-			// settingUp User image Link for comment
-			foreach ($video->comments as $comment) {
-				$comment->img_etudiant = $this->pcloudFile()->getLink($comment->img_etudiant);
+	public function coursVideos($idFormation = "", $id_etudiant = "")
+	{
+		if ($this->_isFormateurHaveThisFormation($idFormation)) {
+			// preparing data
+			$data = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, $id_etudiant, $_SESSION['id_formateur']);
+			$data->img_formateur = $this->pcloudFile()->getLink($data->img_formateur);
+			$data->image_formation = $this->pcloudFile()->getLink($data->image_formation);
+			$data->img_etudiant = $this->pcloudFile()->getLink($data->img_etudiant);
+			$data->categorie = $this->stockedModel->getCategorieById($data->categorie)["nom_categorie"];
+			$data->specialiteId = $this->stockedModel->getCategorieById($data->specialiteId)["nom_categorie"];
+			$data->id_langue = $this->stockedModel->getLangueById($data->id_langue)["nom_langue"];
+			$data->niveau = $this->stockedModel->getLevelById($data->niveau_formation)["nom_niveau"];
+			$data->apprenants = $this->inscriptionModel->countApprenantsOfFormation($data->id_formateur, $data->id_formation)["total_apprenants"];
+			$data->videos = $this->videoModel->getVideosOfFormation($idFormation);
+			$data->liked = $this->formationModel->likedBefore($data->id_etudiant, $data->id_formation);
+
+			foreach ($data->videos as $video) {
+				// settingUp Video Link
+				$video->url_video = $this->pcloudFile()->getLink($video->url_video);
+				$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video);
+				$video->watched = $this->videoModel->watchedBefore($data->id_etudiant, $video->id_video);
+				$video->bookmarked = $this->videoModel->bookmarked($data->id_etudiant, $video->id_video);
+				// settingUp User image Link for comment
+				foreach ($video->comments as $comment) {
+					$comment->image = $this->pcloudFile()->getLink($comment->image);
+				}
 			}
-		}
-		// loading the view
-		$this->view("etudiant/coursVideos", $data);
+			// loading the view
+			$this->view("formateur/coursVideos", $data);
+		} else
+			die("Something Went Wrong !!!");
 	}
 }

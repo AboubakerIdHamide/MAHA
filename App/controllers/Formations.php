@@ -14,6 +14,7 @@ class Formations extends Controller
 		$this->stockedModel = $this->model("Stocked");
 		$this->folderModel = $this->model("Folder");
 		$this->previewsModel = $this->model("Previews");
+		
 	}
 
 	public function index()

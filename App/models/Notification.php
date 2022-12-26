@@ -21,10 +21,12 @@ class Notification
                 prenom_etudiant,
                 nom_video,
                 nom_formation,
-                etat_notification
+                etat_notification,
+                id_formation,
+                id_etudiant
             FROM notifications n
-            JOIN commentaires USING (id_commentaire)
-            JOIN etudiants USING (id_etudiant)
+            JOIN commentaires c USING (id_commentaire)
+            JOIN etudiants e ON c.id_user = e.id_etudiant 
             JOIN videos USING (id_video)
             JOIN formations USING (id_formation)
             JOIN formateurs USING (id_formateur)
@@ -44,7 +46,6 @@ class Notification
                 COUNT(*) AS totalNew
             FROM notifications n
             JOIN commentaires USING (id_commentaire)
-            JOIN etudiants USING (id_etudiant)
             JOIN videos USING (id_video)
             JOIN formations USING (id_formation)
             JOIN formateurs USING (id_formateur)

@@ -123,7 +123,9 @@ class Ajax extends Controller
             "idEtudiant" => $_POST["idEtudiant"],
             "idVideo" => $_POST["videoId"],
             "commentaire" => $_POST["comment"],
+            "type_user" => $_SESSION['user']['type']
         ];
+        
         $res = $this->commentaireModel->insertCommentaire($data);
         if ($res) {
             $comments = $this->commentaireModel->getCommentaireByVideoId($data["idVideo"]);

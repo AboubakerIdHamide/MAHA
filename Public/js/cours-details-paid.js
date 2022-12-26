@@ -1,13 +1,13 @@
 $(document).ready(function () {
   // video time
-  if (window.localStorage.getItem("videosTimeData")) {
-    let videoTime = JSON.parse(window.localStorage.getItem("videosTimeData"));
-    videoTime.forEach((video) => {
-      if (video.videoid == videoId) {
-        document.getElementById("video").currentTime = video.time;
-      }
-    });
-  }
+  // if (window.localStorage.getItem("videosTimeData")) {
+  //   let videoTime = JSON.parse(window.localStorage.getItem("videosTimeData"));
+  //   videoTime.forEach((video) => {
+  //     if (video.videoid == videoId) {
+  //       document.getElementById("video").currentTime = video.time;
+  //     }
+  //   });
+  // }
 
   function removeTags(str) {
     if (str === null || str === "") return "";
