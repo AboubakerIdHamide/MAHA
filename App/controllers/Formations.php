@@ -14,7 +14,7 @@ class Formations extends Controller
 		$this->stockedModel = $this->model("Stocked");
 		$this->folderModel = $this->model("Folder");
 		$this->previewsModel = $this->model("Previews");
-		
+		$this->notificationModel = $this->model("Notification");
 	}
 
 	public function index()
@@ -281,16 +281,19 @@ class Formations extends Controller
 		// check if this formateur has this formation.
 		$hasFormation = $this->formationModel->getFormation($id_formation, $_SESSION['id_formateur']);
 		if (!empty($hasFormation)) {
-			$data = $this->videoModel->getVideosOfFormation($id_formation);
+			$data["videos"] = $this->videoModel->getVideosOfFormation($id_formation);
 			if (!empty($data)) {
-				$data[0]->date_creation_formation = $this->formatDate($data[0]->date_creation_formation);
+				$data["videos"][0]->date_creation_formation = $this->formatDate($data["videos"][0]->date_creation_formation);
 				// to access to that formation in deleteVideo method
 				// I unset this variable when i go back to the dashboard 
-				$_SESSION['id_formation'] = $data[0]->id_formation;
-				$data[0]->masse_horaire = $this->videoModel->countMassHorraire($data[0]->id_formation);
-				foreach ($data as $key => $value) {
-					$data[$key]->url_video = $this->pcloudFile()->getLink($data[$key]->url_video);
+				$_SESSION['id_formation'] = $data["videos"][0]->id_formation;
+				$data["videos"][0]->masse_horaire = $this->videoModel->countMassHorraire($data["videos"][0]->id_formation);
+				foreach ($data["videos"] as $key => $value) {
+					$data["videos"][$key]->url_video = $this->pcloudFile()->getLink($data["videos"][$key]->url_video);
 				}
+				$nbrNotifications = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);;
+				$data['nbrNotifications'] = $nbrNotifications;
+
 				$this->view('formateur/videos', $data);
 			} else
 				flash("formationVide", "Votre cours ne contient aucune vidéo, ajoutez des vidéos", "alert alert-info");

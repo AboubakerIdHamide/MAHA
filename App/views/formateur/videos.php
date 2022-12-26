@@ -5,9 +5,9 @@
 				<a href="<?= URLROOT ?>/formateurs/dashboard"><i class="fas fa-chevron-left go-back rounded"></i></a>
 			</div>
 			<div class="col-6 col-md-7 col-lg-9">
-				<h1><?= $data[0]->nom_formation ?></h1>
-				<p><?= $data[0]->date_creation_formation ?></p>
-				<span>Total videos (<?= count($data) ?> videos) · <span class="badge bg-primary"><i class="fas fa-clock"></i> <?= $data[0]->masse_horaire ?></span></span>
+				<h1><?= $data["videos"][0]->nom_formation ?></h1>
+				<p><?= $data["videos"][0]->date_creation_formation ?></p>
+				<span>Total videos (<?= count($data["videos"]) ?> videos) · <span class="badge bg-primary"><i class="fas fa-clock"></i> <?= $data["videos"][0]->masse_horaire ?></span></span>
 			</div>
 			<div class="col">
 				<a href="<?= URLROOT ?>/formations/addVideo/<?= $_SESSION['id_formation'] ?>" class="btn btn-primary">Add Video <i class="fa-solid fa-file-circle-plus"></i></a>
@@ -23,7 +23,7 @@
 				<button class="btn btn-primary btn-sm order">Appliquer L'ordre <i class="fa-solid fa-check-to-slot"></i></button>
 			</div>
 		</div>
-		<?php foreach ($data as $video) : ?>
+		<?php foreach ($data["videos"] as $video) : ?>
 			<div class="row mb-3 align-items-center p-2 video rounded flex-sm-column flex-md-row ms-md-3 ms-lg-4 ms-xl-0">
 				<div class="col-1 p-0" style="width: 50px;">
 					<input style="width: 56px;text-align: center;" maxlength="3" type="text" class="order-video form-control" placeholder="<?= $order ?>" />
