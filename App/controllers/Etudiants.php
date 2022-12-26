@@ -78,11 +78,14 @@ class Etudiants extends Controller
 	public function watchedVideos()
 	{
 		// Preparing Data
-		$data = $this->videoModel->getWatchedVideos($_SESSION['id_etudiant']);
-		foreach ($data as $video) {
+		$data["videos"] = $this->videoModel->getWatchedVideos($_SESSION['id_etudiant']);
+		foreach ($data["videos"] as $video) {
 			// settingUp Video Link
 			$video->url_video = $this->pcloudFile()->getLink($video->url_video);
 		}
+
+		$nbrNotifications = $this->_getNotifications();
+		$data["nbrNotifications"] = $nbrNotifications;
 
 		// loading the view
 		$this->view("etudiant/videoCards", $data);
@@ -91,11 +94,14 @@ class Etudiants extends Controller
 	public function bockMarckedVideos()
 	{
 		// Preparing Data
-		$data = $this->videoModel->getBookmarkedVideos($_SESSION['id_etudiant']);
-		foreach ($data as $video) {
+		$data["videos"] = $this->videoModel->getBookmarkedVideos($_SESSION['id_etudiant']);
+		foreach ($data["videos"] as $video) {
 			// settingUp Video Link
 			$video->url_video = $this->pcloudFile()->getLink($video->url_video);
 		}
+
+		$nbrNotifications = $this->_getNotifications();
+		$data["nbrNotifications"] = $nbrNotifications;
 
 		// loading the view
 		$this->view("etudiant/videoCards", $data);
@@ -173,6 +179,10 @@ class Etudiants extends Controller
 				"c_mdp_err" => "",
 				"n_mdp_err" => "",
 			];
+
+			$nbrNotifications = $this->_getNotifications();
+			$data["nbrNotifications"] = $nbrNotifications;
+
 			$this->view("etudiant/updateInfos", $data);
 		}
 	}
