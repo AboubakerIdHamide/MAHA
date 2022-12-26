@@ -9,12 +9,6 @@ $(document).ready(function () {
         async: false,
       }).responseText
     );
-    // courses = $.ajax({
-    //      url:  'http://localhost/maha/ajax/getMyFormations/' + q,
-    //     	success : function (response) {
-    //     		console.log(response);
-    //     	}
-    // 	});
     const $tbody = $("tbody");
     $tbody.html("");
 

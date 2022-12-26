@@ -412,8 +412,6 @@ class Formateurs extends Controller
 				// settingUp Video Link
 				$video->url_video = $this->pcloudFile()->getLink($video->url_video);
 				$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video, $_SESSION['id_formateur'], $id_etudiant);
-				$video->watched = $this->videoModel->watchedBefore($data->id_etudiant, $video->id_video);
-				$video->bookmarked = $this->videoModel->bookmarked($data->id_etudiant, $video->id_video);
 				// settingUp User image Link for comment
 				foreach ($video->comments as $comment) {
 					$comment->image = $this->pcloudFile()->getLink($comment->image);

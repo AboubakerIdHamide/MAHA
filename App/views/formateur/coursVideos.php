@@ -32,10 +32,6 @@
                   <p class="specialite mb-0"><?= $data->specialiteId ?></p>
                 </div>
               </div>
-              <div class="love-ses-formations d-flex align-items-center gap-2">
-                <i class="<?= $data->liked ? "fa-solid" : "fa-regular" ?> fa-heart"></i>
-                <a href="#">Voir Profil</a>
-              </div>
             </div>
             <div class="mt-3 masse-h d-flex flex-row justify-content-between">
               <p><i class="fa-solid fa-clock"></i> <?= $data->mass_horaire ?></p>
@@ -113,11 +109,6 @@
                   <div class="d-flex align-items-center"><i class="fa-solid <?= $video == $data->videos[0] ? "fa-circle-pause" : "fa-circle-play" ?>"></i>&nbsp;&nbsp;&nbsp;<span data-video-id="<?= $video->id_video ?>" data-video-desc="<?= $video->description_video ?>" class="video-name">
                       <?= $video->order_video . "." . $video->nom_video ?></span></div>
                   <div class="d-flex align-items-center">
-                    <span class="tooltip-circle-check me-3">
-                      <i class="<?= $video->watched ? "fa-solid" : "fa-regular" ?> fa-circle-check" id="watch-<?= $video->id_video ?>"></i>
-                    </span>
-                    <span class="tooltip-bookmark">
-                      <i class="<?= $video->bookmarked ? "fa-solid" : "fa-regular" ?> fa-bookmark"></i></span>&nbsp;&nbsp;&nbsp;
                     <span class="video-duration" data-video-url="<?= $video->url_video ?>" id="video-<?= $video->id_video ?>" data-video-comments='<?= json_encode($video->comments) ?>'><?= $video->duree_video ?></span>
                   </div>
                 </li>
