@@ -27,19 +27,21 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `mot_de_passe` varchar(255) NOT NULL,
   `balance` float DEFAULT '0',
   PRIMARY KEY (`id_admin`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+);
 
 -- Dumping data for table maha.admin: ~0 rows (approximately)
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` (`id_admin`, `nom_admin`, `prenom_admin`, `email_admin`, `img_admin`, `mot_de_passe`, `balance`) VALUES
-	(1, 'Toumi', 'Anass', 'simo.bahlawi76@gmail.com', '45393256813', 'dimabarca123@@@', 6);
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 
 -- Dumping structure for table maha.bookmarks
 CREATE TABLE IF NOT EXISTS `bookmarks` (
-  `id_etudiant` int(11) DEFAULT NULL,
-  `id_video` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id_etudiant` varchar(255) NOT NULL,
+  `id_video` int(11) NOT NULL,
+  KEY `FK_bookmarks_etudiants` (`id_etudiant`),
+  KEY `FK_bookmarks_videos` (`id_video`),
+  CONSTRAINT `FK_bookmarks_etudiants` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiants` (`id_etudiant`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_bookmarks_videos` FOREIGN KEY (`id_video`) REFERENCES `videos` (`id_video`) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 -- Dumping data for table maha.bookmarks: ~0 rows (approximately)
 /*!40000 ALTER TABLE `bookmarks` DISABLE KEYS */;
@@ -48,11 +50,11 @@ CREATE TABLE IF NOT EXISTS `bookmarks` (
 -- Dumping structure for table maha.categories
 CREATE TABLE IF NOT EXISTS `categories` (
   `id_categorie` int(11) NOT NULL,
-  `nom_categorie` varchar(50) DEFAULT NULL,
+  `nom_categorie` varchar(50) NOT NULL,
   PRIMARY KEY (`id_categorie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
--- Dumping data for table maha.categories: ~14 rows (approximately)
+-- Dumping data for table maha.categories: ~0 rows (approximately)
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
 INSERT INTO `categories` (`id_categorie`, `nom_categorie`) VALUES
 	(1, '3D'),
@@ -66,159 +68,140 @@ INSERT INTO `categories` (`id_categorie`, `nom_categorie`) VALUES
 	(9, 'Webmarketing'),
 	(10, 'Réseaux informatique'),
 	(11, 'Management'),
-	(12, 'Bureautique'),
-	(13, 'Développement Web'),
-	(14, 'Développement Mobile');
+	(12, 'Bureautique');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 
 -- Dumping structure for table maha.commentaires
 CREATE TABLE IF NOT EXISTS `commentaires` (
   `id_commentaire` int(11) NOT NULL AUTO_INCREMENT,
   `id_video` int(11) NOT NULL,
-  `id_etudiant` int(11) NOT NULL,
+  `from_user` varchar(255) NOT NULL,
+  `to_user` varchar(255) NOT NULL,
+  `type_user` varchar(20) NOT NULL,
   `commentaire` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_commentaire`) USING BTREE,
   KEY `id_video` (`id_video`) USING BTREE,
-  KEY `FK_commentaires_etudiants` (`id_etudiant`) USING BTREE,
-  CONSTRAINT `FK_commentaires_etudiants` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiants` (`id_etudiant`) ON DELETE CASCADE,
   CONSTRAINT `commentaires_ibfk_2` FOREIGN KEY (`id_video`) REFERENCES `videos` (`id_video`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4;
+);
 
 -- Dumping data for table maha.commentaires: ~0 rows (approximately)
 /*!40000 ALTER TABLE `commentaires` DISABLE KEYS */;
-INSERT INTO `commentaires` (`id_commentaire`, `id_video`, `id_etudiant`, `commentaire`, `created_at`) VALUES
-	(31, 2, 5, 'sdfsdfsdsf', '2022-12-18 01:20:58');
 /*!40000 ALTER TABLE `commentaires` ENABLE KEYS */;
 
 -- Dumping structure for table maha.etudiants
 CREATE TABLE IF NOT EXISTS `etudiants` (
-  `id_etudiant` int(11) NOT NULL AUTO_INCREMENT,
+  `id_etudiant` varchar(255) NOT NULL,
   `nom_etudiant` varchar(50) NOT NULL,
   `prenom_etudiant` varchar(50) NOT NULL,
   `email_etudiant` varchar(100) NOT NULL,
   `tel_etudiant` varchar(15) DEFAULT NULL,
-  `date_creation_etudiant` datetime DEFAULT CURRENT_TIMESTAMP,
+  `date_creation_etudiant` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `img_etudiant` varchar(200) DEFAULT NULL,
   `mot_de_passe` varchar(255) NOT NULL,
   PRIMARY KEY (`id_etudiant`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+);
 
--- Dumping data for table maha.etudiants: ~4 rows (approximately)
+-- Dumping data for table maha.etudiants: ~1 rows (approximately)
 /*!40000 ALTER TABLE `etudiants` DISABLE KEYS */;
 INSERT INTO `etudiants` (`id_etudiant`, `nom_etudiant`, `prenom_etudiant`, `email_etudiant`, `tel_etudiant`, `date_creation_etudiant`, `img_etudiant`, `mot_de_passe`) VALUES
-	(1, 'Hamidox', 'Rwida', 'street.fighter@gmail.col', '0669875369', '2022-11-30 14:07:39', '45393256813', 'dimabarca123'),
-	(2, 'Reda', 'Taliani', 'street.fighter@gmail.col', '0669875369', '2022-11-30 14:07:39', '45393256813', 'dimabarca123'),
-	(3, 'Anass', 'Toumi', 'street.fighter@gmail.col', '0684395687', '2022-11-30 14:07:39', '45393256813', 'dimabarca123'),
-	(4, 'Abdelkadir', 'Hmida', 'street.fighter@gmail.col', '0669875369', '2022-11-30 14:07:39', '45393256813', 'dimabarca123'),
-	(5, 'Drake', 'Driss', 'simo.bahlawi76@gmail.com', '0659874365', '2022-12-17 18:54:35', '45393256813', '$2y$10$BAbuylfSebVetlCUWYC9EeGmKNBDwwu582klwsn32H5tqDxarfxr2');
+	('ETU1', 'Jeffery', 'Davila', 'hegosaf874@miarr.com', '0698753625', '2022-12-26 00:37:45', '46426170488', '$2y$10$HMeh2QbWE6.1yOBiT9er9uB4aJRrQkSmJh9O5l991OvraBmXmiVUO');
 /*!40000 ALTER TABLE `etudiants` ENABLE KEYS */;
 
 -- Dumping structure for table maha.folders
 CREATE TABLE IF NOT EXISTS `folders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `userFolderId` varchar(255) DEFAULT NULL,
-  `imagesId` varchar(255) DEFAULT NULL,
-  `videosId` varchar(255) DEFAULT NULL,
-  `ressourcesId` varchar(255) DEFAULT NULL,
-  `userEmail` varchar(255) DEFAULT NULL,
+  `userFolderId` varchar(255) NOT NULL,
+  `imagesId` varchar(255) NOT NULL,
+  `videosId` varchar(255) NOT NULL,
+  `ressourcesId` varchar(255) NOT NULL,
+  `userEmail` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+);
 
--- Dumping data for table maha.folders: ~0 rows (approximately)
+-- Dumping data for table maha.folders: ~2 rows (approximately)
 /*!40000 ALTER TABLE `folders` DISABLE KEYS */;
 INSERT INTO `folders` (`id`, `userFolderId`, `imagesId`, `videosId`, `ressourcesId`, `userEmail`) VALUES
-	(1, '15513601151', '15513601258', '15513601572', '15513601414', 'xavi.2012barca@gmail.com'),
-	(2, '15667844606', '15667846229', '15667848665', '15667847139', 'simo.bahlawi76@gmail.com');
+	(1, '15751520365', '15751520480', '15751521180', '15751520899', 'dixoyi3842@miarr.com'),
+	(2, '15751915041', '15751915121', '15751915354', '15751915217', 'hegosaf874@miarr.com');
 /*!40000 ALTER TABLE `folders` ENABLE KEYS */;
 
 -- Dumping structure for table maha.formateurs
 CREATE TABLE IF NOT EXISTS `formateurs` (
-  `id_formateur` int(11) NOT NULL AUTO_INCREMENT,
+  `id_formateur` varchar(255) NOT NULL,
   `nom_formateur` varchar(50) NOT NULL,
   `prenom_formateur` varchar(50) NOT NULL,
   `email_formateur` varchar(100) NOT NULL,
   `tel_formateur` varchar(15) DEFAULT NULL,
-  `date_creation_formateur` datetime DEFAULT CURRENT_TIMESTAMP,
+  `date_creation_formateur` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `img_formateur` varchar(200) DEFAULT NULL,
   `mot_de_passe` varchar(255) NOT NULL,
-  `paypalMail` varchar(250) DEFAULT NULL,
-  `biography` text,
-  `specialiteId` int(11) DEFAULT NULL,
-  `balance` float DEFAULT '0',
+  `paypalMail` varchar(250) NOT NULL,
+  `biography` text NOT NULL,
+  `balance` float NOT NULL DEFAULT '0',
+  `specialiteId` int(11) NOT NULL,
   PRIMARY KEY (`id_formateur`),
-  KEY `specialiteId` (`specialiteId`),
-  CONSTRAINT `formateurs_ibfk_1` FOREIGN KEY (`specialiteId`) REFERENCES `categories` (`id_categorie`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
+  KEY `FK_formateurs_categories` (`specialiteId`),
+  CONSTRAINT `FK_formateurs_categories` FOREIGN KEY (`specialiteId`) REFERENCES `categories` (`id_categorie`) ON DELETE NO ACTION ON UPDATE CASCADE
+);
 
--- Dumping data for table maha.formateurs: ~10 rows (approximately)
+-- Dumping data for table maha.formateurs: ~1 rows (approximately)
 /*!40000 ALTER TABLE `formateurs` DISABLE KEYS */;
-INSERT INTO `formateurs` (`id_formateur`, `nom_formateur`, `prenom_formateur`, `email_formateur`, `tel_formateur`, `date_creation_formateur`, `img_formateur`, `mot_de_passe`, `paypalMail`, `biography`, `specialiteId`, `balance`) VALUES
-	(1, 'ABDELMOUMEN', 'Mustafa', 'xavi.2012barca@gmail.com', '0638123132', '2022-12-03 23:32:09', '45393256813', '$2y$10$k2S49ubSD4tHQguREDXbtO2HnzcQ725QetgzpZoscr9eQu2vgzjPK', 'xavi-2012barca@gmail.com', 'Bio Graphie Mustafa Bio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie Mustafa', 13, 300),
-	(3, 'Rkiba', 'Hassan', 'xavi.2012barca@gmail.com', '0638123132', '2022-12-03 23:32:09', '45393256813', '$2y$10$k2S49ubSD4tHQguREDXbtO2HnzcQ725QetgzpZoscr9eQu2vgzjPK', 'xavi-2012barca@gmail.com', 'Bio Graphie Mustafa Bio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie Mustafa', 8, 0),
-	(16, 'Nom 1', 'Mustafa', 'xavi.2012barca@gmail.com', '0638123132', '2022-12-03 23:32:09', '45393256813', '$2y$10$k2S49ubSD4tHQguREDXbtO2HnzcQ725QetgzpZoscr9eQu2vgzjPK', 'xavi-2012barca@gmail.com', 'Bio Graphie Mustafa Bio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie Mustafa', 13, 0),
-	(17, 'Nom 1', 'Mustafa', 'xavi.2012barca@gmail.com', '0638123132', '2022-12-03 23:32:09', '45393256813', '$2y$10$k2S49ubSD4tHQguREDXbtO2HnzcQ725QetgzpZoscr9eQu2vgzjPK', 'xavi-2012barca@gmail.com', 'Bio Graphie Mustafa Bio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie Mustafa', 13, 0),
-	(18, 'Nom 1', 'Mustafa', 'xavi.2012barca@gmail.com', '0638123132', '2022-12-03 23:32:09', '45393256813', '$2y$10$k2S49ubSD4tHQguREDXbtO2HnzcQ725QetgzpZoscr9eQu2vgzjPK', 'xavi-2012barca@gmail.com', 'Bio Graphie Mustafa Bio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie Mustafa', 13, 0),
-	(19, 'Nom 1', 'Mustafa', 'xavi.2012barca@gmail.com', '0638123132', '2022-12-03 23:32:09', '45393256813', '$2y$10$k2S49ubSD4tHQguREDXbtO2HnzcQ725QetgzpZoscr9eQu2vgzjPK', 'xavi-2012barca@gmail.com', 'Bio Graphie Mustafa Bio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie Mustafa', 13, 0),
-	(20, 'Nom 1', 'Mustafa', 'xavi.2012barca@gmail.com', '0638123132', '2022-12-03 23:32:09', '45393256813', '$2y$10$k2S49ubSD4tHQguREDXbtO2HnzcQ725QetgzpZoscr9eQu2vgzjPK', 'xavi-2012barca@gmail.com', 'Bio Graphie Mustafa Bio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie Mustafa', 13, 0),
-	(21, 'Nom 1', 'Mustafa', 'xavi.2012barca@gmail.com', '0638123132', '2022-12-03 23:32:09', '45393256813', '$2y$10$k2S49ubSD4tHQguREDXbtO2HnzcQ725QetgzpZoscr9eQu2vgzjPK', 'xavi-2012barca@gmail.com', 'Bio Graphie Mustafa Bio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie Mustafa', 13, 0),
-	(22, 'Nom 1', 'Mustafa', 'xavi.2012barca@gmail.com', '0638123132', '2022-12-03 23:32:09', '45393256813', '$2y$10$k2S49ubSD4tHQguREDXbtO2HnzcQ725QetgzpZoscr9eQu2vgzjPK', 'xavi-2012barca@gmail.com', 'Bio Graphie Mustafa Bio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie Mustafa', 13, 0),
-	(23, 'Nom 1', 'Mustafa', 'xavi.2012barca@gmail.com', '0638123132', '2022-12-03 23:32:09', '45393256813', '$2y$10$k2S49ubSD4tHQguREDXbtO2HnzcQ725QetgzpZoscr9eQu2vgzjPK', 'xavi-2012barca@gmail.com', 'Bio Graphie Mustafa Bio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie MustafaBio Graphie Mustafa', 13, 0);
+INSERT INTO `formateurs` (`id_formateur`, `nom_formateur`, `prenom_formateur`, `email_formateur`, `tel_formateur`, `date_creation_formateur`, `img_formateur`, `mot_de_passe`, `paypalMail`, `biography`, `balance`, `specialiteId`) VALUES
+	('FOR1', 'Will', 'Charles', 'dixoyi3842@miarr.com', '0653147965', '2022-12-25 23:32:29', '46424966074', '$2y$10$3KFSN4fybsldjy7Aww9IWOb06QIWBmUKMk.Haym0a/LTkYmP8GgoO', 'dixoyi3842@miarr.com', 'Lorem ipsum dolor sit amet. Non saepe alias id voluptatem sequi cum illo eius qui necessitatibus inventore rem voluptas corporis id aspernatur illo. Ad beatae quaerat aut voluptate accusantium et Quis quasi ut possimus expedita. Qui nostrum ipsam est sunt eligendi ab accusamus illum sit adipisci velit sit explicabo molestiae est maiores totam qui impedit voluptas.', 0, 5);
 /*!40000 ALTER TABLE `formateurs` ENABLE KEYS */;
 
 -- Dumping structure for table maha.formations
 CREATE TABLE IF NOT EXISTS `formations` (
   `id_formation` int(11) NOT NULL AUTO_INCREMENT,
   `niveau_formation` int(11) NOT NULL,
-  `id_formateur` int(11) NOT NULL,
+  `id_formateur` varchar(255) NOT NULL,
   `categorie` int(11) NOT NULL,
   `nom_formation` varchar(100) NOT NULL,
   `image_formation` varchar(200) NOT NULL,
   `mass_horaire` time NOT NULL,
-  `date_creation_formation` datetime DEFAULT CURRENT_TIMESTAMP,
-  `prix_formation` float(8,2) DEFAULT NULL,
+  `date_creation_formation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `prix_formation` float(8,2) NOT NULL,
   `description` text NOT NULL,
-  `id_langue` int(11) DEFAULT '1',
+  `id_langue` int(11) DEFAULT NULL,
   `likes` int(11) DEFAULT '0',
   PRIMARY KEY (`id_formation`),
   KEY `niveau_formation` (`niveau_formation`),
-  KEY `id_formateur` (`id_formateur`),
   KEY `categorie` (`categorie`),
   KEY `id_langue` (`id_langue`),
-  CONSTRAINT `formations_ibfk_1` FOREIGN KEY (`niveau_formation`) REFERENCES `niveaux` (`id_niveau`),
-  CONSTRAINT `formations_ibfk_2` FOREIGN KEY (`id_formateur`) REFERENCES `formateurs` (`id_formateur`),
-  CONSTRAINT `formations_ibfk_3` FOREIGN KEY (`categorie`) REFERENCES `categories` (`id_categorie`),
-  CONSTRAINT `formations_ibfk_4` FOREIGN KEY (`id_langue`) REFERENCES `langues` (`id_langue`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+  KEY `FK_formations_formateurs` (`id_formateur`),
+  CONSTRAINT `FK_formations_formateurs` FOREIGN KEY (`id_formateur`) REFERENCES `formateurs` (`id_formateur`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `formations_ibfk_1` FOREIGN KEY (`niveau_formation`) REFERENCES `niveaux` (`id_niveau`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `formations_ibfk_3` FOREIGN KEY (`categorie`) REFERENCES `categories` (`id_categorie`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `formations_ibfk_4` FOREIGN KEY (`id_langue`) REFERENCES `langues` (`id_langue`) ON DELETE NO ACTION ON UPDATE CASCADE
+);
 
--- Dumping data for table maha.formations: ~0 rows (approximately)
+-- Dumping data for table maha.formations: ~1 rows (approximately)
 /*!40000 ALTER TABLE `formations` DISABLE KEYS */;
 INSERT INTO `formations` (`id_formation`, `niveau_formation`, `id_formateur`, `categorie`, `nom_formation`, `image_formation`, `mass_horaire`, `date_creation_formation`, `prix_formation`, `description`, `id_langue`, `likes`) VALUES
-	(1, 2, 1, 5, 'php for beginners', '45993314962', '00:01:28', '2022-12-13 01:10:11', 90.00, 'PHP is a server scripting language, and a powerful tool for making dynamic and interactive Web pages. PHP is a widely-used, free, and efficient ', 2, 1);
+	(1, 2, 'FOR1', 5, 'Cours Complet PHP et MYSQL', '46425417951', '11:58:00', '2022-12-25 23:58:33', 45.00, 'Lorem ipsum dolor sit amet. Et internos dolores et inventore cupiditate ex dolorum officia sit facilis deserunt nam voluptas consequatur. Sit vitae similique et tempore eveniet qui minima deleniti. Id repudiandae quia ut ipsam galisum ut corporis autem.', 1, 1);
 /*!40000 ALTER TABLE `formations` ENABLE KEYS */;
 
 -- Dumping structure for table maha.inscriptions
 CREATE TABLE IF NOT EXISTS `inscriptions` (
   `id_inscription` int(11) NOT NULL AUTO_INCREMENT,
   `id_formation` int(11) NOT NULL,
-  `id_etudiant` int(11) NOT NULL,
-  `id_formateur` int(11) NOT NULL,
-  `date_inscription` datetime DEFAULT CURRENT_TIMESTAMP,
+  `id_etudiant` varchar(255) NOT NULL,
+  `id_formateur` varchar(255) NOT NULL,
+  `date_inscription` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_inscription`),
   KEY `id_formation` (`id_formation`),
-  KEY `id_etudiant` (`id_etudiant`),
-  KEY `id_formateur` (`id_formateur`),
-  CONSTRAINT `inscriptions_ibfk_1` FOREIGN KEY (`id_formation`) REFERENCES `formations` (`id_formation`),
-  CONSTRAINT `inscriptions_ibfk_2` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiants` (`id_etudiant`),
-  CONSTRAINT `inscriptions_ibfk_3` FOREIGN KEY (`id_formateur`) REFERENCES `formateurs` (`id_formateur`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+  KEY `FK_inscriptions_formateurs` (`id_formateur`),
+  KEY `FK_inscriptions_etudiants` (`id_etudiant`),
+  CONSTRAINT `FK_inscriptions_etudiants` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiants` (`id_etudiant`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `FK_inscriptions_formateurs` FOREIGN KEY (`id_formateur`) REFERENCES `formateurs` (`id_formateur`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `inscriptions_ibfk_1` FOREIGN KEY (`id_formation`) REFERENCES `formations` (`id_formation`) ON DELETE NO ACTION ON UPDATE CASCADE
+);
 
--- Dumping data for table maha.inscriptions: ~2 rows (approximately)
+-- Dumping data for table maha.inscriptions: ~1 rows (approximately)
 /*!40000 ALTER TABLE `inscriptions` DISABLE KEYS */;
 INSERT INTO `inscriptions` (`id_inscription`, `id_formation`, `id_etudiant`, `id_formateur`, `date_inscription`) VALUES
-	(1, 1, 5, 1, '2022-12-17 18:58:04'),
-	(2, 28, 1, 16, '2022-12-10 21:05:29'),
-	(3, 24, 1, 23, '2022-12-10 21:05:29');
+	(1, 1, 'ETU1', 'FOR1', '2022-12-26 00:39:42');
 /*!40000 ALTER TABLE `inscriptions` ENABLE KEYS */;
 
 -- Dumping structure for procedure maha.insertItoTableFilterAll
@@ -383,9 +366,9 @@ DELIMITER ;
 -- Dumping structure for table maha.langues
 CREATE TABLE IF NOT EXISTS `langues` (
   `id_langue` int(11) NOT NULL,
-  `nom_langue` varchar(30) DEFAULT NULL,
+  `nom_langue` varchar(30) NOT NULL,
   PRIMARY KEY (`id_langue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Dumping data for table maha.langues: ~4 rows (approximately)
 /*!40000 ALTER TABLE `langues` DISABLE KEYS */;
@@ -398,26 +381,26 @@ INSERT INTO `langues` (`id_langue`, `nom_langue`) VALUES
 
 -- Dumping structure for table maha.likes
 CREATE TABLE IF NOT EXISTS `likes` (
-  `etudiant_id` int(11) DEFAULT NULL,
-  `formation_id` int(11) DEFAULT NULL,
-  KEY `fkLikes1` (`etudiant_id`),
+  `etudiant_id` varchar(255) NOT NULL,
+  `formation_id` int(11) NOT NULL,
   KEY `fkLikes2` (`formation_id`),
-  CONSTRAINT `fkLikes1` FOREIGN KEY (`etudiant_id`) REFERENCES `etudiants` (`id_etudiant`),
-  CONSTRAINT `fkLikes2` FOREIGN KEY (`formation_id`) REFERENCES `formations` (`id_formation`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  KEY `FK_likes_etudiants` (`etudiant_id`),
+  CONSTRAINT `FK_likes_etudiants` FOREIGN KEY (`etudiant_id`) REFERENCES `etudiants` (`id_etudiant`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fkLikes2` FOREIGN KEY (`formation_id`) REFERENCES `formations` (`id_formation`) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
--- Dumping data for table maha.likes: ~0 rows (approximately)
+-- Dumping data for table maha.likes: ~1 rows (approximately)
 /*!40000 ALTER TABLE `likes` DISABLE KEYS */;
 INSERT INTO `likes` (`etudiant_id`, `formation_id`) VALUES
-	(5, 1);
+	('ETU1', 1);
 /*!40000 ALTER TABLE `likes` ENABLE KEYS */;
 
 -- Dumping structure for table maha.niveaux
 CREATE TABLE IF NOT EXISTS `niveaux` (
   `id_niveau` int(11) NOT NULL,
-  `nom_niveau` varchar(50) DEFAULT NULL,
+  `nom_niveau` varchar(50) NOT NULL,
   PRIMARY KEY (`id_niveau`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Dumping data for table maha.niveaux: ~3 rows (approximately)
 /*!40000 ALTER TABLE `niveaux` DISABLE KEYS */;
@@ -431,11 +414,11 @@ INSERT INTO `niveaux` (`id_niveau`, `nom_niveau`) VALUES
 CREATE TABLE IF NOT EXISTS `notifications` (
   `id_notification` int(11) NOT NULL AUTO_INCREMENT,
   `id_commentaire` int(11) NOT NULL,
-  `etat_notification` int(11) DEFAULT '1',
+  `etat_notification` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id_notification`),
   KEY `FK_notifications_commentaires` (`id_commentaire`),
   CONSTRAINT `FK_notifications_commentaires` FOREIGN KEY (`id_commentaire`) REFERENCES `commentaires` (`id_commentaire`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 -- Dumping data for table maha.notifications: ~0 rows (approximately)
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
@@ -449,30 +432,28 @@ CREATE TABLE IF NOT EXISTS `previews` (
   UNIQUE KEY `id_video` (`id_video`) USING BTREE,
   CONSTRAINT `previews_ibfk_1` FOREIGN KEY (`id_formation`) REFERENCES `formations` (`id_formation`) ON DELETE CASCADE,
   CONSTRAINT `previews_ibfk_2` FOREIGN KEY (`id_video`) REFERENCES `videos` (`id_video`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 -- Dumping data for table maha.previews: ~1 rows (approximately)
 /*!40000 ALTER TABLE `previews` DISABLE KEYS */;
 INSERT INTO `previews` (`id_formation`, `id_video`) VALUES
-	(1, 3);
+	(1, 1);
 /*!40000 ALTER TABLE `previews` ENABLE KEYS */;
 
 -- Dumping structure for table maha.request_payment
 CREATE TABLE IF NOT EXISTS `request_payment` (
   `id_payment` int(11) NOT NULL AUTO_INCREMENT,
-  `id_formateur` int(11) NOT NULL,
+  `id_formateur` varchar(255) NOT NULL,
   `request_prix` float NOT NULL,
   `date_request` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `etat_request` varchar(10) NOT NULL DEFAULT 'pending',
-  PRIMARY KEY (`id_payment`) USING BTREE,
-  KEY `id_formateur` (`id_formateur`) USING BTREE,
-  CONSTRAINT `request_payment_ibfk_1` FOREIGN KEY (`id_formateur`) REFERENCES `formateurs` (`id_formateur`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id_payment`),
+  KEY `FK_request_payment_formateurs` (`id_formateur`),
+  CONSTRAINT `FK_request_payment_formateurs` FOREIGN KEY (`id_formateur`) REFERENCES `formateurs` (`id_formateur`) ON DELETE NO ACTION ON UPDATE CASCADE
+);
 
 -- Dumping data for table maha.request_payment: ~0 rows (approximately)
 /*!40000 ALTER TABLE `request_payment` DISABLE KEYS */;
-INSERT INTO `request_payment` (`id_payment`, `id_formateur`, `request_prix`, `date_request`, `etat_request`) VALUES
-	(6, 1, 20, '2022-12-12 01:04:24', 'pending');
 /*!40000 ALTER TABLE `request_payment` ENABLE KEYS */;
 
 -- Dumping structure for table maha.tablefilter
@@ -498,7 +479,7 @@ CREATE TABLE IF NOT EXISTS `tablefilter` (
   `langageFormation` varchar(50) DEFAULT NULL,
   `idNiv` int(11) DEFAULT NULL,
   `niveauFormation` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 -- Dumping data for table maha.tablefilter: ~0 rows (approximately)
 /*!40000 ALTER TABLE `tablefilter` DISABLE KEYS */;
@@ -517,27 +498,56 @@ CREATE TABLE IF NOT EXISTS `videos` (
   PRIMARY KEY (`id_video`),
   KEY `id_formation` (`id_formation`),
   CONSTRAINT `videos_ibfk_1` FOREIGN KEY (`id_formation`) REFERENCES `formations` (`id_formation`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+);
 
--- Dumping data for table maha.videos: ~1 rows (approximately)
+-- Dumping data for table maha.videos: ~27 rows (approximately)
 /*!40000 ALTER TABLE `videos` DISABLE KEYS */;
 INSERT INTO `videos` (`id_video`, `id_formation`, `nom_video`, `url_video`, `duree_video`, `description_video`, `order_video`, `watched`) VALUES
-	(2, 1, 'Php For Beginners Part 1.mp4', '46160469452', '00:00:44', 'dÃ©crivez ces vidÃ©os ou ajoutez des ressources !', 999, 0),
-	(3, 1, 'Php For Beginners Part 2.mp4', '46160892796', '00:00:44', 'dÃ©crivez ces vidÃ©os ou ajoutez des ressources !', 999, 0);
+	(1, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 1_27] - Introduction au PhP', '46425600486', '00:09:46', 'DESC1', 1, 0),
+	(2, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 2_27] - Préparer son environnement de travail', '46425600680', '00:05:01', 'DESC2', 2, 0),
+	(3, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 3_27] - Les bases du PhP', '46302284000', '00:27:16', 'DESC3', 3, 0),
+	(4, 1, 'Tutoriel _ Cours Complet PhP & MySQL  [Chapitre 4_27] - Les variables en PhP', '46425599851', '00:32:36', 'DESC4', 4, 0),
+	(5, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 5_27] - Les conditions en PhP', '46302395707', '00:58:42', 'DESC5', 5, 0),
+	(6, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 6_27] - Les boucles en PhP', '46302297248', '00:15:39', 'DESC6', 6, 0),
+	(7, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 7_27] - Les tableaux en PhP', '46302355089', '00:45:21', 'DESC7', 7, 0),
+	(8, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 8_27] - Les fonctions en PhP', '46302293004', '00:19:09', 'DESC8', 8, 0),
+	(9, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 9_27] - Les fonctions relatives aux string', '46302275349', '00:33:09', 'DESC9', 9, 0),
+	(10, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 10_27] - Les fonctions affectant les array', '46302295460', '01:02:08', 'DESC10', 10, 0),
+	(11, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 11_27] - Les fonctions relatives à la date en PhP', '46302279151', '00:29:36', 'DESC11', 11, 0),
+	(12, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 12_27] - Les constantes en PhP', '46302264177', '00:17:10', 'DESC12', 12, 0),
+	(13, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 13_27] - Les formulaires en PhP', '46302269203', '00:32:58', 'DESC13', 13, 0),
+	(14, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 14_27] - Les instructions include et require', '46302302904', '00:06:55', 'DESC14', 14, 0),
+	(15, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 15_27] - Opérations sur les fichiers en PhP', '46302317792', '00:21:32', 'DESC15', 15, 0),
+	(16, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 16_27] - Variables superglobales en PhP', '46425599585', '00:28:51', 'DESC16', 16, 0),
+	(17, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 17_27] - Les bases de la POO en PhP', '46302264928', '00:23:22', 'DESC17', 17, 0),
+	(18, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 18_27] - Gestion des erreurs en PhP', '46302271756', '00:14:52', 'DESC18', 18, 0),
+	(19, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 19_27] - Découverte de MySQL, phpMyAdmin et des BDD', '46302295006', '00:18:49', 'DESC19', 19, 0),
+	(20, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Ch 20_27] - Connexion à MySQL et création de BDD', '46302287432', '00:23:21', 'DESC20', 20, 0),
+	(21, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 21_27] - Insérer des données dans une BDD via PhP', '46302266720', '00:22:05', 'DESC21', 21, 0),
+	(22, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 22_27] - Sélection de données dans une BDD', '46302347337', '00:19:09', 'DESC22', 22, 0),
+	(23, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Ch 23_27] - MàJ et suppression de données dans une BDD', '46425600452', '00:11:18', 'DESC23', 23, 0),
+	(24, 1, "Tutoriel _ Cours Complet PhP & MySQL [Chapitre 24_27] - Les jointures SQL et l'UNION", '46302352492', '00:45:39', 'DESC24', 24, 0),
+	(25, 1, 'Tutoriel _ Cours Complet PhP & MySQL - [Chapitre 25_27] - Les fonctions SQL', '46302355185', '00:19:39', 'DESC25', 25, 0),
+	(26, 1, 'Tutoriel _ Cours Complet PhP & MySQL - [Chapitre 26_27] - Les filtres PhP', '46302280631', '00:37:53', 'DESC26', 26, 0),
+	(27, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Ch 27_27] - Les expressions régulières', '46302347701', '00:36:04', 'DESC27', 27, 0);
 /*!40000 ALTER TABLE `videos` ENABLE KEYS */;
 
 -- Dumping structure for table maha.watched
 CREATE TABLE IF NOT EXISTS `watched` (
-  `id_etudiant` int(11) DEFAULT NULL,
-  `id_video` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id_etudiant` varchar(255) NOT NULL,
+  `id_video` int(11) NOT NULL,
+  KEY `FK_watched_etudiants` (`id_etudiant`),
+  KEY `FK_watched_videos` (`id_video`),
+  CONSTRAINT `FK_watched_etudiants` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiants` (`id_etudiant`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_watched_videos` FOREIGN KEY (`id_video`) REFERENCES `videos` (`id_video`) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 -- Dumping data for table maha.watched: ~0 rows (approximately)
 /*!40000 ALTER TABLE `watched` DISABLE KEYS */;
 /*!40000 ALTER TABLE `watched` ENABLE KEYS */;
 
 -- Dumping structure for trigger maha.calcDuree
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
+
 DELIMITER //
 CREATE TRIGGER `calcDuree` AFTER INSERT ON `videos` FOR EACH ROW BEGIN
 	UPDATE formations f SET mass_horaire=
@@ -546,10 +556,10 @@ CREATE TRIGGER `calcDuree` AFTER INSERT ON `videos` FOR EACH ROW BEGIN
     WHERE f.id_formation=NEW.id_formation;
 END//
 DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
+
 
 -- Dumping structure for trigger maha.calcDureeOnDelete
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
+
 DELIMITER //
 CREATE TRIGGER `calcDureeOnDelete` AFTER DELETE ON `videos` FOR EACH ROW BEGIN
 	UPDATE formations f SET mass_horaire=
@@ -558,10 +568,10 @@ CREATE TRIGGER `calcDureeOnDelete` AFTER DELETE ON `videos` FOR EACH ROW BEGIN
     WHERE f.id_formation=OLD.id_formation;
 END//
 DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
+
 
 -- Dumping structure for trigger maha.calcDureeOnUpdate
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
+
 DELIMITER //
 CREATE TRIGGER `calcDureeOnUpdate` AFTER UPDATE ON `videos` FOR EACH ROW BEGIN
 	UPDATE formations f SET mass_horaire=
@@ -570,10 +580,10 @@ CREATE TRIGGER `calcDureeOnUpdate` AFTER UPDATE ON `videos` FOR EACH ROW BEGIN
     WHERE f.id_formation=NEW.id_formation;
 END//
 DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
+
 
 -- Dumping structure for trigger maha.calcLikeDelete
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
+
 DELIMITER //
 CREATE TRIGGER `calcLikeDelete` AFTER DELETE ON `likes` FOR EACH ROW BEGIN
 	DECLARE likesCount int DEFAULT 0;
@@ -581,10 +591,10 @@ CREATE TRIGGER `calcLikeDelete` AFTER DELETE ON `likes` FOR EACH ROW BEGIN
 	UPDATE formations SET likes=likesCount WHERE id_formation=OLD.formation_id;
 END//
 DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
+
 
 -- Dumping structure for trigger maha.calcLikeInsert
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
+
 DELIMITER //
 CREATE TRIGGER `calcLikeInsert` AFTER INSERT ON `likes` FOR EACH ROW BEGIN
 	DECLARE likesCount int DEFAULT 0;
@@ -592,20 +602,72 @@ CREATE TRIGGER `calcLikeInsert` AFTER INSERT ON `likes` FOR EACH ROW BEGIN
 	UPDATE formations f SET likes=likesCount WHERE id_formation=NEW.formation_id;
 END//
 DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
+
 
 -- Dumping structure for trigger maha.commentaires_after_insert
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+
 DELIMITER //
 CREATE TRIGGER `commentaires_after_insert` AFTER INSERT ON `commentaires` FOR EACH ROW BEGIN
 	INSERT INTO notifications(id_commentaire)
 	VALUES (NEW.id_commentaire);
 END//
 DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
+
+
+-- Dumping structure for trigger maha.etudiants_before_insert
+
+DELIMITER //
+CREATE TRIGGER `etudiants_before_insert` BEFORE INSERT ON `etudiants` FOR EACH ROW BEGIN
+	DECLARE numero INT;
+	DECLARE v_id_etudiant VARCHAR(100);
+	DECLARE is_exist BOOLEAN DEFAULT FALSE;
+	DECLARE cpt INT;
+	
+	SET numero = (SELECT COUNT(*) FROM etudiants) + 1;
+	SET v_id_etudiant = CONCAT("ETU", numero);
+	check_exist : LOOP
+		SET cpt = (SELECT COUNT(*) FROM etudiants WHERE id_etudiant = v_id_etudiant);
+		IF(cpt = 0) THEN
+			LEAVE check_exist;
+		ELSE
+			SET numero = numero + 1;
+			SET v_id_etudiant = CONCAT("ETU", numero);
+		END IF;
+	END LOOP check_exist;
+	
+	SET NEW.id_etudiant = v_id_etudiant;
+END//
+DELIMITER ;
+
+
+-- Dumping structure for trigger maha.formateurs_before_insert
+
+DELIMITER //
+CREATE TRIGGER `formateurs_before_insert` BEFORE INSERT ON `formateurs` FOR EACH ROW BEGIN
+	DECLARE numero INT;
+	DECLARE v_id_formateur VARCHAR(100);
+	DECLARE is_exist BOOLEAN DEFAULT FALSE;
+	DECLARE cpt INT;
+	
+	SET numero = (SELECT COUNT(*) FROM formateurs) + 1;
+	SET v_id_formateur = CONCAT("FOR", numero);
+	check_exist : LOOP
+		SET cpt = (SELECT COUNT(*) FROM formateurs WHERE id_formateur = v_id_formateur);
+		IF(cpt = 0) THEN
+			LEAVE check_exist;
+		ELSE
+			SET numero = numero + 1;
+			SET v_id_formateur = CONCAT("FOR", numero);
+		END IF;
+	END LOOP check_exist;
+	
+	SET NEW.id_formateur = v_id_formateur;
+END//
+DELIMITER ;
+
 
 -- Dumping structure for trigger maha.request_payment_after_update
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
+
 DELIMITER //
 CREATE TRIGGER `request_payment_after_update` AFTER UPDATE ON `request_payment` FOR EACH ROW BEGIN
 	IF(NEW.etat_request = 'accepted') THEN 
@@ -619,7 +681,7 @@ CREATE TRIGGER `request_payment_after_update` AFTER UPDATE ON `request_payment` 
 	END IF;
 END//
 DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
+
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
