@@ -125,6 +125,8 @@ class Formations extends Controller
 				redirect("formateurs/index");
 				flash("formationAdded", "Vos détails de cours sont insérés avec succès, vous devez donner une description à vos vidéos", "alert alert-info mt-1");
 			} else {
+				$nbrNotifications = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);;
+				$data['nbrNotifications'] = $nbrNotifications;
 				$this->view("formation/addFormation", $data);
 			}
 		} else {
@@ -137,6 +139,8 @@ class Formations extends Controller
 			$data["folders"] = $this->folderModel->getFolderByEmail($_SESSION['user']['email']);
 			$data["allcategories"] = $this->stockedModel->getAllCategories($_SESSION['user']['email']);
 			$data["levels"] = $this->stockedModel->getAllLevels();
+			$nbrNotifications = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);;
+			$data['nbrNotifications'] = $nbrNotifications;
 			$this->view("formation/addFormation", $data);
 		}
 	}
