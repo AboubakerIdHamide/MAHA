@@ -116,7 +116,7 @@ class Formations extends Controller
 							"Idformation" => $formationId,
 							"nomVideo" => $video->name,
 							"duree" => $video->duree,
-							"url" => $video->file_id,
+							"url" => $video->videoPath,
 							"desc" => "discribe this video or add a ressources !",
 						];
 						$this->videoModel->insertVideo($videoData);
@@ -166,7 +166,7 @@ class Formations extends Controller
 					"Idformation" => $formationId,
 					"nomVideo" => $video->name,
 					"duree" => $video->duree,
-					"url" => $video->file_id,
+					"url" => $video->videoPath,
 					"desc" => "décrivez ces vidéos ou ajoutez des ressources !",
 				];
 				$this->videoModel->insertVideo($videoData);
@@ -174,10 +174,7 @@ class Formations extends Controller
 			redirect("formateurs/index");
 			flash("videoAdded", "Vos vidéos ajoutées avec succès !", "alert alert-info mt-1");
 		} else {
-			$data = [
-				"folders" => $this->folderModel->getFolderByEmail($_SESSION['user']['email']),
-			];
-			$this->view("formateur/addVideo", $data);
+			$this->view("formateur/addVideo");
 		}
 	}
 
@@ -188,7 +185,7 @@ class Formations extends Controller
 			$videoDataToDelete = $this->videoModel->getVideo($_SESSION['id_formation'], $_POST['id_video']);
 			$res = $this->videoModel->deteleVideo($_SESSION['id_formation'], $_POST['id_video']);
 			if ($res) {
-				$this->pcloudFile()->delete(intval($videoDataToDelete["url_video"]));
+				unlink($videoDataToDelete["url_video"]);
 				echo 'Le Video a ete supprimer avec success !!!';
 				flash('deteleVideo', 'Le Video a ete supprimer avec success !!!');
 			} else {
@@ -286,22 +283,23 @@ class Formations extends Controller
 		$hasFormation = $this->formationModel->getFormation($id_formation, $_SESSION['id_formateur']);
 		if (!empty($hasFormation)) {
 			$data["videos"] = $this->videoModel->getVideosOfFormation($id_formation);
-			if (!empty($data)) {
+			if (!empty($data['videos'])) {
 				$data["videos"][0]->date_creation_formation = $this->formatDate($data["videos"][0]->date_creation_formation);
 				// to access to that formation in deleteVideo method
 				// I unset this variable when i go back to the dashboard 
 				$_SESSION['id_formation'] = $data["videos"][0]->id_formation;
 				$data["videos"][0]->masse_horaire = $this->videoModel->countMassHorraire($data["videos"][0]->id_formation);
 				foreach ($data["videos"] as $key => $value) {
-					$data["videos"][$key]->url_video = $this->pcloudFile()->getLink($data["videos"][$key]->url_video);
+					$data["videos"][$key]->url_video =URLROOT."/Public/".$data["videos"][$key]->url_video;
 				}
-				$nbrNotifications = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);;
+				$nbrNotifications = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
 				$data['nbrNotifications'] = $nbrNotifications;
 
 				$this->view('formateur/videos', $data);
-			} else
+			}else{
 				flash("formationVide", "Votre cours ne contient aucune vidéo, ajoutez des vidéos", "alert alert-info");
-			redirect("formations/addVideo/" . $id_formation);
+				redirect("formations/addVideo/" . $id_formation);
+			}
 		} else {
 			flash("formationNotExists", "Cette formation n`existe pas", "alert alert-info");
 			redirect("formateurs/index");
@@ -374,15 +372,9 @@ class Formations extends Controller
 			if (in_array($fileRealExt, $allowed)) {
 				if ($fileError === 0 && $data["error"] == false) {
 					$fileNameNew = substr(number_format(time() * rand(), 0, '', ''), 0, 5) . "." . $fileRealExt;
-					$fileDestination = 'images\\userImage\\' . $fileNameNew;
+					$fileDestination = 'images/formations/images/' . $fileNameNew;
 					move_uploaded_file($fileTmpName, $fileDestination);
 					$data["img_formation"] = $fileDestination;
-
-					// upload it to pCloud
-					$imagesFolderId = $data["folders"]["imagesId"];
-					$metaData = $this->pcloudFile()->upload($fileDestination, $imagesFolderId);
-					unlink($fileDestination);
-					$data["img_formation"] = $metaData->metadata->fileid;
 				} else {
 					$data["error"] = "Une erreur s'est produite lors du téléchargement de votre image ";
 				}
@@ -390,7 +382,7 @@ class Formations extends Controller
 				$data["error"] = "Vous ne pouvez pas télécharger ce fichier uniquement (jpg | jpeg | png | ico) autorisé";
 			}
 		} else {
-			$data["img_formation"] = 45389586920;
+			$data["img_formation"] = "images/default_formation.jpg";
 		}
 
 		return $data;

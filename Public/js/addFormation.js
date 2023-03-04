@@ -135,6 +135,7 @@ videosInput.addEventListener("change", function () {
 	// Clear HTML elements
 	videosContainer.innerHTML = "";
 	videoErrorSpan.textContent = "";
+	videosInput.value=""
 
 	NewFiles.forEach((file) => {
 		if (allowedExt.includes(file.type)) {
@@ -146,15 +147,19 @@ videosInput.addEventListener("change", function () {
 
 	// Create Each Of Video Element And Upload It
 	Files.forEach((file, i) => {
-		videosContainer.innerHTML += `
-			<div class="video" file-title="${file.name}" id="${i}">
-					<div class="video-progress" id="video_prog_${i}"></div>
-					<i class="fa fa-video"></i>
-					<div class="title">${file.name}</div>
-					<i class="fa fa-check check-icon"></i>
-			</div>
-		`;
-		uploadVideo(file, i);
+		if(file.size<41943040){
+			videosContainer.innerHTML += `
+				<div class="video" file-title="${file.name}" id="${i}">
+						<div class="video-progress" id="video_prog_${i}"></div>
+						<i class="fa fa-video"></i>
+						<div class="title">${file.name}</div>
+						<i class="fa fa-check check-icon"></i>
+				</div>
+			`;
+			uploadVideos(file);
+		}else{
+			videoErrorSpan.textContent = "les vidéos de plus de 40 Mo ne sont pas valides";
+		}
 	});
 });
 
@@ -239,60 +244,122 @@ function validateSectionTwo() {
 
 	return Errors;
 }
-/* =========================== pCloud Script =========================== */
-const pcloudSdk = window.pCloudSdk;
-const locationid = 1;
+// ============================= video functions =============================
+// XHR
+function getxhr() {
+	try {
+			xhr = new XMLHttpRequest();
+	} catch (e) {
+			try {
+					xhr = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (e1) {
+					try {
+							xhr = new ActiveXObject("Msxml2.XMLHTTP");
+					} catch (e2) {
+							alert("Ajax n'est pas supporté par votre navigateur !");
+					}
+			}
+	}
+	return xhr;
+}
 
-// Create `client` using an oAuth token:
-const client = pcloudSdk.createClient(
-	"RMiu7ZMHkx8X1cEMzZM8uWc7ZJVsOoA1ivS8mjThYfGA97ytfhmh7"
-);
+//  Ajax
+function uploadVideos(file){
+	const progsDiv = document.querySelectorAll(`.video-progress`);
+	const checkIcons = document.querySelectorAll(`.check-icon`);
 
-// Upload Video Function
-function uploadVideo(file) {
-	let progsDiv = document.querySelectorAll(`.video-progress`),
-		checkIcons = document.querySelectorAll(`.check-icon`);
+	const formData = new FormData();
+	formData.append('file', file);
+	const xhr = new XMLHttpRequest();
+	xhr.open('POST', "http://localhost/maha/ajax/uploadVideo", true);
 
-	client.upload(file, theFolderId, {
-		onProgress: function (e) {
-			let per = (e.loaded * 100) / e.total;
-			progsDiv.forEach((el) => {
-				el.style.width = `${per}%`;
-			});
-			nextBtn.classList.add("not-allowed");
-			canISubmit = false;
-		},
-		onFinish: function (fileMetadata) {
+	xhr.upload.addEventListener('progress', ({ loaded, total }) => {
+		let per = (loaded * 100) / total;
+		progsDiv.forEach((el) => {
+			el.style.width = `${per}%`;
+		});
+		nextBtn.classList.add("not-allowed");
+		canISubmit = false;
+	})
+
+
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState == 4) {
+			if (xhr.status == 200) {
 			// video info in variables
-			let videoName = fileMetadata.metadata.name,
-				duration = fileMetadata.metadata.duration,
-				fileId = fileMetadata.metadata.fileid,
-				fileAlreadyExist = false;
+			let videoName = file.name,
+				videoPath=JSON?.parse(xhr.responseText)?.videoPath;
 
-			// styling
-			checkIcons.forEach((icon) => {
-				icon.style.color = "#47B5FF";
-			});
-			nextBtn.classList.remove("not-allowed");
+			// correct video name
+			videoName=videoName.split(".");
+			videoName.pop();
+			videoName=videoName.join(" ");
 
-			// preparing data for back-end
-			canISubmit = true;
-			videoJsObjects.forEach((obj) => {
-				if (obj.file_id == fileId) {
-					fileAlreadyExist = true;
-				}
-			});
-			if (!fileAlreadyExist) {
+			// get the duration and continue
+			getVideoDuration(file).then(function(duration) {
+				// styling
+				checkIcons.forEach((icon) => {
+					icon.style.color = "#47B5FF";
+				});
+				nextBtn.classList.remove("not-allowed");
+
+				// preparing data for back-end
+				canISubmit = true;
+
 				videoJsObjects.push({
 					name: videoName,
 					duree: duration,
-					file_id: fileId,
+					videoPath,
 				});
+				
+				videosHiddenInp.value = JSON.stringify(videoJsObjects);
+			}).catch(function(error) {
+				console.error('Error de la video:', error);
+			});
+
+			} else {
+				alert("Upload Server Error!");
+				videoErrorSpan.textContent = "Erreur De Telechargement !";
 			}
-			videosHiddenInp.value = JSON.stringify(videoJsObjects);
-		},
-	})
-	.catch(function (error) {
-		videoErrorSpan.textContent = "Erreur De Telechargement !";
+		}
+	}
+
+	xhr.send(formData);
+}
+
+function getVideoDuration(file) {
+	return new Promise((resolve, reject) => {
+	  // Create a new FileReader object
+	  var reader = new FileReader();
+  
+	  // When the file has been loaded
+	  reader.addEventListener('load', function() {
+		// Create a new video element
+		var video = document.createElement('video');
+  
+		// When the video has loaded its metadata
+		video.addEventListener('loadedmetadata', function() {
+		  // Get the duration of the video in seconds
+		  var duration = this.duration;
+  
+		  // Resolve the promise with the duration
+		  resolve(duration);
+		});
+  
+		// Set the video source to the selected file
+		video.src = reader.result;
+  
+		// Load the video
+		video.load();
+	  });
+  
+	  // If there's an error reading the file, reject the promise
+	  reader.addEventListener('error', function() {
+		reject(reader.error);
+	  });
+  
+	  // Read the selected file as a data URL
+	  reader.readAsDataURL(file);
 	});
 }
+  

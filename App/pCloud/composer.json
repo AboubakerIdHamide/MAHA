@@ -1,5 +1,0 @@
-{
-    "require": {
-        "pcloud/pcloud-php-sdk": "^3.0"
-    }
-}

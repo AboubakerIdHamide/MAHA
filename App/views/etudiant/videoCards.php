@@ -25,7 +25,7 @@
             <div class="card_content">
               <h2 class="card_title"><?= $video->nom_video ?></h2>
               <p class="card_text"><?= $video->description_video ?></p>
-              <a href="<?= URLROOT . "/etudiant/coursVideos/" . $video->id_formateur . "/" . $video->id_formation ?>" class="btn card_btn"><?= $video->nom_formation ?></a>
+              <a href="<?= URLROOT . "/etudiants/coursVideos/" . $video->id_formateur . "/" . $video->id_formation ?>" class="btn card_btn"><?= $video->nom_formation ?></a>
             </div>
           </div>
         </li>

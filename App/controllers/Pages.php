@@ -15,8 +15,8 @@ class Pages extends Controller
 
 		foreach ($info as $row) {
 			$row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
-			$row->imgFormation = $this->pcloudFile()->getLink($row->imgFormation);
-			$row->imgFormateur = $this->pcloudFile()->getLink($row->imgFormateur);
+			$row->imgFormation = URLROOT."/Public/".$row->imgFormation;
+			$row->imgFormateur = URLROOT."/Public/".$row->imgFormateur;
 		}
 		$data = [
 			'info' => $info

@@ -201,20 +201,6 @@ class Users extends Controller
         if (isset($_POST["code"])) {
             // if the code valide insert user
             if ($_POST["code"] == $_SESSION["vcode"]) {
-                // Create User Folders
-                $userFolderName = $data[0]["type"] . "_" . $data[0]["email"];
-                $this->createUserFolders($userFolderName, $data[0]["email"]);
-
-                // Upload The Image
-                if ($data[0]["img"] != 45393256813) {
-                    $imagesFolderId = $this->folderModel->getFolderByEmail($data[0]["email"]);
-                    $imagesFolderId = $imagesFolderId["imagesId"];
-                    $imagePath = $data[0]["img"];
-                    $metaData = $this->pcloudFile()->upload($imagePath, $imagesFolderId);
-                    unlink($imagePath);
-                    $data[0]["img"] = $metaData->metadata->fileid;
-                }
-
                 // Insert The User 
                 if ($data[0]["type"] == "formateur") {
                     $this->fomateurModel->insertFormateur($data[0]);
@@ -390,13 +376,13 @@ class Users extends Controller
             $_SESSION['id_formateur'] = $user['id_formateur'];
             $_SESSION['user'] = $user;
             // setting up the image link
-            $_SESSION['user']['avatar'] = $this->pcloudFile()->getLink($_SESSION['user']['avatar']);
+            $_SESSION['user']['avatar'] = URLROOT."/Public/".$_SESSION['user']['avatar'];
             redirect('formateurs/dashboard');
         } else {
             $_SESSION['id_etudiant'] = $user['id_etudiant'];
             $_SESSION['user'] = $user;
             // setting up the image link
-            $_SESSION['user']['avatar'] = $this->pcloudFile()->getLink($_SESSION['user']['avatar']);
+            $_SESSION['user']['avatar'] = URLROOT."/Public/".$_SESSION['user']['avatar'];
             redirect('etudiants/dashboard');
         }
     }
@@ -448,23 +434,6 @@ class Users extends Controller
             $mail->send();
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-            die;
-        }
-    }
-
-    private function createUserFolders($userFolderName, $email)
-    {
-        // Create User Folders
-        try {
-            $globalFolderId = 15171390512;
-            $userFolderId = $this->pcloudFolder()->create($userFolderName, $globalFolderId);
-            $imagesFolderId = $this->pcloudFolder()->create("Images", $userFolderId);
-            $ressourcesFolderId = $this->pcloudFolder()->create("Ressources", $userFolderId);
-            $videosFolderId = $this->pcloudFolder()->create("Videos", $userFolderId);
-            $res = $this->folderModel->insertFolder($userFolderId, $imagesFolderId, $videosFolderId, $ressourcesFolderId, $email);
-            return $res;
-        } catch (Error $e) {
-            echo $e;
             die;
         }
     }
@@ -611,7 +580,7 @@ class Users extends Controller
             if (in_array($fileRealExt, $allowed)) {
                 if ($fileError === 0) {
                     $fileNameNew = substr(number_format(time() * rand(), 0, '', ''), 0, 5) . "." . $fileRealExt;
-                    $fileDestination = 'images\\userImage\\' . $fileNameNew;
+                    $fileDestination = 'images/userImage/' . $fileNameNew;
                     move_uploaded_file($fileTmpName, $fileDestination);
                     $data["img"] = $fileDestination;
                 } else {
@@ -623,9 +592,10 @@ class Users extends Controller
                 $data["img_err"] = "Vous ne pouvez pas télécharger ce fichier uniquement (jpg | jpeg | png | ico) autorisé";
             }
         } else {
-            $data["img"] = 45393256813;
+            $data["img"] = 'images/default.jpg';
         }
 
         return $data;
     }
+
 }

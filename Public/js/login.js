@@ -76,7 +76,7 @@ function validateMotDePasse() {
             
             
             return Errors;
-            }
+}
 
 // submit validation event : 
 
@@ -98,4 +98,4 @@ mainForm.onsubmit = function(e){
                 errorSpans_mdp.textContent = er_mdp[i].msg;
             } 
         } 
-    }           
+}           

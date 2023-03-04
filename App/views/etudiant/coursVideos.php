@@ -16,14 +16,14 @@
     <div class="container mt-3">
       <div class="row">
         <div class="col-xl-3">
-          <a href="<?= URLROOT . "/etudiant/index" ?>">
+          <a href="<?= URLROOT . "/etudiants" ?>">
             <img class="img-fluid" src="<?= $data->image_formation ?>" alt="formation image">
           </a>
         </div>
         <div class="col-xl-7">
           <div class="group d-flex flex-column justify-content-center">
             <h3 class="title"><?= $data->nom_formation ?></h3>
-            <p>Formation catégorie <span><?= $data->categorie ?></span></p>
+              <p>Formation catégorie <span><?= $data->categorie ?></span></p>
             <div class="instructor d-flex align-items-center justify-content-between">
               <div class="d-flex align-items-center gap-2">
                 <img src="<?= $data->img_formateur ?>" alt="" class="formateur-img">

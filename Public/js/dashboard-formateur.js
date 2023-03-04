@@ -68,7 +68,6 @@ $(document).ready(function () {
 
   // render received the data into the DOM
   render();
-  console.log(courses);
   const $deleteBtn = $("button#deleteCours");
   $deleteBtn.click(function (event) {
     courses = courses.filter((course) => {
@@ -82,7 +81,7 @@ $(document).ready(function () {
         id: coursesSelected,
       },
       success: function (response) {
-        console.log(response);
+        // code
       },
     });
 
@@ -114,8 +113,9 @@ $(document).ready(function () {
     const $modalIdFormation = $("#id");
 
     const currentCours = courses.filter(
-      (cours) => cours.id === coursesSelected[0]
+      (cours) => cours.id == coursesSelected[0]
     )[0];
+    
     $modalTitle.val(currentCours.titre);
     $modalDescription.val(currentCours.description);
     $modalMiniature.attr("src", currentCours.miniature);

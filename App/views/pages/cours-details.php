@@ -134,14 +134,18 @@
       <div class="row">
         <div class="col-lg-6">
           <div class="video-preview pt-2">
-            <video id="my-video" class="video-js" controls preload="auto" width="640" data-setup="{}">
-              <source src="<?= $data['previewVideo'] ?>" type="video/mp4" />
-              <p class="vjs-no-js">
-                To view this video please enable JavaScript, and consider upgrading to a
-                web browser that
-                <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-              </p>
-            </video>
+            <?php if($data['previewVideo']!=null){ ?>
+              <video id="my-video" class="video-js" controls preload="auto" width="640" data-setup="{}">
+                <source src="<?= $data['previewVideo'] ?>" type="video/mp4" />
+                <p class="vjs-no-js">
+                  To view this video please enable JavaScript, and consider upgrading to a
+                  web browser that
+                  <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+              </video>
+            <?php }else{ ?>
+              <img  src="<?php echo $data['info']['imgFormation']; ?>" alt="preview" class="video-js">
+            <?php }?>
           </div>
         </div>
         <div class="col-lg-6 align-self-center preview-prix">
