@@ -181,7 +181,6 @@ class Formations extends Controller
 	public function deleteVideo()
 	{
 		if (isset($_POST['id_video'])) {
-			// delete video in pcloud and our dataBase
 			$videoDataToDelete = $this->videoModel->getVideo($_SESSION['id_formation'], $_POST['id_video']);
 			$res = $this->videoModel->deteleVideo($_SESSION['id_formation'], $_POST['id_video']);
 			if ($res) {

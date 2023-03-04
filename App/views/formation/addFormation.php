@@ -106,12 +106,6 @@
             </div>
         </form>
     </div>
-    <!-- Pcloud Script -->
-    <script type="text/javascript" src="https://unpkg.com/pcloud-sdk-js@latest/dist/pcloudsdk.js"></script>
-    <!-- Scripts -->
-    <script>
-        let theFolderId = <?= $data["folders"]["videosId"]?>;
-    </script>
     <script src="<?= URLROOT."/Public/js/addFormation.js"?>"></script>
     <script src="<?php echo URLROOT;?>/public/js/dashBoardNav.js"></script>
 </body>

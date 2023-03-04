@@ -48,7 +48,6 @@
             </div>
         </form>
     </div>
-    <script type="text/javascript" src="https://unpkg.com/pcloud-sdk-js@latest/dist/pcloudsdk.js"></script>
     <script src="<?= URLROOT."/Public/js/addVideo.js"?>"></script>
     <script src="<?php echo URLROOT;?>/public/js/dashBoardNav.js"></script>
 </body>
