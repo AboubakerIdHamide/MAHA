@@ -233,4 +233,18 @@ class Formateur
 		$formations = $request->fetch();
 		return $formations;
 	}
+
+	public function updateFormateurBalance($IdFormateur, $balance)
+	{		
+		$request = $this->connect->prepare("
+			UPDATE formateurs 
+			SET balance = balance + :balance 
+			WHERE id_formateur = :id_formateur
+		");
+
+		$request->bindParam(':balance', $balance);
+		$request->bindParam(':id_formateur', $IdFormateur);
+		$response = $request->execute();
+		return $response;
+	}
 }

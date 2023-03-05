@@ -152,8 +152,9 @@
           <p class="date-pub">Published: <?php echo $data['info']['dateCreationFormation']; ?></p>
           <div class="pay pt-3">
             <h2 class="text-center prix">$ <?php echo $data['info']['prix']; ?></h2>
-            <div>
-              <div id="paypal-button-container"></div>
+            <div class="text-center">
+              <!-- Paypal Payment -->
+              <a class="btn btn-info btn-lg" href="<?= URLROOT ?>/PaymentPaypal/makePayment/<?= $data['info']['IdFormation'] ?>">Pay Now</a>
             </div>
           </div>
         </div>
@@ -246,11 +247,8 @@
   <!-- Fin Equipe -->
   <script src="jQuery/jquery-3.6.0.min.js"></script>
   <script src="<?php echo URLROOT; ?>/public/js/cours-details.js"></script>
-  <!-- Sample PayPal credentials (client-id) are included -->
-  <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD&intent=capture&enable-funding=venmo" data-sdk-integration-source="integrationbuilder"></script>
   <script src="<?php echo URLROOT; ?>/public/js/main.js"></script>
   <script src="<?php echo URLROOT; ?>/public/js/cours-details.js"></script>
-  <script src="<?php echo URLROOT; ?>/public/js/paypal.js"></script>
   <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
 </body>
 

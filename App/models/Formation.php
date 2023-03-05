@@ -193,6 +193,7 @@ class Formation
             from formations, formateurs,categories, inscriptions
             where formations.id_formateur = formateurs.id_formateur
             and categories.id_categorie = formations.categorie
+            and inscriptions.payment_state = 'approved'
             order by formations.likes desc
             limit 0,12;
         ");

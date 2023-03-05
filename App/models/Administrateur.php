@@ -29,7 +29,7 @@ class Administrateur
         return $admin;
     }
 
-    public function updateAdmin($admin)
+    public function updateAdminBalance()
     {
     }
 
@@ -41,7 +41,4 @@ class Administrateur
     {
     }
 
-    public function getAdminById($admin_id)
-    {
-    }
 }
