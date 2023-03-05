@@ -14,7 +14,6 @@ class Etudiants extends Controller
 		$this->formationModel = $this->model("Formation");
 		$this->commentModel = $this->model("Commentaire");
 		$this->etudiantModel = $this->model("Etudiant");
-		$this->folderModel = $this->model("Folder");
 		$this->notificationModel = $this->model("Notification");
 		$this->id = $_SESSION['id_etudiant'];
 	}

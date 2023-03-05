@@ -14,7 +14,6 @@ class Users extends Controller
         $this->fomateurModel = $this->model("Formateur");
         $this->etudiantModel = $this->model("Etudiant");
         $this->stockedModel = $this->model("Stocked");
-        $this->folderModel = $this->model("Folder");
     }
 
     public function index()

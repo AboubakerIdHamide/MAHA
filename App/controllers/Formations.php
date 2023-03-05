@@ -12,7 +12,6 @@ class Formations extends Controller
 		$this->formationModel = $this->model("Formation");
 		$this->videoModel = $this->model("Video");
 		$this->stockedModel = $this->model("Stocked");
-		$this->folderModel = $this->model("Folder");
 		$this->previewsModel = $this->model("Previews");
 		$this->notificationModel = $this->model("Notification");
 	}
@@ -97,7 +96,6 @@ class Formations extends Controller
 				"error"				=> ''
 			];
 			// some data for view
-			$data["folders"] = $this->folderModel->getFolderByEmail($_SESSION['user']['email']);
 			$data["allcategories"] = $this->stockedModel->getAllCategories($_SESSION['user']['email']);
 			$data["levels"] = $this->stockedModel->getAllLevels();
 
@@ -136,7 +134,6 @@ class Formations extends Controller
 				"description"		=> "",
 				"error"				=> ""
 			];
-			$data["folders"] = $this->folderModel->getFolderByEmail($_SESSION['user']['email']);
 			$data["allcategories"] = $this->stockedModel->getAllCategories($_SESSION['user']['email']);
 			$data["levels"] = $this->stockedModel->getAllLevels();
 			$nbrNotifications = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);;

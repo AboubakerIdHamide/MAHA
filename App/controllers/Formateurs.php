@@ -12,7 +12,6 @@ class Formateurs extends Controller
 		$this->fomateurModel = $this->model("Formateur");
 		$this->requestPaymentModel = $this->model("requestPayment");
 		$this->notificationModel = $this->model("Notification");
-		$this->folderModel = $this->model("Folder");
 		$this->inscriptionModel = $this->model("Inscription");
 		$this->videoModel = $this->model("Video");
 		$this->formationModel = $this->model("Formation");
