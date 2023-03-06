@@ -1125,3 +1125,17 @@ html::-webkit-scrollbar-thumb{
   opacity: 1;
   pointer-events: auto;
 }
+
+/* loader (Spinner) */
+.preloader {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 999;
+    background-color: var(--color-three);
+}
