@@ -4,22 +4,24 @@ class Pages extends Controller
 {
 	public function __construct()
 	{
-		$this->fomateurModel = $this->model("Formateur");
-		$this->etudiantModel = $this->model("Etudiant");
+		$this->categorieModel = $this->model("Stocked");
 		$this->formationModel = $this->model("Formation");
 		$this->inscriptionModel = $this->model("Inscription");
 	}
 	public function index()
 	{
-		$info = $this->formationModel->getPupalaireCourses();
+		$courses = $this->formationModel->getPopularCourses();
+		$categories = $this->categorieModel->getAllCategories();
 
-		foreach ($info as $row) {
-			$row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
-			$row->imgFormation = URLROOT."/Public/".$row->imgFormation;
-			$row->imgFormateur = URLROOT."/Public/".$row->imgFormateur;
+		foreach ($courses as $course) {
+			$course->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($course->IdFormteur, $course->IdFormation)['total_apprenants'];
+			$course->imgFormation = URLROOT."/Public/".$course->imgFormation;
+			$course->imgFormateur = URLROOT."/Public/".$course->imgFormateur;
 		}
+
 		$data = [
-			'info' => $info
+			'courses' => $courses,
+			'categories' => $categories
 		];
 		$this->view("pages/index", $data);
 	}

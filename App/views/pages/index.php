@@ -59,80 +59,15 @@
 <!-- Section Category -->
 <section class="catalogue mt-1 mb-5">
       <div class="container">
-
         <div class="row">
-          <div class="col-lg-3 col-md-4">
-            <div class="icon-box">
-              <i class="fa-brands fa-unity"></i>
-              <h3><a href="1">3D</a></h3>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
-            <div class="icon-box">
-              <i class="fa-solid fa-ruler-combined"></i>
-              <h3><a href="2">Architecture & BIM</a></h3>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
-            <div class="icon-box">
-              <i class="fa-solid fa-sliders"></i>
-              <h3><a href="3">Audio-MAO</a></h3>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4 mt-4 mt-lg-0">
-            <div class="icon-box">
-              <i class="fa-solid fa-computer-mouse"></i>
-              <h3><a href="4">Bureautique</a></h3>
-            </div>
-          </div>
+          <?php foreach ($data['categories'] as $categorie) : ?>
           <div class="col-lg-3 col-md-4 mt-4">
             <div class="icon-box">
-              <i class="fa-sharp fa-solid fa-briefcase"></i>
-              <h3><a href="5">Business & Efficacité professionnelle</a></h3>
+              <?= $categorie->icon ?>
+              <h3><a href="<?= URLROOT.'/pageFormations/filter/'.$categorie->nom_categorie ?>"><?= $categorie->nom_categorie ?></a></h3>
             </div>
           </div>
-          <div class="col-lg-3 col-md-4 mt-4">
-            <div class="icon-box">
-              <i class="fa-solid fa-code"></i>
-              <h3><a href="6">Code</a></h3>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4 mt-4">
-            <div class="icon-box">
-              <i class="fa-sharp fa-solid fa-pen-nib"></i>
-              <h3><a href="7">Infographie</a></h3>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4 mt-4">
-            <div class="icon-box">
-              <i class="fa-solid fa-camera-retro"></i>
-              <h3><a href="8">Photographie</a></h3>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4 mt-4">
-            <div class="icon-box">
-              <i class="fa-solid fa-video"></i>
-              <h3><a href="9">Vidéo-Compositing</a></h3>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4 mt-4">
-            <div class="icon-box">
-              <i class="fa-solid fa-chart-simple"></i>
-              <h3><a href="10">Webmarketing</a></h3>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4 mt-4">
-            <div class="icon-box">
-              <i class="fa-solid fa-network-wired"></i>
-              <h3><a href="11">Réseaux informatique</a></h3>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4 mt-4">
-            <div class="icon-box">
-              <i class="fa-solid fa-list-check"></i>
-              <h3><a href="12">Management</a></h3>
-            </div>
-          </div>
+          <?php endforeach ?>
         </div>
       </div>
     </section>
@@ -151,44 +86,44 @@
     <section class='poplularCourses'>
         <div class='container'>
             <div class="courses">
-              <?php foreach($data['info'] as $info) : ?>
+              <?php foreach($data['courses'] as $course) : ?>
                 <!-- start card -->
                 <div class="card_coures">
-                  <a href='<?php echo URLROOT."/pageFormations/coursDetails/".$info->IdFormation?>' style='display: block; text-decoration: none;'>
+                  <a href='<?php echo URLROOT."/pageFormations/coursDetails/".$course->IdFormation?>' style='display: block; text-decoration: none;'>
                     <!-- img formation -->
                     <div class="img">
-                        <img src="<?php echo $info->imgFormation; ?>" alt="photo">
+                        <img src="<?php echo $course->imgFormation; ?>" alt="photo">
                         <div class="duree">
                             <i class="fa-solid fa-clock" aria-hidden="true"></i>
-                            <div class="time"><?php echo $info->duree; ?></div>
+                            <div class="time"><?php echo $course->duree; ?></div>
                         </div>
                     </div>
                     <!-- informations formation -->
                     <div class="info_formation">
-                        <div class="categorie"><?php echo $info->categorie; ?></div>
-                        <div class="prix"><?php echo $info->prix; ?></div>
+                        <div class="categorie"><?php echo $course->categorie; ?></div>
+                        <div class="prix"><?php echo $course->prix; ?></div>
                     </div>
                     <!-- name formation -->
-                    <h1><?php echo $info->nomFormation; ?></h1>
+                    <h1><?php echo $course->nomFormation; ?></h1>
                     <!-- description -->
                     <div class="description">
-                        <p><?php echo $info->description; ?></p>
+                        <p><?php echo $course->description; ?></p>
                     </div>
                     <div class="footer">
                         <!-- infotrmations formateur -->
-                        <a href='<?php echo URLROOT."/profilFormateur/index/".$info->IdFormteur?>' style='display: block; text-decoration: none; z-index: 10;'>
+                        <a href='<?php echo URLROOT."/profilFormateur/index/".$course->IdFormteur?>' style='display: block; text-decoration: none; z-index: 10;'>
                             <div class="formateur">
                                 <div class="img_formateur">
-                                    <img src="<?php echo $info->imgFormateur; ?>" alt="photo">
+                                    <img src="<?php echo $course->imgFormateur; ?>" alt="photo">
                                 </div>
-                                <h2><?php echo $info->nomFormateur; ?> <?php echo $info->prenomFormateur; ?></h2>
+                                <h2><?php echo $course->nomFormateur; ?> <?php echo $course->prenomFormateur; ?></h2>
                             </div>
                         </a>
                         <!-- informations -->
                         <div class="info">
-                            <div class="etd"><?php echo $info->numbAcht; ?></div>
+                            <div class="etd"><?php echo $course->numbAcht; ?></div>
                             <i class="fa fa-heart" aria-hidden="true"></i>
-                            <div class="likes"><?php echo $info->likes; ?></div>
+                            <div class="likes"><?php echo $course->likes; ?></div>
                             <i class="fa fa-users" aria-hidden="true"></i>
                         </div>
                     </div>

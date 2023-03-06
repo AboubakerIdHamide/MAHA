@@ -6,12 +6,11 @@
     <title><?php echo SITENAME; ?></title>
     <!-- Font Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <!-- Swiper JS  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.4/swiper-bundle.css">
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <!-- Style -->
+    <!-- Styles -->
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/main.css" />
+    <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/pageFormations.css" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
     </style>
@@ -23,7 +22,7 @@
     <header>
         <div class="loding-bar"></div>
         <div class="container">
-            <h1 class="logo"><a href="<?php echo URLROOT . "/pages/index" ?>">M<span>A</span>H<span>A</span></a></h1>
+            <h1 class="logo"><a href="<?= URLROOT ?>">M<span>A</span>H<span>A</span></a></h1>
             <div class="burger-icon" id="menuBtn">
                 <span></span>
                 <span></span>

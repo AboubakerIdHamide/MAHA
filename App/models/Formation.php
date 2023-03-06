@@ -176,7 +176,7 @@ class Formation
         return $res;
     }
 
-    public function getPupalaireCourses()
+    public function getPopularCourses()
     {
         $request = $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
                     formations.image_formation as 'imgFormation',
