@@ -52,8 +52,8 @@ class PageFormations extends Controller
         $info['niveauFormation'] = $this->stockedModel->getLevelById($info['IdNiv'])['nom_niveau'];
         $info['langageFormation'] = $this->stockedModel->getLangueById($info['IdLang'])['nom_langue'];
         $info['specialite'] = $this->stockedModel->getCategorieById($info['specialiteId'])['nom_categorie'];
-        $info['imgFormateur'] = URLROOT."/Public/".$info['imgFormateur'];
-        $info['imgFormation'] = URLROOT."/Public/".$info['imgFormation'];
+        $info['imgFormateur'] = URLROOT."/Public/images/".$info['imgFormateur'];
+        $info['imgFormation'] = URLROOT."/Public/images/".$info['imgFormation'];
         $previewVideo = $this->previewsModel->getPreviewVideo($info['IdFormation']);
         $previewVideo= $previewVideo?URLROOT."/Public/".$previewVideo->url_video:null;
         $data = [

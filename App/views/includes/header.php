@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="<?= URLROOT.'/public' ?>/images/favicon.ico">
     <title><?php echo SITENAME; ?></title>
     <!-- Font Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <!-- Styles -->
+    <!-- Styles --> 
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/main.css" />
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/pageFormations.css" />
+    <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/cours-details.css" />
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
     </style>

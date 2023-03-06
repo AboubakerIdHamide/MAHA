@@ -1,6 +1,6 @@
 <?php require_once APPROOT."/views/includes/header.php";?> 
 <!-- Landing Section -->
-<section id="landing" class="landing">
+<section id="landing" class="landing d-flex align-item-center">
       <div class="container">
           <div class="site-info">
               <img src="<?php echo URLROOT."/Public"?>/images/congruts.png" alt="MAHA-ANIMATION-IMG" class="animation-img">
@@ -14,7 +14,10 @@
                   MAHA Est Un Site Internet De Formation En Ligne Qui Contient Des Cours Et Des Vidéos d'apprentissage
                   Dans Plusieur Domains Tels Que Le  Web Development, E-commerce, Digital Marketing ...
               </p>
-              <a href="#" class="voir-plus">Voir Plus</a>
+              <div class="rejoignez-nous">
+                <div id="circle"></div>
+                <a href="<?= URLROOT.'/users/register' ?>">Rejoignez-nous</a>
+              </div>
           </div>
           <div class="landing-image">
               <img src="<?php echo URLROOT."/Public"?>/images/online_learning.svg" alt="MAHA">
@@ -28,17 +31,17 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4 text-center">
-          <span>1232</span>
+          <span><?= $data['totalEtudiants'] ?></span>
           <p>Etudiants</p>
         </div>
 
         <div class="col-lg-4 col-md-4 col-sm-4 text-center">
-          <span>64</span>
+          <span><?= $data['totalFormations'] ?></span>
           <p>Formations</p>
         </div>
 
         <div class="col-lg-4 col-md-4 col-sm-4 text-center">
-          <span>15</span>
+          <span><?= $data['totalFormateurs'] ?></span>
           <p>Formateurs</p>
         </div>
       </div>
@@ -49,8 +52,8 @@
   <section class="section-title mt-2" id="catalogue">
     <div class="container">
       <div>
-          <h2>CATALOGUE</h2>
-          <p>Toutes Les Formations</p>
+          <h2 class="text-uppercase">catégories</h2>
+          <p>Toutes Les catégories</p>
       </div>
     </div> 
   </section>
@@ -62,7 +65,7 @@
         <div class="row">
           <?php foreach ($data['categories'] as $categorie) : ?>
           <div class="col-lg-3 col-md-4 mt-4">
-            <div class="icon-box">
+            <div class="icon-box rounded-2">
               <?= $categorie->icon ?>
               <h3><a href="<?= URLROOT.'/pageFormations/filter/'.$categorie->nom_categorie ?>"><?= $categorie->nom_categorie ?></a></h3>
             </div>
@@ -147,7 +150,7 @@
     <!-- Fin Equipe Head  -->
 <!-- Section equipe -->
 <section class="equipe">
-  <div class="container-fluid" >
+  <div class="container" >
     <div class="row">
       <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator">
           <div class="member p-3 mt-3">

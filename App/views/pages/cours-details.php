@@ -4,11 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="<?= URLROOT.'/public' ?>/images/favicon.ico">
   <title>COURS - <?php echo $data['info']['nomFormation'] ?></title>
+  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <!-- Style -->
   <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/cours-details.css" />
-  <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+
 </head>
 
 <body>
@@ -16,7 +20,7 @@
   <header>
     <div class="loding-bar"></div>
     <div class="container">
-      <h1 class="logo"><a href="<?php echo URLROOT . "/pages/index" ?>">M<span>A</span>H<span>A</span></a></h1>
+      <h1 class="logo"><a href="<?= URLROOT ?>">M<span>A</span>H<span>A</span></a></h1>
       <div class="burger-icon" id="menuBtn">
         <span></span>
         <span></span>
@@ -135,7 +139,7 @@
         <div class="col-lg-6">
           <div class="video-preview pt-2">
             <?php if($data['previewVideo']!=null){ ?>
-              <video id="my-video" class="video-js" controls preload="auto" width="640" data-setup="{}">
+              <video id="my-video" class="video-js object-fit-cover" controls preload="auto" width="640" data-setup="{}">
                 <source src="<?= $data['previewVideo'] ?>" type="video/mp4" />
                 <p class="vjs-no-js">
                   To view this video please enable JavaScript, and consider upgrading to a
@@ -149,12 +153,12 @@
           </div>
         </div>
         <div class="col-lg-6 align-self-center preview-prix">
-          <p class="date-pub">Published: <?php echo $data['info']['dateCreationFormation']; ?></p>
+          <p class="date-pub">Date de Publication : <?php echo $data['info']['dateCreationFormation']; ?></p>
           <div class="pay pt-3">
             <h2 class="text-center prix">$ <?php echo $data['info']['prix']; ?></h2>
             <div class="text-center">
               <!-- Paypal Payment -->
-              <a class="btn btn-info btn-lg" href="<?= URLROOT ?>/PaymentPaypal/makePayment/<?= $data['info']['IdFormation'] ?>">Pay Now</a>
+              <a class="btn btn-info btn-lg d-block" href="<?= URLROOT ?>/PaymentPaypal/makePayment/<?= $data['info']['IdFormation'] ?>"><i class="fa-solid fa-cart-shopping"></i> Acheter Maintenant</a>
             </div>
           </div>
         </div>
@@ -249,7 +253,6 @@
   <script src="<?php echo URLROOT; ?>/public/js/cours-details.js"></script>
   <script src="<?php echo URLROOT; ?>/public/js/main.js"></script>
   <script src="<?php echo URLROOT; ?>/public/js/cours-details.js"></script>
-  <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
 </body>
 
 </html>

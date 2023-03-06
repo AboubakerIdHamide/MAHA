@@ -20,6 +20,7 @@ html{
 
 body {
   font-family: Inter, sans-serif;
+background-color: #A4EBF3;
 }
 
 body::-webkit-scrollbar{
@@ -79,8 +80,8 @@ header .container{
 
 header{
     padding: 15px;
-    box-shadow: 0 0 5px 2px #ddd;
-    background-color: #fff;
+    /* box-shadow: 0 0 5px 2px #ddd; */
+    background-color: #DFF6FF;
     width: 100%;
     position: fixed;
     z-index: 11;
@@ -187,7 +188,7 @@ header .container .burger-icon.active span:nth-child(3){
 header .container ul{
     position: relative;
     display: flex;
-    background-color: #fff;
+    /* background-color: #fff; */
     padding-left: 0;
 }
 @media (max-width:767px){
@@ -195,7 +196,8 @@ header .container ul{
         margin-top: 20px;
         width: 100%;
         flex-direction: column;
-        box-shadow: 0 0 4px 1px #ddd;
+        /* box-shadow: 0 0 4px 1px #ddd; */
+        background-color: #DFF6FF;
     }
 }
 header .container ul li{
@@ -282,7 +284,9 @@ header .container ul li.menu-drop-down ul{
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 0 4px 1px #ddd;
+    /* box-shadow: 0 0 4px 1px #ddd; */
+    background-color: #DFF6FF;
+    border: 2px solid var(--color-one);
 }
 @media (max-width:767px){
     header .container ul li.menu-drop-down ul{
@@ -509,44 +513,63 @@ header .container ul li.sign-in:hover::before{
     margin: 20px auto;
     padding: 10px;
 }
-.landing .container .site-info .voir-plus{
-    width: 150px;
-    text-decoration: none;
-    padding: 10px 30px;
-    color: var(--color-one);
-    text-align: center;
-    box-shadow: 0 0 4px 1px #ddd;
-    font-weight: bold;
+
+.landing .container .site-info .rejoignez-nous{
+    padding: 20px 40px;
+    font-weight: 800;
+    display: inline-flex;
+    height: 40px;
+    border: 2px solid var(--color-one);
+    border-radius: 20px;
+    text-transform: uppercase;
+    font-size: .8em;
+    letter-spacing: 1.5px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
     position: relative;
-    transition-delay: 1s;
-    transition:var(--main-transition) ;
-    -webkit-transition:var(--main-transition) ;
-    -moz-transition:var(--main-transition) ;
-    -ms-transition:var(--main-transition) ;
-    -o-transition:var(--main-transition) ;
+    cursor: pointer;
 }
-.landing .container .site-info .voir-plus::before{
-    position: absolute;
-    z-index: -1;
-    content: "";
-    left: 0;
-    bottom: 0;
-    height: 100%;
-    width: 0;
-    background-color: var(--color-one);
-    transition: var(--main-transition);
-    -webkit-transition: var(--main-transition);
-    -moz-transition: var(--main-transition);
-    -ms-transition: var(--main-transition);
-    -o-transition: var(--main-transition);
+
+/* start */
+
+
+.landing .container .site-info .rejoignez-nous a {
+    display: block;
+    text-decoration: none;
+  position: relative;
+  transition: all .45s ease-Out;
+  color: var(--color-one);
 }
-.landing .container .site-info .voir-plus:hover{
-    color: white;
-    box-shadow: 0 0 4px 1px var(--color-one);
+
+.landing .container .site-info .rejoignez-nous #circle {
+  width: 0%;
+  height: 0%;
+  opacity: 0;
+  line-height: 40px;
+  border-radius: 50%;
+  background-color: var(--color-four);
+  position: absolute;
+  transition: all .5s ease-Out;
+  top: 20px;
+  left: 70px;
 }
-.landing .container .site-info .voir-plus:hover::before{
-    width: 100%;
+
+.landing .container .site-info .rejoignez-nous:hover #circle {
+  width: 200%;
+  height: 500%;
+  opacity: 1;
+  top: -70px;
+  left: -70px;
 }
+
+.landing .container .site-info .rejoignez-nous:hover a {
+  color: white;
+}
+
+/* end */
+
+
 .landing .container .landing-image{
     flex-basis: 50%;
 }
@@ -567,11 +590,11 @@ header .container ul li.sign-in:hover::before{
 # Category
 --------------------------------------------------------------*/
 .catalogue .icon-box {
+    background-color: var(--color-four);
   display: flex;
   align-items: center;
   padding: 20px;
   transition: 0.3s;
-  box-shadow: 0 0 5px 2px #ddd;
 }
 
 .catalogue .icon-box i {
@@ -685,7 +708,9 @@ header .container ul li.sign-in:hover::before{
 }
 
 .equipe .member {
-    box-shadow: 0 0 5px 2px #ddd;
+    box-shadow: 0 0 5px 2px #DFF6FF;
+    /* color: white; */
+    background-color: #DFF6FF;
     transition: var(--main-transition);
     -webkit-transition: var(--main-transition);
     -moz-transition: var(--main-transition);
@@ -720,7 +745,6 @@ header .container ul li.sign-in:hover::before{
 .equipe .member-content p {
   margin-top: 10px;
   text-align: center;
-  color: #06283D;
 }
 
 
@@ -879,7 +903,6 @@ html::-webkit-scrollbar-thumb{
     padding-top: var(--padding-variable);
     padding-bottom: var(--padding-variable);
     position: relative;
-    background-color: #FFF;
 }
 .poplularCourses  h2:first-child{
     display: inline-block;
