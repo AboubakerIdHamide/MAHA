@@ -396,6 +396,10 @@ header .container ul li.sign-in:hover::before{
     padding-top: var(--main-padding);
     padding-bottom: var(--main-padding);
     height: 100vh;
+    background-image: url('../images/shape_1.svg');
+    background-repeat: no-repeat;
+    background-position: bottom center; 
+    background-size: cover;
 }
 .landing .container{
     display: flex;
@@ -519,7 +523,7 @@ header .container ul li.sign-in:hover::before{
     font-weight: 800;
     display: inline-flex;
     height: 40px;
-    border: 2px solid var(--color-one);
+    background-color: #142683;
     border-radius: 20px;
     text-transform: uppercase;
     font-size: .8em;
@@ -531,15 +535,12 @@ header .container ul li.sign-in:hover::before{
     cursor: pointer;
 }
 
-/* start */
-
-
 .landing .container .site-info .rejoignez-nous a {
     display: block;
     text-decoration: none;
   position: relative;
   transition: all .45s ease-Out;
-  color: var(--color-one);
+  color: #FFF;
 }
 
 .landing .container .site-info .rejoignez-nous #circle {
@@ -548,7 +549,7 @@ header .container ul li.sign-in:hover::before{
   opacity: 0;
   line-height: 40px;
   border-radius: 50%;
-  background-color: var(--color-four);
+  background-color: #f86281;
   position: absolute;
   transition: all .5s ease-Out;
   top: 20px;
@@ -562,13 +563,6 @@ header .container ul li.sign-in:hover::before{
   top: -70px;
   left: -70px;
 }
-
-.landing .container .site-info .rejoignez-nous:hover a {
-  color: white;
-}
-
-/* end */
-
 
 .landing .container .landing-image{
     flex-basis: 50%;
