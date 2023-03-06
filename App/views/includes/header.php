@@ -35,7 +35,9 @@
                 <li class="menu-drop-down">
                     <span id="dropMenu">Autre <i class='fa fa-chevron-down'></i></span>
                     <ul id="droppedMenu" class="hide">
-                        <li><a href="<?php echo URLROOT . "/users/register" ?>">S'inscrire</a></li>
+                        <?php if(!isset($_SESSION['user'])) : ?>
+                            <li><a href="<?php echo URLROOT . "/users/register" ?>">S'inscrire</a></li>
+                        <?php endif ?>
                         <li><a href="#popular">Les Plus Populaires</a></li>
                         <li><a href="#equipe">Notre équipe </a></li>
                         <li><a href="#contact">Contactez-Nous</a></li>
@@ -45,7 +47,15 @@
                     <i class="fa fa-search" id="searchIcon"></i>
                     <form action="" class="hide" id="seacrhForm"><input type="text"></form>
                 </li>
-                <li class="sign-in"><a href="<?php echo URLROOT . "/users/login" ?>">Se Connecter</a></li>
+                <?php if(!isset($_SESSION['user'])) : ?>
+                    <li class="sign-in"><a href="<?php echo URLROOT . "/users/login" ?>">Se Connecter</a></li>
+                <?php endif ?>
+                <?php if(isset($_SESSION['id_formateur'])) : ?>
+                    <li class="sign-in"><a href="<?php echo URLROOT . "/formateurs/dashboard" ?>">Dashboard</a></li>
+                <?php endif ?>
+                <?php if(isset($_SESSION['id_etudiant'])) : ?>
+                    <li class="sign-in"><a href="<?php echo URLROOT . "/etudiants/dashboard" ?>">Mes Cours</a></li>
+                <?php endif ?>
             </ul>
         </div>
     </header>
