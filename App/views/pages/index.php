@@ -1,8 +1,12 @@
-<?php require_once APPROOT."/views/includes/header.php";?> 
+<?php require_once APPROOT."/views/includes/header.php" ?> 
+<div class="preloader">
+    <div class="spinner-border text-info" style="height: 4rem;width: 4rem" role="status">
+</div>
+  </div>
 <!-- Landing Section -->
 <section id="landing" class="landing d-flex align-item-center">
       <div class="container">
-          <div class="site-info">
+          <div class="site-info wow slideInLeft" data-wow-duration="1s">
               <img src="<?php echo URLROOT."/Public"?>/images/congruts.png" alt="MAHA-ANIMATION-IMG" class="animation-img">
               <h2 class="title">
                   <span>M</span>
@@ -19,7 +23,7 @@
                 <a href="<?= URLROOT.'/users/register' ?>">Rejoignez-nous</a>
               </div>
           </div>
-          <div class="landing-image">
+          <div class="landing-image wow slideInRight" data-wow-duration="1s">
               <img src="<?php echo URLROOT."/Public"?>/images/online_learning.svg" alt="MAHA">
           </div>
       </div>
@@ -30,17 +34,17 @@
 <section class="counts">
     <div class="container">
       <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-4 text-center">
+        <div class="col-lg-4 col-md-4 col-sm-4 text-center wow rollIn" data-wow-duration="2s" data-wow-offset="10">
           <span><?= $data['totalEtudiants'] ?></span>
           <p>Etudiants</p>
         </div>
 
-        <div class="col-lg-4 col-md-4 col-sm-4 text-center">
+        <div class="col-lg-4 col-md-4 col-sm-4 text-center wow rollIn" data-wow-duration="2s" data-wow-offset="10">
           <span><?= $data['totalFormations'] ?></span>
           <p>Formations</p>
         </div>
 
-        <div class="col-lg-4 col-md-4 col-sm-4 text-center">
+        <div class="col-lg-4 col-md-4 col-sm-4 text-center wow rollIn" data-wow-duration="2s" data-wow-offset="10">
           <span><?= $data['totalFormateurs'] ?></span>
           <p>Formateurs</p>
         </div>
@@ -49,7 +53,7 @@
   </section>
   <!-- Fiin  Section Statistiques -->
   <!-- Category Head -->
-  <section class="section-title mt-2" id="catalogue">
+  <section class="section-title mt-2 wow fadeInLeft" id="catalogue" data-wow-duration="3s" data-wow-offset="100">
     <div class="container">
       <div>
           <h2 class="text-uppercase">catégories</h2>
@@ -65,7 +69,7 @@
         <div class="row">
           <?php foreach ($data['categories'] as $categorie) : ?>
           <div class="col-lg-3 col-md-4 mt-4">
-            <div class="icon-box rounded-2">
+            <div class="icon-box rounded-2 wow fadeInDown" data-wow-duration="2s" data-wow-offset="10">
               <?= $categorie->icon ?>
               <h3><a href="<?= URLROOT.'/pageFormations/filter/'.$categorie->nom_categorie ?>"><?= $categorie->nom_categorie ?></a></h3>
             </div>
@@ -76,7 +80,7 @@
     </section>
     <!-- Fin Section Category -->
      <!-- Formation Head -->
-    <section class="section-title mt-2 pb-0" id="popular">
+    <section class="section-title mt-2 pb-0 wow fadeInLeft" id="popular" data-wow-duration="3s" data-wow-offset="100">
       <div class="container">
         <div>
             <h2>FORMATIONS</h2>
@@ -91,7 +95,7 @@
             <div class="courses">
               <?php foreach($data['courses'] as $course) : ?>
                 <!-- start card -->
-                <div class="card_coures">
+                <div class="card_coures wow fadeInRight" data-wow-duration="2s" data-wow-offset="100">
                   <a href='<?php echo URLROOT."/pageFormations/coursDetails/".$course->IdFormation?>' style='display: block; text-decoration: none;'>
                     <!-- img formation -->
                     <div class="img">
@@ -140,7 +144,7 @@
     <!-- end poplular courses -->
 <!-- Equipe Head -->
     <section class="section-title mt-2" id="equipe">
-      <div class="container">
+      <div class="container wow fadeInLeft" data-wow-duration="3s" data-wow-offset="100">
         <div>
             <h2>EQUIPE</h2>
             <p>RENCONTREZ-NOUS</p>
@@ -152,7 +156,7 @@
 <section class="equipe">
   <div class="container" >
     <div class="row">
-      <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator">
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator wow rotateInUpLeft" data-wow-duration="2s" data-wow-offset="100">
           <div class="member p-3 mt-3">
             <div class="text-center">
               <h2>M</h2>
@@ -172,7 +176,7 @@
             </div>
           </div>
       </div>
-      <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator">
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator wow rotateInUpLeft" data-wow-duration="2s" data-wow-offset="100">
           <div class="member p-3 mt-3">
             <div class="text-center">
               <h2><span>A</span></h2>
@@ -192,7 +196,7 @@
             </div>
           </div>
       </div>
-        <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator">
+        <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator wow rotateInUpLeft" data-wow-duration="2s" data-wow-offset="100">
           <div class="member p-3 mt-3">
             <div class="text-center">
               <h2>H</h2>
@@ -212,7 +216,7 @@
             </div>
           </div>
       </div>
-        <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator">
+        <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator wow rotateInUpLeft" data-wow-duration="2s" data-wow-offset="100">
           <div class="member p-3 mt-3">
             <div class="text-center">
               <h2><span>A</span></h2>
@@ -238,7 +242,7 @@
 <!-- Fin Equipe -->
 <!-- Contact Head -->
 <section class="section-title mt-2" id="contact">
-  <div class="container">
+  <div class="container wow fadeInLeft" data-wow-duration="3s" data-wow-offset="100">
     <div>
         <h2>Contactez-Nous</h2>
     </div>
@@ -249,7 +253,7 @@
 <section class="contact">
   <div class="container" >
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-4 wow slideInLeft" data-wow-duration="2s" data-wow-offset="60">
         <div class="info">
           <div class="address">
             <i class="fa-solid fa-location-dot"></i>
@@ -274,7 +278,7 @@
       </div>
 
       <!-- Form -->
-      <div class="col-lg-8 mt-5 mt-lg-0">
+      <div class="col-lg-8 mt-5 mt-lg-0 wow slideInRight" data-wow-duration="2s" data-wow-offset="60">
         <form action="forms/contact.php" method="post">
           <div class="row">
             <div class="col-md-6">

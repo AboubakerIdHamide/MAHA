@@ -30,6 +30,18 @@
 <!-- To-up Button -->
 <script src="<?php echo URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
 <script src="<?php echo URLROOT; ?>/public/js/main.js"></script>
+<script src="<?= URLROOT ?>/public/WOW/dist/wow.min.js"></script>
+
+
+<script>
+  // WOW JS
+  new WOW().init();
+
+  // preloader
+  $(window).on('load', function () {
+    $('.preloader').fadeOut('slow');
+  });
+</script>
 </body>
 
 </html>

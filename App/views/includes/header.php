@@ -12,17 +12,13 @@
     <!-- Styles --> 
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/main.css" />
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/pageFormations.css" />
-    <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/cours-details.css" />
-    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-    </style>
-
+    <!-- WOW js -->
+    <link rel="stylesheet" href="<?= URLROOT ?>/public/WOW/css/animate.css">
 </head>
 
 <body>
     <!-- Header -->
-    <header>
+    <header class="wow slideInDown" data-wow-duration="2s">
         <div class="loding-bar"></div>
         <div class="container">
             <h1 class="logo"><a href="<?= URLROOT ?>">M<span>A</span>H<span>A</span></a></h1>
