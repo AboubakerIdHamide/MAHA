@@ -17,7 +17,7 @@
               <a href="#" class="voir-plus">Voir Plus</a>
           </div>
           <div class="landing-image">
-              <img src="<?php echo URLROOT."/Public"?>/images/landing.jpg" alt="MAHA">
+              <img src="<?php echo URLROOT."/Public"?>/images/online_learning.svg" alt="MAHA">
           </div>
       </div>
 </section>
