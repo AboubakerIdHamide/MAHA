@@ -19,7 +19,7 @@
   <div class="container d-md-flex py-4">
     <div class="me-md-auto text-center text-md-start">
       <div class="copyright">
-        © Copyright <strong><span>MAHA</span></strong>. All Rights Reserved
+        © Copyright <strong><span>MAHA</span></strong>. All Rights Reserved (2023)
       </div>
     </div>
   </div>
@@ -31,7 +31,6 @@
 <script src="<?php echo URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
 <script src="<?php echo URLROOT; ?>/public/js/main.js"></script>
 <script src="<?= URLROOT ?>/public/WOW/dist/wow.min.js"></script>
-
 
 <script>
   // WOW JS

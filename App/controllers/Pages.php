@@ -20,8 +20,8 @@ class Pages extends Controller
 
 		foreach ($courses as $course) {
 			$course->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($course->IdFormteur, $course->IdFormation)['total_apprenants'];
-			$course->imgFormation = URLROOT."/Public/".$course->imgFormation;
-			$course->imgFormateur = URLROOT."/Public/".$course->imgFormateur;
+			$course->imgFormation = URLROOT."/Public/images/".$course->imgFormation;
+			$course->imgFormateur = URLROOT."/Public/images/".$course->imgFormateur;
 		}
 
 		$data = [

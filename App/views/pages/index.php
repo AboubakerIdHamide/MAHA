@@ -6,7 +6,7 @@
 <!-- Landing Section -->
 <section id="landing" class="landing d-flex align-item-center">
       <div class="container">
-          <div class="site-info wow slideInLeft" data-wow-duration="1s">
+          <div class="site-info wow slideInLeft" data-wow-duration="2s">
               <img src="<?php echo URLROOT."/Public"?>/images/congruts.png" alt="MAHA-ANIMATION-IMG" class="animation-img">
               <h2 class="title">
                   <span>M</span>
@@ -23,7 +23,7 @@
                 <a href="<?= URLROOT.'/users/register' ?>">Rejoignez-nous</a>
               </div>
           </div>
-          <div class="landing-image wow slideInRight" data-wow-duration="1s">
+          <div class="landing-image wow slideInRight" data-wow-duration="2s">
               <img src="<?php echo URLROOT."/Public"?>/images/online_learning.svg" alt="MAHA">
           </div>
       </div>
@@ -53,7 +53,7 @@
   </section>
   <!-- Fiin  Section Statistiques -->
   <!-- Category Head -->
-  <section class="section-title mt-2 wow fadeInLeft" id="catalogue" data-wow-duration="3s" data-wow-offset="100">
+  <section class="section-title mt-5 wow fadeInLeft" id="catalogue" data-wow-duration="3s" data-wow-offset="100">
     <div class="container">
       <div>
           <h2 class="text-uppercase">catégories</h2>
@@ -101,7 +101,7 @@
                     <div class="img">
                         <img src="<?php echo $course->imgFormation; ?>" alt="photo">
                         <div class="duree">
-                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                            <i class="fa-solid fa-clock" style="color: #ff6584" aria-hidden="true"></i>
                             <div class="time"><?php echo $course->duree; ?></div>
                         </div>
                     </div>
@@ -123,15 +123,22 @@
                                 <div class="img_formateur">
                                     <img src="<?php echo $course->imgFormateur; ?>" alt="photo">
                                 </div>
-                                <h2><?php echo $course->nomFormateur; ?> <?php echo $course->prenomFormateur; ?></h2>
+                                <div class="d-flex flex-column fw-bold">
+                                  <span><?php echo $course->nomFormateur; ?></span>
+                                  <span><?php echo $course->prenomFormateur; ?></span>
+                                </div>
                             </div>
                         </a>
                         <!-- informations -->
                         <div class="info">
-                            <div class="etd"><?php echo $course->numbAcht; ?></div>
-                            <i class="fa fa-heart" aria-hidden="true"></i>
-                            <div class="likes"><?php echo $course->likes; ?></div>
-                            <i class="fa fa-users" aria-hidden="true"></i>
+                          <div class="likes d-flex flex-column align-items-center">
+                              <span><?php echo $course->likes; ?></span>
+                              <i class="fa fa-heart" aria-hidden="true"></i>
+                          </div>
+                          <div class="etd d-flex flex-column align-items-center">
+                            <span><?php echo $course->numbAcht; ?></span>
+                            <i class="fa fa-users" aria-hidden="true"></i>    
+                          </div>
                         </div>
                     </div>
                   </a>
@@ -157,12 +164,12 @@
   <div class="container" >
     <div class="row">
       <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator wow rotateInUpLeft" data-wow-duration="2s" data-wow-offset="100">
-          <div class="member p-3 mt-3">
+          <div class="member member-odd p-3 mt-3">
             <div class="text-center">
-              <h2>M</h2>
+              <h2 style="color: #ff6584">M</h2>
               <img src="<?php echo URLROOT."/Public"?>/images/membre.jpg" class="member-img" alt="">
-              <h5>ABDELMOUMEN MUSTAFA</h5>
-              <small><em>web developer</em></small>
+              <h6 class="fw-bolder">ABDELMOUMEN MUSTAFA</h6>
+              <small class="badge bg-info">Web Developer</small>
             </div>
             <div class="member-content">
               <p>
@@ -177,12 +184,12 @@
           </div>
       </div>
       <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator wow rotateInUpLeft" data-wow-duration="2s" data-wow-offset="100">
-          <div class="member p-3 mt-3">
+          <div class="member member-even p-3 mt-3">
             <div class="text-center">
               <h2><span>A</span></h2>
               <img src="<?php echo URLROOT."/Public"?>/images/membre.jpg" class="member-img" alt="">
-              <h5>ID HAMIDE ABOUBAKER</h5>
-              <small><em>web developer</em></small>
+              <h6 class="fw-bolder">ID HAMIDE ABOUBAKER</h6>
+              <small class="badge bg-info">Web Developer</small>
             </div>
             <div class="member-content">
               <p>
@@ -197,12 +204,12 @@
           </div>
       </div>
         <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator wow rotateInUpLeft" data-wow-duration="2s" data-wow-offset="100">
-          <div class="member p-3 mt-3">
+          <div class="member member-odd p-3 mt-3">
             <div class="text-center">
-              <h2>H</h2>
+              <h2 style="color: #ff6584">H</h2>
               <img src="<?php echo URLROOT."/Public"?>/images/membre.jpg" class="member-img" alt="">
-              <h5>TASDIHT HICHAM</h5>
-              <small><em>web developer</em></small>
+              <h6 class="fw-bolder">TASDIHT HICHAM</h6>
+              <small class="badge bg-info">Web Developer</small>
             </div>
             <div class="member-content">
               <p>
@@ -217,12 +224,12 @@
           </div>
       </div>
         <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator wow rotateInUpLeft" data-wow-duration="2s" data-wow-offset="100">
-          <div class="member p-3 mt-3">
+          <div class="member member-even p-3 mt-3">
             <div class="text-center">
               <h2><span>A</span></h2>
               <img src="<?php echo URLROOT."/Public"?>/images/membre.jpg" class="member-img" alt="">
-              <h5>BOUDAL AHMED</h5>
-              <small><em>web developer</em></small>
+              <h6 class="fw-bolder">BOUDAL AHMED</h6>
+              <small class="badge bg-info">Web Developer</small>
             </div>
             <div class="member-content">
               <p>
@@ -241,7 +248,7 @@
 </section>
 <!-- Fin Equipe -->
 <!-- Contact Head -->
-<section class="section-title mt-2" id="contact">
+<section class="section-title mt-5" id="contact">
   <div class="container wow fadeInLeft" data-wow-duration="3s" data-wow-offset="100">
     <div>
         <h2>Contactez-Nous</h2>
@@ -257,19 +264,19 @@
         <div class="info">
           <div class="address">
             <i class="fa-solid fa-location-dot"></i>
-            <h4>Localisation:</h4>
+            <h4>Localisation</h4>
             <p>Boulevard de Mohammedia, QI Azli 40150</p>
           </div>
 
           <div class="email">
             <i class="fa-solid fa-envelope"></i>
-            <h4>Email:</h4>
+            <h4>Email</h4>
             <p>info@maha.com</p>
           </div>
 
           <div class="phone">
             <i class="fa-solid fa-phone"></i>
-            <h4>Appel:</h4>
+            <h4>Appel</h4>
             <p>(+212) 524 34 50 57</p>
           </div>
 

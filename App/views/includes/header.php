@@ -18,7 +18,7 @@
 
 <body>
     <!-- Header -->
-    <header class="wow slideInDown" data-wow-duration="2s">
+    <header class="wow slideInDown" data-wow-delay="1s">
         <div class="loding-bar"></div>
         <div class="container">
             <h1 class="logo"><a href="<?= URLROOT ?>">M<span>A</span>H<span>A</span></a></h1>
