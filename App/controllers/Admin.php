@@ -370,6 +370,7 @@ class Admin extends Controller
 
     public function ajaxData($idFormateur)
     {
+        $this->checkSession();
         $inscriptions = $this->inscriptionModel->getTotalApprenantsParJour($idFormateur);
         foreach ($inscriptions as $i) {
             $date = date_create($i->dateInscription);
@@ -380,17 +381,20 @@ class Admin extends Controller
 
     public function getAllFormateurs()
     {
+        $this->checkSession();
         $f = $this->fomateurModel->getAllFormateur();
         echo json_encode($f);
     }
 
     public function requestPayment()
     {
+        $this->checkSession();
         return $this->view('admin/requestPayment');
     }
 
     public function getTop10BestSellers()
     {
+        $this->checkSession();
         $formateurs = $this->inscriptionModel->top10BestSellers();
         echo json_encode($formateurs);
     }
