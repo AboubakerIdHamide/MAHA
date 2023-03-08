@@ -70,20 +70,22 @@ class Inscription
     //     return $data;
     // }
 
-    public function deteleInscription($id_formation, $id_etudiant, $id_formateur){
-			$request = $this->connect->prepare("DELETE FROM inscriptions
+    public function deteleInscription($id_formation, $id_etudiant, $id_formateur)
+    {
+        $request = $this->connect->prepare(
+            "DELETE FROM inscriptions
 		                    WHERE id_formation = :id_formation and id_etudiant = :id_etudiant and id_formateur = :id_formateur"
-            );
-            $request->bindParam(':id_formation', $id_formation);
-            $request->bindParam(':id_etudiant', $id_formation);
-            $request->bindParam(':id_formateur', $id_formation);
-			$response = $request->execute();
-			return $response;
-	}
+        );
+        $request->bindParam(':id_formation', $id_formation);
+        $request->bindParam(':id_etudiant', $id_formation);
+        $request->bindParam(':id_formateur', $id_formation);
+        $response = $request->execute();
+        return $response;
+    }
 
     public function getInscriptionByEtudiant($idEtudiant)
     {
-        $request= $this->connect->prepare("
+        $request = $this->connect->prepare("
             SELECT * FROM inscriptions
             JOIN etudiants e USING(id_etudiant)
             JOIN formateurs USING(id_formateur)
@@ -92,11 +94,12 @@ class Inscription
         ");
         $request->bindParam(":id_etudiant", $idEtudiant);
         $request->execute();
-        $response=$request->fetchAll(PDO::FETCH_OBJ);
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
         return $response;
     }
 
-    public function getInscriptionOfOneFormation($id_formation, $id_etudiant, $id_formateur){
+    public function getInscriptionOfOneFormation($id_formation, $id_etudiant, $id_formateur)
+    {
         $request = $this->connect->prepare("
             SELECT * FROM inscriptions i
             JOIN etudiants  USING(id_etudiant)
@@ -119,7 +122,7 @@ class Inscription
     // {
     //     $request = $this->connect->prepare("
     //         DELETE FROM inscriptions
-	// 	    WHERE id_inscription = :id_inscription
+    // 	    WHERE id_inscription = :id_inscription
     //     ");
 
     //     $id_inscription = htmlspecialchars($id_inscription);
@@ -172,7 +175,7 @@ class Inscription
 
     public function getInscriptionByPaymentID($paymentID)
     {
-        $request= $this->connect->prepare("
+        $request = $this->connect->prepare("
             SELECT * FROM inscriptions
             WHERE payment_id = :payment_id
         ");
@@ -186,7 +189,7 @@ class Inscription
 
     public function updateInscriptionByPaymentID($paymentID, $paymentState)
     {
-       $request= $this->connect->prepare("
+        $request = $this->connect->prepare("
             UPDATE inscriptions
             SET payment_state = :payment_state
             WHERE payment_id = :payment_id
@@ -194,6 +197,43 @@ class Inscription
         $request->bindParam(":payment_id", $paymentID);
         $request->bindParam(":payment_state", $paymentState);
         $response = $request->execute();
+        return $response;
+    }
+
+    public function getTotalApprenantsParJour($idFormateur)
+    {
+        $request = $this->connect->prepare("
+            SELECT 
+                DATE(date_inscription) AS dateInscription,
+                COUNT(*) AS `inscriptions`,
+                SUM(prix) AS totalRevenue
+            FROM inscriptions 
+            WHERE id_formateur = :id_formateur
+            GROUP BY DATE(date_inscription)
+        ");
+
+
+        $request->bindParam(":id_formateur", $idFormateur);
+        $request->execute();
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+
+    public function top10BestSellers()
+    {
+        $request = $this->connect->prepare("
+            SELECT
+                CONCAT(f.nom_formateur, ' ', f.prenom_formateur) AS nom, 
+                SUM(prix) AS totalRevenu
+            FROM inscriptions i
+            JOIN formateurs f USING(id_formateur)
+            GROUP BY i.id_formateur
+            ORDER BY totalRevenu DESC
+            LIMIT 10
+        ");
+
+        $request->execute();
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
         return $response;
     }
 }

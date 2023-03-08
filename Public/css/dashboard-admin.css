@@ -1,0 +1,22 @@
+#chart-1, #chart-2 {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.before-search {
+  height: 350px;
+}
+
+.before-search span {
+  background-color: #0d6efd;
+  padding: 0.5rem 3rem;
+  border-radius: 32px;
+  color: white;
+}
+
+#chart-1 {
+  text-align: center;
+  font-weight: 500;
+  min-height: 382px;
+}

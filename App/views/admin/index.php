@@ -41,26 +41,30 @@
             </div>
         </div>
     </section>
-    <main class="container ps-5 pe-5 me-lg-5 p-md-0 mt-3 bg-color p-lg-3 rounded">
-        <div class="row mb-3 pt-5 pt-lg-0">
-            <div class="col col-lg mt-3 mt-lg-0">
-                <input placeholder="Nom Formateur" type="text" class="form-control" id="chercher">
+    <section class="container mt-3">
+        <input type="text" class="form-control my-3" id="formateur" placeholder="le nom de formateur">
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div id="chart-1">
+                    <div class="before-search d-flex justify-content-center align-items-center">
+                        <span>veuillez rechercher le formateur</span>
+                    </div>
+                </div>
             </div>
-            <div class="col-2">
-                <select class="form-select etat">
-                    <option value="pending" selected>Pending</option>
-                    <option value="accepted">Accepted</option>
-                    <option value="declined">Declined</option>
-                </select>
+            <div class="col-12 col-lg-6">
+                <div id="chart-2"></div>
             </div>
         </div>
-        <hr />
-        <section id="requests"></section>
-    </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="<?php echo URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
+        integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="<?php echo URLROOT; ?>/public/js/dashBoardNav.js"></script>
     <script src="<?php echo URLROOT; ?>/public/js/adminDashboard.js"></script>
+    <script src="<?= URLROOT ?>/public/js/chart.js"></script>
     </body>
 
     </html>

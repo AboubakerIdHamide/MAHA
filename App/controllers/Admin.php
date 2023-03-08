@@ -102,7 +102,7 @@ class Admin extends Controller
     {
         $_SESSION['admin_id'] = $admin->id_admin;
         $_SESSION['admin'] = $admin;
-        $admin->img_admin =URLROOT."/Public/".$admin->img_admin;
+        $admin->img_admin = URLROOT . "/Public/" . $admin->img_admin;
         redirect('admin/dashboard');
     }
 
@@ -133,7 +133,7 @@ class Admin extends Controller
             $requestsPayment = $this->requestPaymentModel->getRequestsPaymentsByState($filter);
             // get link of image formateur
             // foreach ($data as $key => $request) {
-                // $request->img_formateur =URLROOT."/Public/".$request->img_formateur;
+            // $request->img_formateur =URLROOT."/Public/".$request->img_formateur;
             // }
             echo json_encode($requestsPayment);
         }
@@ -162,7 +162,7 @@ class Admin extends Controller
         $data['specialite'] = $this->stockedModel->getAllCategories();
         // get link of image formateur
         foreach ($data['formateurs'] as $formateur) {
-            $formateur->img_formateur =URLROOT."/Public/".$formateur->img_formateur;
+            $formateur->img_formateur = URLROOT . "/Public/" . $formateur->img_formateur;
         }
         $this->view("admin/formateurs", $data);
     }
@@ -198,7 +198,7 @@ class Admin extends Controller
         }
         // get link of image etudiant
         foreach ($data as $etudiant) {
-            $etudiant->img_etudiant = URLROOT."/Public/".$etudiant->img_etudiant;
+            $etudiant->img_etudiant = URLROOT . "/Public/" . $etudiant->img_etudiant;
             $etudiant->total_inscription = $this->etudiantModel->countTotalInscriById($etudiant->id_etudiant);
         }
         $this->view("admin/etudiants", $data);
@@ -246,8 +246,8 @@ class Admin extends Controller
         }
         // get link of image formateur
         foreach ($data['formations'] as $formation) {
-            $formation->img_formateur = URLROOT."/Public/".$formation->img_formateur;
-            $formation->image_formation = URLROOT."/Public/".$formation->image_formation;
+            $formation->img_formateur = URLROOT . "/Public/" . $formation->img_formateur;
+            $formation->image_formation = URLROOT . "/Public/" . $formation->image_formation;
         }
 
         $data['categories'] = $this->stockedModel->getAllCategories();
@@ -284,7 +284,7 @@ class Admin extends Controller
         $data = $this->videoModel->getVideosOfFormation($id_formation);
         if (!empty($data)) {
             foreach ($data as $video) {
-                $video->url_video = URLROOT."/Public/".$video->url_video;
+                $video->url_video = URLROOT . "/Public/" . $video->url_video;
             }
             echo json_encode($data);
         } else {
@@ -355,7 +355,7 @@ class Admin extends Controller
 
         $data = $this->inscriptionModel->getFormationsOfStudent($id_etudiant);
         foreach ($data as $inscription) {
-            $inscription->img_formateur = URLROOT."/Public/".$inscription->img_formateur;
+            $inscription->img_formateur = URLROOT . "/Public/" . $inscription->img_formateur;
         }
         echo json_encode($data);
     }
@@ -366,5 +366,32 @@ class Admin extends Controller
 
         $this->inscriptionModel->deteleInscription($id_inscription);
         echo "L'inscription a été supprimer avec success !!!";
+    }
+
+    public function ajaxData($idFormateur)
+    {
+        $inscriptions = $this->inscriptionModel->getTotalApprenantsParJour($idFormateur);
+        foreach ($inscriptions as $i) {
+            $date = date_create($i->dateInscription);
+            $i->dateInscription = date_format($date, "d/m/Y");
+        }
+        echo json_encode($inscriptions);
+    }
+
+    public function getAllFormateurs()
+    {
+        $f = $this->fomateurModel->getAllFormateur();
+        echo json_encode($f);
+    }
+
+    public function requestPayment()
+    {
+        return $this->view('admin/requestPayment');
+    }
+
+    public function getTop10BestSellers()
+    {
+        $formateurs = $this->inscriptionModel->top10BestSellers();
+        echo json_encode($formateurs);
     }
 }
