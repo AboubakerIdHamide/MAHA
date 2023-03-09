@@ -178,7 +178,7 @@ class Formation
 
     public function getPopularCourses()
     {
-        $request = $this->connect->prepare("SELECT formations.id_formation as 'IdFormation',
+        $request = $this->connect->prepare("SELECT DISTINCT formations.id_formation as 'IdFormation',
                     formations.image_formation as 'imgFormation',
                     formations.mass_horaire as 'duree',
                     categories.nom_categorie as 'categorie',
