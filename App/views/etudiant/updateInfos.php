@@ -16,7 +16,7 @@
 	<!-- profil Head -->
 	<section class="section-title mt-4">
 		<div class="container">
-			<div>
+			<div class="text-center">
 				<h4>Aperçu</h4>
 				<p>Profil de l'utilisateur</p>
 			</div>
@@ -25,12 +25,12 @@
 	<!-- Fin profil Head -->
 	<section class="container mb-5">
 		<p class="success-msg"></p>
-		<div class="row profil-row">
+		<div class="row profil-row d-flex justify-content-center align-items-center">
 			<div class="col-lg-5 profil">
-				<div class="card p-2">
+				<div class="card p-2 border-0">
 					<div class="text-center">
 						<div class="avatar-container">
-							<img id="avatar-profil" src="<?php echo $data['img'] ?>" alt="user image">
+							<img id="" src="<?php echo $data['img'] ?>" alt="user image" class="rounded-pill w-50 h-50" >
 							<div class="mt-2">
 								<input id="avatar" class="d-none" type="file" accept=".jpg, .jpeg, .png">
 								<label class="btn btn-warning" for="avatar">
