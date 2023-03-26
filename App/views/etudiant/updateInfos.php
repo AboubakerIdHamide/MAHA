@@ -27,7 +27,7 @@
 		<p class="success-msg"></p>
 		<div class="row profil-row d-flex justify-content-center align-items-center">
 			<div class="col-lg-5 profil">
-				<div class="card p-2 border-0">
+				<div class="avatar card p-2 border-0">
 					<div class="text-center">
 						<div class="avatar-container">
 							<img id="" src="<?php echo $data['img'] ?>" alt="user image" class="rounded-pill w-50 h-50" >
@@ -45,7 +45,7 @@
 				</div>
 			</div>
 			<div class="col-lg-7 mt-4 mt-lg-0">
-				<div class="card">
+				<div class="avatar card">
 					<div class="card-header py-3">
 						Informations de compte
 					</div>

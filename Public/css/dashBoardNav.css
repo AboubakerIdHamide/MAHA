@@ -19,9 +19,12 @@ body::-webkit-scrollbar{
 body::-webkit-scrollbar-thumb{
     background-color: var(--main-color);
 }
+body{
+    background-color: #b0d4fc;
+}
 /* variables */
 :root{
-    --main-color:#47B5FF;
+    --main-color:#142683f0;
     --main-transition:0.2s;
 }
 
@@ -97,7 +100,7 @@ header .logo{
     height: 50px;
     border-radius: 50%;
     margin: 5px auto;
-    border: 3px solid #fff;
+    border: 3px solid #ff6584;
     position: relative;
 }
 header .logo::before{
@@ -216,7 +219,7 @@ header nav ul li::before{
     top: 0;
     width: 0;
     height: 100%;
-    background-color: #5FBFFF;
+    background-color: #142683f0;
     transition: var(--main-transition);
     z-index: -1;
 }
@@ -275,4 +278,8 @@ header nav .menu-i span:nth-child(2){
 }
 .hide-menu{
     display: none !important;
+}
+
+.avatar{
+    background-color: #6fa4e0;
 }
