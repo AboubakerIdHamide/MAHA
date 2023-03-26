@@ -14,7 +14,7 @@ html {
 
 body {
   font-family: Inter, sans-serif;
-  background-color: #b5eaea;
+  background-color: #b0d4fc;
 }
 
 body::-webkit-scrollbar {
@@ -26,10 +26,10 @@ body::-webkit-scrollbar-thumb {
 :root {
   --main-padding: 100px;
   --main-transition: 0.3s;
-  --color-one: #47b5ff;
+  --color-one: #ff6584;
   --color-two: #dff6ff;
-  --color-three: #256d85;
-  --color-four: #06283d;
+  --color-three: #142682;
+  --color-four: #47B5FF;
   --transparent-color: rgb(15 116 143 / 70%);
 }
 
@@ -74,7 +74,7 @@ header .container {
 header{
     padding: 15px;
     /* box-shadow: 0 0 5px 2px #ddd; */
-    background-color: #DFF6FF;
+    background-color: #142683f0;
     width: 100%;
 }
 header .loding-bar{
@@ -208,7 +208,7 @@ header .container ul li.search-bar{
     flex-direction: row-reverse;
     justify-content: center;
     align-items: center;
-    background-color: var(--color-one);
+    background-color: #142683f0;
     transition:var(--main-transition);
     -webkit-transition:var(--main-transition);
     -moz-transition:var(--main-transition);
@@ -258,7 +258,7 @@ header .container ul li.search-bar form input:focus{
     border: 2px solid var(--color-one);
 }
 header .container ul li.menu-drop-down{
-    color: var(--color-one);
+    color: #fff;
 }
 header .container ul li.menu-drop-down span{
     cursor: pointer;
@@ -293,7 +293,7 @@ header .container ul li.menu-drop-down ul li{
     z-index: 1;
 }
 header .container ul li.sign-in{
-    background-color: var(--color-one);
+    background-color: #142683f0;
     transition: var(--main-transition);
     -webkit-transition: var(--main-transition);
     -moz-transition: var(--main-transition);
@@ -320,7 +320,7 @@ header .container ul li.sign-in{
 }
 header .container ul li a{
     text-decoration: none;
-    color: var(--color-one);
+    color: #fff;
 }
 header .container ul li.sign-in a{
     color: #fff;
@@ -432,7 +432,7 @@ header .container ul li.sign-in:hover::before{
 .media-header .group .instructor {
   padding: 6px 15px;
   border-radius: 10px;
-  background-color: var(--color-one);
+  background-color: #69a1f8;
 }
 
 .media-header .group .voir-profil a {
@@ -470,7 +470,7 @@ header .container ul li.sign-in:hover::before{
   box-sizing: border-box;
   padding: 10px;
   border-radius: 8px;
-  background-color: #5f88a2;
+  background-color: #abd5ef;
   border: 2px solid #5f88a2;
   cursor: pointer;
   transition: border 0.5s;
@@ -581,15 +581,15 @@ header .container ul li.sign-in:hover::before{
 # Footer
 --------------------------------------------------------------*/
 #footer {
-  color: #37423b;
+  color: #1d308a;
   font-size: 14px;
-  background-color: #06283d;
+  background-color: #1d308a;
   color: #fff;
 }
 
 #footer .footer-top {
   padding: 30px 0 30px 0;
-  background-color: #dff6ff;
+  background-color: #94c0fb;
 }
 
 #footer .footer-top .footer-contact p {
@@ -597,7 +597,7 @@ header .container ul li.sign-in:hover::before{
   line-height: 24px;
   margin-bottom: 0;
   font-family: "Raleway", sans-serif;
-  color: #777777;
+  color: #1d308a;
 }
 
 /*=================================================*/
