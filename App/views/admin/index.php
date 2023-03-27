@@ -6,7 +6,7 @@
                 <div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
                     <div>
                         <span class="d-block fs-2 nombre">$ <?= $data['balance'] ?></span>
-                        <small class="text-muted">Balance</small>
+                        <small class="text-white">Balance</small>
                     </div>
                     <i class="fa-solid fa-dollar-sign fs-1"></i>
                 </div>
@@ -16,7 +16,7 @@
                 <div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
                     <div>
                         <span class="d-block fs-2 nombre" id="nbr-formations"><?= $data['countFormations'] ?></span>
-                        <small class="text-muted">Formations</small>
+                        <small class="text-white">Formations</small>
                     </div>
                     <i class="fa-solid fa-person-chalkboard fs-1"></i>
                 </div>
@@ -25,7 +25,7 @@
                 <div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
                     <div>
                         <span id="nbr-likes" class="d-block fs-2 nombre"><?= $data['countFormateurs'] ?></span>
-                        <small class="text-muted">Formateurs</small>
+                        <small class="text-white">Formateurs</small>
                     </div>
                     <i class="fa-solid fa-chalkboard-user fs-1"></i>
                 </div>
@@ -34,7 +34,7 @@
                 <div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
                     <div>
                         <span class="d-block fs-2 nombre " id="nbr-apprenants"><?= $data['countEtudiant'] ?></span>
-                        <small class="text-muted">Etudiants</small>
+                        <small class="text-white">Etudiants</small>
                     </div>
                     <i class="fa-solid fa-graduation-cap fs-1"></i>
                 </div>
@@ -59,9 +59,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="<?php echo URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
-        integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="<?php echo URLROOT; ?>/public/js/dashBoardNav.js"></script>
     <script src="<?php echo URLROOT; ?>/public/js/adminDashboard.js"></script>
     <script src="<?= URLROOT ?>/public/js/chart.js"></script>
