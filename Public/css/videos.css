@@ -1,37 +1,41 @@
 body {
-	font-family: Inter;
+  font-family: Inter;
 }
 
 .go-back {
-	background-color: #e5e7eb;
-	padding: 3rem 1rem;
-	cursor: pointer;
-	transition: background-color 0.5s;
+  background-color: #ff6584;
+  padding: 3rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.5s;
 }
 
 .go-back:hover {
-	background-color: #bec0c5;
+  background-color: #ff6584ba;
 }
 
 main h1 {
-	font-weight: 800;
-	font-size: 1.5rem;
+  font-weight: 800;
+  font-size: 1.5rem;
 }
 
 main .video {
-	background-color: #B4CDE6;
+  background-color: #1d308a;
 }
 
 main span.edit {
-	background-color: blue;
+  background-color: blue;
 }
 
 main span.delete {
-	background-color: red;
+  background-color: red;
 }
 
 @media (768px <= width <= 992px) {
-	.label-btn {
-		display: none;
-	}
+  .label-btn {
+    display: none;
+  }
+}
+
+.custom-tooltip {
+  --bs-tooltip-bg: #ff6584;
 }

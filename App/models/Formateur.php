@@ -90,7 +90,8 @@ class Formateur
 		return $formateur;
 	}
 
-	public function updateFormateur($dataFormateur){
+	public function updateFormateur($dataFormateur)
+	{
 		$request = $this->connect->prepare("
 							UPDATE formateurs
 							SET nom_formateur = :nom,
@@ -112,20 +113,22 @@ class Formateur
 		return $response;
 	}
 
-	public function changeImg($img, $id){
+	public function changeImg($img, $id)
+	{
 		$request = $this->connect->prepare("
 							UPDATE formateurs
 							SET image_formation = :img
 							WHERE id_formateur = :id");
-		
+
 		$request->bindParam(':img', $img);
 		$request->bindParam(':id', $id);
 		$response = $request->execute();
 
 		return $response;
 	}
-	
-	public function getMDPFormateurById($id){
+
+	public function getMDPFormateurById($id)
+	{
 		$request = $this->connect->prepare("
 				SELECT formateurs.mot_de_passe as 'mdp'
 				FROM  formateurs
@@ -193,7 +196,8 @@ class Formateur
 		return $response;
 	}
 
-	public function getFormateurById($id){
+	public function getFormateurById($id)
+	{
 		$request = $this->connect->prepare("SELECT formateurs.id_formateur as 'IdFormateur',
 												formateurs.nom_formateur as 'nomFormateur',
 												formateurs.prenom_formateur as 'prenomFormateur',
@@ -223,7 +227,8 @@ class Formateur
 		$formateur = $request->fetch();
 		return $formateur;
 	}
-	public function getNumFormationAchtByIdFormateur($id){
+	public function getNumFormationAchtByIdFormateur($id)
+	{
 		$request = $this->connect->prepare("SELECT count(inscriptions.id_formation) as 'numAcht'
 											from inscriptions
 											where inscriptions.id_formateur = :id
@@ -235,7 +240,7 @@ class Formateur
 	}
 
 	public function updateFormateurBalance($IdFormateur, $balance)
-	{		
+	{
 		$request = $this->connect->prepare("
 			UPDATE formateurs 
 			SET balance = balance + :balance 
@@ -246,5 +251,16 @@ class Formateur
 		$request->bindParam(':id_formateur', $IdFormateur);
 		$response = $request->execute();
 		return $response;
+	}
+
+	public function getBalance($formateurID)
+	{
+		$request = $this->connect->prepare("
+			SELECT balance FROM formateurs WHERE id_formateur = :id
+		");
+		$request->bindParam(':id', $formateurID);
+		$request->execute();
+		$formateur = $request->fetch(PDO::FETCH_OBJ);
+		return $formateur->balance;
 	}
 }

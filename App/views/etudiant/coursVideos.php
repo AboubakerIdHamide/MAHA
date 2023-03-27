@@ -5,8 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= $data->nom_formation ?></title>
+  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <!-- Custom Styles -->
   <link rel="stylesheet" href="<?= URLROOT . "/Public/css/cours-details-paid.css" ?>">
 </head>
 
@@ -23,7 +26,7 @@
         <div class="col-xl-7">
           <div class="group d-flex flex-column justify-content-center">
             <h3 class="title"><?= $data->nom_formation ?></h3>
-              <p>Formation catégorie <span><?= $data->categorie ?></span></p>
+            <p>Formation catégorie <span><?= $data->categorie ?></span></p>
             <div class="instructor d-flex align-items-center justify-content-between">
               <div class="d-flex align-items-center gap-2">
                 <img src="<?= $data->img_formateur ?>" alt="" class="formateur-img">
@@ -92,7 +95,8 @@
     <hr />
     <div class="row">
       <div class="col">
-        <h4 class="main-video-name"><?= $data->videos[0]->order_video . "." . $data->videos[0]->nom_video ?></h4>
+        <h4 class="main-video-name">1. <?= $data->videos[0]->nom_video ?>
+        </h4>
         <section class="main-video ratio ratio-16x9">
           <video id="video" src="<?= $data->videos[0]->url_video ?>" controls controlsList="nodownload"></video>
         </section>
@@ -107,11 +111,12 @@
           </div>
           <div class="videos-list">
             <ul>
+              <?php $cpt = 1 ?>
               <?php foreach ($data->videos as $video) { ?>
                 <!-- max 50 chars video name or less -->
                 <li class="d-flex justify-content-between mt-1 <?= $video == $data->videos[0] ? "selected" : "" ?>">
                   <div class="d-flex align-items-center"><i class="fa-solid <?= $video == $data->videos[0] ? "fa-circle-pause" : "fa-circle-play" ?>"></i>&nbsp;&nbsp;&nbsp;<span data-video-id="<?= $video->id_video ?>" data-video-desc="<?= $video->description_video ?>" class="video-name">
-                      <?= $video->order_video . "." . $video->nom_video ?></span></div>
+                      <?= $cpt++ . ". " . $video->nom_video ?></span></div>
                   <div class="d-flex align-items-center">
                     <span class="tooltip-circle-check me-3">
                       <i class="<?= $video->watched ? "fa-solid" : "fa-regular" ?> fa-circle-check" id="watch-<?= $video->id_video ?>"></i>
@@ -143,7 +148,8 @@
       <div class="row">
         <div class="col mb-2">
           <div class="ressources">
-            <p>Vous pouvez télécharger les fichiers attachés avec cette video en cliquant sur la button au-dessous :</p><a href="#" target="_blank" class="submit-btn" download><i class="fa-sharp fa-solid fa-download"></i>&nbsp;&nbsp;Télécharger</a>
+            <p>Vous pouvez télécharger les fichiers attachés avec cette video en cliquant sur la button
+              au-dessous :</p><a href="#" target="_blank" class="submit-btn" download><i class="fa-sharp fa-solid fa-download"></i>&nbsp;&nbsp;Télécharger</a>
           </div>
         </div>
       </div>
@@ -186,7 +192,7 @@
         <div class="my-comments">
           <?php foreach ($data->videos[0]->comments as $comment) { ?>
             <div class="d-flex gap-2 mb-2 <?php if ($comment->type_user === "formateur") echo "flex-row-reverse" ?>">
-              <img class="align-self-start" src="<?= $comment->image ?>" alt="my-photo">
+              <img class="align-self-start" src="http://localhost/maha/public/<?= $comment->image ?>" alt="my-photo">
               <div class="d-flex flex-column <?php echo ($comment->type_user === "formateur") ? "formateur-comment" : "etudiant-comment" ?>">
                 <span class="my-name"><?= $comment->nom . " " . $comment->prenom ?></span>
                 <p><?= $comment->commentaire ?></p>

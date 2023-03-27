@@ -71,7 +71,7 @@ class Ajax extends Controller
                 if (!empty($videos)) {
                     foreach ($videos as $video) {
                         $this->videoModel->deteleVideo($video->id_formation, $video->id_video);
-				        unlink($video->url_video);
+                        unlink($video->url_video);
                     }
                 }
             }
@@ -130,7 +130,7 @@ class Ajax extends Controller
         if ($res) {
             $comments = $this->commentaireModel->getCommentaireByVideoId($data["idVideo"], $data["to_user"], $data["from_user"]);
             foreach ($comments as $comment) {
-                $comment->image =  URLROOT."/Public/".$comment->image;
+                $comment->image =  URLROOT . "/Public/" . $comment->image;
             }
             echo json_encode(["success" => $res, "comments" => $comments]);
         }
@@ -145,22 +145,29 @@ class Ajax extends Controller
             $file_size = $_FILES['file']['size'];
             $file_tmp = $_FILES['file']['tmp_name'];
             $file_type = $_FILES['file']['type'];
-            $new_file_name = substr(number_format(time() * rand(), 0, '', ''), 0, 5)."_".strtolower(preg_replace('/\s+/', '_', $file_name));
+            $new_file_name = substr(number_format(time() * rand(), 0, '', ''), 0, 5) . "_" . strtolower(preg_replace('/\s+/', '_', $file_name));
             $upload_path = $path . $new_file_name;
             if ($file_size > 41943040) {
                 $errors = 'Très grande taille de fichier';
                 return null;
-            }else{
+            } else {
                 move_uploaded_file($file_tmp, $upload_path);
             }
 
-            if(empty($errors)){
-                echo json_encode(["videoPath"=>$upload_path]);
+            if (empty($errors)) {
+                echo json_encode(["videoPath" => $upload_path]);
                 return null;
-            }else{
-                echo json_encode(["error"=>$errors]);
+            } else {
+                echo json_encode(["error" => $errors]);
                 return null;
             }
-        } 
+        }
+    }
+
+    public function checkMontant()
+    {
+        if (isset($_SESSION['id_formateur'])) {
+            echo json_encode($this->fomateurModel->getBalance($_SESSION['id_formateur']));
+        }
     }
 }

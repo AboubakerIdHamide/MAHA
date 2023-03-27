@@ -29,8 +29,8 @@ class PageFormations extends Controller
         $info = $this->formationModel->getPlusPopilairesFormations($offset);
         foreach ($info as $row) {
             $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
-            $row->imgFormateur = URLROOT."/Public/".$row->imgFormateur;
-            $row->imgFormation = URLROOT."/Public/".$row->imgFormation;
+            $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
+            $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
         }
         $data = [
             'nivaux' => $nivaux,
@@ -52,10 +52,10 @@ class PageFormations extends Controller
         $info['niveauFormation'] = $this->stockedModel->getLevelById($info['IdNiv'])['nom_niveau'];
         $info['langageFormation'] = $this->stockedModel->getLangueById($info['IdLang'])['nom_langue'];
         $info['specialite'] = $this->stockedModel->getCategorieById($info['specialiteId'])['nom_categorie'];
-        $info['imgFormateur'] = URLROOT."/Public/".$info['imgFormateur'];
-        $info['imgFormation'] = URLROOT."/Public/".$info['imgFormation'];
+        $info['imgFormateur'] = URLROOT . "/Public/" . $info['imgFormateur'];
+        $info['imgFormation'] = URLROOT . "/Public/" . $info['imgFormation'];
         $previewVideo = $this->previewsModel->getPreviewVideo($info['IdFormation']);
-        $previewVideo= $previewVideo?URLROOT."/Public/".$previewVideo->url_video:null;
+        $previewVideo = $previewVideo ? URLROOT . "/Public/" . $previewVideo->url_video : null;
         $data = [
             'info' => $info,
             'videos' => $videos,
@@ -108,8 +108,8 @@ class PageFormations extends Controller
                 $formations = $this->formationModel->getFormationsByValRech($valRecherche, $offset);
                 foreach ($formations as $row) {
                     $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
-                    $row->imgFormateur = URLROOT."/Public/".$row->imgFormateur;
-                    $row->imgFormation = URLROOT."/Public/".$row->imgFormation;
+                    $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
+                    $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
                 }
                 $data = [
                     'nivaux' => $nivaux,
@@ -166,8 +166,8 @@ class PageFormations extends Controller
             $info = $this->formationModel->getFormationsByFilter($cat, $choi, $offset);
             foreach ($info as $row) {
                 $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
-                $row->imgFormateur = URLROOT."/Public/".$row->imgFormateur;
-                $row->imgFormation = URLROOT."/Public/".$row->imgFormation;
+                $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
+                $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
             }
             $data = [
                 'nivaux' => $nivaux,
@@ -209,8 +209,8 @@ class PageFormations extends Controller
             $info = $this->formationModel->getPlusPopilairesFormations($offset);
             foreach ($info as $row) {
                 $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
-                $row->imgFormateur = URLROOT."/Public/".$row->imgFormateur;
-                $row->imgFormation = URLROOT."/Public/".$row->imgFormation;
+                $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
+                $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
             }
             $data = [
                 'nivaux' => $nivaux,
@@ -253,8 +253,8 @@ class PageFormations extends Controller
             $info = $this->formationModel->getPlusFormationsAmais($offset);
             foreach ($info as $row) {
                 $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
-                $row->imgFormateur = URLROOT."/Public/".$row->imgFormateur;
-                $row->imgFormation = URLROOT."/Public/".$row->imgFormation;
+                $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
+                $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
             }
             $data = [
                 'nivaux' => $nivaux,
@@ -297,8 +297,8 @@ class PageFormations extends Controller
             $info = $this->formationModel->getPlusFormationsAchter($offset);
             foreach ($info as $row) {
                 $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
-                $row->imgFormateur = URLROOT."/Public/".$row->imgFormateur;
-                $row->imgFormation = URLROOT."/Public/".$row->imgFormation;
+                $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
+                $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
             }
             $data = [
                 'nivaux' => $nivaux,
@@ -337,8 +337,8 @@ class PageFormations extends Controller
             $info = $this->formationModel->getFormationsByLangage($lang, $offset);
             foreach ($info as $row) {
                 $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
-                $row->imgFormateur = URLROOT."/Public/".$row->imgFormateur;
-                $row->imgFormation = URLROOT."/Public/".$row->imgFormation;
+                $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
+                $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
             }
             $data = [
                 'nivaux' => $nivaux,
@@ -377,8 +377,8 @@ class PageFormations extends Controller
             $info = $this->formationModel->getFormationsByNivau($niv, $offset);
             foreach ($info as $row) {
                 $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
-                $row->imgFormateur = URLROOT."/Public/".$row->imgFormateur;
-                $row->imgFormation = URLROOT."/Public/".$row->imgFormation;
+                $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
+                $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
             }
             $data = [
                 'nivaux' => $nivaux,
@@ -418,8 +418,8 @@ class PageFormations extends Controller
             $info = $this->formationModel->getFormationsByDuree($deb, $fin, $offset);
             foreach ($info as $row) {
                 $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
-                $row->imgFormateur = URLROOT."/Public/".$row->imgFormateur;
-                $row->imgFormation = URLROOT."/Public/".$row->imgFormation;
+                $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
+                $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
             }
             $data = [
                 'nivaux' => $nivaux,

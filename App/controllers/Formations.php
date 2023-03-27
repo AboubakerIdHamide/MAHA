@@ -123,8 +123,7 @@ class Formations extends Controller
 				redirect("formateurs/index");
 				flash("formationAdded", "Vos détails de cours sont insérés avec succès, vous devez donner une description à vos vidéos", "alert alert-info mt-1");
 			} else {
-				$nbrNotifications = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);;
-				$data['nbrNotifications'] = $nbrNotifications;
+				$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
 				$this->view("formation/addFormation", $data);
 			}
 		} else {
@@ -136,8 +135,7 @@ class Formations extends Controller
 			];
 			$data["allcategories"] = $this->stockedModel->getAllCategories($_SESSION['user']['email']);
 			$data["levels"] = $this->stockedModel->getAllLevels();
-			$nbrNotifications = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);;
-			$data['nbrNotifications'] = $nbrNotifications;
+			$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
 			$this->view("formation/addFormation", $data);
 		}
 	}
@@ -171,7 +169,8 @@ class Formations extends Controller
 			redirect("formateurs/index");
 			flash("videoAdded", "Vos vidéos ajoutées avec succès !", "alert alert-info mt-1");
 		} else {
-			$this->view("formateur/addVideo");
+			$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
+			$this->view("formateur/addVideo", $data);
 		}
 	}
 
@@ -286,13 +285,12 @@ class Formations extends Controller
 				$_SESSION['id_formation'] = $data["videos"][0]->id_formation;
 				$data["videos"][0]->masse_horaire = $this->videoModel->countMassHorraire($data["videos"][0]->id_formation);
 				foreach ($data["videos"] as $key => $value) {
-					$data["videos"][$key]->url_video =URLROOT."/Public/".$data["videos"][$key]->url_video;
+					$data["videos"][$key]->url_video = URLROOT . "/Public/" . $data["videos"][$key]->url_video;
 				}
-				$nbrNotifications = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
-				$data['nbrNotifications'] = $nbrNotifications;
+				$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
 
 				$this->view('formateur/videos', $data);
-			}else{
+			} else {
 				flash("formationVide", "Votre cours ne contient aucune vidéo, ajoutez des vidéos", "alert alert-info");
 				redirect("formations/addVideo/" . $id_formation);
 			}

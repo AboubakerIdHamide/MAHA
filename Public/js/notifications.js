@@ -16,10 +16,10 @@ $(document).ready(function() {
     function renderNotification() {
         $(".notifications").html("");
         const notifications = getAllNotifications();
-        console.log(notifications);
+        
         if (notifications.length === 0) {
             $("#clear-seen").remove();
-            $(".notifications").html("");
+            $(".notifications").html("<div class='alert alert-info'>Votre Boite de notifications est vide !</div>");
         }
         for (let notification of notifications) {
             $(".notifications").html($(".notifications").html() + `

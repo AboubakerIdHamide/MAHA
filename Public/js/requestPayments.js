@@ -31,6 +31,17 @@ $(document).ready(function() {
         } else {
             if (montant.match(/^(?!0\d)\d*(\.\d+)?$/gm)) {
                 if (Number(montant) >= 10) {
+                    const formateurBalance = $.parseJSON($.ajax({
+                        url: "http://localhost/maha/ajax/checkMontant",
+                        dataType: "json",
+                        async: false,
+                    }).responseText);
+
+                    if (montant > Number(formateurBalance)) {
+                        showFlashMessage("Montant insuffisant.", "danger");
+                        return;
+                    }
+                    
                     $.ajax({
                         url: "http://localhost/maha/formateurs/requestPayment",
                         data: {

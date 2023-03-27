@@ -87,12 +87,12 @@ ul{
 .container form{
     width: 80%;
     height: 80%;
-    box-shadow: 0px 0px  6px 2px #eee;
+    box-shadow: 0px 0px 6px 2px #000000;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #fff;
+    background-color: #1d308a;
 }
 @media (max-width:767px){
     .container form{
@@ -140,11 +140,11 @@ ul{
     margin-top: 30px;
 }
 .main-form-heading .logo a{
-    color: var(--color-one);
+    color: #ff6584;
     text-decoration: none;
 }
 .main-form-heading .logo a span{
-    color: var(--color-four);
+    color: var(--color-one);
 }
 /*/*==================================== Form Body Styling /*====================================*/
 .container form .field-container{
@@ -279,7 +279,7 @@ ul{
     padding: 20px;
     overflow-x: hidden;
     overflow-y: scroll;
-    background-color: #fafafa;
+    background-color: #e8f0fe;
 }
 .container form  .field-box .input-field .uploded-videos::-webkit-scrollbar{
     width: 5px;
@@ -389,7 +389,6 @@ ul{
     cursor: pointer;
     height: 40px;
     background-color: #fff;
-    box-shadow: 0px 0px  6px 2px #eee;
     font-size: 14.5px;
     border: none;
     margin-bottom: 20px;

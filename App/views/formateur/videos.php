@@ -1,4 +1,56 @@
-	<?php require_once APPROOT . "/views/includes/dashBoardNav.php"; ?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+	<title>MAHA | <?= $data["videos"][0]->nom_formation ?></title>
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+	<!-- BootStrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+	<!-- Custom Styles -->
+	<link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/dashBoardNav.css">
+	<link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/dashboard-formateur.css" />
+	<link rel="stylesheet" href="<?= URLROOT ?>/public/css/videos.css" />
+	<link rel="stylesheet" href="<?= URLROOT ?>/public/css/notifications.css" />
+</head>
+
+<body>
+	<!-- Header -->
+	<header>
+		<span id="overlay"></span>
+		<div class="logo" data-user-name="<?= $_SESSION['user']['prenom'] ?>">
+			<img src="<?= $_SESSION['user']['avatar'] ?>" alt="avatar">
+		</div>
+		<nav>
+			<div class="menu-i">
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+
+			<ul class="hide-menu">
+				<li id="notifications" class="justify-content-center">
+					<a href="<?= URLROOT . '/formateurs/notifications' ?>">
+						<i style="font-size:25px;" class="fa-solid fa-bell position-relative">
+							<?php if ($data['nbrNotifications']->totalNew != 0) : ?>
+								<span style="font-size: 9px;" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger nbr-notifications">
+									<?= $data['nbrNotifications']->totalNew ?>
+								</span>
+							<?php endif ?>
+						</i>
+					</a>
+				</li>
+				<li id="addnews"><a href="<?= URLROOT . '/formateurs/dashboard' ?>"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a></li>
+				<li id="paiment"><a href="<?= URLROOT . '/formateurs/requestPayment' ?>"><i class=" far fa-credit-card"></i><span>Paiement</span></a></li>
+				<li id="statistics"><a href="<?= URLROOT . '/formateurs/updateInfos' ?>"><i class="fas fa-user-gear"></i><span>Paramètre</span></a></li>
+				<li id="disconnect"><a href="<?= URLROOT . '/users/logout' ?>"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
+			</ul>
+		</nav>
+	</header>
+	<!-- end Header -->
 	<main class="container my-5 ps-md-5">
 		<div class="row mb-3 align-items-center ms-md-3 ms-xl-0 header">
 			<div class="col-2 col-md-2 col-lg-1">
@@ -10,7 +62,8 @@
 				<span>Total videos (<?= count($data["videos"]) ?> videos) · <span class="badge bg-primary"><i class="fas fa-clock"></i> <?= $data["videos"][0]->masse_horaire ?></span></span>
 			</div>
 			<div class="col">
-				<a href="<?= URLROOT ?>/formations/addVideo/<?= $_SESSION['id_formation'] ?>" class="btn btn-primary">Add Video <i class="fa-solid fa-file-circle-plus"></i></a>
+				<a href="<?= URLROOT ?>/formations/addVideo/<?= $_SESSION['id_formation'] ?>" class="btn btn-primary">Add
+					Video <i class="fa-solid fa-file-circle-plus"></i></a>
 			</div>
 		</div>
 		<?php flash('deteleVideo') ?>
@@ -24,21 +77,21 @@
 			</div>
 		</div>
 		<?php foreach ($data["videos"] as $video) : ?>
-			<div class="row mb-3 align-items-center p-2 video rounded flex-sm-column flex-md-row ms-md-3 ms-lg-4 ms-xl-0">
-				<div class="col-1 p-0" style="width: 50px;">
-					<input style="width: 56px;text-align: center;" maxlength="3" type="text" class="order-video form-control" placeholder="<?= $order ?>" />
-				</div>
-				<div class="col-xl-7 col-lg-6 col-md-8 col-sm">
-					<span class="video-name"><?= $video->nom_video ?></span>
+			<div class="row mb-3 p-2 video rounded">
+				<div class="col-12 col-md-6">
+					<input style="width: 55px;text-align: center;" maxlength="3" type="text" class="order-video form-control d-inline-block" placeholder="<?= $order ?>" />
+					<span class="video-name text-white"><?= $video->nom_video ?></span>
 					<span class="badge bg-secondary"><i class="fas fa-clock"></i> <?= $video->duree_video ?></span>
 				</div>
 				<input id="description-video" type="hidden" value="<?= $video->description_video ?>">
 				<input id="link-video" type="hidden" value="<?= $video->url_video ?>">
-				<div class="col-lg col-md col-sm mt-3 mt-md-0">
-					<a href="<?= $video->url_video ?>" class="btn btn-warning btn-sm" download><span class="label-btn">Télécharger</span> <i class="fa-solid fa-download"></i></a>
-					<button id="<?= $video->id_video ?>" class="btn btn-info btn-sm edit" data-bs-toggle="modal" data-bs-target="#modifier"><span class="label-btn">Modifier</span> <i class="fa-solid fa-pen-to-square"></i></button>
-					<button id="<?= $video->id_video ?>" class="btn btn-primary btn-sm preview" <?php if ($video->preview == 1) echo 'disabled' ?>><span class="label-btn">Set Preview</span> <i class="fa-solid fa-video"></i></button>
-					<button id="<?= $video->id_video ?>" class="btn btn-danger btn-sm delete" data-bs-toggle="modal" data-bs-target="#supprimer"><span class="label-btn">Supprimer</span> <i class="fa-solid fa-trash"></i></button>
+				<div class="col-12 col-md-6">
+					<div class="d-flex gap-1 justify-content-end">
+						<a data-bs-custom-class="custom-tooltip" data-bs-title="Télécharger" data-bs-toggle="tooltip" data-bs-placement="top" href="<?= $video->url_video ?>" class="btn btn-warning btn-sm" download><i class="fa-solid fa-download"></i></a>
+						<button id="<?= $video->id_video ?>" class="btn btn-info btn-sm edit" data-bs-toggle="modal" data-bs-target="#modifier"> <i class="fa-solid fa-pen-to-square" data-bs-custom-class="custom-tooltip" data-bs-title="Modifier" data-bs-toggle="tooltip" data-bs-placement="top"></i></button>
+						<button id="<?= $video->id_video ?>" class="btn btn-primary btn-sm preview" <?php if ($video->preview == 1) echo 'disabled' ?>> <i class="fa-solid fa-video" data-bs-custom-class="custom-tooltip" data-bs-title="Apercu Video" data-bs-toggle="tooltip" data-bs-placement="top"></i></button>
+						<button id="<?= $video->id_video ?>" class="btn btn-danger btn-sm delete" data-bs-toggle="modal" data-bs-target="#supprimer"> <i class="fa-solid fa-trash" data-bs-custom-class="custom-tooltip" data-bs-title="Supprimer" data-bs-toggle="tooltip" data-bs-placement="top"></i></button>
+					</div>
 				</div>
 			</div>
 			<?php $order++; ?>
