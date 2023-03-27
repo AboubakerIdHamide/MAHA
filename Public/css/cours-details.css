@@ -270,14 +270,12 @@ header .container ul li.menu-drop-down i{
 header .container ul li.menu-drop-down ul{
     position: absolute;
     right: 0;
-    top: 70px;
+    top: 60px;
     width: 230px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* box-shadow: 0 0 4px 1px #ddd; */
-    background-color: #DFF6FF;
-    border: 2px solid var(--color-one);
+    background-color: #1d308a;
 }
 @media (max-width:767px){
     header .container ul li.menu-drop-down ul{
@@ -324,10 +322,9 @@ header .container ul li a{
 }
 header .container ul li.sign-in a{
     color: #fff;
+      font-weight: 800;
 }
-header .container ul li.sign-in:hover a{
-    color: var(--color-one);
-}
+
 header .container ul li:not(.menu-drop-down):before{
     content: '';
     position: absolute;
@@ -351,7 +348,7 @@ header .container ul li.sign-in::before{
     right: 0;
     height: 100%;
     z-index: -1;
-    background-color: #fff;
+    background-color: #ff6584;
 }
 header .container ul li:not(.menu-drop-down):hover::before
 {
@@ -359,12 +356,10 @@ header .container ul li:not(.menu-drop-down):hover::before
 }
 header .container ul li.menu-drop-down ul li::before{
     height: 100%;
-    background-color: #efefef;
+    background-color: #ff6584;
     z-index: -1;
 }
-header .container ul li.sign-in:hover{
-    box-shadow: 0 0 5px 1px #ddd;
-}
+
 header .container ul li.sign-in:hover::before{
     width: 101%;
 }
@@ -477,7 +472,7 @@ header .container ul li.sign-in:hover::before{
 }
 
 .playlist-formation .lesson:hover {
-  border: 2px solid #000;
+  border: 2px solid #ff6584;
 }
 
 /* `lg` applies to medium devices (tablets, less than 992px) */
