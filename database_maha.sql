@@ -12,6 +12,11 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+
+-- Dumping database structure for maha
+CREATE DATABASE IF NOT EXISTS `maha` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `maha`;
+
 -- Dumping structure for table maha.admin
 CREATE TABLE IF NOT EXISTS `admin` (
   `id_admin` int(11) NOT NULL AUTO_INCREMENT,
@@ -27,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 -- Dumping data for table maha.admin: ~0 rows (approximately)
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
 INSERT IGNORE INTO `admin` (`id_admin`, `nom_admin`, `prenom_admin`, `email_admin`, `img_admin`, `mot_de_passe`, `balance`) VALUES
-	(1, 'sdknsdf', 'sdfsdfsdf', 'sarouti@gmail.com', '237127316', 'admin123@@@', 80);
+  (1, 'sdknsdf', 'sdfsdfsdf', 'sarouti@gmail.com', '237127316', 'admin123@@@', 80);
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 
 -- Dumping structure for table maha.bookmarks
@@ -55,18 +60,18 @@ CREATE TABLE IF NOT EXISTS `categories` (
 -- Dumping data for table maha.categories: ~12 rows (approximately)
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
 INSERT IGNORE INTO `categories` (`id_categorie`, `icon`, `nom_categorie`) VALUES
-	(1, '<i class="fa-brands fa-unity"></i>', '3D'),
-	(2, '<i class="fa-solid fa-ruler-combined"></i>', 'Architecture & BIM'),
-	(3, '<i class="fa-solid fa-sliders"></i>', 'Audio-MAO'),
-	(4, '<i class="fa-sharp fa-solid fa-briefcase"></i>', 'Business & Efficacité professionnelle'),
-	(5, '<i class="fa-solid fa-code"></i>', 'Code'),
-	(6, '<i class="fa-sharp fa-solid fa-pen-nib"></i>', 'Infographie'),
-	(7, '<i class="fa-solid fa-camera-retro"></i>', 'Photographie'),
-	(8, '<i class="fa-solid fa-video"></i>', 'Vidéo-Compositing'),
-	(9, '<i class="fa-solid fa-chart-simple"></i>', 'Webmarketing'),
-	(10, '<i class="fa-solid fa-network-wired"></i>', 'Réseaux informatique'),
-	(11, '<i class="fa-solid fa-list-check"></i>', 'Management'),
-	(12, '<i class="fa-solid fa-computer-mouse"></i>', 'Bureautique');
+  (1, '<i class="fa-brands fa-unity"></i>', '3D'),
+  (2, '<i class="fa-solid fa-ruler-combined"></i>', 'Architecture & BIM'),
+  (3, '<i class="fa-solid fa-sliders"></i>', 'Audio-MAO'),
+  (4, '<i class="fa-sharp fa-solid fa-briefcase"></i>', 'Business & Efficacité professionnelle'),
+  (5, '<i class="fa-solid fa-code"></i>', 'Code'),
+  (6, '<i class="fa-sharp fa-solid fa-pen-nib"></i>', 'Infographie'),
+  (7, '<i class="fa-solid fa-camera-retro"></i>', 'Photographie'),
+  (8, '<i class="fa-solid fa-video"></i>', 'Vidéo-Compositing'),
+  (9, '<i class="fa-solid fa-chart-simple"></i>', 'Webmarketing'),
+  (10, '<i class="fa-solid fa-network-wired"></i>', 'Réseaux informatique'),
+  (11, '<i class="fa-solid fa-list-check"></i>', 'Management'),
+  (12, '<i class="fa-solid fa-computer-mouse"></i>', 'Bureautique');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 
 -- Dumping structure for table maha.commentaires
@@ -81,12 +86,10 @@ CREATE TABLE IF NOT EXISTS `commentaires` (
   PRIMARY KEY (`id_commentaire`) USING BTREE,
   KEY `id_video` (`id_video`) USING BTREE,
   CONSTRAINT `commentaires_ibfk_2` FOREIGN KEY (`id_video`) REFERENCES `videos` (`id_video`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.commentaires: ~0 rows (approximately)
 /*!40000 ALTER TABLE `commentaires` DISABLE KEYS */;
-INSERT IGNORE INTO `commentaires` (`id_commentaire`, `id_video`, `from_user`, `to_user`, `type_user`, `commentaire`, `created_at`) VALUES
-	(1, 1, 'ETU2', 'FOR2', 'etudiant', 'dsfsd', '2023-03-06 13:47:22');
 /*!40000 ALTER TABLE `commentaires` ENABLE KEYS */;
 
 -- Dumping structure for table maha.etudiants
@@ -105,29 +108,8 @@ CREATE TABLE IF NOT EXISTS `etudiants` (
 -- Dumping data for table maha.etudiants: ~0 rows (approximately)
 /*!40000 ALTER TABLE `etudiants` DISABLE KEYS */;
 INSERT IGNORE INTO `etudiants` (`id_etudiant`, `nom_etudiant`, `prenom_etudiant`, `email_etudiant`, `tel_etudiant`, `date_creation_etudiant`, `img_etudiant`, `mot_de_passe`) VALUES
-	('ETU1', 'Jeffery', 'Davila', 'hegosaf874@miarr.com', '0698753625', '2022-12-26 00:37:45', '46426170488', '$2y$10$HMeh2QbWE6.1yOBiT9er9uB4aJRrQkSmJh9O5l991OvraBmXmiVUO'),
-	('ETU2', 'LALALAL', 'djsfjisjidfijsdf', 'xavi.2012barca@gmail.com', '0672819278', '2023-02-14 22:40:11', '45393256813', '$2y$10$SNaMwtzIDkOWNK2VxLYQ5uwyJOfY0Yn/xbXfvWeYv5PqwVoxauEP6');
+  ('ETU1', 'Holt', 'Anne', 'bicisay813@oniecan.com', '0672819278', '2023-03-27 01:11:50', 'images/userImage/92322.jpg', '$2y$10$2mzmHmq16z8jI1f9sHii6.VdcG2Jorw8hEk4tr/uqr9fSPkLBHxKG');
 /*!40000 ALTER TABLE `etudiants` ENABLE KEYS */;
-
--- Dumping structure for table maha.folders
-CREATE TABLE IF NOT EXISTS `folders` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `userFolderId` varchar(255) NOT NULL,
-  `imagesId` varchar(255) NOT NULL,
-  `videosId` varchar(255) NOT NULL,
-  `ressourcesId` varchar(255) NOT NULL,
-  `userEmail` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
--- Dumping data for table maha.folders: ~4 rows (approximately)
-/*!40000 ALTER TABLE `folders` DISABLE KEYS */;
-INSERT IGNORE INTO `folders` (`id`, `userFolderId`, `imagesId`, `videosId`, `ressourcesId`, `userEmail`) VALUES
-	(1, '15751520365', '15751520480', '15751521180', '15751520899', 'dixoyi3842@miarr.com'),
-	(2, '15751915041', '15751915121', '15751915354', '15751915217', 'hegosaf874@miarr.com'),
-	(3, '16333726610', '16333726927', '16333728143', '16333727590', 'xavi.2012barca@gmail.com'),
-	(4, '16333811079', '16333811362', '16333812350', '16333811832', 'xavi.2012barca@gmail.com');
-/*!40000 ALTER TABLE `folders` ENABLE KEYS */;
 
 -- Dumping structure for table maha.formateurs
 CREATE TABLE IF NOT EXISTS `formateurs` (
@@ -148,11 +130,10 @@ CREATE TABLE IF NOT EXISTS `formateurs` (
   CONSTRAINT `FK_formateurs_categories` FOREIGN KEY (`specialiteId`) REFERENCES `categories` (`id_categorie`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.formateurs: ~1 rows (approximately)
+-- Dumping data for table maha.formateurs: ~0 rows (approximately)
 /*!40000 ALTER TABLE `formateurs` DISABLE KEYS */;
 INSERT IGNORE INTO `formateurs` (`id_formateur`, `nom_formateur`, `prenom_formateur`, `email_formateur`, `tel_formateur`, `date_creation_formateur`, `img_formateur`, `mot_de_passe`, `paypalMail`, `biography`, `balance`, `specialiteId`) VALUES
-	('FOR1', 'Will', 'Charles', 'dixoyi3842@miarr.com', '0653147965', '2022-12-25 23:32:29', 'avatar-05.png', '$2y$10$3KFSN4fybsldjy7Aww9IWOb06QIWBmUKMk.Haym0a/LTkYmP8GgoO', 'dixoyi3842@miarr.com', 'Lorem ipsum dolor sit amet. Non saepe alias id voluptatem sequi cum illo eius qui necessitatibus inventore rem voluptas corporis id aspernatur illo. Ad beatae quaerat aut voluptate accusantium et Quis quasi ut possimus expedita. Qui nostrum ipsam est sunt eligendi ab accusamus illum sit adipisci velit sit explicabo molestiae est maiores totam qui impedit voluptas.', 0, 5),
-	('FOR2', 'Loream', 'Sbsia', 'cijosin572@pubpng.com', '0672819278', '2023-03-06 00:03:22', 'avatar-05.png', '$2y$10$XvYknn3mz337AZBeEJcJyev7XKkp1KLoKKuv9ykGgWixDDBB/j2Nm', 'paypal@gmail.com', 'loermodsfosdfjosd fsdifsdifisd fsdifisdifisdf sdfisdifisdifisd fsdifisdifisd sdifisdifisd fsidfiisdfiisd fsdifisdifsdf sdfsidfisd fsdifisdfd', 80, 1);
+  ('FOR1', 'John', 'Smith', 'nolepi2119@necktai.com', '0695038293', '2023-03-27 00:56:47', 'images/userImage/26611.jpg', '$2y$10$zIjC/CAnrUUtfxPP5LSTp.ISym1FZchbrdv/z1MtuD5tMeAPZso36', 'vehenafit@mailinator.com', 'Tenetur qui quia exe Tenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exe', 0, 4);
 /*!40000 ALTER TABLE `formateurs` ENABLE KEYS */;
 
 -- Dumping structure for table maha.formations
@@ -183,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `formations` (
 -- Dumping data for table maha.formations: ~0 rows (approximately)
 /*!40000 ALTER TABLE `formations` DISABLE KEYS */;
 INSERT IGNORE INTO `formations` (`id_formation`, `niveau_formation`, `id_formateur`, `categorie`, `nom_formation`, `image_formation`, `mass_horaire`, `date_creation_formation`, `prix_formation`, `description`, `id_langue`, `likes`) VALUES
-	(1, 2, 'FOR2', 5, 'Cours Complet PHP et MYSQL', 'default_formation.jpg', '11:58:00', '2022-12-25 23:58:33', 45.00, 'Lorem ipsum dolor sit amet. Et internos dolores et inventore cupiditate ex dolorum officia sit facilis deserunt nam voluptas consequatur. Sit vitae similique et tempore eveniet qui minima deleniti. Id repudiandae quia ut ipsam galisum ut corporis autem.', 1, 1);
+  (1, 1, 'FOR1', 10, 'Consequatur adipisc', 'images/formations/images/37066.jpg', '00:08:37', '2023-03-27 02:53:36', 12.00, 'Eu non eos pariatur Eu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariatur', NULL, 1);
 /*!40000 ALTER TABLE `formations` ENABLE KEYS */;
 
 -- Dumping structure for table maha.inscriptions
@@ -205,19 +186,17 @@ CREATE TABLE IF NOT EXISTS `inscriptions` (
   CONSTRAINT `FK_inscriptions_etudiants` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiants` (`id_etudiant`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `FK_inscriptions_formateurs` FOREIGN KEY (`id_formateur`) REFERENCES `formateurs` (`id_formateur`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `inscriptions_ibfk_1` FOREIGN KEY (`id_formation`) REFERENCES `formations` (`id_formation`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.inscriptions: ~1 rows (approximately)
+-- Dumping data for table maha.inscriptions: ~0 rows (approximately)
 /*!40000 ALTER TABLE `inscriptions` DISABLE KEYS */;
-INSERT IGNORE INTO `inscriptions` (`id_inscription`, `id_formation`, `id_etudiant`, `id_formateur`, `date_inscription`, `prix`, `transaction_info`, `payment_id`, `payment_state`, `approval_url`) VALUES
-	(12, 1, 'ETU2', 'FOR2', '2023-03-06 06:29:53', 45, '{"id": "PAYID-MQCSL4I22206655BJ427635E", "links": [{"rel": "self", "href": "https://api.sandbox.paypal.com/v1/payments/payment/PAYID-MQCSL4I22206655BJ427635E", "method": "GET"}, {"rel": "approval_url", "href": "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=EC-1K372533BD280473H", "method": "REDIRECT"}, {"rel": "execute", "href": "https://api.sandbox.paypal.com/v1/payments/payment/PAYID-MQCSL4I22206655BJ427635E/execute", "method": "POST"}], "payer": {"payment_method": "paypal"}, "state": "created", "intent": "sale", "create_time": "2023-03-05T23:29:53Z", "transactions": [{"amount": {"total": "45.00", "details": {"tax": "0.00", "shipping": "0.00", "subtotal": "45.00", "insurance": "0.00", "handling_fee": "0.00", "shipping_discount": "0.00"}, "currency": "USD"}, "item_list": {"items": [{"sku": "1", "tax": "0.00", "name": "Cours Complet PHP et MYSQL", "price": "45.00", "currency": "USD", "quantity": 1, "description": "Online Course"}]}, "description": "Cours Complet PHP et MYSQL", "payment_options": {"skip_fmf": false, "recurring_flag": false, "allowed_payment_method": "INSTANT_FUNDING_SOURCE"}, "related_resources": []}], "note_to_payer": "Contact us for any questions on your order."}', 'PAYID-MQCSL4I22206655BJ427635E', 'approved', 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=EC-1K372533BD280473H');
 /*!40000 ALTER TABLE `inscriptions` ENABLE KEYS */;
 
 -- Dumping structure for procedure maha.insertItoTableFilterAll
 DELIMITER //
 CREATE PROCEDURE `insertItoTableFilterAll`(nb int)
 begin 
-	declare i int default 1;
+  declare i int default 1;
     declare IdFormation, idCategore, likes, IdFormteur, specialiteId, numbAcht, idLangage, idNiv int default 0;
     declare prix float default 0;
     declare imgFormation, categorie, nomFormation, nomFormateur, prenomFormateur, specialite, imgFormateur, langageFormation , niveauFormation varchar(300) default '';
@@ -227,7 +206,7 @@ begin
     declare cur cursor for (select formations.id_formation as 'IdFormation',
                                     formations.image_formation as 'imgFormation',
                                     formations.mass_horaire as 'duree',
-                            		formations.categorie as 'idCategore',
+                                formations.categorie as 'idCategore',
                                     categories.nom_categorie as 'categorie',
                                     formations.nom_formation as 'nomFormation',
                                     formations.prix_formation as 'prix',
@@ -245,9 +224,9 @@ begin
                     where formations.id_formateur = formateurs.id_formateur
                     and categories.id_categorie = formations.categorie
     );
-	open cur;
-    	while (i<=nb) do 
-        	fetch cur into IdFormation, imgFormation, duree, idCategore, categorie, nomFormation, prix, description, likes, IdFormteur, nomFormateur, prenomFormateur, specialiteId, imgFormateur, dateCreationFormation, idLangage, idNiv;
+  open cur;
+      while (i<=nb) do 
+          fetch cur into IdFormation, imgFormation, duree, idCategore, categorie, nomFormation, prix, description, likes, IdFormteur, nomFormateur, prenomFormateur, specialiteId, imgFormateur, dateCreationFormation, idLangage, idNiv;
             
             set specialite = (select categories.nom_categorie from categories where categories.id_categorie = specialiteId);
             set langageFormation = (select langues.nom_langue from langues where langues.id_langue = idLangage);
@@ -266,7 +245,7 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE `insertItoTableFilterFilter`(nb int, arg1  varchar(200), arg2 varchar(200))
 begin 
-	declare i int default 1;
+  declare i int default 1;
     declare IdFormation, idCategore, likes, IdFormteur, specialiteId, numbAcht, idLangage, idNiv int default 0;
     declare prix float default 0;
     declare imgFormation, categorie, nomFormation, nomFormateur, prenomFormateur, specialite, imgFormateur, langageFormation , niveauFormation varchar(300) default '';
@@ -276,7 +255,7 @@ begin
     declare cur cursor for (select formations.id_formation as 'IdFormation',
                                     formations.image_formation as 'imgFormation',
                                     formations.mass_horaire as 'duree',
-                            		formations.categorie as 'idCategore',
+                                formations.categorie as 'idCategore',
                                     categories.nom_categorie as 'categorie',
                                     formations.nom_formation as 'nomFormation',
                                     formations.prix_formation as 'prix',
@@ -295,20 +274,20 @@ begin
                     and categories.id_categorie = formations.categorie
                     and categories.nom_categorie = arg1
                     and (
-                		formations.nom_formation like concat('%',arg2,'%') 
-                    	or formations.description like concat('%',arg2,'%')
-                	)
+                    formations.nom_formation like concat('%',arg2,'%') 
+                      or formations.description like concat('%',arg2,'%')
+                  )
     );
-	open cur;
-    	while (i<=nb) do 
-        	fetch cur into IdFormation, imgFormation, duree, idCategore, categorie, nomFormation, prix, description, likes, IdFormteur, nomFormateur, prenomFormateur, specialiteId, imgFormateur, dateCreationFormation, idLangage, idNiv;
+  open cur;
+      while (i<=nb) do 
+          fetch cur into IdFormation, imgFormation, duree, idCategore, categorie, nomFormation, prix, description, likes, IdFormteur, nomFormateur, prenomFormateur, specialiteId, imgFormateur, dateCreationFormation, idLangage, idNiv;
             
             set specialite = (select categories.nom_categorie from categories where categories.id_categorie = specialiteId);
             set langageFormation = (select langues.nom_langue from langues where langues.id_langue = idLangage);
             set niveauFormation = (select niveaux.nom_niveau from niveaux where niveaux.id_niveau = idNiv);
             set numbAcht = (select count(*) from inscriptions where inscriptions.id_formation = IdFormation and inscriptions.id_formateur = IdFormteur);
             
-            INSERT INTO `tablefilter`(`IdFormation`, `imgFormation`, `duree`, `idCategore`, `categorie`, `nomFormation`, 							`prix`, `description`, `likes`, `IdFormteur`, `nomFormateur`, `prenomFormateur`, `specialiteId`, 							`specialite`, `imgFormateur`, `numbAcht`, `dateCreationFormation`, `idLangage`, `langageFormation`, `idNiv`, `niveauFormation`) 
+            INSERT INTO `tablefilter`(`IdFormation`, `imgFormation`, `duree`, `idCategore`, `categorie`, `nomFormation`,              `prix`, `description`, `likes`, `IdFormteur`, `nomFormateur`, `prenomFormateur`, `specialiteId`,              `specialite`, `imgFormateur`, `numbAcht`, `dateCreationFormation`, `idLangage`, `langageFormation`, `idNiv`, `niveauFormation`) 
             VALUES (IdFormation, imgFormation, duree, idCategore, categorie, nomFormation, prix, description, likes, IdFormteur, nomFormateur, prenomFormateur, specialiteId, specialite, imgFormateur, numbAcht, dateCreationFormation, idLangage, langageFormation, idNiv, niveauFormation);
         set i = i+1;
         end while;
@@ -320,7 +299,7 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE `insertItoTableFilterRech`(nb int, arg varchar(200))
 begin 
-	declare i int default 1;
+  declare i int default 1;
     declare IdFormation, idCategore, likes, IdFormteur, specialiteId, numbAcht, idLangage, idNiv int default 0;
     declare prix float default 0;
     declare imgFormation, categorie, nomFormation, nomFormateur, prenomFormateur, specialite, imgFormateur, langageFormation , niveauFormation varchar(300) default '';
@@ -330,7 +309,7 @@ begin
     declare cur cursor for (select formations.id_formation as 'IdFormation',
                                     formations.image_formation as 'imgFormation',
                                     formations.mass_horaire as 'duree',
-                            		formations.categorie as 'idCategore',
+                                formations.categorie as 'idCategore',
                                     categories.nom_categorie as 'categorie',
                                     formations.nom_formation as 'nomFormation',
                                     formations.prix_formation as 'prix',
@@ -348,23 +327,23 @@ begin
                     where formations.id_formateur = formateurs.id_formateur
                     and categories.id_categorie = formations.categorie
                     and (
-                    	categories.nom_categorie like concat('%',arg,'%')
-                    	or formateurs.nom_formateur like concat('%',arg,'%')
-                    	or formations.description like concat('%',arg,'%')
-                    	or formations.nom_formation like concat('%',arg,'%')
-                    	or formateurs.prenom_formateur like concat('%',arg,'%')
-                	)
+                      categories.nom_categorie like concat('%',arg,'%')
+                      or formateurs.nom_formateur like concat('%',arg,'%')
+                      or formations.description like concat('%',arg,'%')
+                      or formations.nom_formation like concat('%',arg,'%')
+                      or formateurs.prenom_formateur like concat('%',arg,'%')
+                  )
     );
-	open cur;
-    	while (i<=nb) do 
-        	fetch cur into IdFormation, imgFormation, duree, idCategore, categorie, nomFormation, prix, description, likes, IdFormteur, nomFormateur, prenomFormateur, specialiteId, imgFormateur, dateCreationFormation, idLangage, idNiv;
+  open cur;
+      while (i<=nb) do 
+          fetch cur into IdFormation, imgFormation, duree, idCategore, categorie, nomFormation, prix, description, likes, IdFormteur, nomFormateur, prenomFormateur, specialiteId, imgFormateur, dateCreationFormation, idLangage, idNiv;
             
             set specialite = (select categories.nom_categorie from categories where categories.id_categorie = specialiteId);
             set langageFormation = (select langues.nom_langue from langues where langues.id_langue = idLangage);
             set niveauFormation = (select niveaux.nom_niveau from niveaux where niveaux.id_niveau = idNiv);
             set numbAcht = (select count(*) from inscriptions where inscriptions.id_formation = IdFormation and inscriptions.id_formateur = IdFormteur);
             
-            INSERT INTO `tablefilter`(`IdFormation`, `imgFormation`, `duree`, `idCategore`, `categorie`, `nomFormation`, 							`prix`, `description`, `likes`, `IdFormteur`, `nomFormateur`, `prenomFormateur`, `specialiteId`, 							`specialite`, `imgFormateur`, `numbAcht`, `dateCreationFormation`, `idLangage`, `langageFormation`, `idNiv`, `niveauFormation`) 
+            INSERT INTO `tablefilter`(`IdFormation`, `imgFormation`, `duree`, `idCategore`, `categorie`, `nomFormation`,              `prix`, `description`, `likes`, `IdFormteur`, `nomFormateur`, `prenomFormateur`, `specialiteId`,              `specialite`, `imgFormateur`, `numbAcht`, `dateCreationFormation`, `idLangage`, `langageFormation`, `idNiv`, `niveauFormation`) 
             VALUES (IdFormation, imgFormation, duree, idCategore, categorie, nomFormation, prix, description, likes, IdFormteur, nomFormateur, prenomFormateur, specialiteId, specialite, imgFormateur, numbAcht, dateCreationFormation, idLangage, langageFormation, idNiv, niveauFormation);
         set i = i+1;
         end while;
@@ -382,10 +361,10 @@ CREATE TABLE IF NOT EXISTS `langues` (
 -- Dumping data for table maha.langues: ~4 rows (approximately)
 /*!40000 ALTER TABLE `langues` DISABLE KEYS */;
 INSERT IGNORE INTO `langues` (`id_langue`, `nom_langue`) VALUES
-	(1, 'Français'),
-	(2, 'Anglais'),
-	(3, 'Espagnol'),
-	(4, 'العربية');
+  (1, 'Français'),
+  (2, 'Anglais'),
+  (3, 'Espagnol'),
+  (4, 'العربية');
 /*!40000 ALTER TABLE `langues` ENABLE KEYS */;
 
 -- Dumping structure for table maha.likes
@@ -400,8 +379,6 @@ CREATE TABLE IF NOT EXISTS `likes` (
 
 -- Dumping data for table maha.likes: ~0 rows (approximately)
 /*!40000 ALTER TABLE `likes` DISABLE KEYS */;
-INSERT IGNORE INTO `likes` (`etudiant_id`, `formation_id`) VALUES
-	('ETU1', 1);
 /*!40000 ALTER TABLE `likes` ENABLE KEYS */;
 
 -- Dumping structure for table maha.niveaux
@@ -414,9 +391,9 @@ CREATE TABLE IF NOT EXISTS `niveaux` (
 -- Dumping data for table maha.niveaux: ~3 rows (approximately)
 /*!40000 ALTER TABLE `niveaux` DISABLE KEYS */;
 INSERT IGNORE INTO `niveaux` (`id_niveau`, `nom_niveau`) VALUES
-	(1, 'débutant'),
-	(2, 'intermédiaire'),
-	(3, 'avancé');
+  (1, 'débutant'),
+  (2, 'intermédiaire'),
+  (3, 'avancé');
 /*!40000 ALTER TABLE `niveaux` ENABLE KEYS */;
 
 -- Dumping structure for table maha.notifications
@@ -427,12 +404,10 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   PRIMARY KEY (`id_notification`),
   KEY `FK_notifications_commentaires` (`id_commentaire`),
   CONSTRAINT `FK_notifications_commentaires` FOREIGN KEY (`id_commentaire`) REFERENCES `commentaires` (`id_commentaire`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.notifications: ~0 rows (approximately)
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
-INSERT IGNORE INTO `notifications` (`id_notification`, `id_commentaire`, `etat_notification`) VALUES
-	(1, 1, 1);
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 
 -- Dumping structure for table maha.previews
@@ -445,10 +420,10 @@ CREATE TABLE IF NOT EXISTS `previews` (
   CONSTRAINT `previews_ibfk_2` FOREIGN KEY (`id_video`) REFERENCES `videos` (`id_video`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.previews: ~0 rows (approximately)
+-- Dumping data for table maha.previews: ~1 rows (approximately)
 /*!40000 ALTER TABLE `previews` DISABLE KEYS */;
 INSERT IGNORE INTO `previews` (`id_formation`, `id_video`) VALUES
-	(1, 1);
+  (1, 4);
 /*!40000 ALTER TABLE `previews` ENABLE KEYS */;
 
 -- Dumping structure for table maha.request_payment
@@ -492,10 +467,10 @@ CREATE TABLE IF NOT EXISTS `tablefilter` (
   `niveauFormation` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.tablefilter: ~1 rows (approximately)
+-- Dumping data for table maha.tablefilter: ~0 rows (approximately)
 /*!40000 ALTER TABLE `tablefilter` DISABLE KEYS */;
 INSERT IGNORE INTO `tablefilter` (`IdFormation`, `imgFormation`, `duree`, `idCategore`, `categorie`, `nomFormation`, `prix`, `description`, `likes`, `IdFormteur`, `nomFormateur`, `prenomFormateur`, `specialiteId`, `specialite`, `imgFormateur`, `numbAcht`, `dateCreationFormation`, `idLangage`, `langageFormation`, `idNiv`, `niveauFormation`) VALUES
-	(1, 'default_formation.jpg', '11:58:00', 5, 'Code', 'Cours Complet PHP et MYSQL', 45, 'Lorem ipsum dolor sit amet. Et internos dolores et inventore cupiditate ex dolorum officia sit facilis deserunt nam voluptas consequatur. Sit vitae similique et tempore eveniet qui minima deleniti. Id repudiandae quia ut ipsam galisum ut corporis autem.', 1, 0, 'Loream', 'Sbsia', 1, '3D', 'avatar-05.png', 1, '2022-12-25', 1, 'Français', 2, 'intermédiaire');
+  (1, 'images/formations/images/37066.jpg', '00:08:37', 10, 'Réseaux informatique', 'Consequatur adipisc', 12, 'Eu non eos pariatur Eu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariatur', 1, 0, 'John', 'Smith', 4, 'Business & Efficacité professionnelle', 'images/userImage/26611.jpg', 0, '2023-03-27', NULL, NULL, 1, 'débutant');
 /*!40000 ALTER TABLE `tablefilter` ENABLE KEYS */;
 
 -- Dumping structure for table maha.videos
@@ -511,38 +486,58 @@ CREATE TABLE IF NOT EXISTS `videos` (
   PRIMARY KEY (`id_video`),
   KEY `id_formation` (`id_formation`),
   CONSTRAINT `videos_ibfk_1` FOREIGN KEY (`id_formation`) REFERENCES `formations` (`id_formation`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.videos: ~27 rows (approximately)
+-- Dumping data for table maha.videos: ~47 rows (approximately)
 /*!40000 ALTER TABLE `videos` DISABLE KEYS */;
 INSERT IGNORE INTO `videos` (`id_video`, `id_formation`, `nom_video`, `url_video`, `duree_video`, `description_video`, `order_video`, `watched`) VALUES
-	(1, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 1_27] - Introduction au PhP', '46425600486', '00:09:46', 'DESC1', 1, 0),
-	(2, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 2_27] - Préparer son environnement de travail', '46425600680', '00:05:01', 'DESC2', 2, 0),
-	(3, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 3_27] - Les bases du PhP', '46302284000', '00:27:16', 'DESC3', 3, 0),
-	(4, 1, 'Tutoriel _ Cours Complet PhP & MySQL  [Chapitre 4_27] - Les variables en PhP', '46425599851', '00:32:36', 'DESC4', 4, 0),
-	(5, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 5_27] - Les conditions en PhP', '46302395707', '00:58:42', 'DESC5', 5, 0),
-	(6, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 6_27] - Les boucles en PhP', '46302297248', '00:15:39', 'DESC6', 6, 0),
-	(7, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 7_27] - Les tableaux en PhP', '46302355089', '00:45:21', 'DESC7', 7, 0),
-	(8, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 8_27] - Les fonctions en PhP', '46302293004', '00:19:09', 'DESC8', 8, 0),
-	(9, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 9_27] - Les fonctions relatives aux string', '46302275349', '00:33:09', 'DESC9', 9, 0),
-	(10, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 10_27] - Les fonctions affectant les array', '46302295460', '01:02:08', 'DESC10', 10, 0),
-	(11, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 11_27] - Les fonctions relatives à la date en PhP', '46302279151', '00:29:36', 'DESC11', 11, 0),
-	(12, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 12_27] - Les constantes en PhP', '46302264177', '00:17:10', 'DESC12', 12, 0),
-	(13, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 13_27] - Les formulaires en PhP', '46302269203', '00:32:58', 'DESC13', 13, 0),
-	(14, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 14_27] - Les instructions include et require', '46302302904', '00:06:55', 'DESC14', 14, 0),
-	(15, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 15_27] - Opérations sur les fichiers en PhP', '46302317792', '00:21:32', 'DESC15', 15, 0),
-	(16, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 16_27] - Variables superglobales en PhP', '46425599585', '00:28:51', 'DESC16', 16, 0),
-	(17, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 17_27] - Les bases de la POO en PhP', '46302264928', '00:23:22', 'DESC17', 17, 0),
-	(18, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 18_27] - Gestion des erreurs en PhP', '46302271756', '00:14:52', 'DESC18', 18, 0),
-	(19, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 19_27] - Découverte de MySQL, phpMyAdmin et des BDD', '46302295006', '00:18:49', 'DESC19', 19, 0),
-	(20, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Ch 20_27] - Connexion à MySQL et création de BDD', '46302287432', '00:23:21', 'DESC20', 20, 0),
-	(21, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 21_27] - Insérer des données dans une BDD via PhP', '46302266720', '00:22:05', 'DESC21', 21, 0),
-	(22, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 22_27] - Sélection de données dans une BDD', '46302347337', '00:19:09', 'DESC22', 22, 0),
-	(23, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Ch 23_27] - MàJ et suppression de données dans une BDD', '46425600452', '00:11:18', 'DESC23', 23, 0),
-	(24, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Chapitre 24_27] - Les jointures SQL et l\'UNION', '46302352492', '00:45:39', 'DESC24', 24, 0),
-	(25, 1, 'Tutoriel _ Cours Complet PhP & MySQL - [Chapitre 25_27] - Les fonctions SQL', '46302355185', '00:19:39', 'DESC25', 25, 0),
-	(26, 1, 'Tutoriel _ Cours Complet PhP & MySQL - [Chapitre 26_27] - Les filtres PhP', '46302280631', '00:37:53', 'DESC26', 26, 0),
-	(27, 1, 'Tutoriel _ Cours Complet PhP & MySQL [Ch 27_27] - Les expressions régulières', '46302347701', '00:36:04', 'DESC27', 27, 0);
+  (1, 1, 'Title 1', 'images/formations/videos/79148_1.mp4', '00:00:11', 'Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1', 999, 0),
+  (2, 1, 'Title 2', 'images/formations/videos/10556_1.mp4', '00:00:11', 'Title 2Title 2Title 2Title 2Title 2Title 2Title 2Title 2Title 2Title 2', 999, 0),
+  (3, 1, 'Title 3', 'images/formations/videos/24444_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (4, 1, '1', 'images/formations/videos/50833_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (5, 1, '1', 'images/formations/videos/23293_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (6, 1, '1', 'images/formations/videos/22270_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (7, 1, '1', 'images/formations/videos/11710_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (8, 1, '1', 'images/formations/videos/19314_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (9, 1, '1', 'images/formations/videos/34378_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (10, 1, '1', 'images/formations/videos/93737_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (11, 1, '1', 'images/formations/videos/13075_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (12, 1, '1', 'images/formations/videos/34103_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (13, 1, '1', 'images/formations/videos/85274_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (14, 1, '1', 'images/formations/videos/19612_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (15, 1, '1', 'images/formations/videos/20497_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (16, 1, '1', 'images/formations/videos/21652_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (17, 1, '1', 'images/formations/videos/14438_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (18, 1, '1', 'images/formations/videos/77059_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (19, 1, '1', 'images/formations/videos/28673_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (20, 1, '1', 'images/formations/videos/34603_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (21, 1, '1', 'images/formations/videos/21411_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (22, 1, '1', 'images/formations/videos/42497_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (23, 1, '1', 'images/formations/videos/27708_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (24, 1, '1', 'images/formations/videos/28215_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (25, 1, '1', 'images/formations/videos/11387_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (26, 1, '1', 'images/formations/videos/92969_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (27, 1, '1', 'images/formations/videos/12635_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (28, 1, '1', 'images/formations/videos/21002_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (29, 1, '1', 'images/formations/videos/36911_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (30, 1, '1', 'images/formations/videos/16611_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (31, 1, '1', 'images/formations/videos/10245_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (32, 1, '1', 'images/formations/videos/15752_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (33, 1, '1', 'images/formations/videos/25426_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (34, 1, '1', 'images/formations/videos/58461_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (35, 1, '1', 'images/formations/videos/28529_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (36, 1, '1', 'images/formations/videos/99894_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (37, 1, '1', 'images/formations/videos/12706_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (38, 1, '1', 'images/formations/videos/23900_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (39, 1, '1', 'images/formations/videos/34201_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (40, 1, '1', 'images/formations/videos/23821_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (41, 1, '1', 'images/formations/videos/32777_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (42, 1, '1', 'images/formations/videos/30545_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (43, 1, '1', 'images/formations/videos/21262_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (44, 1, '1', 'images/formations/videos/84962_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (45, 1, '1', 'images/formations/videos/14338_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (46, 1, '1', 'images/formations/videos/84976_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+  (47, 1, '1', 'images/formations/videos/22706_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0);
 /*!40000 ALTER TABLE `videos` ENABLE KEYS */;
 
 -- Dumping structure for table maha.watched
@@ -563,7 +558,7 @@ CREATE TABLE IF NOT EXISTS `watched` (
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
 DELIMITER //
 CREATE TRIGGER `calcDuree` AFTER INSERT ON `videos` FOR EACH ROW BEGIN
-	UPDATE formations f SET mass_horaire=
+  UPDATE formations f SET mass_horaire=
     (SELECT  SEC_TO_TIME(SUM(TIME_TO_SEC(v.duree_video))) 
     FROM videos v WHERE v.id_formation=NEW.id_formation)
     WHERE f.id_formation=NEW.id_formation;
@@ -575,7 +570,7 @@ SET SQL_MODE=@OLDTMP_SQL_MODE;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
 DELIMITER //
 CREATE TRIGGER `calcDureeOnDelete` AFTER DELETE ON `videos` FOR EACH ROW BEGIN
-	UPDATE formations f SET mass_horaire=
+  UPDATE formations f SET mass_horaire=
     (SELECT  SEC_TO_TIME(SUM(TIME_TO_SEC(v.duree_video))) 
     FROM videos v WHERE v.id_formation=OLD.id_formation)
     WHERE f.id_formation=OLD.id_formation;
@@ -587,7 +582,7 @@ SET SQL_MODE=@OLDTMP_SQL_MODE;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
 DELIMITER //
 CREATE TRIGGER `calcDureeOnUpdate` AFTER UPDATE ON `videos` FOR EACH ROW BEGIN
-	UPDATE formations f SET mass_horaire=
+  UPDATE formations f SET mass_horaire=
     (SELECT  SEC_TO_TIME(SUM(TIME_TO_SEC(v.duree_video))) 
     FROM videos v WHERE v.id_formation=NEW.id_formation)
     WHERE f.id_formation=NEW.id_formation;
@@ -599,9 +594,9 @@ SET SQL_MODE=@OLDTMP_SQL_MODE;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
 DELIMITER //
 CREATE TRIGGER `calcLikeDelete` AFTER DELETE ON `likes` FOR EACH ROW BEGIN
-	DECLARE likesCount int DEFAULT 0;
+  DECLARE likesCount int DEFAULT 0;
     SET likesCount=(SELECT count(*) FROM likes WHERE formation_id=OLD.formation_id);
-	UPDATE formations SET likes=likesCount WHERE id_formation=OLD.formation_id;
+  UPDATE formations SET likes=likesCount WHERE id_formation=OLD.formation_id;
 END//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
@@ -610,9 +605,9 @@ SET SQL_MODE=@OLDTMP_SQL_MODE;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
 DELIMITER //
 CREATE TRIGGER `calcLikeInsert` AFTER INSERT ON `likes` FOR EACH ROW BEGIN
-	DECLARE likesCount int DEFAULT 0;
+  DECLARE likesCount int DEFAULT 0;
     SET likesCount=(SELECT count(*) FROM likes WHERE formation_id=NEW.formation_id);
-	UPDATE formations f SET likes=likesCount WHERE id_formation=NEW.formation_id;
+  UPDATE formations f SET likes=likesCount WHERE id_formation=NEW.formation_id;
 END//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
@@ -621,8 +616,8 @@ SET SQL_MODE=@OLDTMP_SQL_MODE;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
 DELIMITER //
 CREATE TRIGGER `commentaires_after_insert` AFTER INSERT ON `commentaires` FOR EACH ROW BEGIN
-	INSERT INTO notifications(id_commentaire)
-	VALUES (NEW.id_commentaire);
+  INSERT INTO notifications(id_commentaire)
+  VALUES (NEW.id_commentaire);
 END//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
@@ -631,24 +626,24 @@ SET SQL_MODE=@OLDTMP_SQL_MODE;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
 DELIMITER //
 CREATE TRIGGER `etudiants_before_insert` BEFORE INSERT ON `etudiants` FOR EACH ROW BEGIN
-	DECLARE numero INT;
-	DECLARE v_id_etudiant VARCHAR(100);
-	DECLARE is_exist BOOLEAN DEFAULT FALSE;
-	DECLARE cpt INT;
-	
-	SET numero = (SELECT COUNT(*) FROM etudiants) + 1;
-	SET v_id_etudiant = CONCAT("ETU", numero);
-	check_exist : LOOP
-		SET cpt = (SELECT COUNT(*) FROM etudiants WHERE id_etudiant = v_id_etudiant);
-		IF(cpt = 0) THEN
-			LEAVE check_exist;
-		ELSE
-			SET numero = numero + 1;
-			SET v_id_etudiant = CONCAT("ETU", numero);
-		END IF;
-	END LOOP check_exist;
-	
-	SET NEW.id_etudiant = v_id_etudiant;
+  DECLARE numero INT;
+  DECLARE v_id_etudiant VARCHAR(100);
+  DECLARE is_exist BOOLEAN DEFAULT FALSE;
+  DECLARE cpt INT;
+  
+  SET numero = (SELECT COUNT(*) FROM etudiants) + 1;
+  SET v_id_etudiant = CONCAT("ETU", numero);
+  check_exist : LOOP
+    SET cpt = (SELECT COUNT(*) FROM etudiants WHERE id_etudiant = v_id_etudiant);
+    IF(cpt = 0) THEN
+      LEAVE check_exist;
+    ELSE
+      SET numero = numero + 1;
+      SET v_id_etudiant = CONCAT("ETU", numero);
+    END IF;
+  END LOOP check_exist;
+  
+  SET NEW.id_etudiant = v_id_etudiant;
 END//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
@@ -657,24 +652,24 @@ SET SQL_MODE=@OLDTMP_SQL_MODE;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
 DELIMITER //
 CREATE TRIGGER `formateurs_before_insert` BEFORE INSERT ON `formateurs` FOR EACH ROW BEGIN
-	DECLARE numero INT;
-	DECLARE v_id_formateur VARCHAR(100);
-	DECLARE is_exist BOOLEAN DEFAULT FALSE;
-	DECLARE cpt INT;
-	
-	SET numero = (SELECT COUNT(*) FROM formateurs) + 1;
-	SET v_id_formateur = CONCAT("FOR", numero);
-	check_exist : LOOP
-		SET cpt = (SELECT COUNT(*) FROM formateurs WHERE id_formateur = v_id_formateur);
-		IF(cpt = 0) THEN
-			LEAVE check_exist;
-		ELSE
-			SET numero = numero + 1;
-			SET v_id_formateur = CONCAT("FOR", numero);
-		END IF;
-	END LOOP check_exist;
-	
-	SET NEW.id_formateur = v_id_formateur;
+  DECLARE numero INT;
+  DECLARE v_id_formateur VARCHAR(100);
+  DECLARE is_exist BOOLEAN DEFAULT FALSE;
+  DECLARE cpt INT;
+  
+  SET numero = (SELECT COUNT(*) FROM formateurs) + 1;
+  SET v_id_formateur = CONCAT("FOR", numero);
+  check_exist : LOOP
+    SET cpt = (SELECT COUNT(*) FROM formateurs WHERE id_formateur = v_id_formateur);
+    IF(cpt = 0) THEN
+      LEAVE check_exist;
+    ELSE
+      SET numero = numero + 1;
+      SET v_id_formateur = CONCAT("FOR", numero);
+    END IF;
+  END LOOP check_exist;
+  
+  SET NEW.id_formateur = v_id_formateur;
 END//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
@@ -683,8 +678,8 @@ SET SQL_MODE=@OLDTMP_SQL_MODE;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `inscriptions_after_update` AFTER UPDATE ON `inscriptions` FOR EACH ROW BEGIN
-	UPDATE admin
-	SET balance = balance + NEW.prix;
+  UPDATE admin
+  SET balance = balance + NEW.prix;
 END//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
@@ -693,15 +688,15 @@ SET SQL_MODE=@OLDTMP_SQL_MODE;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
 DELIMITER //
 CREATE TRIGGER `request_payment_after_update` AFTER UPDATE ON `request_payment` FOR EACH ROW BEGIN
-	IF(NEW.etat_request = 'accepted') THEN 
-		-- la table formateurs
-		UPDATE formateurs
-		SET balance = balance - NEW.request_prix
-		WHERE id_formateur = NEW.id_formateur;
-		-- la table admin
-		UPDATE admin
-		SET balance = balance - NEW.request_prix;
-	END IF;
+  IF(NEW.etat_request = 'accepted') THEN 
+    -- la table formateurs
+    UPDATE formateurs
+    SET balance = balance - NEW.request_prix
+    WHERE id_formateur = NEW.id_formateur;
+    -- la table admin
+    UPDATE admin
+    SET balance = balance - NEW.request_prix;
+  END IF;
 END//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
