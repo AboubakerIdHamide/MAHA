@@ -70,15 +70,13 @@ class Inscription
     //     return $data;
     // }
 
-    public function deteleInscription($id_formation, $id_etudiant, $id_formateur)
+    public function deteleInscription($id_inscription)
     {
-        $request = $this->connect->prepare(
-            "DELETE FROM inscriptions
-		                    WHERE id_formation = :id_formation and id_etudiant = :id_etudiant and id_formateur = :id_formateur"
-        );
-        $request->bindParam(':id_formation', $id_formation);
-        $request->bindParam(':id_etudiant', $id_formation);
-        $request->bindParam(':id_formateur', $id_formation);
+        $request = $this->connect->prepare("
+            DELETE FROM inscriptions
+		    WHERE id_inscription = :id_inscription
+        ");
+        $request->bindParam(':id_inscription', $id_inscription);
         $response = $request->execute();
         return $response;
     }
@@ -142,7 +140,8 @@ class Inscription
                 nom_formation,
                 date_inscription,
                 nom_etudiant,
-                prenom_etudiant
+                prenom_etudiant,
+                id_formation
             FROM inscriptions i
             JOIN formations USING (id_formation)
             JOIN etudiants USING (id_etudiant)

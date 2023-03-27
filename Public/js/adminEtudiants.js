@@ -25,7 +25,7 @@ $(document).ready(function() {
     addToastToBtn("delete-etudiant");
     // delete Button Modal
     $(".delete").click(function() {
-        const idEtudiant = Number($(this).attr("id"));
+        const idEtudiant = $(this).attr("id");
         const tableRow = $(this).parent().parent();
         const nomEtudiant = tableRow.find(".nom-etudiant").text().trim();
         const prenomEtudiant = tableRow.find(".prenom-etudiant").text().trim();
@@ -125,7 +125,7 @@ $(document).ready(function() {
     addToastToBtn("appliquer");
     // Edit Button Modal
     $(".edit").click(function() {
-        const idEtudiant = Number($(this).attr("id"));
+        const idEtudiant = $(this).attr("id");
         const tableRow = $(this).parent().parent();
         fillEditModal(tableRow);
         // remove Event Handler
@@ -188,7 +188,7 @@ $(document).ready(function() {
                 </div>
                 <div>
                   <button id="${formation.id_inscription}" data-prenom-etudiant="${formation.prenom_etudiant}" data-nom-etudiant="${formation.nom_etudiant}" data-nom-formation="${formation.nom_formation}" type="button" class="btn btn-danger deleteInscription" data-bs-toggle="modal" data-bs-target="#deleteModal">supprimer inscription</button>
-                  <a href="#" class="btn btn-dark">Voir Formation</a>
+                  <a href="http://localhost/maha/pageFormations/coursDetails/${formation.id_formation}" class="btn btn-dark">Voir Formation</a>
                 </div> 
             </div>
         </div>
@@ -198,12 +198,13 @@ $(document).ready(function() {
 
     //   show button Modal
     $(".show").click(function() {
-        const idEtudiant = Number($(this).attr("id"));
+        const idEtudiant = $(this).attr("id");
         const formations = $.parseJSON($.ajax({
             url: "http://localhost/maha/admin/getFormationsOfStudent/" + idEtudiant,
             dataType: "json",
             async: false,
         }).responseText);
+
         const tableRow = $(this).parent().parent();
         let nbrInscriptions = Number(tableRow.find(".nbr-inscriptions").text().trim());
 
@@ -224,7 +225,8 @@ $(document).ready(function() {
                 $.ajax({
                     url: "http://localhost/maha/admin/removeInscription/" + idInscription,
                     success: function(response) {
-                        showFlashMessage(response, "success");
+                        // showFlashMessage(response, "success");
+                        console.log(response);
                     },
                 });
                 // remove From UI

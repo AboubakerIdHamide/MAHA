@@ -100,17 +100,18 @@ window.onscroll = ()=>{
 
 // to-tp button
 
-let $toTop = $('.to-top');
+// let $toTop = $('.to-top');
+const $toTop = document.getElementsByClassName('to-top')[0];
 
 window.addEventListener('scroll', ()=>{
     if (window.pageYOffset > 150)
-        $toTop.addClass('active');
+        $toTop.classList.add('active');
     else
-        $toTop.removeClass('active');
+        $toTop.classList.remove('active');
 }
 );
 
-$toTop.click(function(e) {
+$toTop.addEventListener('click', function(e) {
     e.preventDefault();
     window.scrollTo(0, 0);
 })

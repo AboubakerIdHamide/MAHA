@@ -25,7 +25,7 @@ $(document).ready(function() {
     addToastToBtn("delete-formateur");
     // delete Button Modal
     $(".delete").click(function() {
-        const idFormateur = Number($(this).attr("id"));
+        const idFormateur = $(this).attr("id");
         const tableRow = $(this).parent().parent();
         const nomFormateur = tableRow.find(".nom-formateur").text().trim();
         const prenomFormateur = tableRow.find(".prenom-formateur").text().trim();
@@ -163,7 +163,7 @@ $(document).ready(function() {
     addToastToBtn("appliquer");
     // Edit Button Modal
     $(".edit").click(function() {
-        const idFormateur = Number($(this).attr("id"));
+        const idFormateur = $(this).attr("id");
         const tableRow = $(this).parent().parent();
         fillEditModal(tableRow);
 

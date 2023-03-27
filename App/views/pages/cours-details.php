@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="<?= URLROOT.'/public' ?>/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
   <title>COURS - <?php echo $data['info']['nomFormation'] ?></title>
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
@@ -61,12 +61,14 @@
               <div class="d-flex align-items-center gap-2">
                 <img src="<?php echo $data['info']['imgFormateur']; ?>" alt="" class="formateur-img">
                 <div class="instructor-info">
-                  <h5><?php echo $data['info']['nomFormateur']; ?> <?php echo $data['info']['prenomFormateur']; ?></h5>
+                  <h5><?php echo $data['info']['nomFormateur']; ?>
+                    <?php echo $data['info']['prenomFormateur']; ?></h5>
                   <p class="specialite mb-0"><?php echo $data['info']['specialite']; ?></p>
                 </div>
               </div>
               <div class="voir-profil d-flex align-items-center gap-2">
-                <a href="<?php echo URLROOT . "/profilFormateur/index/" . $data['info']['IdFormteur'] ?>">Voir Profil</a>
+                <a href="<?php echo URLROOT . "/profilFormateur/index/" . $data['info']['IdFormteur'] ?>">Voir
+                  Profil</a>
               </div>
             </div>
             <div class="mt-3 masse-h d-flex flex-row justify-content-between">
@@ -138,18 +140,19 @@
       <div class="row">
         <div class="col-lg-6">
           <div class="video-preview pt-2">
-            <?php if($data['previewVideo']!=null){ ?>
+            <?php if ($data['previewVideo'] != null) { ?>
               <video id="my-video" class="video-js object-fit-cover" controls preload="auto" width="640" data-setup="{}">
                 <source src="<?= $data['previewVideo'] ?>" type="video/mp4" />
                 <p class="vjs-no-js">
                   To view this video please enable JavaScript, and consider upgrading to a
                   web browser that
-                  <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                  <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5
+                    video</a>
                 </p>
               </video>
-            <?php }else{ ?>
-              <img  src="<?php echo $data['info']['imgFormation']; ?>" alt="preview" class="video-js">
-            <?php }?>
+            <?php } else { ?>
+              <img src="<?php echo $data['info']['imgFormation']; ?>" alt="preview" class="video-js">
+            <?php } ?>
           </div>
         </div>
         <div class="col-lg-6 align-self-center preview-prix">
@@ -208,7 +211,8 @@
         <div class="row mb-2">
           <div class="col">
             <div class="lesson d-flex justify-content-between">
-              <span class="lesson-titre"><?php echo $video->IdVideo; ?>. <?php echo $video->NomVideo; ?></span>
+              <span class="lesson-titre"><i class="fa-solid fa-lock"></i> <?php echo $video->IdVideo; ?>.
+                <?php echo $video->NomVideo; ?></span>
               <span class="lesson-time"><?php echo $video->DureeVideo; ?></span>
             </div>
           </div>
@@ -246,12 +250,10 @@
   </footer>
   <!-- Fin Footer -->
   <!-- To-up Button -->
-  <span class="to-top" href="#"><i class="fa fa-chevron-up"></i></span>
+  <span class="to-top active" href="#"><i class="fa fa-chevron-up"></i></span>
   <!-- To-up Button -->
   <!-- Fin Equipe -->
-  <script src="jQuery/jquery-3.6.0.min.js"></script>
-  <script src="<?php echo URLROOT; ?>/public/js/cours-details.js"></script>
-  <script src="<?php echo URLROOT; ?>/public/js/main.js"></script>
+  <!-- <script src="jQuery/jquery-3.6.0.min.js"></script> -->
   <script src="<?php echo URLROOT; ?>/public/js/cours-details.js"></script>
 </body>
 

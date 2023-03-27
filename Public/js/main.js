@@ -1,8 +1,3 @@
-$(".icon-box").click(function() {
-    window.location = $(this).find("a").attr("href");
-    return false;
-});
-
 /*========================================== Header Scripts =========================================*/
 // Menu Button
 let menuBtn = document.getElementById("menuBtn")
@@ -129,3 +124,8 @@ $toTop.click(function(e) {
     e.preventDefault();
     window.scrollTo(0, 0);
 })
+
+$(".icon-box").click(function() {
+    window.location = $(this).find("a").attr("href");
+    return false;
+});
