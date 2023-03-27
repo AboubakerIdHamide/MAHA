@@ -1,10 +1,10 @@
 body {
 	font-family: Inter;
-	background-color: #f7f8fb;
+	background-color: #b0d4fc;
 }
 
 .bg-color {
-	background-color: #fff;
+	background-color: #dff6ff;
 }
 
 main .formation-title {
@@ -13,10 +13,6 @@ main .formation-title {
 
 main a {
 	text-decoration: none;
-	color: #000;
-}
-
-main a:hover {
 	color: #000;
 }
 
@@ -42,8 +38,8 @@ main a.critere:hover{
 }
 
 .widgetbox {
-	background-color: #fff;
-	color: #0d6efd;
+	background-color: #1d308a;
+	color: #fff;
 }
 
 .widgetbox small {
@@ -73,3 +69,19 @@ main a.critere:hover{
 .counts-selected {
 	font-size: 12px;
 }
+
+.custom-btn{
+    background-color: #1d308a;
+	border-radius: 4px;
+	text-decoration: none;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    transition: 0.3s;
+    font-weight: 600;
+}
+
+.custom-btn:hover{
+    background-color: #ff6584;
+	color: #fff;
+}
+

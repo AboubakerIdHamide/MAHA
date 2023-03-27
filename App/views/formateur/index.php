@@ -1,5 +1,5 @@
 <?php require_once APPROOT . "/views/includes/dashBoardNav.php"; ?>
-<div class="container me-5">
+<div class="container">
 	<section class="statistics container mt-4">
 		<div class="row">
 			<?php flash('updateFormation') ?>
@@ -10,7 +10,7 @@
 				<div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
 					<div>
 						<span class="d-block fs-2 nombre">$ <?= $data['balance'] ?></span>
-						<small class="text-muted">Balance</small>
+						<small>Balance</small>
 					</div>
 					<i class="fa-solid fa-dollar-sign fs-1"></i>
 				</div>
@@ -20,7 +20,7 @@
 				<div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
 					<div>
 						<span class="d-block fs-2 nombre" id="nbr-formations">0</span>
-						<small class="text-muted">Formations</small>
+						<small>Formations</small>
 					</div>
 					<i class="fa-solid fa-person-chalkboard fs-1"></i>
 				</div>
@@ -29,7 +29,7 @@
 				<div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
 					<div>
 						<span id="nbr-likes" class="d-block fs-2 nombre">0</span>
-						<small class="text-muted">Likes</small>
+						<small>Likes</small>
 					</div>
 					<i class="fa-solid fa-heart fs-1"></i>
 				</div>
@@ -38,24 +38,22 @@
 				<div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
 					<div>
 						<span class="d-block fs-2 nombre " id="nbr-apprenants">0</span>
-						<small class="text-muted">Apprenants</small>
+						<small>Apprenants</small>
 					</div>
 					<i class="fa-solid fa-graduation-cap fs-1"></i>
 				</div>
 			</div>
 		</div>
 	</section>
-	<main class="container ps-5 pe-5 me-lg-5 p-md-0 mt-3 bg-color p-lg-3 rounded">
-		<div class="row mb-3 pt-5 pt-lg-0">
-			<div class="col-12 col-lg ps-5">
-				<div>
-					<a href="<?= URLROOT . "/formations/addFormation" ?>" class="btn btn-primary">Add Formation <i class="fa-solid fa-folder-plus"></i></a>
-				</div>
+	<main class="container mt-3 pt-3 bg-color rounded">
+		<div class="row align-items-center mb-3">
+			<div class="col-12">
+				<a href="<?= URLROOT . "/formations/addFormation" ?>" class="custom-btn">Add Formation <i class="fa-solid fa-folder-plus"></i></a>
 			</div>
-			<div class="col col-lg mt-3 mt-lg-0 px-5">
+			<div class="col-12 mt-3">
 				<div class="d-flex gap-3">
 					<input placeholder="Titre Formation" type="text" class="form-control" name="q">
-					<button id="chercher" class="btn btn-primary" style="white-space: nowrap;">Chercher <i class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
+					<button id="chercher" class="btn btn-primary text-nowrap"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
 				</div>
 			</div>
 		</div>
