@@ -20,7 +20,7 @@ html{
 
 body {
   font-family: Inter, sans-serif;
-  background: var(--color-one);
+  background: #b0d4fc;
 }
 
 body::-webkit-scrollbar{
@@ -93,7 +93,7 @@ ul{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #fff;
+    background-color: #94c0fb;
     border-radius: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -113,11 +113,11 @@ ul{
     margin-bottom: 20px;
 }
 .main-form-heading .logo a{
-    color: var(--color-one);
+    color: #ff6584;
     text-decoration: none;
 }
 .main-form-heading .logo a span{
-    color: var(--color-four);
+    color: var(--color-one);
 }
 .main-form-heading .last-step{
     color: var(--color-one);
@@ -129,7 +129,7 @@ ul{
     position: relative;
     width: 70%;
     height: 5px;
-    background-color: var(--color-three);
+    background-color: #fff;
 }
 .main-form-heading .form-progress .steps{
     width: 100%;
@@ -141,8 +141,8 @@ ul{
     width: 30px;
     height: 30px;
     background-color: #fff;
-    color: var(--color-three);
-    border: 1px solid var(--color-three);
+    color: #313f87f0;
+    border: 1px solid #313f87f0;
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -160,7 +160,7 @@ ul{
     position: absolute;
     width: 100px;
     text-align: center;
-    color: var(--color-three);
+    color: #fff;
     font-size: 10px;
     top: -100%;
     font-weight: bold;
@@ -168,7 +168,7 @@ ul{
 @media (max-width:400px) {
     .main-form-heading .form-progress .steps div::before{display: none;}
 }
-.main-form-heading .form-progress .steps div.active::before{color: var(--color-one);}
+.main-form-heading .form-progress .steps div.active::before{color: rgb(40, 169, 40);}
 .main-form-heading .form-progress .steps div.active::after{
     position: absolute;
     content: "";
@@ -179,7 +179,7 @@ ul{
     display: grid;
     place-items: center;
     border: 1px solid var(--color-one);
-    background-color: var(--color-one);
+    background-color: rgb(40, 169, 40);
     color: #fff;
     font-family: "Font Awesome 6 Free";
     content: "\f00c";
@@ -205,7 +205,7 @@ ul{
     top: 0;
     left: 0;
     height: 100%;
-    background-color: var(--color-one);
+    background-color: rgb(40, 169, 40);
     transition: var(--main-transition);
     -webkit-transition: var(--main-transition);
     -moz-transition: var(--main-transition);
@@ -244,7 +244,7 @@ ul{
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--color-one);
+    color: var(--color-four);
     padding: 10px;
     text-align: center;
     font-size: 18px;
@@ -331,7 +331,6 @@ ul{
     margin-top: 6px;
 }
 .container form .inputs-boxs-container .inputs-boxs-container-slider .input-box .field label{
-    color: var(--color-one);
     margin-bottom: 10px;
     font-size: 14px;
 }
@@ -342,9 +341,9 @@ ul{
     height: 45px;
     text-indent: 15px;
     outline: none;
-    background-color:#fafafa;
+    background-color:#b6d6ff;
     border: none;
-    border-bottom: 2px solid var(--color-one);
+    border-bottom: 2px solid #2d88ff;
     caret-color: var(--color-one);
     color: var(--color-four);
     padding-left: 10px;
@@ -405,7 +404,7 @@ ul{
     max-width: 40%;
     font-size: 15px;
     color: #fff;
-    background-color: var(--color-one);
+    background-color: #313f87f0;
     box-shadow: 0 0 2px 1px var(--color-one);
     transition: var(--main-transition);
     -webkit-transition: var(--main-transition);
@@ -415,8 +414,8 @@ ul{
 }
 
 .container form .form-buttons button:hover{
-    color: var(--color-one);
-    background-color: #fff;
+    color: #fff;
+    background-color: #ff6584;
     box-shadow: 0 0 4px 1px #ddd;
 }
 
