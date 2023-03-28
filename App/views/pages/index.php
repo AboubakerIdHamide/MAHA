@@ -91,61 +91,69 @@
     <!-- Fin Formation Head -->
     <!-- start poplular courses -->
     <section class='poplularCourses'>
-        <div class='container'>
-            <div class="courses">
-              <?php foreach($data['courses'] as $course) : ?>
-                <!-- start card -->
-                <div class="card_coures wow fadeInRight" data-wow-duration="2s" data-wow-offset="100">
-                  <a href='<?php echo URLROOT."/pageFormations/coursDetails/".$course->IdFormation?>' style='display: block; text-decoration: none;'>
-                    <!-- img formation -->
-                    <div class="img">
-                        <img src="<?php echo $course->imgFormation; ?>" alt="photo">
-                        <div class="duree">
-                            <i class="fa-solid fa-clock" style="color: #ff6584" aria-hidden="true"></i>
-                            <div class="time"><?php echo $course->duree; ?></div>
-                        </div>
-                    </div>
-                    <!-- informations formation -->
-                    <div class="info_formation">
-                        <div class="categorie"><?php echo $course->categorie; ?></div>
-                        <div class="prix"><?php echo $course->prix; ?></div>
-                    </div>
-                    <!-- name formation -->
-                    <h1><?php echo $course->nomFormation; ?></h1>
-                    <!-- description -->
-                    <div class="description">
-                        <p><?php echo $course->description; ?></p>
-                    </div>
-                    <div class="footer">
-                        <!-- infotrmations formateur -->
-                        <a href='<?php echo URLROOT."/profilFormateur/index/".$course->IdFormteur?>' style='display: block; text-decoration: none; z-index: 10;'>
-                            <div class="formateur">
-                                <div class="img_formateur">
-                                    <img src="<?php echo $course->imgFormateur; ?>" alt="photo">
-                                </div>
-                                <div class="d-flex flex-column fw-bold">
-                                  <span><?php echo $course->nomFormateur; ?></span>
-                                  <span><?php echo $course->prenomFormateur; ?></span>
-                                </div>
+      <div class='container my-5'>
+        <!-- <div class="courses"> -->
+          <div class="row">
+            <div class="col-12 m-auto">
+              <div class="owl-carousel owl-theme">
+                <?php foreach($data['courses'] as $course) : ?>
+                  <!-- start card -->
+                  <div class="item mb-4">
+                    <div class="card card_coures wow fadeInRight " data-wow-duration="2s" data-wow-offset="100">
+                      <a href='<?php echo URLROOT."/pageFormations/coursDetails/".$course->IdFormation?>' style='display: block; text-decoration: none;'>
+                        <!-- img formation -->
+                        <div class="img">
+                            <img src="<?php echo $course->imgFormation; ?>" alt="photo">
+                            <div class="duree">
+                                <i class="fa-solid fa-clock" style="color: #ff6584" aria-hidden="true"></i>
+                                <div class="time"><?php echo $course->duree; ?></div>
                             </div>
-                        </a>
-                        <!-- informations -->
-                        <div class="info">
-                          <div class="likes d-flex flex-column align-items-center">
-                              <span><?php echo $course->likes; ?></span>
-                              <i class="fa fa-heart" aria-hidden="true"></i>
-                          </div>
-                          <div class="etd d-flex flex-column align-items-center">
-                            <span><?php echo $course->numbAcht; ?></span>
-                            <i class="fa fa-users" aria-hidden="true"></i>    
-                          </div>
                         </div>
+                        <!-- informations formation -->
+                        <div class="info_formation">
+                            <div class="categorie"><?php echo $course->categorie; ?></div>
+                            <div class="prix"><?php echo $course->prix; ?></div>
+                        </div>
+                        <!-- name formation -->
+                        <h1><?php echo $course->nomFormation; ?></h1>
+                        <!-- description -->
+                        <div class="description">
+                            <p><?php echo $course->description; ?></p>
+                        </div>
+                        <div class="footer">
+                            <!-- infotrmations formateur -->
+                            <a href='<?php echo URLROOT."/profilFormateur/index/".$course->IdFormteur?>' style='display: block; text-decoration: none; z-index: 10;'>
+                                <div class="formateur">
+                                    <div class="img_formateur">
+                                        <img src="<?php echo $course->imgFormateur; ?>" alt="photo">
+                                    </div>
+                                    <div class="d-flex flex-column fw-bold">
+                                      <span><?php echo $course->nomFormateur; ?></span>
+                                      <span><?php echo $course->prenomFormateur; ?></span>
+                                    </div>
+                                </div>
+                            </a>
+                            <!-- informations -->
+                            <div class="info">
+                              <div class="likes d-flex flex-column align-items-center">
+                                  <span><?php echo $course->likes; ?></span>
+                                  <i class="fa fa-heart" aria-hidden="true"></i>
+                              </div>
+                              <div class="etd d-flex flex-column align-items-center">
+                                <span><?php echo $course->numbAcht; ?></span>
+                                <i class="fa fa-users" aria-hidden="true"></i>    
+                              </div>
+                            </div>
+                        </div>
+                      </a>
                     </div>
-                  </a>
-                </div>
-                <!-- end card -->
-              <?php endforeach; ?>
-        </div>
+                  </div>
+                  <!-- end card -->
+                <?php endforeach; ?>
+              </div>
+            </div>
+          </div>
+        <!-- </div> -->
       </div>
     </section>
     <!-- end poplular courses -->
