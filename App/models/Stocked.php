@@ -118,4 +118,22 @@ class Stocked
 		$res = $req->execute(['id' => $id]);
 		return $res;
 	}
+
+	public function insertLangue($langue)
+	{
+		$req = $this->connect->prepare("
+			INSERT INTO langues VALUES (DEFAULT, :nom_langue)
+		");
+		$res = $req->execute(['nom_langue' => $langue]);
+		return $res;
+	}
+
+	public function deleteLangue($langueID)
+	{
+		$req = $this->connect->prepare("
+			DELETE FROM langues WHERE id_langue = :id
+		");
+		$res = $req->execute(['id' => $langueID]);
+		return $res;
+	}
 }

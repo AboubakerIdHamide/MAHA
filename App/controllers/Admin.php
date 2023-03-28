@@ -430,4 +430,25 @@ class Admin extends Controller
             }
         }
     }
+
+    public function langues($langueID = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $data['langues'] = $this->stockedModel->getAllLangues();
+
+            $this->view('admin/langues', $data);
+        } else {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $this->stockedModel->insertLangue($_POST['nom_langue']);
+                echo 'La Langue ' . $_POST['nom_langue'] . ' a été ajouter avec success.';
+            } else {
+                if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+                    if (!is_null($langueID)) {
+                        $this->stockedModel->deleteLangue($langueID);
+                        echo 'La Langue a été supprimer avec success.';
+                    }
+                }
+            }
+        }
+    }
 }
