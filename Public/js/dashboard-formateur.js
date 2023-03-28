@@ -216,6 +216,30 @@ $(document).ready(function () {
   });
 });
 
+function addToastToBtn(btnId) {
+  const toastTrigger = document.getElementById(btnId);
+  const toastLiveExample = document.getElementById("liveToast");
+  if (toastTrigger) {
+    toastTrigger.addEventListener("click", () => {
+      const toast = new bootstrap.Toast(toastLiveExample);
+      toast.show();
+    });
+  }
+}
+// Add Toast to input hidden
+addToastToBtn("verifier");
+
+function showFlashMessage(message, colorClass) {
+  const bodyToast = $(".toast-body");
+  if (bodyToast.hasClass("bg-success")) {
+    bodyToast.removeClass("bg-success");
+  } else {
+    bodyToast.removeClass("bg-danger");
+  }
+  bodyToast.addClass("bg-" + colorClass);
+  $("span#message").text(message);
+}
+
 // ====================  Update Files (Ressources)  ================
 const handleRessourse = (files) => {
   const fileType = files[0].type;
@@ -237,7 +261,8 @@ const handleRessourse = (files) => {
     processData: false,
     data: formData,
     success: function (response) {
-      console.log(response);
+      showFlashMessage(response, "success");
+      $("#verifier").click();
     },
   });
 
@@ -266,7 +291,8 @@ const handleMiniature = (files) => {
     processData: false,
     data: formData,
     success: function (response) {
-      console.log(response);
+      showFlashMessage(response, "success");
+      $("#verifier").click();
     },
   });
 

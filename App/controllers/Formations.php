@@ -266,12 +266,13 @@ class Formations extends Controller
 			$data = [];
 			$data['path'] = $upload_path;
 			$data['id'] = $id;
-			if (explode('/', $path)[2] == 2) {
+			if (explode('/', $path)[2] === 'files') {
 				$this->formationModel->updateFichierAttache($data);
+				echo "Le Fichier Attache a ete ajouter avec success";
 			} else {
 				$this->formationModel->updateImgFormation($data);
+				echo "Formation image a ete modifier avec success";
 			}
-			echo "Changer avec success !";
 		} else {
 			echo json_encode(["error" => $errors]);
 		}
@@ -281,7 +282,7 @@ class Formations extends Controller
 	{
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			if (isset($_FILES['file']) && !is_null($id)) {
-				if ($_FILES['file']['type'] === 'image/png') {
+				if ($_FILES['file']['type'] !== 'application/zip') {
 					$path = 'images/formations/images/';
 				} else {
 					$path = 'images/formations/files/';
