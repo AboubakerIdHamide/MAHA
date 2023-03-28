@@ -61,7 +61,7 @@ function renderDataChart1(data, nomFormateur) {
             text: `Statistiques Formateur (${nomFormateur})`,
             align: "center",
             style: {
-                color: "#0d6efd",
+                color: "#1D308A",
                 fontFamily: "Inter, Arial, sans-serif",
             },
         },
@@ -130,7 +130,7 @@ function renderDataChart2() {
             text: "Top 10 meilleurs vendeurs",
             align: "center",
             style: {
-                color: "#0d6efd",
+                color: "#1D308A",
                 fontFamily: "Inter, Arial, sans-serif",
             },
         },

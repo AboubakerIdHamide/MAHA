@@ -131,10 +131,6 @@ class Admin extends Controller
         $arrayFilter = array(["pending", "accepted", "declined"]);
         if (!in_array($filter, $arrayFilter)) {
             $requestsPayment = $this->requestPaymentModel->getRequestsPaymentsByState($filter);
-            // get link of image formateur
-            // foreach ($data as $key => $request) {
-            // $request->img_formateur =URLROOT."/Public/".$request->img_formateur;
-            // }
             echo json_encode($requestsPayment);
         }
     }
@@ -397,5 +393,28 @@ class Admin extends Controller
         $this->checkSession();
         $formateurs = $this->inscriptionModel->top10BestSellers();
         echo json_encode($formateurs);
+    }
+
+    public function categories()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $data['categories'] = $this->stockedModel->getAllCategories();
+            $this->view('admin/categories', $data);
+        } else {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (isset($_POST['sous_categorie'])) {
+                    $this->stockedModel->insertSousCategorie($_POST);
+                    echo 'La Sous-categorie ' . $_POST['sous_categorie'] . ' a été ajouter avec success.';
+                } else {
+                    $this->stockedModel->insertCategorie($_POST);
+                    echo 'La Categorie ' . $_POST['nom_categorie'] . ' a été ajouter avec success.';
+                }
+            } else {
+                if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+                    $this->stockedModel->deleteCategorie(file_get_contents("php://input"));
+                    echo 'La Categorie a été supprimer avec success.';
+                }
+            }
+        }
     }
 }
