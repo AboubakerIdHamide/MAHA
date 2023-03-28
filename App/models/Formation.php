@@ -124,7 +124,8 @@ class Formation
                     likes,
                     id_langue AS langue,
                     niveau_formation AS niveauFormation,
-                    categorie
+                    categorie,
+                    fichier_attache AS file
                 FROM formations f
                 JOIN formateurs USING (id_formateur)
                 WHERE id_formateur = :id
@@ -650,6 +651,28 @@ class Formation
         $request->bindParam(":fin", $fin);
         $request->execute();
         $response = $request->fetch();
+        return $response;
+    }
+
+    public function updateFichierAttache($data)
+    {
+        $request = $this->connect->prepare("
+            UPDATE formations 
+            SET fichier_attache = :filePath
+            WHERE id_formation = :id
+        ");
+        $response = $request->execute(['filePath' => $data['path'], 'id' => $data['id']]);
+        return $response;
+    }
+
+    public function updateImgFormation($data)
+    {
+        $request = $this->connect->prepare("
+            UPDATE formations 
+            SET image_formation = :filePath
+            WHERE id_formation = :id
+        ");
+        $response = $request->execute(['filePath' => $data['path'], 'id' => $data['id']]);
         return $response;
     }
 

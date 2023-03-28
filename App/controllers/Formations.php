@@ -246,19 +246,59 @@ class Formations extends Controller
 		return false;
 	}
 
-	public function updateFormation()
+	private function uploadFile($path, $id)
 	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$error = $this->validFormation($_POST);
-			if ($error === false) {
-				unset($error);
-				// update formation
-				$this->formationModel->updateFormation($_POST);
-				flash('updateFormation', 'La Modification a ete faites avec success !!!');
+		$errors = "";
+		$file_name = $_FILES['file']['name'];
+		$file_size = $_FILES['file']['size'];
+		$file_tmp = $_FILES['file']['tmp_name'];
+
+		$new_file_name = substr(number_format(time() * rand(), 0, '', ''), 0, 5) . "_" . strtolower(preg_replace('/\s+/', '_', $file_name));
+		$upload_path = $path . $new_file_name;
+		if ($file_size > 41943040) {
+			$errors = 'Très grande taille de fichier';
+			return null;
+		} else {
+			move_uploaded_file($file_tmp, $upload_path);
+		}
+
+		if (empty($errors)) {
+			$data = [];
+			$data['path'] = $upload_path;
+			$data['id'] = $id;
+			if (explode('/', $path)[2] == 2) {
+				$this->formationModel->updateFichierAttache($data);
+			} else {
+				$this->formationModel->updateImgFormation($data);
+			}
+			echo "Changer avec success !";
+		} else {
+			echo json_encode(["error" => $errors]);
+		}
+	}
+
+	public function updateFormation($id = null)
+	{
+		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+			if (isset($_FILES['file']) && !is_null($id)) {
+				if ($_FILES['file']['type'] === 'image/png') {
+					$path = 'images/formations/images/';
+				} else {
+					$path = 'images/formations/files/';
+				}
+				$this->uploadFile($path, $id);
+			} else {
+				$error = $this->validFormation($_POST);
+				if ($error === false) {
+					unset($error);
+					// update formation
+					$this->formationModel->updateFormation($_POST);
+					flash('updateFormation', 'La Modification a ete faites avec success !!!');
+					redirect('formateurs/dashboard');
+				}
+				flash('updateFormation', $error);
 				redirect('formateurs/dashboard');
 			}
-			flash('updateFormation', $error);
-			redirect('formateurs/dashboard');
 		}
 	}
 
