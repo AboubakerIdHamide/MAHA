@@ -47,8 +47,8 @@
                 <li class="categorie border border-dark mb-1 p-2 rounded d-flex justify-content-between align-items-center">
                     <span><?= $categorie->nom_categorie ?></span>
                     <div class="buttons">
-                        <button class="btn btn-primary btn-sm">Show</button>
-                        <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-info btn-sm mx-2">Edit</button>
+                        <button data-bs-toggle="modal" data-bs-target="#showModal" class="btn btn-primary btn-sm show" data-id-categorie="<?= $categorie->id_categorie ?>">Show</button>
+                        <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-info btn-sm mx-2 edit" data-id-categorie="<?= $categorie->id_categorie ?>" data-nom-categorie="<?= $categorie->nom_categorie ?>">Edit</button>
                         <button id="<?= $categorie->id_categorie ?>" class="btn btn-danger btn-sm delete">Delete</button>
                     </div>
                 </li>
@@ -57,7 +57,7 @@
     </div>
 
 </div>
-<!-- Modal -->
+<!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -67,18 +67,38 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <label for="modifier-cat" class="form-label">Modifier categorie</label>
+                    <label for="modifier-cat" class="form-label">Nouveau Nom</label>
                     <input name="nom_categorie" type="text" class="form-control" id="modifier-cat" placeholder="Entrer Nouveau Nom" required>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ferme</button>
-                <button type="button" class="btn btn-primary">Accepte</button>
+                <button id="fermer" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                <button id="accepter" type="button" class="btn btn-primary">Accepter</button>
             </div>
         </div>
     </div>
 </div>
 <!-- end Edit Modal -->
+<!-- Show Modal -->
+<div class="modal fade" id="showModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Sous-Categorie</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul id="modal-sous-categorie" class="list-group">
+
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end Show Modal -->
 <!-- toast start -->
 <div class="toast-container position-fixed top-0 end-0 p-3">
     <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
