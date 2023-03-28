@@ -87,12 +87,12 @@ ul{
 .container form{
     width: 80%;
     height: 80%;
-    box-shadow: 0px 0px  6px 2px #eee;
+    box-shadow: 0px 0px  6px 2px #78d9ff;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #fff;
+    background-color: #dff6ff;
 }
 @media (max-width:767px){
     .container form{
@@ -109,7 +109,6 @@ ul{
     position: absolute;
     top: 0;
     left: 0;
-    background-color: #e8f0fe;
 }
 /*==================================== Form Header Styling ====================================*/
 .container form .prog{
@@ -118,7 +117,7 @@ ul{
     position: absolute;
     top: 0;
     left: 0;
-    background-color:var(--color-one);
+    /* background-color:var(--color-one); */
     transition: .7s;
     -webkit-transition: .7s;
     -moz-transition: .7s;
@@ -140,11 +139,11 @@ ul{
     margin-top: 30px;
 }
 .main-form-heading .logo a{
-    color: var(--color-one);
+    color: #ff6584;
     text-decoration: none;
 }
 .main-form-heading .logo a span{
-    color: var(--color-four);
+    color: var(--color-one);
 }
 /*/*==================================== Form Body Styling /*====================================*/
 .container form .field-container{
@@ -206,7 +205,7 @@ ul{
 }
 .container form .field-container .field-section .field-box .input-field label{
     width: 85%;
-    color: var(--color-one);
+    color: var(--color-four);
     padding: 10px 15px;
 }
 .container form .field-container .field-section:not(:nth-child(1)) .field-box .input-field label{width: 98%;}
