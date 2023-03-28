@@ -90,4 +90,50 @@ class Stocked
 		$res = $req->execute(['id_categorie' => $categorie_id]);
 		return $res;
 	}
+
+	public function editCategorie($data)
+	{
+		$req = $this->connect->prepare("
+			UPDATE categories 
+			SET nom_categorie = :nom_categorie
+			WHERE id_categorie = :id_categorie
+		");
+		$res = $req->execute(['id_categorie' => $data->categorieID, 'nom_categorie' => $data->NouveauNom]);
+		return $res;
+	}
+
+	public function getAllSousCategoriesOfCategorie($categorie_id)
+	{
+		$req = $this->connect->prepare("SELECT * FROM sous_categories WHERE id_categorie = :id");
+		$req->execute(['id' => htmlspecialchars($categorie_id)]);
+		$res = $req->fetchAll(PDO::FETCH_OBJ);
+		return $res;
+	}
+
+	public function deleteSousCategorie($id)
+	{
+		$req = $this->connect->prepare("
+			DELETE FROM sous_categories WHERE id = :id
+		");
+		$res = $req->execute(['id' => $id]);
+		return $res;
+	}
+
+	public function insertLangue($langue)
+	{
+		$req = $this->connect->prepare("
+			INSERT INTO langues VALUES (DEFAULT, :nom_langue)
+		");
+		$res = $req->execute(['nom_langue' => $langue]);
+		return $res;
+	}
+
+	public function deleteLangue($langueID)
+	{
+		$req = $this->connect->prepare("
+			DELETE FROM langues WHERE id_langue = :id
+		");
+		$res = $req->execute(['id' => $langueID]);
+		return $res;
+	}
 }

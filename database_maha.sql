@@ -27,12 +27,12 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `mot_de_passe` varchar(255) NOT NULL,
   `balance` float DEFAULT '0',
   PRIMARY KEY (`id_admin`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.admin: ~0 rows (approximately)
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT IGNORE INTO `admin` (`id_admin`, `nom_admin`, `prenom_admin`, `email_admin`, `img_admin`, `mot_de_passe`, `balance`) VALUES
-  (1, 'sdknsdf', 'sdfsdfsdf', 'sarouti@gmail.com', '237127316', 'admin123@@@', 80);
+INSERT INTO `admin` (`id_admin`, `nom_admin`, `prenom_admin`, `email_admin`, `img_admin`, `mot_de_passe`, `balance`) VALUES
+	(1, 'sdknsdf', 'sdfsdfsdf', 'sarouti@gmail.com', 'images/membre.jpg', 'admin123@@@', 80);
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 
 -- Dumping structure for table maha.bookmarks
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `bookmarks` (
 
 -- Dumping structure for table maha.categories
 CREATE TABLE IF NOT EXISTS `categories` (
-  `id_categorie` int(11) NOT NULL,
+  `id_categorie` int(11) NOT NULL AUTO_INCREMENT,
   `icon` varchar(100) NOT NULL DEFAULT '',
   `nom_categorie` varchar(50) NOT NULL,
   PRIMARY KEY (`id_categorie`)
@@ -59,19 +59,19 @@ CREATE TABLE IF NOT EXISTS `categories` (
 
 -- Dumping data for table maha.categories: ~12 rows (approximately)
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT IGNORE INTO `categories` (`id_categorie`, `icon`, `nom_categorie`) VALUES
-  (1, '<i class="fa-brands fa-unity"></i>', '3D'),
-  (2, '<i class="fa-solid fa-ruler-combined"></i>', 'Architecture & BIM'),
-  (3, '<i class="fa-solid fa-sliders"></i>', 'Audio-MAO'),
-  (4, '<i class="fa-sharp fa-solid fa-briefcase"></i>', 'Business & Efficacité professionnelle'),
-  (5, '<i class="fa-solid fa-code"></i>', 'Code'),
-  (6, '<i class="fa-sharp fa-solid fa-pen-nib"></i>', 'Infographie'),
-  (7, '<i class="fa-solid fa-camera-retro"></i>', 'Photographie'),
-  (8, '<i class="fa-solid fa-video"></i>', 'Vidéo-Compositing'),
-  (9, '<i class="fa-solid fa-chart-simple"></i>', 'Webmarketing'),
-  (10, '<i class="fa-solid fa-network-wired"></i>', 'Réseaux informatique'),
-  (11, '<i class="fa-solid fa-list-check"></i>', 'Management'),
-  (12, '<i class="fa-solid fa-computer-mouse"></i>', 'Bureautique');
+INSERT INTO `categories` (`id_categorie`, `icon`, `nom_categorie`) VALUES
+	(1, '<i class="fa-brands fa-unity"></i>', '3D'),
+	(2, '<i class="fa-solid fa-ruler-combined"></i>', 'Architecture & BIM'),
+	(3, '<i class="fa-solid fa-sliders"></i>', 'Audio-MAO'),
+	(4, '<i class="fa-sharp fa-solid fa-briefcase"></i>', 'Business & Efficacité professionnelle'),
+	(5, '<i class="fa-solid fa-code"></i>', 'Code'),
+	(6, '<i class="fa-sharp fa-solid fa-pen-nib"></i>', 'Infographie'),
+	(7, '<i class="fa-solid fa-camera-retro"></i>', 'Photographie'),
+	(8, '<i class="fa-solid fa-video"></i>', 'Vidéo-Compositing'),
+	(9, '<i class="fa-solid fa-chart-simple"></i>', 'Webmarketing'),
+	(10, '<i class="fa-solid fa-network-wired"></i>', 'Réseaux informatique'),
+	(11, '<i class="fa-solid fa-list-check"></i>', 'Management'),
+	(12, '<i class="fa-solid fa-computer-mouse"></i>', 'Bureautique');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 
 -- Dumping structure for table maha.commentaires
@@ -88,8 +88,12 @@ CREATE TABLE IF NOT EXISTS `commentaires` (
   CONSTRAINT `commentaires_ibfk_2` FOREIGN KEY (`id_video`) REFERENCES `videos` (`id_video`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.commentaires: ~0 rows (approximately)
+-- Dumping data for table maha.commentaires: ~2 rows (approximately)
 /*!40000 ALTER TABLE `commentaires` DISABLE KEYS */;
+INSERT INTO `commentaires` (`id_commentaire`, `id_video`, `from_user`, `to_user`, `type_user`, `commentaire`, `created_at`) VALUES
+	(1, 1, 'ETU1', 'FOR1', 'etudiant', 'salam', '2023-03-27 16:03:57'),
+	(2, 1, 'ETU1', 'FOR1', 'etudiant', 'test2', '2023-03-27 16:06:01'),
+	(3, 1, 'ETU1', 'FOR1', 'etudiant', 'test 3', '2023-03-27 16:06:29');
 /*!40000 ALTER TABLE `commentaires` ENABLE KEYS */;
 
 -- Dumping structure for table maha.etudiants
@@ -107,8 +111,8 @@ CREATE TABLE IF NOT EXISTS `etudiants` (
 
 -- Dumping data for table maha.etudiants: ~0 rows (approximately)
 /*!40000 ALTER TABLE `etudiants` DISABLE KEYS */;
-INSERT IGNORE INTO `etudiants` (`id_etudiant`, `nom_etudiant`, `prenom_etudiant`, `email_etudiant`, `tel_etudiant`, `date_creation_etudiant`, `img_etudiant`, `mot_de_passe`) VALUES
-  ('ETU1', 'Holt', 'Anne', 'bicisay813@oniecan.com', '0672819278', '2023-03-27 01:11:50', 'images/userImage/92322.jpg', '$2y$10$2mzmHmq16z8jI1f9sHii6.VdcG2Jorw8hEk4tr/uqr9fSPkLBHxKG');
+INSERT INTO `etudiants` (`id_etudiant`, `nom_etudiant`, `prenom_etudiant`, `email_etudiant`, `tel_etudiant`, `date_creation_etudiant`, `img_etudiant`, `mot_de_passe`) VALUES
+	('ETU1', 'Holt', 'Hermanues', 'bicisay813@oniecan.com', '0672819270', '2023-03-27 01:11:50', 'images/userImage/92322.jpg', '$2y$10$2mzmHmq16z8jI1f9sHii6.VdcG2Jorw8hEk4tr/uqr9fSPkLBHxKG');
 /*!40000 ALTER TABLE `etudiants` ENABLE KEYS */;
 
 -- Dumping structure for table maha.formateurs
@@ -132,8 +136,8 @@ CREATE TABLE IF NOT EXISTS `formateurs` (
 
 -- Dumping data for table maha.formateurs: ~0 rows (approximately)
 /*!40000 ALTER TABLE `formateurs` DISABLE KEYS */;
-INSERT IGNORE INTO `formateurs` (`id_formateur`, `nom_formateur`, `prenom_formateur`, `email_formateur`, `tel_formateur`, `date_creation_formateur`, `img_formateur`, `mot_de_passe`, `paypalMail`, `biography`, `balance`, `specialiteId`) VALUES
-  ('FOR1', 'John', 'Smith', 'nolepi2119@necktai.com', '0695038293', '2023-03-27 00:56:47', 'images/userImage/26611.jpg', '$2y$10$zIjC/CAnrUUtfxPP5LSTp.ISym1FZchbrdv/z1MtuD5tMeAPZso36', 'vehenafit@mailinator.com', 'Tenetur qui quia exe Tenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exe', 0, 4);
+INSERT INTO `formateurs` (`id_formateur`, `nom_formateur`, `prenom_formateur`, `email_formateur`, `tel_formateur`, `date_creation_formateur`, `img_formateur`, `mot_de_passe`, `paypalMail`, `biography`, `balance`, `specialiteId`) VALUES
+	('FOR1', 'John', 'Smith', 'nolepi2119@necktai.com', '0695038290', '2023-03-27 00:56:47', 'images/userImage/26611.jpg', '$2y$10$3wy.h8bMrjIy.kRvN5TyIeGEMkH.vnk307xSnHDWHAFANeS2sYdPC', 'vehenafit@mailinator.com', 'Tenetur qui quia exe Tenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exe', 10, 8);
 /*!40000 ALTER TABLE `formateurs` ENABLE KEYS */;
 
 -- Dumping structure for table maha.formations
@@ -159,12 +163,12 @@ CREATE TABLE IF NOT EXISTS `formations` (
   CONSTRAINT `formations_ibfk_1` FOREIGN KEY (`niveau_formation`) REFERENCES `niveaux` (`id_niveau`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `formations_ibfk_3` FOREIGN KEY (`categorie`) REFERENCES `categories` (`id_categorie`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `formations_ibfk_4` FOREIGN KEY (`id_langue`) REFERENCES `langues` (`id_langue`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.formations: ~0 rows (approximately)
 /*!40000 ALTER TABLE `formations` DISABLE KEYS */;
-INSERT IGNORE INTO `formations` (`id_formation`, `niveau_formation`, `id_formateur`, `categorie`, `nom_formation`, `image_formation`, `mass_horaire`, `date_creation_formation`, `prix_formation`, `description`, `id_langue`, `likes`) VALUES
-  (1, 1, 'FOR1', 10, 'Consequatur adipisc', 'images/formations/images/37066.jpg', '00:08:37', '2023-03-27 02:53:36', 12.00, 'Eu non eos pariatur Eu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariatur', NULL, 1);
+INSERT INTO `formations` (`id_formation`, `niveau_formation`, `id_formateur`, `categorie`, `nom_formation`, `image_formation`, `mass_horaire`, `date_creation_formation`, `prix_formation`, `description`, `id_langue`, `likes`) VALUES
+	(1, 1, 'FOR1', 10, 'Consequatur adipisc', 'images/formations/images/37066.jpg', '00:08:37', '2023-03-27 02:53:36', 12.00, 'Eu non eos pariatur Eu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariatur', 1, 1);
 /*!40000 ALTER TABLE `formations` ENABLE KEYS */;
 
 -- Dumping structure for table maha.inscriptions
@@ -353,18 +357,18 @@ DELIMITER ;
 
 -- Dumping structure for table maha.langues
 CREATE TABLE IF NOT EXISTS `langues` (
-  `id_langue` int(11) NOT NULL,
+  `id_langue` int(11) NOT NULL AUTO_INCREMENT,
   `nom_langue` varchar(30) NOT NULL,
   PRIMARY KEY (`id_langue`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.langues: ~4 rows (approximately)
 /*!40000 ALTER TABLE `langues` DISABLE KEYS */;
-INSERT IGNORE INTO `langues` (`id_langue`, `nom_langue`) VALUES
-  (1, 'Français'),
-  (2, 'Anglais'),
-  (3, 'Espagnol'),
-  (4, 'العربية');
+INSERT INTO `langues` (`id_langue`, `nom_langue`) VALUES
+	(1, 'Français'),
+	(2, 'Anglais'),
+	(3, 'Espagnol'),
+	(4, 'العربية');
 /*!40000 ALTER TABLE `langues` ENABLE KEYS */;
 
 -- Dumping structure for table maha.likes
@@ -390,10 +394,10 @@ CREATE TABLE IF NOT EXISTS `niveaux` (
 
 -- Dumping data for table maha.niveaux: ~3 rows (approximately)
 /*!40000 ALTER TABLE `niveaux` DISABLE KEYS */;
-INSERT IGNORE INTO `niveaux` (`id_niveau`, `nom_niveau`) VALUES
-  (1, 'débutant'),
-  (2, 'intermédiaire'),
-  (3, 'avancé');
+INSERT INTO `niveaux` (`id_niveau`, `nom_niveau`) VALUES
+	(1, 'débutant'),
+	(2, 'intermédiaire'),
+	(3, 'avancé');
 /*!40000 ALTER TABLE `niveaux` ENABLE KEYS */;
 
 -- Dumping structure for table maha.notifications
@@ -406,8 +410,12 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   CONSTRAINT `FK_notifications_commentaires` FOREIGN KEY (`id_commentaire`) REFERENCES `commentaires` (`id_commentaire`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.notifications: ~0 rows (approximately)
+-- Dumping data for table maha.notifications: ~2 rows (approximately)
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
+INSERT INTO `notifications` (`id_notification`, `id_commentaire`, `etat_notification`) VALUES
+	(1, 1, 1),
+	(2, 2, 1),
+	(3, 3, 1);
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 
 -- Dumping structure for table maha.previews
@@ -422,8 +430,8 @@ CREATE TABLE IF NOT EXISTS `previews` (
 
 -- Dumping data for table maha.previews: ~1 rows (approximately)
 /*!40000 ALTER TABLE `previews` DISABLE KEYS */;
-INSERT IGNORE INTO `previews` (`id_formation`, `id_video`) VALUES
-  (1, 4);
+INSERT INTO `previews` (`id_formation`, `id_video`) VALUES
+	(1, 29);
 /*!40000 ALTER TABLE `previews` ENABLE KEYS */;
 
 -- Dumping structure for table maha.request_payment
@@ -440,7 +448,26 @@ CREATE TABLE IF NOT EXISTS `request_payment` (
 
 -- Dumping data for table maha.request_payment: ~0 rows (approximately)
 /*!40000 ALTER TABLE `request_payment` DISABLE KEYS */;
+INSERT INTO `request_payment` (`id_payment`, `id_formateur`, `request_prix`, `date_request`, `etat_request`) VALUES
+	(1, 'FOR1', 10, '2023-03-27 15:22:55', 'declined');
 /*!40000 ALTER TABLE `request_payment` ENABLE KEYS */;
+
+-- Dumping structure for table maha.sous_categories
+CREATE TABLE IF NOT EXISTS `sous_categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(200) NOT NULL,
+  `id_categorie` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK__categories` (`id_categorie`),
+  CONSTRAINT `FK__categories` FOREIGN KEY (`id_categorie`) REFERENCES `categories` (`id_categorie`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table maha.sous_categories: ~2 rows (approximately)
+/*!40000 ALTER TABLE `sous_categories` DISABLE KEYS */;
+INSERT INTO `sous_categories` (`id`, `nom`, `id_categorie`) VALUES
+	(2, 'Vue JS', 10),
+	(3, 'JAVA EE', 10);
+/*!40000 ALTER TABLE `sous_categories` ENABLE KEYS */;
 
 -- Dumping structure for table maha.tablefilter
 CREATE TABLE IF NOT EXISTS `tablefilter` (
@@ -467,10 +494,10 @@ CREATE TABLE IF NOT EXISTS `tablefilter` (
   `niveauFormation` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.tablefilter: ~0 rows (approximately)
+-- Dumping data for table maha.tablefilter: ~1 rows (approximately)
 /*!40000 ALTER TABLE `tablefilter` DISABLE KEYS */;
-INSERT IGNORE INTO `tablefilter` (`IdFormation`, `imgFormation`, `duree`, `idCategore`, `categorie`, `nomFormation`, `prix`, `description`, `likes`, `IdFormteur`, `nomFormateur`, `prenomFormateur`, `specialiteId`, `specialite`, `imgFormateur`, `numbAcht`, `dateCreationFormation`, `idLangage`, `langageFormation`, `idNiv`, `niveauFormation`) VALUES
-  (1, 'images/formations/images/37066.jpg', '00:08:37', 10, 'Réseaux informatique', 'Consequatur adipisc', 12, 'Eu non eos pariatur Eu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariatur', 1, 0, 'John', 'Smith', 4, 'Business & Efficacité professionnelle', 'images/userImage/26611.jpg', 0, '2023-03-27', NULL, NULL, 1, 'débutant');
+INSERT INTO `tablefilter` (`IdFormation`, `imgFormation`, `duree`, `idCategore`, `categorie`, `nomFormation`, `prix`, `description`, `likes`, `IdFormteur`, `nomFormateur`, `prenomFormateur`, `specialiteId`, `specialite`, `imgFormateur`, `numbAcht`, `dateCreationFormation`, `idLangage`, `langageFormation`, `idNiv`, `niveauFormation`) VALUES
+	(1, 'images/formations/images/37066.jpg', '00:08:37', 10, 'Réseaux informatique', 'Consequatur adipisc', 12, 'Eu non eos pariatur Eu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariaturEu non eos pariatur', 1, 0, 'John', 'Smith', 8, 'Vidéo-Compositing', 'images/userImage/26611.jpg', 0, '2023-03-27', 1, 'Français', 1, 'débutant');
 /*!40000 ALTER TABLE `tablefilter` ENABLE KEYS */;
 
 -- Dumping structure for table maha.videos
@@ -486,58 +513,58 @@ CREATE TABLE IF NOT EXISTS `videos` (
   PRIMARY KEY (`id_video`),
   KEY `id_formation` (`id_formation`),
   CONSTRAINT `videos_ibfk_1` FOREIGN KEY (`id_formation`) REFERENCES `formations` (`id_formation`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.videos: ~47 rows (approximately)
 /*!40000 ALTER TABLE `videos` DISABLE KEYS */;
-INSERT IGNORE INTO `videos` (`id_video`, `id_formation`, `nom_video`, `url_video`, `duree_video`, `description_video`, `order_video`, `watched`) VALUES
-  (1, 1, 'Title 1', 'images/formations/videos/79148_1.mp4', '00:00:11', 'Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1', 999, 0),
-  (2, 1, 'Title 2', 'images/formations/videos/10556_1.mp4', '00:00:11', 'Title 2Title 2Title 2Title 2Title 2Title 2Title 2Title 2Title 2Title 2', 999, 0),
-  (3, 1, 'Title 3', 'images/formations/videos/24444_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (4, 1, '1', 'images/formations/videos/50833_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (5, 1, '1', 'images/formations/videos/23293_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (6, 1, '1', 'images/formations/videos/22270_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (7, 1, '1', 'images/formations/videos/11710_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (8, 1, '1', 'images/formations/videos/19314_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (9, 1, '1', 'images/formations/videos/34378_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (10, 1, '1', 'images/formations/videos/93737_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (11, 1, '1', 'images/formations/videos/13075_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (12, 1, '1', 'images/formations/videos/34103_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (13, 1, '1', 'images/formations/videos/85274_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (14, 1, '1', 'images/formations/videos/19612_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (15, 1, '1', 'images/formations/videos/20497_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (16, 1, '1', 'images/formations/videos/21652_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (17, 1, '1', 'images/formations/videos/14438_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (18, 1, '1', 'images/formations/videos/77059_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (19, 1, '1', 'images/formations/videos/28673_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (20, 1, '1', 'images/formations/videos/34603_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (21, 1, '1', 'images/formations/videos/21411_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (22, 1, '1', 'images/formations/videos/42497_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (23, 1, '1', 'images/formations/videos/27708_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (24, 1, '1', 'images/formations/videos/28215_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (25, 1, '1', 'images/formations/videos/11387_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (26, 1, '1', 'images/formations/videos/92969_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (27, 1, '1', 'images/formations/videos/12635_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (28, 1, '1', 'images/formations/videos/21002_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (29, 1, '1', 'images/formations/videos/36911_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (30, 1, '1', 'images/formations/videos/16611_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (31, 1, '1', 'images/formations/videos/10245_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (32, 1, '1', 'images/formations/videos/15752_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (33, 1, '1', 'images/formations/videos/25426_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (34, 1, '1', 'images/formations/videos/58461_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (35, 1, '1', 'images/formations/videos/28529_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (36, 1, '1', 'images/formations/videos/99894_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (37, 1, '1', 'images/formations/videos/12706_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (38, 1, '1', 'images/formations/videos/23900_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (39, 1, '1', 'images/formations/videos/34201_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (40, 1, '1', 'images/formations/videos/23821_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (41, 1, '1', 'images/formations/videos/32777_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (42, 1, '1', 'images/formations/videos/30545_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (43, 1, '1', 'images/formations/videos/21262_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (44, 1, '1', 'images/formations/videos/84962_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (45, 1, '1', 'images/formations/videos/14338_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (46, 1, '1', 'images/formations/videos/84976_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
-  (47, 1, '1', 'images/formations/videos/22706_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0);
+INSERT INTO `videos` (`id_video`, `id_formation`, `nom_video`, `url_video`, `duree_video`, `description_video`, `order_video`, `watched`) VALUES
+	(1, 1, 'Title 1', 'images/formations/videos/79148_1.mp4', '00:00:11', 'Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1Title 1', 999, 0),
+	(2, 1, 'Title 2', 'images/formations/videos/10556_1.mp4', '00:00:11', 'Title 2Title 2Title 2Title 2Title 2Title 2Title 2Title 2Title 2Title 2', 999, 0),
+	(3, 1, 'Title 3', 'images/formations/videos/24444_1.mp4', '00:00:11', 'Title 3Title 3Title 3Title 3Title 3Title 3Title 3Title 3Title 3', 999, 0),
+	(4, 1, '1', 'images/formations/videos/50833_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(5, 1, '1', 'images/formations/videos/23293_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(6, 1, '1', 'images/formations/videos/22270_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(7, 1, '1', 'images/formations/videos/11710_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(8, 1, '1', 'images/formations/videos/19314_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(9, 1, '1', 'images/formations/videos/34378_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(10, 1, '1', 'images/formations/videos/93737_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(11, 1, '1', 'images/formations/videos/13075_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(12, 1, '1', 'images/formations/videos/34103_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(13, 1, '1', 'images/formations/videos/85274_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(14, 1, '1', 'images/formations/videos/19612_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(15, 1, '1', 'images/formations/videos/20497_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(16, 1, '1', 'images/formations/videos/21652_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(17, 1, '1', 'images/formations/videos/14438_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(18, 1, '1', 'images/formations/videos/77059_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(19, 1, '1', 'images/formations/videos/28673_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(20, 1, '1', 'images/formations/videos/34603_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(21, 1, '1', 'images/formations/videos/21411_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(22, 1, '1', 'images/formations/videos/42497_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(23, 1, '1', 'images/formations/videos/27708_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(24, 1, '1', 'images/formations/videos/28215_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(25, 1, '1', 'images/formations/videos/11387_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(26, 1, '1', 'images/formations/videos/92969_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(27, 1, '1', 'images/formations/videos/12635_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(28, 1, '1', 'images/formations/videos/21002_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(29, 1, '1', 'images/formations/videos/36911_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(30, 1, '1', 'images/formations/videos/16611_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(31, 1, '1', 'images/formations/videos/10245_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(32, 1, '1', 'images/formations/videos/15752_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(33, 1, '1', 'images/formations/videos/25426_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(34, 1, '1', 'images/formations/videos/58461_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(35, 1, '1', 'images/formations/videos/28529_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(36, 1, '1', 'images/formations/videos/99894_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(37, 1, '1', 'images/formations/videos/12706_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(38, 1, '1', 'images/formations/videos/23900_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(39, 1, '1', 'images/formations/videos/34201_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(40, 1, '1', 'images/formations/videos/23821_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(41, 1, '1', 'images/formations/videos/32777_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(42, 1, '1', 'images/formations/videos/30545_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(43, 1, '1', 'images/formations/videos/21262_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(44, 1, '1', 'images/formations/videos/84962_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(45, 1, '1', 'images/formations/videos/14338_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(46, 1, '1', 'images/formations/videos/84976_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
+	(48, 1, '1', 'images/formations/videos/17526_79148_1.mp4', '00:00:11', 'décrivez ces vidéos ou ajoutez des ressources !', 999, 0);
 /*!40000 ALTER TABLE `videos` ENABLE KEYS */;
 
 -- Dumping structure for table maha.watched

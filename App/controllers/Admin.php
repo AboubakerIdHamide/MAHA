@@ -395,24 +395,58 @@ class Admin extends Controller
         echo json_encode($formateurs);
     }
 
-    public function categories()
+    public function categories($id = null)
+    {
+        if (is_null($id)) {
+            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                $data['categories'] = $this->stockedModel->getAllCategories();
+                $this->view('admin/categories', $data);
+            } else {
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    if (isset($_POST['sous_categorie'])) {
+                        $this->stockedModel->insertSousCategorie($_POST);
+                        echo 'La Sous-categorie ' . $_POST['sous_categorie'] . ' a été ajouter avec success.';
+                    } else {
+                        $this->stockedModel->insertCategorie($_POST);
+                        echo 'La Categorie ' . $_POST['nom_categorie'] . ' a été ajouter avec success.';
+                    }
+                } else {
+                    if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+                        $this->stockedModel->deleteCategorie(file_get_contents("php://input"));
+                        echo 'La Categorie a été supprimer avec success.';
+                    } else {
+                        $this->stockedModel->editCategorie(json_decode(file_get_contents("php://input")));
+                        echo 'La Categorie a été modifier avec success.';
+                    }
+                }
+            }
+        } else {
+            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                $sous_categories = $this->stockedModel->getAllSousCategoriesOfCategorie($id);
+                echo json_encode($sous_categories);
+            } else {
+                $this->stockedModel->deleteSousCategorie($id);
+                echo 'La Sous-Categorie a été supprimer avec success.';
+            }
+        }
+    }
+
+    public function langues($langueID = null)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $data['categories'] = $this->stockedModel->getAllCategories();
-            $this->view('admin/categories', $data);
+            $data['langues'] = $this->stockedModel->getAllLangues();
+
+            $this->view('admin/langues', $data);
         } else {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                if (isset($_POST['sous_categorie'])) {
-                    $this->stockedModel->insertSousCategorie($_POST);
-                    echo 'La Sous-categorie ' . $_POST['sous_categorie'] . ' a été ajouter avec success.';
-                } else {
-                    $this->stockedModel->insertCategorie($_POST);
-                    echo 'La Categorie ' . $_POST['nom_categorie'] . ' a été ajouter avec success.';
-                }
+                $this->stockedModel->insertLangue($_POST['nom_langue']);
+                echo 'La Langue ' . $_POST['nom_langue'] . ' a été ajouter avec success.';
             } else {
                 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-                    $this->stockedModel->deleteCategorie(file_get_contents("php://input"));
-                    echo 'La Categorie a été supprimer avec success.';
+                    if (!is_null($langueID)) {
+                        $this->stockedModel->deleteLangue($langueID);
+                        echo 'La Langue a été supprimer avec success.';
+                    }
                 }
             }
         }
