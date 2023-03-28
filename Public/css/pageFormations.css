@@ -8,36 +8,20 @@
     --transparent-color:rgb(15 116 143 / 70%);
 }
 /* ----------   Start Page Formations    ------------ */
-.pageFormation .header_page_formation{
-    margin-top: 60px;
-    width: 100%;
-    padding: 30px 0;
-    background-color: var(--color-three);
-    text-align: center;
-    display: inline-block;
-}
-.pageFormation .header_page_formation h2{
-    font-size: 40px;
-    font-weight: 600;
-    padding-bottom: 20px;
-    color: white;
-}
-.pageFormation .header_page_formation p{
-    font-size: 18px;
-    color: white;
-    opacity: 80%;
-    text-align: center;
-    padding: 0 15px;
+.pageFormation{
+    margin: 0 !important;
+    padding: 0 !important;
 }
 /* strat filter */
 .pageFormation .filter{
     width: 100%;
-    padding: 50px 20px;
+    padding: 100px 20px 50px;
     /* position: relative; */
+}
+.pageFormation .filter .bF-res{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
 }
 .pageFormation .filter .resultat{
     display: flex;
@@ -75,7 +59,7 @@
     background-color: var(--color-four);
 }
 .pageFormation .filter .filter-par{
-    width: 420px;
+    width: 100%;
     height: 105px;
     display: flex;
     justify-content: space-evenly;
@@ -148,11 +132,10 @@
 }
 @media (max-width:767px){
     .pageFormation .filter .filter-par{
-        width: 300px;
+        /* width: 300px; */
         height: fit-content;
     }
     .pageFormation{
-        width: 100vh;
         position: relative;
     }
     .pageFormation .filter ul.ops{
@@ -170,7 +153,13 @@
     .pageFormation .filter ul li{
         font-size: 14px;
     }
-    #footer {
+}
+@media (max-width:480px){
+    .pageFormation{
+        width: 100vh;
+        position: relative;
+    }
+    #footer{
         width: 100vh;
     }
 }

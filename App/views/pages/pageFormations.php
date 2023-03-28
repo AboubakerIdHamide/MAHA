@@ -1,14 +1,16 @@
 <?php require_once APPROOT."/views/includes/header.php";?> 
     <!-- start page formations -->
     <section class="pageFormation">
-        <div class="header_page_formation">
-            <h2>Les Formations</h2>
-            <p>Une erreur, fût-elle vieille de cent mille ans, par cela même qu'elle est vieille, ne constitue pas une vérité ! la foule invariablement suit la routine. C'est au contraire, le petit nombre qui mène le progrès.</p>
-        </div>
         <div class="container">
             <div class="filter">
-                <div class="main-filter">
-                    <i class="fa fa-filter" aria-hidden="true"></i> <span>Filter</span>
+                <div class="bF-res">
+                    <div class="main-filter">
+                        <i class="fa fa-filter" aria-hidden="true"></i> <span>Filter</span>
+                    </div>
+                    <div class='resultat'>
+                        <p>Resultats :</p>
+                        <h2><?php echo $data['numbFormations'] ?></h2>
+                    </div>
                 </div>
                 <div class="filter-par" style='height: 105px;'>
                     <span>Trier par :</span>
@@ -73,11 +75,6 @@
                             </td>
                         </tr>
                     </table>
-                </div>
-
-                <div class='resultat'>
-                    <p>Resultats :</p>
-                    <h2><?php echo $data['numbFormations'] ?></h2>
                 </div>
                 <!-- start main filter -->
                 <ul class="ops hide">
@@ -379,8 +376,8 @@
     <script src="<?php echo URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="<?php echo URLROOT; ?>/public/js/main.js"></script>
     <script src="<?php echo URLROOT; ?>/public/js/pageFormations.js"></script>
+    <script src="<?php echo URLROOT; ?>/public/js/main.js"></script>
 </body>
 
 </html>
