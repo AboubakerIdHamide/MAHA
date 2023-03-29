@@ -70,9 +70,9 @@
     <section class="container mb-5">
 
         <p class="success-msg"></p>
-        <div class="row profil-row">
+        <div class="row profil-row d-flex justify-content-center align-items-center">
             <div class="col-lg-5 profil">
-                <div class="card p-2">
+                <div class="avatar card p-2 border-0">
                     <div class="text-center">
                         <div class="avatar-container">
                             <img id="avatar-profil" src="<?php echo $data['img'] ?>" alt="user image">
@@ -90,15 +90,10 @@
                         <span class="type-account badge rounded-pill text-bg-info"><i
                                 class="fa-solid fa-person-chalkboard"></i> Formateur</span>
                     </div>
-                    <hr />
-                    <div class="px-4">
-                        <p class="text-secondary" style="font-weight: 500;">Biographie</p>
-                        <p class="bio-display" id='bio-aff'><?php echo $data['bio'] ?></p>
-                    </div>
                 </div>
             </div>
             <div class="col-lg-7 mt-4 mt-lg-0">
-                <div class="card">
+                <div class="avatar card">
                     <div class="card-header py-3">
                         Informations de compte
                     </div>

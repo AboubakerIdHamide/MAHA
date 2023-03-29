@@ -87,12 +87,12 @@ ul{
 .container form{
     width: 80%;
     height: 80%;
-    box-shadow: 0px 0px  6px 2px #78d9ff;
+    box-shadow: 0px 0px  6px 2px #67a9f5;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #dff6ff;
+    background-color: #6fa4e0;
 }
 @media (max-width:767px){
     .container form{
@@ -225,7 +225,7 @@ ul{
     width: 80%;
     caret-color: var(--color-one);
     background-color: #fafafa;
-    border-bottom:2px solid var(--color-one);
+    border-bottom:2px solid var(--color-four);
     margin: 10px 0;
     color: var(--color-four);
 }
@@ -348,7 +348,8 @@ ul{
     padding: 20px;
     overflow-x: hidden;
     overflow-y: scroll;
-    background-color: #fafafa;
+    background-color: #dff6ff;
+    margin-top: -7px;
 }
 .container form  .field-box .input-field .uploded-videos::-webkit-scrollbar{
     width: 5px;
