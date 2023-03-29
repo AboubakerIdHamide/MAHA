@@ -20,7 +20,7 @@ html{
 
 body {
   font-family: Inter, sans-serif;
-  background: var(--color-one);
+  background: #b0d4fc;
 }
 
 body::-webkit-scrollbar{
@@ -79,7 +79,7 @@ body::-webkit-scrollbar-thumb{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #fff;
+    background-color: #94c0fb;
     border-radius: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -99,11 +99,11 @@ body::-webkit-scrollbar-thumb{
     margin-bottom: 20px;
 }
 .main-form-heading .logo a{
-    color: var(--color-one);
+    color: #ff6584;
     text-decoration: none;
 }
 .main-form-heading .logo a span{
-    color: var(--color-four);
+    color: var(--color-one);
 }
 .container form label,
 .container form p{
@@ -115,16 +115,16 @@ body::-webkit-scrollbar-thumb{
     color: var(--color-one);
 }
 .container form p .user-email{
-    color: var(--color-one);
+    color: #ff6584;
 }
 .container form input{
     width: 30%;
     padding: 10px 13px;
     font-size: 30px;
     outline: none;
-    background-color:#e8f0fe;
+    background-color:#b6d6ff;
     border: none;
-    border-bottom: 2px solid var(--color-one);
+    border-bottom: 2px solid var(--color-four);
     caret-color: var(--color-one);
     color: var(--color-four);
     transition: var(--main-transition);
@@ -147,7 +147,8 @@ body::-webkit-scrollbar-thumb{
 .container form .submit-btn{
     margin-top: 10px;
     cursor: pointer;
-    border: 2px solid var(--color-one);
+    border: none;
+    border-radius: 6px;
     padding:10px 10px;
     width: 30%;
     max-width: 40%;
@@ -155,7 +156,7 @@ body::-webkit-scrollbar-thumb{
     color: #fff;
     font-weight: 400;
     letter-spacing: 1px;
-    background-color: var(--color-one);
+    background-color: #313f87f0;
     transition: var(--main-transition);
     -webkit-transition: var(--main-transition);
     -moz-transition: var(--main-transition);
@@ -168,16 +169,16 @@ body::-webkit-scrollbar-thumb{
     }
 }
 .container form .submit-btn:hover{
-    color: var(--color-one);
-    background-color: #fff;
+    color: #fff;
+    background-color: #ff6584;
 }
 .container form .resend-link{
     border: none;
     text-decoration: underline;
     cursor: pointer;
     margin-top: 10px;
-    color: var(--color-one);
-    background-color: #fff;
+    color: #fff;
+    background-color: #94c0fb;
     font-size: 13px;
     transition: var(--main-transition);
     -webkit-transition: var(--main-transition);

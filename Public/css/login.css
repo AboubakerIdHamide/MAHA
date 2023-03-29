@@ -32,7 +32,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #47B5FF;
+    background-color: #b0d4fc;
 }
 
 .main-form-heading{
@@ -47,11 +47,11 @@ body{
     margin-bottom: 10px;
 }
 .main-form-heading .logo a.l{
-    color: var(--color-one);
+    color: #ff6584;
     text-decoration: none;
 }
 .main-form-heading .logo a.l span{
-    color: var(--color-four);
+    color: var(--color-one);
 }
 
 
@@ -61,7 +61,7 @@ body{
     position: relative;
     max-width: 430px;
     width: 100%;
-    background-color: #fff;
+    background-color: #94c0fb;
     box-shadow: 5px 7px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     margin: 0 20px;
@@ -74,7 +74,7 @@ body{
 
 .container .form{
     padding: 30px;
-    background-color: #fff;
+    background-color: #94c0fb;
 }
 
 .container .form .title{
@@ -100,13 +100,15 @@ body{
     border: none;
     outline: none;
     font-size: 16px;
-    border-bottom: 2px solid #ccc;
+    border-bottom: 2px solid #2d88ff;
     border-top: 2px solid transparent;
     transition: all 0.2s ease;
+    border-radius: 2px;
+    background-color: #b6d6ff;
 }
 
 .input-field input:is(:focus){
-    border-bottom-color: #47B5FF;
+    border-bottom-color: #182d8a;
 }
 
 .input-field i{
@@ -116,6 +118,8 @@ body{
     color: #999;
     font-size: 23px;
     transition: all 0.2s ease;
+    padding-right: 5px;
+    padding-left: 5px;
 }
 
 .input-field input:is(:focus) ~ i{
@@ -158,7 +162,7 @@ body{
 
 .form a.text{
     text-decoration: none;
-    color: #47B5FF;
+    color: #182d8a;
 }
 
 .form a:hover{
@@ -175,13 +179,13 @@ body{
     color: #fff;
     letter-spacing: 1px;
     border-radius: 6px;
-    background-color: #47B5FF;
+    background-color: #313f87f0;
     cursor: pointer;
 }
 
 .form .button input:hover{
-    color: var(--color-one);
-    background-color: #fff;
+    color: #fff;
+    background-color: #ff6584;
     box-shadow: 0 0 4px 1px #ddd;
 }
 
