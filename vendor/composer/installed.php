@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-noPcloud',
-        'version' => 'dev-noPcloud',
-        'reference' => '01177c8e5e6147868774ecaff69668e1abf191e4',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '0f53c96e4574175396de8d4c503ba5c19ba6eaa1',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-noPcloud',
-            'version' => 'dev-noPcloud',
-            'reference' => '01177c8e5e6147868774ecaff69668e1abf191e4',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '0f53c96e4574175396de8d4c503ba5c19ba6eaa1',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -43,6 +43,15 @@
             'reference' => '67c26b443f348a51926030c83481b85718457d3d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../guzzlehttp/psr7',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'phpmailer/phpmailer' => array(
+            'pretty_version' => 'v6.8.0',
+            'version' => '6.8.0.0',
+            'reference' => 'df16b615e371d81fb79e506277faea67a1be18f1',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
             'aliases' => array(),
             'dev_requirement' => false,
         ),

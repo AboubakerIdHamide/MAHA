@@ -1,152 +1,182 @@
 /*========================================== Header Scripts =========================================*/
 // Menu Button
-let menuBtn = document.getElementById("menuBtn")
-  , navBar = document.getElementById("navBarUl");
+let menuBtn = document.getElementById("menuBtn"),
+  navBar = document.getElementById("navBarUl");
 
-menuBtn.addEventListener('click', ()=>{
-    let PhoneMedia = window.matchMedia("(max-width: 768px)");
-    if (PhoneMedia.matches) {
-        menuBtn.classList.toggle('active');
-        navBar.classList.toggle('hide');
-    }
-}
-)
+menuBtn.addEventListener("click", () => {
+  let PhoneMedia = window.matchMedia("(max-width: 768px)");
+  if (PhoneMedia.matches) {
+    menuBtn.classList.toggle("active");
+    navBar.classList.toggle("hide");
+  }
+});
 
 function hideNavBar() {
-    let notPhoneMedia = window.matchMedia("(min-width: 768px)");
-    if (notPhoneMedia.matches) {
-        if (navBar.classList.contains('hide')) {
-            navBar.classList.remove('hide');
-            if (menuBtn.classList.contains('active')) {
-                menuBtn.classList.remove('active');
-            }
-        }
-    } else {
-        if (!navBar.classList.contains('hide')) {
-            navBar.classList.add('hide');
-            if (menuBtn.classList.contains('active')) {
-                menuBtn.classList.remove('active');
-            }
-        }
+  let notPhoneMedia = window.matchMedia("(min-width: 768px)");
+  if (notPhoneMedia.matches) {
+    if (navBar.classList.contains("hide")) {
+      navBar.classList.remove("hide");
+      if (menuBtn.classList.contains("active")) {
+        menuBtn.classList.remove("active");
+      }
     }
+  } else {
+    if (!navBar.classList.contains("hide")) {
+      navBar.classList.add("hide");
+      if (menuBtn.classList.contains("active")) {
+        menuBtn.classList.remove("active");
+      }
+    }
+  }
 }
 
 // Loding Bar
-document.onreadystatechange = ()=>{
-    let lodBar = document.querySelector(".loding-bar");
-    if (document.readyState == "interactive") {
-        lodBar.style.setProperty("width", `50%`);
-    } else if (document.readyState == "complete") {
-        lodBar.style.setProperty("width", `100%`);
-        setTimeout(()=>{
-            lodBar.style.display = "none"
-        }
-        , 1000);
-    }
-}
+document.onreadystatechange = () => {
+  let lodBar = document.querySelector(".loding-bar");
+  if (document.readyState == "interactive") {
+    lodBar.style.setProperty("width", `50%`);
+  } else if (document.readyState == "complete") {
+    lodBar.style.setProperty("width", `100%`);
+    setTimeout(() => {
+      lodBar.style.display = "none";
+    }, 1000);
+  }
+};
 
 // Drop Menu
-let dropMenuBtn = document.getElementById("dropMenu")
-  , MenuDropped = document.getElementById("droppedMenu");
+let dropMenuBtn = document.getElementById("dropMenu"),
+  MenuDropped = document.getElementById("droppedMenu");
 
-dropMenuBtn.addEventListener("click", ()=>{
-    MenuDropped.classList.toggle("hide");
-}
-)
+dropMenuBtn.addEventListener("click", () => {
+  MenuDropped.classList.toggle("hide");
+});
 
-MenuDropped.addEventListener("mouseleave", ()=>{
-    MenuDropped.classList.add("hide");
-}
-)
+MenuDropped.addEventListener("mouseleave", () => {
+  MenuDropped.classList.add("hide");
+});
 
 function hideDropMenu(el) {
-    el.classList.add("hide");
+  el.classList.add("hide");
 }
 
-// Search Bar 
+// Search Bar
 let searchForm = document.getElementById("seacrhForm");
 searchIcon = document.getElementById("searchIcon");
-inputSerch = searchForm.querySelector('input');
+inputSerch = searchForm.querySelector("input");
 
-searchIcon.addEventListener("click", ()=>{
-    searchForm.classList.toggle("hide");
-    if (searchIcon.classList.contains("fa-search")) {
-        searchIcon.classList.replace("fa-search", "fa-xmark");
-    } else {
-        searchIcon.classList.replace("fa-xmark", "fa-search");
-    }
-}
-)
+searchIcon.addEventListener("click", () => {
+  searchForm.classList.toggle("hide");
+  if (searchIcon.classList.contains("fa-search")) {
+    searchIcon.classList.replace("fa-search", "fa-xmark");
+  } else {
+    searchIcon.classList.replace("fa-xmark", "fa-search");
+  }
+});
 
-searchForm.onsubmit = (e)=>{
-    let valRech = inputSerch.value;
-    if (!(valRech.length < 1 && valRech.length > 200)) {
-        window.location.href = `http://localhost/MAHA/pageFormations/rechercheFormations/${valRech}`;
-    }
-    e.preventDefault();
-}
+searchForm.onsubmit = (e) => {
+  let valRech = inputSerch.value;
+  if (!(valRech.length < 1 && valRech.length > 200)) {
+    window.location.href = `http://localhost/MAHA/pageFormations/rechercheFormations/${valRech}`;
+  }
+  e.preventDefault();
+};
 
 // Window Event
-window.onresize = ()=>{
-    hideNavBar()
-}
-window.onload = ()=>{
-    hideNavBar()
-}
-window.onscroll = ()=>{
-    hideNavBar();
-    hideDropMenu(MenuDropped)
-}
+window.onresize = () => {
+  hideNavBar();
+};
+window.onload = () => {
+  hideNavBar();
+};
+window.onscroll = () => {
+  hideNavBar();
+  hideDropMenu(MenuDropped);
+};
 
 // start overflow p description
-let $p_decription = $('.card_coures p');
+let $p_decription = $(".card_coures p");
 for (let i = 0; i < $p_decription.length; i++) {
-    if ($p_decription[i].textContent.length > 80) {
-        let text = $p_decription[i].textContent.slice(0, 80);
-        $p_decription[i].textContent = `${text} ...`;
-    }
+  if ($p_decription[i].textContent.length > 80) {
+    let text = $p_decription[i].textContent.slice(0, 80);
+    $p_decription[i].textContent = `${text} ...`;
+  }
 }
 // end overflow p description
 
 // to-tp button
 
-let $toTop = $('.to-top');
+let $toTop = $(".to-top");
 
-window.addEventListener('scroll', ()=>{
-    if (window.pageYOffset > 150)
-        $toTop.addClass('active');
-    else
-        $toTop.removeClass('active');
-}
-);
+window.addEventListener("scroll", () => {
+  if (window.pageYOffset > 150) $toTop.addClass("active");
+  else $toTop.removeClass("active");
+});
 
-$toTop.click(function(e) {
-    e.preventDefault();
-    window.scrollTo(0, 0);
-})
+$toTop.click(function (e) {
+  e.preventDefault();
+  window.scrollTo(0, 0);
+});
 
-$(".icon-box").click(function() {
-    window.location = $(this).find("a").attr("href");
-    return false;
+$(".icon-box").click(function () {
+  window.location = $(this).find("a").attr("href");
+  return false;
 });
 
 // Slide Card
 
-$('.owl-carousel').owlCarousel({
-    loop: true,
-    margin: 15,
-    nav: true,
-    responsive: {
-        0: {
-            items: 1
-        },
-        600: {
-            items: 2
-        },
-        1000: {
-            items: 3
-        }
-    }
-})
+$(".owl-carousel").owlCarousel({
+  loop: true,
+  margin: 15,
+  nav: true,
+  responsive: {
+    0: {
+      items: 1,
+    },
+    600: {
+      items: 2,
+    },
+    1000: {
+      items: 3,
+    },
+  },
+});
 
 // Slide Card
+function addToastToBtn(btnId) {
+  const toastTrigger = document.getElementById(btnId);
+  const toastLiveExample = document.getElementById("liveToast");
+  if (toastTrigger) {
+    toastTrigger.addEventListener("click", () => {
+      const toast = new bootstrap.Toast(toastLiveExample);
+      toast.show();
+    });
+  }
+}
+
+function showFlashMessage(message, colorClass) {
+  const bodyToast = $(".toast-body");
+  if (bodyToast.hasClass("bg-success")) {
+    bodyToast.removeClass("bg-success");
+  } else {
+    bodyToast.removeClass("bg-danger");
+  }
+  bodyToast.addClass("bg-" + colorClass);
+  $("span#message").text(message);
+}
+
+// Contact US Form
+addToastToBtn("is-send");
+$("#contact-us").submit(function (event) {
+  event.preventDefault();
+  $.ajax({
+    url: "http://localhost/maha//users/contactUs",
+    type: "POST",
+    data: $(this).serialize(),
+    success: function (response) {
+      showFlashMessage(response, "success");
+      $("#is-send").click();
+    },
+  });
+});
+
+// Contact US Form

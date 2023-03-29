@@ -1,11 +1,10 @@
 <?php
+// PHP Mailler Classes Autolader
+require_once './../vendor/autoload.php';
+
 // PHP Mailler Classes
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-
-// PHP Mailler Classes Autolader
-require APPROOT . '/mailing/vendor/autoload.php';
 
 class Users extends Controller
 {
@@ -225,9 +224,9 @@ class Users extends Controller
             $this->view("pages/emailVerification", $data);
         }
 
-        // send Email
+        // send Email Verification
         if (isset($_SESSION["vcode"]) == true && $_SESSION["resend"] == true) {
-            $this->sendEmailVerificationCode($data[0]["email"], $data[0]["prenom"], $_SESSION["vcode"], URLROOT . "/pages/verifyEmail");
+            $this->sendEmail($data[0]["email"], 'mahateamisgi@gmail.com', 'MAHA', 'Email vérification', null, $data[0]["prenom"], $_SESSION["vcode"], URLROOT . "/pages/verifyEmail");
             $_SESSION["resend"] = false;
         }
     }
@@ -352,9 +351,9 @@ class Users extends Controller
             $this->view("pages/emailVerification", $data);
         }
 
-        // send Email
+        // send Email Change Password
         if (isset($_SESSION["vcode"]) == true && $_SESSION["resend"] == true) {
-            $this->sendEmailVerificationCode($data[0]["email"], "", $_SESSION["vcode"], URLROOT . "/pages/changePassword");
+            $this->sendEmail($data[0]["email"], 'mahateamisgi@gmail.com', 'MAHA', 'Email vérification', null, '', $_SESSION["vcode"], URLROOT . "/pages/changePassword");
             $_SESSION["resend"] = false;
         }
     }
@@ -375,18 +374,18 @@ class Users extends Controller
             $_SESSION['id_formateur'] = $user['id_formateur'];
             $_SESSION['user'] = $user;
             // setting up the image link
-            $_SESSION['user']['avatar'] = URLROOT."/Public/".$_SESSION['user']['avatar'];
+            $_SESSION['user']['avatar'] = URLROOT . "/Public/" . $_SESSION['user']['avatar'];
             redirect('formateurs/dashboard');
         } else {
             $_SESSION['id_etudiant'] = $user['id_etudiant'];
             $_SESSION['user'] = $user;
             // setting up the image link
-            $_SESSION['user']['avatar'] = URLROOT."/Public/".$_SESSION['user']['avatar'];
+            $_SESSION['user']['avatar'] = URLROOT . "/Public/" . $_SESSION['user']['avatar'];
             redirect('etudiants/dashboard');
         }
     }
 
-    private function sendEmailVerificationCode($to, $name, $code, $link)
+    private function sendEmail($to, $from, $name, $subject, $message, $destinataire, $code, $link)
     {
         //Instantiation and passing `true` enables exceptions
         $mail = new PHPMailer(true);
@@ -404,10 +403,10 @@ class Users extends Controller
             $mail->SMTPAuth = true;
 
             //SMTP username
-            $mail->Username = 'ali12moka@gmail.com';
+            $mail->Username = 'mahateamisgi@gmail.com';
 
             //SMTP password
-            $mail->Password = 'wdgqmmeslozyslnh';
+            $mail->Password = 'fmllrxzwfsrovexr';
 
             //Enable TLS encryption;
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
@@ -416,24 +415,38 @@ class Users extends Controller
             $mail->Port = 465;
 
             //Recipients
-            $mail->setFrom('ali12moka@gmail.com', 'MAHA');
+            $mail->setFrom($from, $name);
 
             //Add a recipient
             $mail->addAddress($to);
 
             //Set email format to HTML
             $mail->isHTML(true);
-            $mail->Subject = 'Email verification';
-            $mail->Body    = '<p>Salut ' . $name . '</p>
-            <p>Votre code de vérification est : <b style="font-size: 30px;color:#06283D;">' . $code . '</b><br/>
-            Entrez ce code <a href="' . $link . '" style="color:#47B5FF;">ici</a> pour vérifier votre identité .</p>
-            <p>Par l\'equipe de <span style="font-size:18px;color:#47B5FF;">M<span style="color:#06283D;">A</span>H<span style="color:#06283D;">A</span></span> .</p>';
+            $mail->Subject = "$from ($subject)";
+            if ($name === 'MAHA') {
+                $mail->Body    = '<p>Salut ' . $destinataire . '</p>
+                <p>Votre code de vérification est : <b style="font-size: 30px;color:#06283D;">' . $code . '</b><br/>
+                Entrez ce code <a href="' . $link . '" style="color:#47B5FF;">ici</a> pour vérifier votre identité .</p>
+                <p>Par l\'equipe de <span style="font-size:18px;color:#47B5FF;">M<span style="color:#06283D;">A</span>H<span style="color:#06283D;">A</span></span> .</p>';
+            } else {
+                $mail->Body = '<p>Bonjour ' . $destinataire . ',</p>
+                <p>' . $message . '</p>';
+            }
 
             // send it
             $mail->send();
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             die;
+        }
+    }
+
+    public function contactUs()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            extract($_POST);
+            $this->sendEmail('mahateamisgi@gmail.com', $email, $name, $subject, $message, 'MAHA', null, null);
+            echo "Votre Message a ete envoyer avec success !";
         }
     }
 
@@ -596,5 +609,4 @@ class Users extends Controller
 
         return $data;
     }
-
 }
