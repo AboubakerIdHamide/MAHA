@@ -82,7 +82,7 @@ $(document).ready(function () {
     videoComments.forEach((comment) => {
       commentsText += `
 				<div class="d-flex gap-2 mb-2" data-video-id="${comment.id_video}" data-etudiant-id="${comment.id_etudiant}">
-					  <img class="align-self-start" src="http://localhost/maha/public/${comment.img_etudiant}" alt="my-photo">
+					  <img class="align-self-start" src="${comment.img_etudiant}" alt="my-photo">
 					  <div class="d-flex flex-column etudiant-comment">
 						  <span class="my-name">${comment.nom_etudiant} ${comment.prenom_etudiant}</span>
 						  <p>${comment.commentaire}</p>
@@ -136,7 +136,7 @@ $(document).ready(function () {
 		<div class="d-flex gap-2 mt-2 ${
       $user_comment === "formateur" && "flex-row-reverse"
     }">
-			<img class="align-self-start" src="http://localhost/maha/public/${etudiantImageSrc}" alt="my-photo">
+			<img class="align-self-start" src="${etudiantImageSrc}" alt="my-photo">
 			<div class="d-flex flex-column ${$user_comment}-comment">
 				<span class="my-name">${nomTotal}</span>
 				<p>${$comment}</p>

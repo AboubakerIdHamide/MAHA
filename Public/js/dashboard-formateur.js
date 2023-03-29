@@ -17,14 +17,22 @@ $(document).ready(function () {
     for (let course of courses) {
       let tr = `
 			<tr>
-				<td class="text-center"><input value=${course.id} type="checkbox" class="form-check-input fs-5 select"></td>
+				<td class="text-center"><input value=${
+          course.id
+        } type="checkbox" class="form-check-input fs-5 select"></td>
 				<td><p class="titre">${course.titre}</p></td>
 				<td class="text-center" style="font-weight: 600;">${course.likes}</td>
 				<td><p class="desc">${course.description}</p></td>
 				<td class="text-center" style="font-weight: 600;">${course.apprenants}</td>
-				<td class="text-center"><a href='http://localhost/maha/public/${course.file}' class="btn btn-success btn-sm" download><i class="fa-solid fa-download"></i> Telecharger</a></td>
+				<td class="text-center">${
+          course.file === null
+            ? "Aucun Fichier"
+            : `<a href='http://localhost/maha/public/${course.file}' class="btn btn-success btn-sm" download><i class="fa-solid fa-download"></i> Telecharger</a>`
+        }</td>
 				<td class="text-center">${course.dateUploaded}</td>
-				<td class="text-center"><a href="http://localhost/maha/formations/videos/${course.id}" class="btn btn-warning btn-sm">Leçons</a></td>
+				<td class="text-center"><a href="http://localhost/maha/formations/videos/${
+          course.id
+        }" class="btn btn-warning btn-sm">Leçons</a></td>
 				<td class="text-center"><strong>${course.prix} $</strong></td>
 			</tr>
 			`;
@@ -80,7 +88,7 @@ $(document).ready(function () {
         id: coursesSelected,
       },
       success: function (response) {
-        // code
+        location.reload();
       },
     });
 
