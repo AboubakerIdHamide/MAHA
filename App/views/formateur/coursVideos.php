@@ -21,7 +21,7 @@
         <div class="container mt-3">
             <div class="row">
                 <div class="col-xl-3">
-                    <a href="<?= URLROOT . "/etudiant/index" ?>">
+                    <a href="<?= URLROOT ?>/<?= isset($_SESSION['id_formateur']) ? 'formateurs' : 'etudiants' ?>">
                         <img class="img-fluid" src="<?= $data->image_formation ?>" alt="formation image">
                     </a>
                 </div>

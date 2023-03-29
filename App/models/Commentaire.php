@@ -46,7 +46,7 @@ class Commentaire
 				type_user
 			FROM commentaires c 
 			JOIN etudiants e ON c.from_user = e.id_etudiant
-			WHERE id_video = :videoId AND to_user = :formateurId
+			WHERE id_video = :videoId AND to_user = :formateurId AND c.from_user = :etudiantId
 			UNION
 			SELECT 
 				from_user,

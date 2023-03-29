@@ -43,7 +43,7 @@ class Etudiants extends Controller
 	public function coursVideos($idFormateur = "", $idFormation = "")
 	{
 		if (empty($idFormateur) || empty($idFormation)) {
-			redirect("etudiants/index");
+			redirect("etudiants");
 		}
 		// preparing data
 		$data = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, $_SESSION['id_etudiant'], $idFormateur);

@@ -43,8 +43,13 @@ class PageFormations extends Controller
         $this->view("pages/pageFormations", $data);
     }
 
-    public function coursDetails($id = 1)
+    public function coursDetails($id = null)
     {
+        if(is_null($id)) {
+            redirect('pageFormations');
+            exit;
+        }
+
         $info = $this->formationModel->getFormationById($id);
         $videos = $this->videoModel->getInfoVideosFormationById($id);
         $numVideos = $this->videoModel->countVideosFormationById($id);
