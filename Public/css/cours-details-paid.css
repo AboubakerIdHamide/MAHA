@@ -78,7 +78,7 @@ body {
 
 .media-header .group {
   padding: 10px 20px;
-  background-color: rgba(37, 109, 133, 0.5);
+  background-color: #313f87f0;
   height: 100%;
   border-radius: 8px;
 }
@@ -86,7 +86,7 @@ body {
 .media-header .group .instructor {
   padding: 6px 15px;
   border-radius: 10px;
-  background-color: var(--color-one);
+  background-color: #8192e7f0;
 }
 
 .media-header .group .love-ses-formations a {
@@ -165,6 +165,7 @@ body {
   border-radius: 4px;
   transition: background-color var(--main-transition) ease;
   cursor: pointer;
+  background-color: #abd5ef;
 }
 
 .container .playlist-videos .videos-list ul li:not(.selected):hover {
