@@ -42,17 +42,37 @@
         </div>
     </section>
     <section class="container mt-3">
-        <input type="text" class="form-control my-3" id="formateur" placeholder="le nom de formateur">
-        <div class="row">
-            <div class="col-12 col-lg-6">
-                <div id="chart-1">
-                    <div class="before-search d-flex justify-content-center align-items-center">
-                        <span>veuillez rechercher le formateur</span>
-                    </div>
-                </div>
+        <div class="row mb-3">
+            <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                <label for="date" class="form-label">Choisissiez Periode</label>
+                <select id="date" class="form-select">
+                    <option value="today" selected>Aujourd'hui</option>
+                    <option value="yesterday">Hier</option>
+                    <option value="week">Derniere Semaine</option>
+                    <option value="month">Dernier Mois</option>
+                    <option value="3months">Dernier 3 Mois</option>
+                    <option value="year">Derniere Annee</option>
+                </select>
             </div>
             <div class="col-12 col-lg-6">
-                <div id="chart-2"></div>
+                <div class="d-flex justify-content-between">
+                    <div class="start">
+                        <label for="debut" class="form-label">Début</label>
+                        <input class="form-control" id="debut" type="date" />
+                    </div>
+                    <div class="end">
+                        <label for="fin" class="form-label">Fin</label>
+                        <input class="form-control" id="fin" type="date" />
+                    </div>
+                    <button id="chercher" class="btn btn-primary align-self-end">Rechercher</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+               <div id="chart-1">
+                    
+                </div>
             </div>
         </div>
     </section>

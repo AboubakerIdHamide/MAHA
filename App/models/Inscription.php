@@ -218,20 +218,133 @@ class Inscription
         return $response;
     }
 
-    public function top10BestSellers()
+    public function top5BestSellersTodayOrYesterday($periode)
+    {
+        switch ($periode) {
+            case 'today':
+                $periode = date('Y-m-d');
+                break;
+            case 'yesterday':
+                $periode = date('Y-m-d',strtotime("-1 days"));
+                break;
+            default:
+                exit;
+                break;
+        }
+
+        $request = $this->connect->prepare("
+            SELECT 
+                CONCAT(f.nom_formateur, ' ', f.prenom_formateur) AS nomComplet,
+                SUM(i.prix) AS montantTotal,
+                COUNT(i.id_formation) AS nbrFormation
+            FROM inscriptions i
+            JOIN formateurs f USING (id_formateur)
+            WHERE DATE(i.date_inscription) = :periode
+            GROUP BY i.id_formateur
+            ORDER BY montantTotal DESC
+            LIMIT 5
+        ");
+
+        $request->execute(['periode' => $periode]);
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+
+    public function top5BestSellersLastWeek()
     {
         $request = $this->connect->prepare("
-            SELECT
-                CONCAT(f.nom_formateur, ' ', f.prenom_formateur) AS nom, 
-                SUM(prix) AS totalRevenu
+            SELECT 
+                CONCAT(f.nom_formateur, ' ', f.prenom_formateur) AS nomComplet,
+                SUM(i.prix) AS montantTotal,
+                COUNT(i.id_formation) AS nbrFormation
             FROM inscriptions i
-            JOIN formateurs f USING(id_formateur)
+            JOIN formateurs f USING (id_formateur)
+            WHERE YEARWEEK(i.date_inscription, 1) = YEARWEEK( CURDATE() - INTERVAL 1 WEEK, 1)
             GROUP BY i.id_formateur
-            ORDER BY totalRevenu DESC
-            LIMIT 10
+            ORDER BY montantTotal DESC
+            LIMIT 5
         ");
 
         $request->execute();
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+
+    public function top5BestSellersLastMonth()
+    {
+        $request = $this->connect->prepare("
+            SELECT 
+                CONCAT(f.nom_formateur, ' ', f.prenom_formateur) AS nomComplet,
+                SUM(i.prix) AS montantTotal,
+                COUNT(i.id_formation) AS nbrFormation
+            FROM inscriptions i
+            JOIN formateurs f USING (id_formateur)
+            WHERE MONTH(i.date_inscription) = MONTH(NOW()) - 1
+            GROUP BY i.id_formateur
+            ORDER BY montantTotal DESC
+            LIMIT 5
+        ");
+
+        $request->execute();
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+
+    public function top5BestSellersLast3Months()
+    {
+        $request = $this->connect->prepare("
+            SELECT 
+                CONCAT(f.nom_formateur, ' ', f.prenom_formateur) AS nomComplet,
+                SUM(i.prix) AS montantTotal,
+                COUNT(i.id_formation) AS nbrFormation
+            FROM inscriptions i
+            JOIN formateurs f USING (id_formateur)
+            WHERE MONTH(i.date_inscription) = MONTH(NOW()) - 1
+            GROUP BY i.id_formateur
+            ORDER BY montantTotal DESC
+            LIMIT 5
+        ");
+
+        $request->execute();
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+    public function top5BestSellersLastYear()
+    {
+        $request = $this->connect->prepare("
+            SELECT 
+                CONCAT(f.nom_formateur, ' ', f.prenom_formateur) AS nomComplet,
+                SUM(i.prix) AS montantTotal,
+                COUNT(i.id_formation) AS nbrFormation
+            FROM inscriptions i
+            JOIN formateurs f USING (id_formateur)
+            WHERE YEAR(i.date_inscription) = YEAR(NOW() - INTERVAL 1 YEAR)
+            GROUP BY i.id_formateur
+            ORDER BY montantTotal DESC
+            LIMIT 5
+        ");
+
+        $request->execute();
+        $response = $request->fetchAll(PDO::FETCH_OBJ);
+        return $response;
+    }
+
+    public function top5BestSellersBetween2Days($debut, $fin)
+    {
+        $request = $this->connect->prepare("
+            SELECT 
+                CONCAT(f.nom_formateur, ' ', f.prenom_formateur) AS nomComplet,
+                SUM(i.prix) AS montantTotal,
+                COUNT(i.id_formation) AS nbrFormation
+            FROM inscriptions i
+            JOIN formateurs f USING (id_formateur)
+            WHERE i.date_inscription BETWEEN :debut AND :fin
+            GROUP BY i.id_formateur
+            ORDER BY montantTotal DESC
+            LIMIT 5
+        ");
+
+        $request->execute(['debut' => $debut, 'fin' => $fin]);
         $response = $request->fetchAll(PDO::FETCH_OBJ);
         return $response;
     }

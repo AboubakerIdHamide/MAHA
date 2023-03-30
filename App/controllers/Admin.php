@@ -364,14 +364,39 @@ class Admin extends Controller
         echo "L'inscription a été supprimer avec success !!!";
     }
 
-    public function ajaxData($idFormateur)
+    public function ajaxData($periode = null)
     {
         $this->checkSession();
-        $inscriptions = $this->inscriptionModel->getTotalApprenantsParJour($idFormateur);
-        foreach ($inscriptions as $i) {
-            $date = date_create($i->dateInscription);
-            $i->dateInscription = date_format($date, "d/m/Y");
+        switch ($periode) {
+            case 'today':
+                $inscriptions = $this->inscriptionModel->top5BestSellersTodayOrYesterday($periode);
+                break;
+            case 'yesterday':
+                $inscriptions = $this->inscriptionModel->top5BestSellersTodayOrYesterday($periode);
+                break;
+            case 'week':
+                $inscriptions = $this->inscriptionModel->top5BestSellersLastWeek();
+                break;
+            case 'month':
+                $inscriptions = $this->inscriptionModel->top5BestSellersLastMonth();
+                break;
+            case '3months':
+                $inscriptions = $this->inscriptionModel->top5BestSellersLast3Months();
+                break;
+            case 'year':
+                $inscriptions = $this->inscriptionModel->top5BestSellersLastYear(); 
+                break;
+            default:
+                if(isset($_GET['debut'], $_GET['fin']) && !empty($_GET['debut']) && !empty($_GET['fin'])){
+                    extract($_GET);
+                    $inscriptions = $this->inscriptionModel->top5BestSellersBetween2Days($debut, $fin);
+                }else{
+                    exit;
+                }
+                
+                break;
         }
+        
         echo json_encode($inscriptions);
     }
 

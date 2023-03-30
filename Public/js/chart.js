@@ -1,43 +1,14 @@
-const states = $.parseJSON($.ajax({
-    url: "http://localhost/maha/admin/getAllFormateurs/",
-    dataType: "json",
-    async: false,
-}).responseText);
-
-const names = [];
-states.forEach(function(f) {
-    names.push({
-        value: f.id_formateur,
-        label: f.nom_formateur + " " + f.prenom_formateur,
-    });
-});
-
-$("#formateur").autocomplete({
-    delay: 0,
-    source: names,
-}).on("autocompleteselect", function(event, ui) {
-    $("#chart-1").html("");
-    const data = $.parseJSON($.ajax({
-        url: "http://localhost/maha/admin/ajaxData/" + ui.item.value,
-        dataType: "json",
-        async: false,
-    }).responseText);
-
-    renderDataChart1(data, ui.item.label);
-    $("#formateur").text(ui.item.label);
-}).on("autocompleteclose", function() {
-    $(this).val("");
-});
-
-function renderDataChart1(data, nomFormateur) {
-    const dates = [];
+function renderDataChart(data) {
+    const formateurs = [];
     const revenus = [];
     const soldCourses = [];
 
+    console.log(data);
+
     data.forEach(function(row) {
-        dates.push(row.dateInscription);
-        revenus.push(row.totalRevenue);
-        soldCourses.push(Number(row.inscriptions));
+        formateurs.push(row.nomComplet);
+        revenus.push(Number(row.montantTotal));
+        soldCourses.push(Number(row.nbrFormation));
     });
 
     const options = {
@@ -58,7 +29,7 @@ function renderDataChart1(data, nomFormateur) {
             width: [0, 4],
         },
         title: {
-            text: `Statistiques Formateur (${nomFormateur})`,
+            text: `Statistiques Formateur`,
             align: "center",
             style: {
                 color: "#1D308A",
@@ -69,7 +40,7 @@ function renderDataChart1(data, nomFormateur) {
             enabled: true,
             enabledOnSeries: [1],
         },
-        labels: dates,
+        labels: formateurs,
         yaxis: [{
             title: {
                 text: "Revenu en $",
@@ -97,65 +68,61 @@ function renderDataChart1(data, nomFormateur) {
     chart.render();
 }
 
-function renderDataChart2() {
-    const data = $.parseJSON($.ajax({
-        url: "http://localhost/maha/admin/getTop10BestSellers",
-        dataType: "json",
-        async: false,
-    }).responseText);
-    const totalRevenu = [];
-    const names = [];
-
-    data.forEach(function(row) {
-        names.push(row.nom);
-        totalRevenu.push(row.totalRevenu);
+function getTop5Sellers($periode = 'today') {
+    $.ajax({
+        url : 'http://localhost/maha/admin/ajaxData/' + $periode,
+        success: function (data) {
+            $("#chart-1").html('');
+            renderDataChart(JSON.parse(data)); 
+        }
     });
-
-    const options = {
-        series: [{
-            name: "Total Revenu",
-            data: totalRevenu,
-        }, ],
-        chart: {
-            type: "bar",
-            height: 350,
-        },
-        plotOptions: {
-            bar: {
-                borderRadius: 4,
-                horizontal: true,
-            },
-        },
-        title: {
-            text: "Top 10 meilleurs vendeurs",
-            align: "center",
-            style: {
-                color: "#1D308A",
-                fontFamily: "Inter, Arial, sans-serif",
-            },
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        xaxis: {
-            categories: names,
-            labels: {
-                formatter: function(val, index) {
-                    return val + " $";
-                },
-            },
-        },
-        tooltip: {
-            y: {
-                formatter: function(val) {
-                    return val + " $";
-                },
-            },
-        },
-    };
-
-    const chart = new ApexCharts(document.querySelector("#chart-2"),options);
-    chart.render();
 }
 
-renderDataChart2();
+getTop5Sellers();
+
+$('#date').change(function (event) {
+    getTop5Sellers($(this).val());
+})
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
+function dateCompare(dateD, dateR){
+    let dateDebut = new Date(dateD);
+    let dateFin = new Date(dateR);
+
+    if(dateDebut <= dateFin){
+        dateDebut = formatDate(dateD);
+        dateFin = formatDate(dateR);
+        $.ajax({
+            url : `http://localhost/maha/admin/ajaxData?debut=${dateDebut}&fin=${dateFin}`,
+            success: function (data) {
+                $("#chart-1").html('');
+                renderDataChart(JSON.parse(data));   
+            }
+        });
+    }else{
+        alert('Date Fin doit etre inferieur a date debut !');
+    }
+}
+
+$('#chercher').click(function (event) {
+    const debut = $('#debut').val();
+    const fin = $('#fin').val();
+    if(debut !== '' && fin !== ''){
+        dateCompare(debut, fin);
+    }else{
+        alert('Veuillez Choissir les deux date !');
+    }
+});
