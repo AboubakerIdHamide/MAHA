@@ -397,11 +397,44 @@ class PageFormations extends Controller
         }
     }
 
-    public function formationsByDuree($deb = '', $fin = '')
+    public function formationsByDuree()
     {
+        $minH = 0;
+        $maxH = 0;
+        $errs = false;
+
+        $minH = $_REQUEST['minH'];
+        $maxH = $_REQUEST['maxH'];
+
+        if($minH !== 0 || $maxH !== 0){
+            // ================  Valide Valeur de Recherche  ================
+            $minH = str_split($minH);
+            $maxH = str_split($maxH);
+
+            $newMinH = [];
+            $newMaxH = [];
+    
+            foreach ($minH as $car) {
+                if (preg_match('/[0-9]/', $car) == 1) {
+                    array_push($newMinH, $car);
+                }
+            }
+            foreach ($maxH as $car) {
+                if (preg_match('/[0-9]/', $car) == 1) {
+                    array_push($newMaxH, $car);
+                }
+            }
+            $minH = implode($newMinH);
+            $maxH = implode($newMaxH);
+            // ================  Valide Valeur de Recherche  ================
+            if (strlen($minH) > 3 || strlen($maxH) > 3) {
+                $errs = true;
+            }  
+        }
+
         $langages = $this->stockedModel->getAllLangues();
         $nivaux = $this->stockedModel->getAllLevels();
-        $numbFormations = $this->formationModel->countFormationsByDuree($deb, $fin);
+        $numbFormations = $this->formationModel->countFormationsByDuree($minH, $maxH);
 
         $dataPages = $this->pagenition($numbFormations['numbFormations']);
 
@@ -409,8 +442,35 @@ class PageFormations extends Controller
         $offset = $dataPages['offset'];
         $totalPages = $dataPages['total_pages'];
 
+        if($errs == false){
 
-        if ($numbFormations['numbFormations'] == 0) {
+            if ($numbFormations['numbFormations'] == 0) {
+                $data = [
+                    'nivaux' => $nivaux,
+                    'langages' => $langages,
+                    'numbFormations' => 0,
+                    'info' => 'Aucun Formations'
+                ];
+
+                $this->view("pages/pageFormations", $data);
+            } else {
+                $info = $this->formationModel->getFormationsByDuree($minH, $maxH, $offset);
+                foreach ($info as $row) {
+                    $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
+                    $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
+                    $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
+                }
+                $data = [
+                    'nivaux' => $nivaux,
+                    'langages' => $langages,
+                    'numbFormations' => $numbFormations['numbFormations'],
+                    'info' => $info,
+                    'pageno' => $pageno,
+                    'totalPages' => $totalPages
+                ];
+                $this->view("pages/pageFormations", $data);
+            }
+        }else{
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
@@ -419,23 +479,8 @@ class PageFormations extends Controller
             ];
 
             $this->view("pages/pageFormations", $data);
-        } else {
-            $info = $this->formationModel->getFormationsByDuree($deb, $fin, $offset);
-            foreach ($info as $row) {
-                $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
-                $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
-                $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
-            }
-            $data = [
-                'nivaux' => $nivaux,
-                'langages' => $langages,
-                'numbFormations' => $numbFormations['numbFormations'],
-                'info' => $info,
-                'pageno' => $pageno,
-                'totalPages' => $totalPages
-            ];
-            $this->view("pages/pageFormations", $data);
         }
+
     }
 
     public function pagenition($num)

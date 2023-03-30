@@ -14,67 +14,68 @@
                 </div>
                 <div class="filter-par" style='height: 105px;'>
                     <span>Trier par :</span>
-                    <table>
-                        <tr>
-                            <td style='padding:5px; text-align: center;'>
-                                <div class="dropdown">
-                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Les Plus
-                                    </a>
+                    <div class="flt-par">            
+                        <div class="dropdown m-2">
+                            <a class="btn btn-secondary dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Les Plus
+                            </a>
 
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="<?php echo URLROOT . "/pageFormations/plusPopilairesFormations" ?>">Les Plus Populaires</a>
-                                        <a class="dropdown-item" href="<?php echo URLROOT . "/pageFormations/plusFormationsAmais" ?>">Les Plus Amais</a>
-                                        <a class="dropdown-item" href="<?php echo URLROOT . "/pageFormations/plusFormationsAchter" ?>">Les Plus Achter</a>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style='padding:5px; text-align: center;'>
-                                <div class="dropdown">
-                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Langages
-                                    </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="<?php echo URLROOT . "/pageFormations/plusPopilairesFormations" ?>">Les Plus Populaires</a>
+                                <a class="dropdown-item" href="<?php echo URLROOT . "/pageFormations/plusFormationsAmais" ?>">Les Plus Amais</a>
+                                <a class="dropdown-item" href="<?php echo URLROOT . "/pageFormations/plusFormationsAchter" ?>">Les Plus Achter</a>
+                            </div>
+                        </div>               
+                        <div class="dropdown m-2">
+                            <a class="btn btn-secondary dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Langages
+                            </a>
 
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <?php foreach ($data['langages'] as $lang) {
-                                            echo '<a class="dropdown-item" href="' . URLROOT . '/pageFormations/formationsByLangage/' . $lang->id_langue . '">' . $lang->nom_langue . '</a>';
-                                        } ?>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style='padding:5px; text-align: center;'>
-                                <div class="dropdown">
-                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Niveaux
-                                    </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <?php foreach ($data['langages'] as $lang) {
+                                    echo '<a class="dropdown-item" href="' . URLROOT . '/pageFormations/formationsByLangage/' . $lang->id_langue . '">' . $lang->nom_langue . '</a>';
+                                } ?>
+                            </div>
+                        </div>
+                        <div class="dropdown m-2">
+                            <a class="btn btn-secondary dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Niveaux
+                            </a>
 
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <?php foreach ($data['nivaux'] as $niv) {
-                                            echo '<a class="dropdown-item" href="' . URLROOT . '/pageFormations/formationsByNivau/' . $niv->id_niveau . '">' . $niv->nom_niveau . '</a>';
-                                        } ?>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style='padding:5px; text-align: center;'>
-                                <div class="dropdown">
-                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Durée
-                                    </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <?php foreach ($data['nivaux'] as $niv) {
+                                    echo '<a class="dropdown-item" href="' . URLROOT . '/pageFormations/formationsByNivau/' . $niv->id_niveau . '">' . $niv->nom_niveau . '</a>';
+                                } ?>
+                            </div>
+                        </div>       
+                        <div class="dropdown m-2">
+                            <a class="btn btn-secondary dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Durée
+                            </a>
 
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="<?php echo URLROOT . "/pageFormations/formationsByDuree/0/1" ?>">Mois 1h</a>
-                                        <a class="dropdown-item" href="<?php echo URLROOT . "/pageFormations/formationsByDuree/1/2" ?>">1h - 2h</a>
-                                        <a class="dropdown-item" href="<?php echo URLROOT . "/pageFormations/formationsByDuree/2/5" ?>">2h - 5h</a>
-                                        <a class="dropdown-item" href="<?php echo URLROOT . "/pageFormations/formationsByDuree/5/10" ?>">5h - 10h</a>
-                                        <a class="dropdown-item" href="<?php echo URLROOT . "/pageFormations/formationsByDuree/10/20" ?>">10h - 20h</a>
-                                        <a class="dropdown-item" href="<?php echo URLROOT . "/pageFormations/formationsByDuree/20/24" ?>">20h - 24h</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <form action="<?php echo URLROOT . "/pageFormations/formationsByDuree/" ?>" method="GET">
+                                    <div class="m-3">
+                                        <label class="form-label" for="minH">Min heure :</label>
+                                        <input type="number" name="minH" class="form-control">
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+                                    <div class="m-3">
+                                        <label class="form-label" for="maxH">Max heure :</label>
+                                        <input type="number" name="maxH" class="form-control">
+                                    </div>
+                                    <div class="m-3 text-end">
+                                        <input type="submit" value="Filter" class="btn btn-primary">
+                                    </div>
+                                </form>
+                                <!--<a class="dropdown-item" href="<?php // echo URLROOT . "/pageFormations/formationsByDuree/0/1" ?>">Mois 1h</a>
+                                <a class="dropdown-item" href="<?php // echo URLROOT . "/pageFormations/formationsByDuree/1/2" ?>">1h - 2h</a>
+                                <a class="dropdown-item" href="<?php // echo URLROOT . "/pageFormations/formationsByDuree/2/5" ?>">2h - 5h</a>
+                                <a class="dropdown-item" href="<?php // echo URLROOT . "/pageFormations/formationsByDuree/5/10" ?>">5h - 10h</a>
+                                <a class="dropdown-item" href="<?php // echo URLROOT . "/pageFormations/formationsByDuree/10/20" ?>">10h - 20h</a>
+                                <a class="dropdown-item" href="<?php // echo URLROOT . "/pageFormations/formationsByDuree/20/24" ?>">20h - 24h</a>-->
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- start main filter -->
                 <ul class="ops hide">

@@ -66,11 +66,22 @@
     align-items: center;
     border: 1px solid var(--color-four);
     transition: 0.5s;
-    flex-wrap: wrap;
 }
 .pageFormation .filter .filter-par span{
     font-size: 20px;
+    width: 150px;
+    text-align: center;
+    display: block;
     color: var(--color-four);
+}
+.pageFormation .filter .filter-par .flt-par{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.pageFormation .filter .filter-par .flt-par>div{
+    width: 120px;
 }
 .pageFormation .filter .filter-par select{
     font-size: 18px;
