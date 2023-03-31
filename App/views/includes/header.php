@@ -30,7 +30,7 @@
     <header class="wow slideInDown" data-wow-delay="1s">
         <div class="loding-bar"></div>
         <div class="container">
-            <h1 class="logo"><a href="<?= URLROOT ?>">M<span>A</span>H<span>A</span></a></h1>
+            <h1 class="logo"><a href="<?= URLROOT ?>"><img src="<?= $data['theme']['logo']?>"/></a></h1>
             <div class="burger-icon" id="menuBtn">
                 <span></span>
                 <span></span>

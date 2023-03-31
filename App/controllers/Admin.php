@@ -476,4 +476,61 @@ class Admin extends Controller
             }
         }
     }
+
+    public function changeTheme(){
+        $data=$this->stockedModel->getThemeData();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $logo=$this->uploadImage($_FILES["logo"]);
+            $landingImg=$this->uploadImage($_FILES["landingImg"]);
+            
+            if($logo==false){
+                $logo=$data["logo"];
+            }
+
+            if($landingImg==false){
+                $landingImg=$data["landingImg"];
+            }
+
+            $this->stockedModel->setThemeData([
+                "logo"=>$logo,
+                "landingImg"=>$landingImg
+            ]);
+
+            redirect("admin/");
+        }else{
+            $data["logo"]=URLROOT."/Public/".$data["logo"];
+            $data["landingImg"]=URLROOT."/Public/".$data["landingImg"];
+            $this->view('admin/theme', $data);
+        }
+    }
+
+    private  function uploadImage($file)
+	{
+		$fileName = $file["name"]; // name
+		$fileTmpName = $file["tmp_name"]; // location
+		$fileError = $file["error"]; // error
+
+		if (!empty($fileTmpName)) {
+			$fileExt = explode(".", $fileName);
+			$fileRealExt = strtolower(end($fileExt));
+			$allowed = array("jpg", "jpeg", "png");
+
+
+			if (in_array($fileRealExt, $allowed)) {
+				if ($fileError === 0) {
+					$fileNameNew = substr(number_format(time() * rand(), 0, '', ''), 0, 5) . "." . $fileRealExt;
+					$fileDestination = 'images/' . $fileNameNew;
+					move_uploaded_file($fileTmpName, $fileDestination);
+					return $fileDestination;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return  false;
+		}
+	}
 }

@@ -136,4 +136,23 @@ class Stocked
 		$res = $req->execute(['id' => $langueID]);
 		return $res;
 	}
+
+	public function getThemeData()
+	{
+		$req = $this->connect->prepare("SELECT * FROM theme WHERE id=1");
+		$res = $req->execute();
+		return $req->fetch();
+	}
+
+	public function setThemeData($data)
+	{
+		$req = $this->connect->prepare("
+			UPDATE theme SET logo=:logo , landingImg=:landingImg WHERE id=1
+		");
+		$res = $req->execute([
+			'logo' => $data["logo"],
+			'landingImg' => $data["landingImg"],
+		]);
+		return $res;
+	}
 }

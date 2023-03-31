@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="landing-image wow slideInRight" data-wow-duration="2s">
-      <img src="<?php echo URLROOT . "/Public" ?>/images/online_learning.svg" alt="MAHA">
+      <img src="<?= $data['theme']['landingImg']?>" alt="MAHA">
     </div>
   </div>
 </section>

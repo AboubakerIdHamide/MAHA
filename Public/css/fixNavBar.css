@@ -1,0 +1,6 @@
+header, header:hover{
+    height: initial;
+}
+header nav ul{
+    padding-top: 0px !important;
+}

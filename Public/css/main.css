@@ -126,6 +126,9 @@ header .container h1 a span,
 footer .logo a span{
   color: var(--color-one);
 }
+header .container h1 a img{
+    width: 150px !important;
+}
 header .container .burger-icon{
     display: none;
     cursor: pointer;

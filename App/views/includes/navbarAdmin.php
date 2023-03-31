@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/dashboard-formateur.css" />
     <link rel="stylesheet" href="<?= URLROOT ?>/public/css/videos.css" />
     <link rel="stylesheet" href="<?= URLROOT ?>/public/css/dashboard-admin.css" />
+    <link rel="stylesheet" href="<?= URLROOT ?>/public/css/theme.css" />
+    <link rel="stylesheet" href="<?= URLROOT ?>/public/css/fixNavBar.css" />
 </head>
 
 <body>
@@ -51,6 +53,12 @@
                             class="fa-solid fa-language"></i><span>Langues</span></a></li>
                 <li id="paiment"><a href="<?= URLROOT . '/admin/requestPayment' ?>"><i
                             class=" far fa-credit-card"></i><span>Paiement</span></a></li>
+                <li id="paiment">
+                    <a href="<?= URLROOT . '/admin/changeTheme' ?>">
+                        <i class="fa-solid fa-palette"></i>
+                        <span>Theme</span>
+                    </a>
+                </li>
                 <li id="disconnect"><a href="<?= URLROOT . '/admin/logout' ?>"><i
                             class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
             </ul>
