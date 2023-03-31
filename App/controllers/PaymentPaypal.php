@@ -204,7 +204,7 @@ class PaymentPaypal extends Controller
 		$paymentState = json_decode($response->getBody())->state;
 		$this->inscriptionModel->updateInscriptionByPaymentID($_GET['paymentId'], $paymentState);
 		$formateurModel = $this->model('Formateur');
-		$formateurModel->updateFormateurBalance($inscription->id_formateur, $inscription->prix);
+		$formateurModel->updateFormateurBalance($inscription->id_formateur, $inscription->prix * 0.90);
 		return $this->view('payment/paymentSuccess');
 	}
 
