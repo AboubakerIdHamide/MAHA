@@ -75,7 +75,7 @@
                 <ul class="ops hide">
                     <?php foreach ($data['categories'] as $categorie) : ?>
                         <li class="chow-ops">
-                            <a class="nav-link" href="<?= URLROOT . '/pageFormations/filter/' . $categorie->nom_categorie ?>">
+                            <a class="nav-link w-100" href="<?= URLROOT . '/pageFormations/filter/' . $categorie->nom_categorie ?>">
                                 <?= $categorie->icon ?> <span><?php echo $categorie->nom_categorie ?></span>
                                 <i class="fa fa-chevron-right" aria-hidden="true"></i>
                             </a>
