@@ -11,11 +11,13 @@ class PageFormations extends Controller
         $this->stockedModel = $this->model("Stocked");
         $this->videoModel = $this->model("Video");
         $this->previewsModel = $this->model("Previews");
+		$this->categorieModel = $this->model("Stocked");
     }
     public function index()
     {
         $langages = $this->stockedModel->getAllLangues();
         $nivaux = $this->stockedModel->getAllLevels();
+        $categories = $this->categorieModel->getAllCategories();
         $numbFormations = $this->formationModel->countAllFormations();
 
         $dataPages = $this->pagenition($numbFormations['numbFormations']);
@@ -35,6 +37,7 @@ class PageFormations extends Controller
         $data = [
             'nivaux' => $nivaux,
             'langages' => $langages,
+            'categories' => $categories,
             'numbFormations' => $numbFormations['numbFormations'],
             'info' => $info,
             'pageno' => $pageno,
@@ -74,6 +77,7 @@ class PageFormations extends Controller
     {
         $langages = $this->stockedModel->getAllLangues();
         $nivaux = $this->stockedModel->getAllLevels();
+        $categories = $this->categorieModel->getAllCategories();
 
         $errs = false;
         // ================  Valide Valeur de Recherche  ================
@@ -103,6 +107,7 @@ class PageFormations extends Controller
                 $data = [
                     'nivaux' => $nivaux,
                     'langages' => $langages,
+                    'categories' => $categories,
                     'numbFormations' => 0,
                     'info' => 'Aucun Formations'
                 ];
@@ -119,6 +124,7 @@ class PageFormations extends Controller
                 $data = [
                     'nivaux' => $nivaux,
                     'langages' => $langages,
+                    'categories' => $categories,
                     'numbFormations' => $numbFormations['numbFormations'],
                     'info' => $formations,
                     'pageno' => $pageno,
@@ -133,6 +139,7 @@ class PageFormations extends Controller
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
+                'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations'
             ];
@@ -145,6 +152,7 @@ class PageFormations extends Controller
     {
         $langages = $this->stockedModel->getAllLangues();
         $nivaux = $this->stockedModel->getAllLevels();
+        $categories = $this->categorieModel->getAllCategories();
 
         $numbFormations = $this->formationModel->countFormationsFilter($cat, $choi);
 
@@ -160,6 +168,7 @@ class PageFormations extends Controller
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
+                'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations'
             ];
@@ -177,6 +186,7 @@ class PageFormations extends Controller
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
+                'categories' => $categories,
                 'numbFormations' => $numbFormations['numbFormations'],
                 'info' => $info,
                 'pageno' => $pageno,
@@ -190,6 +200,7 @@ class PageFormations extends Controller
     {
         $langages = $this->stockedModel->getAllLangues();
         $nivaux = $this->stockedModel->getAllLevels();
+        $categories = $this->categorieModel->getAllCategories();
         $numbFormations = $this->formationModel->countAllFormations();
 
         $dataPages = $this->pagenition($numbFormations['numbFormations']);
@@ -204,6 +215,7 @@ class PageFormations extends Controller
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
+                'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations'
             ];
@@ -220,6 +232,7 @@ class PageFormations extends Controller
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
+                'categories' => $categories,
                 'numbFormations' => $numbFormations['numbFormations'],
                 'info' => $info,
                 'pageno' => $pageno,
@@ -233,6 +246,7 @@ class PageFormations extends Controller
     {
         $langages = $this->stockedModel->getAllLangues();
         $nivaux = $this->stockedModel->getAllLevels();
+        $categories = $this->categorieModel->getAllCategories();
         $numbFormations = $this->formationModel->countAllFormations();
 
         $dataPages = $this->pagenition($numbFormations['numbFormations']);
@@ -247,6 +261,7 @@ class PageFormations extends Controller
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
+                'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations'
             ];
@@ -264,6 +279,7 @@ class PageFormations extends Controller
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
+                'categories' => $categories,
                 'numbFormations' => $numbFormations['numbFormations'],
                 'info' => $info,
                 'pageno' => $pageno,
@@ -277,6 +293,7 @@ class PageFormations extends Controller
     {
         $langages = $this->stockedModel->getAllLangues();
         $nivaux = $this->stockedModel->getAllLevels();
+        $categories = $this->categorieModel->getAllCategories();
         $numbFormations = $this->formationModel->countAllFormations();
 
         $dataPages = $this->pagenition($numbFormations['numbFormations']);
@@ -291,6 +308,7 @@ class PageFormations extends Controller
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
+                'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations'
             ];
@@ -308,6 +326,7 @@ class PageFormations extends Controller
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
+                'categories' => $categories,
                 'numbFormations' => $numbFormations['numbFormations'],
                 'info' => $info,
                 'pageno' => $pageno,
@@ -321,6 +340,7 @@ class PageFormations extends Controller
     {
         $langages = $this->stockedModel->getAllLangues();
         $nivaux = $this->stockedModel->getAllLevels();
+        $categories = $this->categorieModel->getAllCategories();
         $numbFormations = $this->formationModel->countFormationsByLangage($lang);
 
         $dataPages = $this->pagenition($numbFormations['numbFormations']);
@@ -333,6 +353,7 @@ class PageFormations extends Controller
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
+                'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations'
             ];
@@ -348,6 +369,7 @@ class PageFormations extends Controller
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
+                'categories' => $categories,
                 'numbFormations' => $numbFormations['numbFormations'],
                 'info' => $info,
                 'pageno' => $pageno,
@@ -361,6 +383,7 @@ class PageFormations extends Controller
     {
         $langages = $this->stockedModel->getAllLangues();
         $nivaux = $this->stockedModel->getAllLevels();
+        $categories = $this->categorieModel->getAllCategories();
         $numbFormations = $this->formationModel->countFormationsByNiveau($niv);
 
         $dataPages = $this->pagenition($numbFormations['numbFormations']);
@@ -373,6 +396,7 @@ class PageFormations extends Controller
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
+                'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations'
             ];
@@ -388,6 +412,7 @@ class PageFormations extends Controller
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
+                'categories' => $categories,
                 'numbFormations' => $numbFormations['numbFormations'],
                 'info' => $info,
                 'pageno' => $pageno,
@@ -434,6 +459,7 @@ class PageFormations extends Controller
 
         $langages = $this->stockedModel->getAllLangues();
         $nivaux = $this->stockedModel->getAllLevels();
+        $categories = $this->categorieModel->getAllCategories();
         $numbFormations = $this->formationModel->countFormationsByDuree($minH, $maxH);
 
         $dataPages = $this->pagenition($numbFormations['numbFormations']);
@@ -448,6 +474,7 @@ class PageFormations extends Controller
                 $data = [
                     'nivaux' => $nivaux,
                     'langages' => $langages,
+                    'categories' => $categories,
                     'numbFormations' => 0,
                     'info' => 'Aucun Formations'
                 ];
@@ -463,6 +490,7 @@ class PageFormations extends Controller
                 $data = [
                     'nivaux' => $nivaux,
                     'langages' => $langages,
+                    'categories' => $categories,
                     'numbFormations' => $numbFormations['numbFormations'],
                     'info' => $info,
                     'pageno' => $pageno,
@@ -474,6 +502,7 @@ class PageFormations extends Controller
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
+                'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations'
             ];

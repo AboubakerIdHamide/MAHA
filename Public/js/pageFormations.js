@@ -3,23 +3,23 @@ let $uls = $('.filter ul');
 let $uls_not_main = $('.at-ops');
 let $main_filter = $('.filter .main-filter')[0];
 let $ops_filter = $('.chow-ops');
+
 $main_filter.onclick = ()=>{
     $ul_ops.classList.toggle('hide')
-}
-;
+};
 
-for (let i = 0; i < $ops_filter.length; i++) {
-    $ops_filter[i].onclick = ()=>{
-        let $ulOp = $ops_filter[i].nextElementSibling;
-        for (let i = 0; i < $uls_not_main.length; i++) {
-            if (!$uls_not_main[i].classList.contains('hide')) {
-                $uls_not_main[i].classList.add('hide');
-            }
-        }
-        $ulOp.classList.toggle('hide');
-    }
-}
-;$ul_ops.onmouseleave = ()=>{
+// for (let i = 0; i < $ops_filter.length; i++) {
+//     $ops_filter[i].onclick = ()=>{
+//         let $ulOp = $ops_filter[i].nextElementSibling;
+//         for (let i = 0; i < $uls_not_main.length; i++) {
+//             if (!$uls_not_main[i].classList.contains('hide')) {
+//                 $uls_not_main[i].classList.add('hide');
+//             }
+//         }
+//         $ulOp.classList.toggle('hide');
+//     }
+// };
+$ul_ops.onmouseleave = ()=>{
     $ul_ops.classList.toggle('hide')
 }
 ;
