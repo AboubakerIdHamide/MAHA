@@ -614,6 +614,18 @@ INSERT INTO `watched` (`id_etudiant`, `id_video`) VALUES
 	('ETU5', 8);
 /*!40000 ALTER TABLE `watched` ENABLE KEYS */;
 
+-- Crate Table Theme ---------------
+
+CREATE TABLE theme(
+	  id int primary key AUTO_INCREMENT,
+    logo varchar(200) NOT NULL,
+    landingImg varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Insrt Into Table Theme ---------------
+
+INSERT INTO `theme`(`logo`, `landingImg`) VALUES ('images/maha.png', 'images/online_learning.svg');
+
 -- Dumping structure for trigger maha.calcDuree
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
 DELIMITER //
