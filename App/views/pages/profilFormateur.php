@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
     <title><?php echo SITENAME; ?></title>
     <!-- Font Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
@@ -76,27 +77,11 @@
                     <img src="<?php echo $data['infoFormateur']['img']; ?>" alt="Photo-Profel">
                 </div>
                 <div class="linkes">
-                    <div>
-                        <i class="fa-solid fa-link"></i>
-                        <a href="#">Site Web</a>
-                    </div>
-                    <div>
-                        <i class="fa-brands fa-twitter"></i>
-                        <a href="#">Twitter</a>
-                    </div>
-                    <div>
-                        <i class="fa-brands fa-linkedin"></i>
-                        <a href="#">Linkedin</a>
-                    </div>
-                    <div>
-                        <i class="fa-brands fa-facebook-f"></i>
-                        <a href="#">Facbook</a>
-                    </div>
-                    <div>
+                    <div class="d-flex gap-4">
                         <span style='font-weight:bold'>@</span>
                         <a href="#"><?php echo $data['infoFormateur']['email']; ?></a>
                     </div>
-                    <div>
+                    <div class="d-flex gap-4">
                         <span style='font-weight:bold'>Tel</span>
                         <a href="#"><?php echo $data['infoFormateur']['tel']; ?></a>
                     </div>
@@ -135,7 +120,7 @@
                     </div>
                     <div class="footer">
                         <!-- infotrmations formateur -->
-                        <a href='<?php echo URLROOT."/profilFormateur/index/".$info->IdFormteur?>' style='display: block; text-decoration: none; z-index: 10;'>
+                        <a href='<?php echo URLROOT."/profilFormateur/".$info->IdFormteur?>' style='display: block; text-decoration: none; z-index: 10;'>
                             <div class="formateur">
                                 <div class="img_formateur">
                                     <img src="<?php echo $info->imgFormateur; ?>" alt="photo">
