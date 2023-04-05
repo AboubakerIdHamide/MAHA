@@ -28,7 +28,7 @@
                         </div>               
                         <div class="dropdown m-2">
                             <a class="btn btn-secondary dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Langages
+                                Langues
                             </a>
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
