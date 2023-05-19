@@ -53,10 +53,16 @@
                             class="fa-solid fa-language"></i><span>Langues</span></a></li>
                 <li id="paiment"><a href="<?= URLROOT . '/admin/requestPayment' ?>"><i
                             class=" far fa-credit-card"></i><span>Paiement</span></a></li>
-                <li id="paiment">
+                <li id="theme">
                     <a href="<?= URLROOT . '/admin/changeTheme' ?>">
                         <i class="fa-solid fa-palette"></i>
                         <span>Theme</span>
+                    </a>
+                </li>
+                <li id="smtp">
+                    <a href="<?= URLROOT . '/admin/smtp' ?>">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>SMTP</span>
                     </a>
                 </li>
                 <li id="disconnect"><a href="<?= URLROOT . '/admin/logout' ?>"><i

@@ -12,6 +12,7 @@ class Admin extends Controller
         $this->requestPaymentModel = $this->model("requestPayment");
         $this->stockedModel = $this->model("Stocked");
         $this->videoModel = $this->model("Video");
+        $this->smtpModel = $this->model('Smtp');
     }
 
     private function checkSession()
@@ -502,6 +503,17 @@ class Admin extends Controller
             $data["logo"]=URLROOT."/Public/".$data["logo"];
             $data["landingImg"]=URLROOT."/Public/".$data["landingImg"];
             $this->view('admin/theme', $data);
+        }
+    }
+
+    public function smtp()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $this->smtpModel->replaceSmtp($_POST);
+            echo "SMTP a été changer avec succee !";
+        }else{
+            $smtp = $this->smtpModel->getSmtp();
+            $this->view('admin/smtp', $smtp);
         }
     }
 

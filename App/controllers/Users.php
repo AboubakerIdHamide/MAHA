@@ -389,6 +389,7 @@ class Users extends Controller
     {
         //Instantiation and passing `true` enables exceptions
         $mail = new PHPMailer(true);
+        $smtp = $this->model("Smtp")->getSmtp();
         try {
             //Enable verbose debug output
             $mail->SMTPDebug = 0; //SMTP::DEBUG_SERVER;
@@ -396,23 +397,23 @@ class Users extends Controller
             //Send using SMTP
             $mail->isSMTP();
 
-            //Set the SMTP server to send through
-            $mail->Host = 'smtp.gmail.com';
+            //Set the SMTP server to send through => 'smtp.gmail.com'
+            $mail->Host = $smtp['host'];
 
             //Enable SMTP authentication
             $mail->SMTPAuth = true;
 
-            //SMTP username
-            $mail->Username = 'mahateamisgi@gmail.com';
+            //SMTP username => 'mahateamisgi@gmail.com'
+            $mail->Username = $smtp['username'];
 
-            //SMTP password
-            $mail->Password = 'fmllrxzwfsrovexr';
+            //SMTP password => 'fmllrxzwfsrovexr'
+            $mail->Password = $smtp['password'];
 
             //Enable TLS encryption;
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
 
             //TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
-            $mail->Port = 465;
+            $mail->Port = $smtp['port'];
 
             //Recipients
             $mail->setFrom($from, $name);
@@ -445,7 +446,8 @@ class Users extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             extract($_POST);
-            $this->sendEmail('mahateamisgi@gmail.com', $email, $name, $subject, $message, 'MAHA', null, null);
+            $username = $this->model("Smtp")->getSmtp()['username'];
+            $this->sendEmail($username, $email, $name, $subject, $message, 'MAHA', null, null);
             echo "Votre Message a ete envoyer avec success !";
         }
     }
