@@ -226,7 +226,8 @@ class Users extends Controller
 
         // send Email Verification
         if (isset($_SESSION["vcode"]) == true && $_SESSION["resend"] == true) {
-            $this->sendEmail($data[0]["email"], 'mahateamisgi@gmail.com', 'MAHA', 'Email vérification', null, $data[0]["prenom"], $_SESSION["vcode"], URLROOT . "/pages/verifyEmail");
+            $email = $this->model("Smtp")->getSmtp()['username'];
+            $this->sendEmail($data[0]["email"], $email, 'MAHA', 'Email vérification', null, $data[0]["prenom"], $_SESSION["vcode"], URLROOT . "/pages/verifyEmail");
             $_SESSION["resend"] = false;
         }
     }
@@ -353,7 +354,8 @@ class Users extends Controller
 
         // send Email Change Password
         if (isset($_SESSION["vcode"]) == true && $_SESSION["resend"] == true) {
-            $this->sendEmail($data[0]["email"], 'mahateamisgi@gmail.com', 'MAHA', 'Email vérification', null, '', $_SESSION["vcode"], URLROOT . "/pages/changePassword");
+            $email = $this->model("Smtp")->getSmtp()['username'];
+            $this->sendEmail($data[0]["email"], $email, 'MAHA', 'Email vérification', null, '', $_SESSION["vcode"], URLROOT . "/pages/changePassword");
             $_SESSION["resend"] = false;
         }
     }
