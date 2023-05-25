@@ -27,9 +27,10 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `mot_de_passe` varchar(255) NOT NULL,
   `balance` float DEFAULT '0',
   PRIMARY KEY (`id_admin`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.admin: ~0 rows (approximately)
+-- Dumping data for table maha.admin: ~1 rows (approximately)
+DELETE FROM `admin`;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
 INSERT INTO `admin` (`id_admin`, `nom_admin`, `prenom_admin`, `email_admin`, `img_admin`, `mot_de_passe`, `balance`) VALUES
 	(1, 'sdknsdf', 'sdfsdfsdf', 'sarouti@gmail.com', 'images/membre.jpg', 'admin123@@@', 419);
@@ -46,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `bookmarks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.bookmarks: ~5 rows (approximately)
+DELETE FROM `bookmarks`;
 /*!40000 ALTER TABLE `bookmarks` DISABLE KEYS */;
 INSERT INTO `bookmarks` (`id_etudiant`, `id_video`) VALUES
 	('ETU1', 1),
@@ -61,9 +63,10 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `icon` varchar(100) NOT NULL DEFAULT '',
   `nom_categorie` varchar(50) NOT NULL,
   PRIMARY KEY (`id_categorie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.categories: ~12 rows (approximately)
+DELETE FROM `categories`;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
 INSERT INTO `categories` (`id_categorie`, `icon`, `nom_categorie`) VALUES
 	(1, '<i class="fa-brands fa-unity"></i>', '3D'),
@@ -92,9 +95,10 @@ CREATE TABLE IF NOT EXISTS `commentaires` (
   PRIMARY KEY (`id_commentaire`) USING BTREE,
   KEY `id_video` (`id_video`) USING BTREE,
   CONSTRAINT `commentaires_ibfk_2` FOREIGN KEY (`id_video`) REFERENCES `videos` (`id_video`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.commentaires: ~7 rows (approximately)
+DELETE FROM `commentaires`;
 /*!40000 ALTER TABLE `commentaires` DISABLE KEYS */;
 INSERT INTO `commentaires` (`id_commentaire`, `id_video`, `from_user`, `to_user`, `type_user`, `commentaire`, `created_at`) VALUES
 	(1, 4, 'ETU2', 'FOR2', 'etudiant', 'Bonjour, Mohcine', '2023-03-29 03:45:14'),
@@ -120,6 +124,7 @@ CREATE TABLE IF NOT EXISTS `etudiants` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.etudiants: ~5 rows (approximately)
+DELETE FROM `etudiants`;
 /*!40000 ALTER TABLE `etudiants` DISABLE KEYS */;
 INSERT INTO `etudiants` (`id_etudiant`, `nom_etudiant`, `prenom_etudiant`, `email_etudiant`, `tel_etudiant`, `date_creation_etudiant`, `img_etudiant`, `mot_de_passe`) VALUES
 	('ETU1', 'Holt', 'Hermanues', 'bicisay813@oniecan.com', '0672819270', '2023-03-27 01:11:50', 'images/userImage/92322.jpg', '$2y$10$2mzmHmq16z8jI1f9sHii6.VdcG2Jorw8hEk4tr/uqr9fSPkLBHxKG'),
@@ -149,6 +154,7 @@ CREATE TABLE IF NOT EXISTS `formateurs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.formateurs: ~5 rows (approximately)
+DELETE FROM `formateurs`;
 /*!40000 ALTER TABLE `formateurs` DISABLE KEYS */;
 INSERT INTO `formateurs` (`id_formateur`, `nom_formateur`, `prenom_formateur`, `email_formateur`, `tel_formateur`, `date_creation_formateur`, `img_formateur`, `mot_de_passe`, `paypalMail`, `biography`, `balance`, `specialiteId`) VALUES
 	('FOR1', 'John', 'Smith', 'nolepi2119@necktai.com', '0695038290', '2023-03-27 00:56:47', 'images/userImage/26611.jpg', '$2y$10$3wy.h8bMrjIy.kRvN5TyIeGEMkH.vnk307xSnHDWHAFANeS2sYdPC', 'vehenafit@mailinator.com', 'Tenetur qui quia exe Tenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exeTenetur qui quia exe', 138, 8),
@@ -182,9 +188,10 @@ CREATE TABLE IF NOT EXISTS `formations` (
   CONSTRAINT `formations_ibfk_1` FOREIGN KEY (`niveau_formation`) REFERENCES `niveaux` (`id_niveau`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `formations_ibfk_3` FOREIGN KEY (`categorie`) REFERENCES `categories` (`id_categorie`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `formations_ibfk_4` FOREIGN KEY (`id_langue`) REFERENCES `langues` (`id_langue`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.formations: ~11 rows (approximately)
+DELETE FROM `formations`;
 /*!40000 ALTER TABLE `formations` DISABLE KEYS */;
 INSERT INTO `formations` (`id_formation`, `niveau_formation`, `id_formateur`, `categorie`, `nom_formation`, `image_formation`, `mass_horaire`, `date_creation_formation`, `prix_formation`, `description`, `id_langue`, `likes`, `fichier_attache`) VALUES
 	(1, 1, 'FOR1', 1, 'Sunt fugit velit ', 'images/formations/images/23419.jpg', '00:00:11', '2023-03-29 03:03:19', 65.00, 'Quae ipsum voluptat Quae ipsum voluptatQuae ipsum voluptatQuae ipsum voluptatQuae ipsum voluptatQuae ipsum voluptatQuae ipsum voluptatQuae ipsum voluptatQuae ipsum voluptat', 3, 3, 'images/formations/files/27198_file.zip'),
@@ -219,9 +226,10 @@ CREATE TABLE IF NOT EXISTS `inscriptions` (
   CONSTRAINT `FK_inscriptions_etudiants` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiants` (`id_etudiant`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `FK_inscriptions_formateurs` FOREIGN KEY (`id_formateur`) REFERENCES `formateurs` (`id_formateur`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `inscriptions_ibfk_1` FOREIGN KEY (`id_formation`) REFERENCES `formations` (`id_formation`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.inscriptions: ~9 rows (approximately)
+DELETE FROM `inscriptions`;
 /*!40000 ALTER TABLE `inscriptions` DISABLE KEYS */;
 INSERT INTO `inscriptions` (`id_inscription`, `id_formation`, `id_etudiant`, `id_formateur`, `date_inscription`, `prix`, `transaction_info`, `payment_id`, `payment_state`, `approval_url`) VALUES
 	(1, 1, 'ETU1', 'FOR1', '2023-03-29 03:33:10', 65, '{"id": "PAYID-MQR3C5Q4009369763573034U", "links": [{"rel": "self", "href": "https://api.sandbox.paypal.com/v1/payments/payment/PAYID-MQR3C5Q4009369763573034U", "method": "GET"}, {"rel": "approval_url", "href": "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=EC-19A56657UW632534E", "method": "REDIRECT"}, {"rel": "execute", "href": "https://api.sandbox.paypal.com/v1/payments/payment/PAYID-MQR3C5Q4009369763573034U/execute", "method": "POST"}], "payer": {"payment_method": "paypal"}, "state": "created", "intent": "sale", "create_time": "2023-03-29T03:33:10Z", "transactions": [{"amount": {"total": "65.00", "details": {"tax": "0.00", "shipping": "0.00", "subtotal": "65.00", "insurance": "0.00", "handling_fee": "0.00", "shipping_discount": "0.00"}, "currency": "USD"}, "item_list": {"items": [{"sku": "1", "tax": "0.00", "name": "Sunt fugit velit ", "price": "65.00", "currency": "USD", "quantity": 1, "description": "Online Course"}]}, "description": "Sunt fugit velit ", "payment_options": {"skip_fmf": false, "recurring_flag": false, "allowed_payment_method": "INSTANT_FUNDING_SOURCE"}, "related_resources": []}], "note_to_payer": "Contact us for any questions on your order."}', 'PAYID-MQR3C5Q4009369763573034U', 'approved', 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=EC-19A56657UW632534E'),
@@ -399,9 +407,10 @@ CREATE TABLE IF NOT EXISTS `langues` (
   `id_langue` int(11) NOT NULL AUTO_INCREMENT,
   `nom_langue` varchar(30) NOT NULL,
   PRIMARY KEY (`id_langue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.langues: ~4 rows (approximately)
+DELETE FROM `langues`;
 /*!40000 ALTER TABLE `langues` DISABLE KEYS */;
 INSERT INTO `langues` (`id_langue`, `nom_langue`) VALUES
 	(1, 'Français'),
@@ -421,6 +430,7 @@ CREATE TABLE IF NOT EXISTS `likes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.likes: ~9 rows (approximately)
+DELETE FROM `likes`;
 /*!40000 ALTER TABLE `likes` DISABLE KEYS */;
 INSERT INTO `likes` (`etudiant_id`, `formation_id`) VALUES
 	('ETU1', 1),
@@ -442,6 +452,7 @@ CREATE TABLE IF NOT EXISTS `niveaux` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.niveaux: ~3 rows (approximately)
+DELETE FROM `niveaux`;
 /*!40000 ALTER TABLE `niveaux` DISABLE KEYS */;
 INSERT INTO `niveaux` (`id_niveau`, `nom_niveau`) VALUES
 	(1, 'débutant'),
@@ -457,9 +468,10 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   PRIMARY KEY (`id_notification`),
   KEY `FK_notifications_commentaires` (`id_commentaire`),
   CONSTRAINT `FK_notifications_commentaires` FOREIGN KEY (`id_commentaire`) REFERENCES `commentaires` (`id_commentaire`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.notifications: ~10 rows (approximately)
+DELETE FROM `notifications`;
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
 INSERT INTO `notifications` (`id_notification`, `id_commentaire`, `etat_notification`) VALUES
 	(1, 1, 1),
@@ -485,6 +497,7 @@ CREATE TABLE IF NOT EXISTS `previews` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.previews: ~0 rows (approximately)
+DELETE FROM `previews`;
 /*!40000 ALTER TABLE `previews` DISABLE KEYS */;
 /*!40000 ALTER TABLE `previews` ENABLE KEYS */;
 
@@ -498,13 +511,31 @@ CREATE TABLE IF NOT EXISTS `request_payment` (
   PRIMARY KEY (`id_payment`),
   KEY `FK_request_payment_formateurs` (`id_formateur`),
   CONSTRAINT `FK_request_payment_formateurs` FOREIGN KEY (`id_formateur`) REFERENCES `formateurs` (`id_formateur`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.request_payment: ~1 rows (approximately)
+DELETE FROM `request_payment`;
 /*!40000 ALTER TABLE `request_payment` DISABLE KEYS */;
 INSERT INTO `request_payment` (`id_payment`, `id_formateur`, `request_prix`, `date_request`, `etat_request`) VALUES
 	(2, 'FOR1', 200, '2023-03-29 03:53:51', 'accepted');
 /*!40000 ALTER TABLE `request_payment` ENABLE KEYS */;
+
+-- Dumping structure for table maha.smtp
+CREATE TABLE IF NOT EXISTS `smtp` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `host` varchar(50) DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `port` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table maha.smtp: ~1 rows (approximately)
+DELETE FROM `smtp`;
+/*!40000 ALTER TABLE `smtp` DISABLE KEYS */;
+INSERT INTO `smtp` (`id`, `host`, `username`, `password`, `port`) VALUES
+	(1, 'smtp.gmail.com', 'mahateamisgi@gmail.com', 'fmllrxzwfsrovexr', '465');
+/*!40000 ALTER TABLE `smtp` ENABLE KEYS */;
 
 -- Dumping structure for table maha.sous_categories
 CREATE TABLE IF NOT EXISTS `sous_categories` (
@@ -517,6 +548,7 @@ CREATE TABLE IF NOT EXISTS `sous_categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.sous_categories: ~0 rows (approximately)
+DELETE FROM `sous_categories`;
 /*!40000 ALTER TABLE `sous_categories` DISABLE KEYS */;
 /*!40000 ALTER TABLE `sous_categories` ENABLE KEYS */;
 
@@ -546,11 +578,12 @@ CREATE TABLE IF NOT EXISTS `tablefilter` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.tablefilter: ~11 rows (approximately)
+DELETE FROM `tablefilter`;
 /*!40000 ALTER TABLE `tablefilter` DISABLE KEYS */;
 INSERT INTO `tablefilter` (`IdFormation`, `imgFormation`, `duree`, `idCategore`, `categorie`, `nomFormation`, `prix`, `description`, `likes`, `IdFormteur`, `nomFormateur`, `prenomFormateur`, `specialiteId`, `specialite`, `imgFormateur`, `numbAcht`, `dateCreationFormation`, `idLangage`, `langageFormation`, `idNiv`, `niveauFormation`) VALUES
 	(1, 'images/formations/images/23419.jpg', '00:00:11', 1, '3D', 'Sunt fugit velit ', 65, 'Quae ipsum voluptat Quae ipsum voluptatQuae ipsum voluptatQuae ipsum voluptatQuae ipsum voluptatQuae ipsum voluptatQuae ipsum voluptatQuae ipsum voluptatQuae ipsum voluptat', 3, 0, 'John', 'Smith', 8, 'Vidéo-Compositing', 'images/userImage/26611.jpg', 3, '2023-03-29', 3, 'Espagnol', 1, 'débutant'),
 	(2, 'images/formations/images/62427.jpg', '00:00:11', 3, 'Audio-MAO', 'Ad in provident est', 87, 'Fuga Perferendis il Fuga Perferendis ilFuga Perferendis ilFuga Perferendis ilFuga Perferendis il', 1, 0, 'John', 'Smith', 8, 'Vidéo-Compositing', 'images/userImage/26611.jpg', 1, '2023-03-29', 2, 'Anglais', 2, 'intermédiaire'),
-	(3, 'images/formations/images/20322.jpg', '00:00:11', 5, 'Code', 'Sed neque aliquid fu', 56, ' Ex commodo voluptateEx commodo voluptateEx commodo voluptateEx commodo voluptateEx commodo voluptateEx commodo voluptateEx commodo voluptateEx commodo voluptateEx commodo voluptate', 0, 0, 'John', 'Smith', 8, 'Vidéo-Compositing', 'images/userImage/26611.jpg', 0, '2023-03-29', 4, 'العربية', 2, 'intermédiaire'),
+	(3, 'images/formations/images/20322.jpg', '00:00:11', 5, 'Code', 'Sed neque aliquid fu', 56, ' Ex commodo voluptateEx commodo voluptateEx commodo voluptateEx commodo voluptateEx commodo voluptateEx commodo voluptateEx commodo voluptateEx commodo voluptateEx commodo voluptate', 1, 0, 'John', 'Smith', 8, 'Vidéo-Compositing', 'images/userImage/26611.jpg', 1, '2023-03-29', 4, 'العربية', 2, 'intermédiaire'),
 	(4, 'images/formations/images/32336.jpg', '00:00:11', 10, 'Réseaux informatique', 'Voluptatum ut in mol', 72, 'Est repudiandae dolo Est repudiandae dolo Est repudiandae dolo Est repudiandae dolo Est repudiandae dolo Est repudiandae dolo Est repudiandae dolo Est repudiandae dolo Est repudiandae dolo Est repudiandae dolo Est repudiandae dolo Est repudiandae dolo ', 1, 0, 'Mohcine', 'Likram', 4, 'Business & Efficacité professionnelle', 'images/userImage/17429.jpg', 1, '2023-03-29', 2, 'Anglais', 1, 'débutant'),
 	(5, 'images/formations/images/17069.jpg', '00:00:33', 5, 'Code', 'Dolorem in et ullamc', 24, 'Dolore consequat Ev Dolore consequat Ev Dolore consequat Ev Dolore consequat Ev Dolore consequat Ev Dolore consequat Ev Dolore consequat Ev Dolore consequat Ev Dolore consequat Ev Dolore consequat Ev Dolore consequat Ev ', 0, 0, 'Mohcine', 'Likram', 4, 'Business & Efficacité professionnelle', 'images/userImage/17429.jpg', 0, '2023-03-29', 1, 'Français', 3, 'avancé'),
 	(6, 'images/formations/images/99822.jpg', '00:00:11', 9, 'Webmarketing', 'Qui ipsum amet asp', 12, 'Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc Consequatur distinc ', 1, 0, 'Possimus', 'Sed', 8, 'Vidéo-Compositing', 'images/userImage/20268.jpg', 1, '2023-03-29', 2, 'Anglais', 3, 'avancé'),
@@ -560,6 +593,21 @@ INSERT INTO `tablefilter` (`IdFormation`, `imgFormation`, `duree`, `idCategore`,
 	(10, 'images/formations/images/30011.jpg', '00:00:11', 12, 'Bureautique', 'Magnam et labore hic', 21, 'Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und ', 1, 0, 'Velit', 'Expedita ', 7, 'Photographie', 'images/userImage/13911.jpg', 1, '2023-03-29', 3, 'Espagnol', 2, 'intermédiaire'),
 	(11, 'images/formations/images/27600.jpg', '00:00:11', 11, 'Management', 'Porro earum pariatur', 14, 'Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do ', 0, 0, 'Velit', 'Expedita ', 7, 'Photographie', 'images/userImage/13911.jpg', 0, '2023-03-29', 4, 'العربية', 3, 'avancé');
 /*!40000 ALTER TABLE `tablefilter` ENABLE KEYS */;
+
+-- Dumping structure for table maha.theme
+CREATE TABLE IF NOT EXISTS `theme` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `logo` varchar(200) NOT NULL,
+  `landingImg` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table maha.theme: ~1 rows (approximately)
+DELETE FROM `theme`;
+/*!40000 ALTER TABLE `theme` DISABLE KEYS */;
+INSERT INTO `theme` (`id`, `logo`, `landingImg`) VALUES
+	(1, 'images/maha.png', 'images/online_learning.svg');
+/*!40000 ALTER TABLE `theme` ENABLE KEYS */;
 
 -- Dumping structure for table maha.videos
 CREATE TABLE IF NOT EXISTS `videos` (
@@ -574,9 +622,10 @@ CREATE TABLE IF NOT EXISTS `videos` (
   PRIMARY KEY (`id_video`),
   KEY `id_formation` (`id_formation`),
   CONSTRAINT `videos_ibfk_1` FOREIGN KEY (`id_formation`) REFERENCES `formations` (`id_formation`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.videos: ~13 rows (approximately)
+DELETE FROM `videos`;
 /*!40000 ALTER TABLE `videos` DISABLE KEYS */;
 INSERT INTO `videos` (`id_video`, `id_formation`, `nom_video`, `url_video`, `duree_video`, `description_video`, `order_video`, `watched`) VALUES
 	(1, 1, '1', 'images/formations/videos/18734_1.mp4', '00:00:11', 'discribe this video or add a ressources !', 999, 0),
@@ -605,6 +654,7 @@ CREATE TABLE IF NOT EXISTS `watched` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.watched: ~5 rows (approximately)
+DELETE FROM `watched`;
 /*!40000 ALTER TABLE `watched` DISABLE KEYS */;
 INSERT INTO `watched` (`id_etudiant`, `id_video`) VALUES
 	('ETU1', 1),
@@ -613,18 +663,6 @@ INSERT INTO `watched` (`id_etudiant`, `id_video`) VALUES
 	('ETU5', 3),
 	('ETU5', 8);
 /*!40000 ALTER TABLE `watched` ENABLE KEYS */;
-
--- Crate Table Theme ---------------
-
-CREATE TABLE theme(
-	  id int primary key AUTO_INCREMENT,
-    logo varchar(200) NOT NULL,
-    landingImg varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Insrt Into Table Theme ---------------
-
-INSERT INTO `theme`(`logo`, `landingImg`) VALUES ('images/maha.png', 'images/online_learning.svg');
 
 -- Dumping structure for trigger maha.calcDuree
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
