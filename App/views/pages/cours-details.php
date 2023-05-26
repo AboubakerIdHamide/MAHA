@@ -2,266 +2,306 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="MAHA a modern educational platform">
+    <title>MAHA - <?= $data['info']['nomFormation'] ?></title>
+
+    <!-- Favicons-->
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
-    <title>COURS - <?php echo $data['info']['nomFormation'] ?></title>
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <!-- Style -->
-    <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/cours-details.css" />
+
+    <!-- GOOGLE WEB FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- BASE CSS -->
+    <link href="<?= URLROOT ?>/public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= URLROOT ?>/public/css/style.css" rel="stylesheet">
+    <link href="<?= URLROOT ?>/public/css/vendors.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- YOUR CUSTOM CSS -->
+    <link href="<?= URLROOT ?>/public/css/custom.css" rel="stylesheet">
+    <style>
+    #hero_in.courses:before {
+        background: url(<?= $data['info']['imgFormation'] ?>) center center no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+    </style>
 
 </head>
 
 <body>
-    <!-- Header -->
-    <header>
-        <div class="loding-bar"></div>
-        <div class="container">
-            <h1 class="logo"><a href="<?= URLROOT ?>">M<span>A</span>H<span>A</span></a></h1>
-            <div class="burger-icon" id="menuBtn">
-                <span></span>
-                <span></span>
-                <span></span>
+
+    <div id="page" class="theia-exception">
+
+        <header class="header menu_2">
+            <div id="preloader">
+                <div data-loader="circle-side"></div>
+            </div><!-- /Preload -->
+            <div id="logo">
+                <a href="<?= URLROOT ?>"><img class="logo" src="<?= $data['theme']['logo'] ?>" width="149" height="42"
+                        alt="logo Maha"></a>
             </div>
-            <ul id="navBarUl" class="hide">
-                <li><a href="<?php echo URLROOT . "/#catalogue" ?>">Catalogue</a></li>
-                <li><a href="<?php echo URLROOT . "/pageFormations/" ?>">Formations</a></li>
-                <li class="menu-drop-down">
-                    <span id="dropMenu">Autre <i class='fa fa-chevron-down'></i></span>
-                    <ul id="droppedMenu" class="hide">
-                        <li><a href="<?php echo URLROOT . "/users/register" ?>">S'inscrire</a></li>
-                        <li><a href="<?php echo URLROOT . "/#popular" ?>">Les Plus Populaires</a></li>
-                        <li><a href="<?php echo URLROOT . "/#equipe" ?>">Notre équipe </a></li>
-                        <li><a href="<?php echo URLROOT . "/#contact" ?>">Contactez-Nous</a></li>
-                    </ul>
+            <ul id="top_menu">
+                <li class="search-overlay-menu-btn"><i class="fa-solid fa-magnifying-glass"></i></li>
+                <?php if (!isset($_SESSION['user'])) : ?>
+                <li class="hidden_tablet"><a href="<?= URLROOT . "/users/login" ?>" class="btn_1 rounded">Se
+                        Connecter</a></li>
+                <?php endif ?>
+                <?php if (isset($_SESSION['id_formateur'])) : ?>
+                <li class="hidden_tablet"><a href="<?= URLROOT . "/formateurs/dashboard" ?>"
+                        class="btn_1 rounded">Dashboard</a>
                 </li>
-                <li class="search-bar">
-                    <i class="fa fa-search" id="searchIcon"></i>
-                    <form action="" class="hide" id="seacrhForm"><input type="text"></form>
+                <?php endif ?>
+                <?php if (isset($_SESSION['id_etudiant'])) : ?>
+                <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiants/dashboard" ?>" class="btn_1 rounded">Mes
+                        Cours</a>
                 </li>
-                <li class="sign-in"><a href="<?php echo URLROOT . "/users/login" ?>">Se Connecter</a></li>
+                <?php endif ?>
+
             </ul>
-        </div>
-    </header>
-    <!-- Fin Header -->
-    <section class="media-header">
-        <div class="container mt-3">
-            <div class="row">
-                <div class="col-xl-3">
-                    <img class="img-fluid" src="<?php echo $data['info']['imgFormation']; ?>" alt="formation image">
+            <!-- /top_menu -->
+            <a href="#menu" class="btn_mobile">
+                <div class="hamburger hamburger--spin" id="hamburger">
+                    <div class="hamburger-box">
+                        <div class="hamburger-inner"></div>
+                    </div>
                 </div>
-                <div class="col-xl-7">
-                    <div class="group d-flex flex-column justify-content-center">
-                        <h3 class="title"><?php echo $data['info']['nomFormation']; ?></h3>
-                        <p>Formation catégorie <span><?php echo $data['info']['categorie']; ?></span></p>
-                        <div class="instructor d-flex align-items-center justify-content-between">
-                            <div class="d-flex align-items-center gap-2">
-                                <img src="<?php echo $data['info']['imgFormateur']; ?>" alt="" class="formateur-img">
-                                <div class="instructor-info">
-                                    <h5><?php echo $data['info']['nomFormateur']; ?>
-                                        <?php echo $data['info']['prenomFormateur']; ?></h5>
-                                    <p class="specialite mb-0"><?php echo $data['info']['specialite']; ?></p>
+            </a>
+            <nav id="menu" class="main-menu">
+                <ul>
+                    <li><span><a href="<?= URLROOT ?>">Accueil</a></span></li>
+                    <li><span><a href="<?= URLROOT ?>/pageFormations/">Courses</a></span></li>
+                    <li><span><a href="<?= URLROOT ?>/#catalogue">Categories</a></span></li>
+                    <li><span><a href="<?= URLROOT ?>/#contact">Contactez-nous</a></span></li>
+                    <?php if (!isset($_SESSION['user'])) : ?>
+                    <li><span><a href="<?= URLROOT ?>/users/register">S'inscrire</a></span></li>
+                    <?php endif ?>
+                    <?php if (!isset($_SESSION['user'])) : ?>
+                    <li class="d-lg-none"><a href="<?= URLROOT . "/users/login" ?>">Se
+                            Connecter</a></li>
+                    <?php endif ?>
+                    <?php if (isset($_SESSION['id_formateur'])) : ?>
+                    <li class="d-lg-none"><a href="<?= URLROOT . "/formateurs/dashboard" ?>">Dashboard</a>
+                    </li>
+                    <?php endif ?>
+                    <?php if (isset($_SESSION['id_etudiant'])) : ?>
+                    <li class="d-lg-none"><a href="<?= URLROOT . "/etudiants/dashboard" ?>">Mes
+                            Cours</a>
+                    </li>
+                    <?php endif ?>
+                </ul>
+            </nav>
+            <!-- Search Menu -->
+            <div class="search-overlay-menu">
+                <span class="search-overlay-close"><span class="closebt"><i class="fa-solid fa-xmark"></i></span></span>
+                <form role="search" id="searchform" method="get">
+                    <input id="input-search" type="search" placeholder="Search..." />
+                    <button type="submit"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </form>
+            </div><!-- End Search Menu -->
+        </header>
+        <!-- /header -->
+
+        <main>
+            <section id="hero_in" class="courses">
+                <div class="wrapper">
+                    <div class="container">
+                        <h1 class="fadeInUp"><span></span><?= $data['info']['nomFormation'] ?></h1>
+                    </div>
+                </div>
+            </section>
+            <!--/hero_in-->
+
+            <div class="bg_color_1">
+                <nav class="secondary_nav sticky_horizontal">
+                    <div class="container">
+                        <ul class="clearfix">
+                            <li><a href="#description" class="active">Description</a></li>
+                            <li><a href="#lessons">Lessons</a></li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="container margin_60_35">
+                    <div class="row">
+                        <div class="col-lg-8">
+
+                            <section id="description">
+                                <h2>Description</h2>
+                                <p><?= $data['info']['description'] ?></p>
+                            </section>
+                            <!-- /section -->
+
+                            <section id="lessons">
+                                <div class="intro_title">
+                                    <h2>Lessons</h2>
+                                    <ul>
+                                        <li><?= $data['numbVIdeo']['NumbVideo'] ?> lessons</li>
+                                        <li><?= $data['info']['duree'] ?></li>
+                                    </ul>
+                                </div>
+
+                                <!-- Lessons -->
+                                <div class="lesson-container">
+                                    <?php $i = 1; ?>
+                                    <?php foreach ($data['videos'] as $video) : ?>
+                                    <div class="row mb-3 border p-2 rounded">
+                                        <div class="col">
+                                            <div class="lesson d-flex justify-content-between">
+                                                <span class="lesson-titre"><i class="fa-solid fa-lock me-2"></i>
+                                                    <?= $i++; ?>.
+                                                    <?= $video->NomVideo; ?>
+                                                </span>
+                                                <span class="lesson-time"><?= $video->DureeVideo; ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php endforeach; ?>
+                                </div>
+                                <!-- /Lessons -->
+                            </section>
+                            <!-- /section -->
+
+                            <section>
+                                <h2>Statistics</h2>
+                                <div class="reviews-container">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <div class="statistics">
+                                                <div>
+                                                    <strong><?= $data['info']['numbAcht'] ?> <i
+                                                            class="fa-solid fa-graduation-cap"></i></strong>
+                                                </div>
+                                                <span>Apprenants</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="statistics">
+                                                <div>
+                                                    <strong><?= $data['info']['likes']; ?> <i
+                                                            class="fa-solid fa-heart"></i></strong>
+                                                </div>
+                                                <span>Likes</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <!-- /section -->
+                        </div>
+                        <!-- /col -->
+
+                        <aside class="col-lg-4" id="sidebar">
+                            <div class="box_detail">
+                                <figure class="rounded-corner">
+                                    <a href="<?= $data['previewVideo'] ?>" class="video"><i style="color:#FFC107;"
+                                            class="fa-solid fa-play fs-2"></i><img
+                                            src="<?= $data['info']['imgFormation'] ?>" alt="course image"
+                                            class="img-fluid rounded-corner"><span>View course
+                                            preview</span></a>
+                                </figure>
+                                <div class="price">
+                                    $<?= $data['info']['prix'] ?>
+                                </div>
+                                <a href="<?= URLROOT ?>/PaymentPaypal/makePayment/<?= $data['info']['IdFormation'] ?>"
+                                    class="btn_1 full-width">Purchase</a>
+                                <div id="list_feat">
+                                    <h3>Course informations</h3>
+                                    <ul>
+                                        <li><i class="fa-solid fa-person-chalkboard"></i>
+                                            <a
+                                                href="<?= URLROOT . "/profilFormateur/" . $data['info']['IdFormteur'] ?>">
+                                                <?= $data['info']['prenomFormateur'] . ' ' . $data['info']['nomFormateur'] ?>
+                                            </a>
+                                        </li>
+                                        <li><i class="fa-solid fa-list"></i> <?= $data['info']['categorie'] ?></li>
+                                        <li><i class="fa-solid fa-language"></i>
+                                            <?= $data['info']['langageFormation'] ?></li>
+                                        <li>
+                                            <?php if ($data['info']['niveauFormation'] == 'Débutant') : ?>
+                                            <svg width="58" height="30" viewBox="0 0 38 10" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill="#E5E5E5" d="M9 4h6v2H9zM23 4h6v2h-6z"></path>
+                                                <circle cx="5" cy="5" r="5" fill="#555555"></circle>
+                                                <circle fill="#E5E5E5" cx="19" cy="5" r="5"></circle>
+                                                <circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle>
+                                            </svg>
+                                            <?php endif ?>
+                                            <?php if ($data['info']['niveauFormation'] == 'Intermédiaire') : ?>
+                                            <svg width="58" height="30" viewBox="0 0 38 10" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9 4h6v2H9z" fill="#555555"></path>
+                                                <path d="M23 4h6v2h-6z" fill="#E5E5E5"></path>
+                                                <circle cx="5" cy="5" r="5" fill="#555555"></circle>
+                                                <circle cx="19" cy="5" r="5" fill="#555555"></circle>
+                                                <circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle>
+                                            </svg>
+                                            <?php endif ?>
+                                            <?php if ($data['info']['niveauFormation'] == 'Avancé') : ?>
+                                            <svg width="58" height="30" viewBox="0 0 38 10" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill="#555555" d="M9 4h6v2H9zM23 4h6v2h-6z"></path>
+                                                <circle cx="5" cy="5" r="5" fill="#555555"></circle>
+                                                <circle fill="#555555" cx="19" cy="5" r="5"></circle>
+                                                <circle fill="#555555" cx="33" cy="5" r="5"></circle>
+                                            </svg>
+                                            <?php endif ?>
+                                            <?= $data['info']['niveauFormation']; ?>
+                                        <li><i class="fa-solid fa-calendar-days"></i>
+                                            <?= $data['info']['dateCreationFormation'] ?></li>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-                            <div class="voir-profil d-flex align-items-center gap-2">
-                                <a
-                                    href="<?php echo URLROOT . "/profilFormateur/index/" . $data['info']['IdFormteur'] ?>">Voir
-                                    Profil</a>
-                            </div>
-                        </div>
-                        <div class="mt-3 masse-h d-flex flex-row justify-content-between">
-                            <p><i class="fa-solid fa-clock"></i> <?php echo $data['info']['duree']; ?></p>
-                            <p><i class="fa-solid fa-language"></i> <?php echo $data['info']['langageFormation']; ?></p>
-                        </div>
+                        </aside>
                     </div>
+                    <!-- /row -->
                 </div>
-                <div class="col-xl-2 align-self-center">
-                    <div class="info-plus">
-                        <div class="text-center mb-1 apprenants-nbr">
-                            <p class="nbr"><?php echo $data['info']['numbAcht']; ?></p>
-                            <p>Apprenants</p>
-                        </div>
-                        <div class="fomation-niveau text-center mb-1">
-                            <div class="level-indicator">
-                                <?php if ($data['info']['niveauFormation'] == 'débutant') : ?>
-                                <svg width="58" height="30" viewBox="0 0 38 10" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill="#E5E5E5" d="M9 4h6v2H9zM23 4h6v2h-6z"></path>
-                                    <circle cx="5" cy="5" r="5" fill="#8887FF"></circle>
-                                    <circle fill="#E5E5E5" cx="19" cy="5" r="5"></circle>
-                                    <circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle>
-                                </svg>
-                                <?php endif ?>
-                                <?php if ($data['info']['niveauFormation'] == 'intermédiaire') : ?>
-                                <svg width="58" height="30" viewBox="0 0 38 10" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9 4h6v2H9z" fill="#8887FF"></path>
-                                    <path d="M23 4h6v2h-6z" fill="#E5E5E5"></path>
-                                    <circle cx="5" cy="5" r="5" fill="#8887FF"></circle>
-                                    <circle cx="19" cy="5" r="5" fill="#8887FF"></circle>
-                                    <circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle>
-                                </svg>
-                                <?php endif ?>
-                                <?php if ($data['info']['niveauFormation'] == 'avancé') : ?>
-                                <svg width="58" height="30" viewBox="0 0 38 10" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill="#8887FF" d="M9 4h6v2H9zM23 4h6v2h-6z"></path>
-                                    <circle cx="5" cy="5" r="5" fill="#8887FF"></circle>
-                                    <circle fill="#8887FF" cx="19" cy="5" r="5"></circle>
-                                    <circle fill="#8887FF" cx="33" cy="5" r="5"></circle>
-                                </svg>
-                                <?php endif ?>
-                            </div>
-                            <p>Niveau <?php echo $data['info']['niveauFormation']; ?></p>
-                        </div>
-                        <div class="text-center">
-                            <p class="nbr"><?php echo $data['info']['likes']; ?></p>
-                            <p>Likes</p>
-                        </div>
-                    </div>
-                </div>
+                <!-- /container -->
             </div>
-        </div>
-    </section>
-    <section class="video-description">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <!-- Apercu Head -->
-                    <section class="section-title mt-2" id="catalogue">
-                        <div class="container">
-                            <div>
-                                <p>Aperçu</p>
-                            </div>
-                        </div>
-                    </section>
-                    <!-- Fin Apercu Head -->
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="video-preview pt-2">
-                        <?php if ($data['previewVideo'] != null) { ?>
-                        <video id="my-video" class="video-js object-fit-cover" controls preload="auto" width="640"
-                            data-setup="{}">
-                            <source src="<?= $data['previewVideo'] ?>" type="video/mp4" />
-                            <p class="vjs-no-js">
-                                To view this video please enable JavaScript, and consider upgrading to a
-                                web browser that
-                                <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5
-                                    video</a>
-                            </p>
-                        </video>
-                        <?php } else { ?>
-                        <img src="<?php echo $data['info']['imgFormation']; ?>" alt="preview" class="video-js">
-                        <?php } ?>
-                    </div>
-                </div>
-                <div class="col-lg-6 align-self-center preview-prix">
-                    <p class="date-pub">Date de Publication : <?php echo $data['info']['dateCreationFormation']; ?></p>
-                    <div class="pay pt-3">
-                        <h2 class="text-center prix">$ <?php echo $data['info']['prix']; ?></h2>
-                        <div class="text-center">
-                            <!-- Paypal Payment -->
-                            <a class="btn btn-info btn-lg d-block"
-                                href="<?= URLROOT ?>/PaymentPaypal/makePayment/<?= $data['info']['IdFormation'] ?>"><i
-                                    class="fa-solid fa-cart-shopping"></i> Acheter Maintenant</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <!-- DESCRIPTION Head -->
-                    <section class="section-title mt-2" id="catalogue">
-                        <div class="container">
-                            <div>
-                                <h2>DESCRIPTION</h2>
-                                <p>À propos de cette formation</p>
-                            </div>
-                        </div>
-                    </section>
-                    <!-- Fin DESCRIPTION Head -->
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <p class="desc"><?php echo $data['info']['description']; ?>
-                    </div>
-                </div>
-            </div>
-    </section>
+            <!-- /bg_color_1 -->
+        </main>
+        <!--/main-->
 
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <!-- Contenu Head -->
-                    <section class="section-title mt-2" id="catalogue">
-                        <div class="container">
-                            <div>
-                                <h2>Contenu du cours</h2>
-                                <p><?php echo $data['numbVIdeo']['NumbVideo']; ?> leçons</p>
-                            </div>
-                        </div>
-                    </section>
-                    <!-- Fin Contenu Head -->
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="playlist-formation">
-        <div class="container">
-            <?php foreach ($data['videos'] as $video) : ?>
-            <div class="row mb-2">
-                <div class="col">
-                    <div class="lesson d-flex justify-content-between">
-                        <span class="lesson-titre"><i class="fa-solid fa-lock"></i> <?php echo $video->IdVideo; ?>.
-                            <?php echo $video->NomVideo; ?></span>
-                        <span class="lesson-time"><?php echo $video->DureeVideo; ?></span>
+        <footer>
+            <div class="container pt-4">
+                <div class="row justify-content-between">
+                    <div class="col-lg-5 col-md-12">
+                        <p><a href="<?= URLROOT ?>"><img class="logo" src="<?= $data['theme']['logo'] ?>" width="149"
+                                    height="42" alt="logo Maha"></a></p>
+                        <p>MAHA Est Un Site Internet De Formation En Ligne Qui Contient Des Cours Et Des Vidéos
+                            d'apprentissage Dans Plusieur Domains Tels Que Le Web Development, E-commerce, Digital
+                            Marketing ...</p>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5>Contact with Us</h5>
+                        <ul class="contacts">
+                            <li><a href="tel://0524345057"><i class="fa-solid fa-mobile"></i> (+212) 524 34 50 57</a>
+                            </li>
+                            <li><a href="mailto:mahateamisgi@gmail.com"><i class="fa-solid fa-envelope"></i>
+                                    mahateamisgi@gmail.com</a></li>
+                        </ul>
                     </div>
                 </div>
+                <!--/row-->
             </div>
-            <?php endforeach; ?>
-        </div>
-    </section>
+        </footer>
+        <!--/footer-->
+    </div>
+    <!-- page -->
 
-    <!-- Footer -->
-    <footer class="mt-5" id="footer">
+    <!-- SCRIPTS -->
+    <script src="<?= URLROOT ?>/public/jQuery/jquery-3.6.0.min.js"></script>
+    <script src="<?= URLROOT ?>/public/js/common_scripts.js"></script>
+    <script src="<?= URLROOT ?>/public/js/cours-details.js"></script>
 
-        <div class="footer-top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 footer-contact">
-                        <h1 class="logo"><a href="#">M<span>A</span>H<span>A</span></a></h1>
-                        <p>
-                            Boulevard de Mohammedia <br>
-                            QI Azli 40150<br>
-                            Maroc <br><br>
-                            <strong>Phone:</strong> (+212) 524 34 50 57<br>
-                            <strong>Email:</strong> info@maha.com<br>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container d-md-flex py-4">
-            <div class="me-md-auto text-center text-md-start">
-                <div class="copyright">
-                    © Copyright <strong><span>MAHA</span></strong>. All Rights Reserved
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Fin Footer -->
-    <!-- To-up Button -->
-    <span class="to-top active" href="#"><i class="fa fa-chevron-up"></i></span>
-    <!-- To-up Button -->
-    <!-- Fin Equipe -->
-    <script src="<?php echo URLROOT; ?>/public/js/cours-details.js"></script>
 </body>
 
 </html>

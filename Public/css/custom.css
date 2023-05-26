@@ -1,0 +1,22 @@
+/*============================================================================================*/
+/* Your custom styles below */
+/*============================================================================================*/
+
+.rounded-corner {
+  border-radius: 10px;
+}
+
+.fa-magnifying-glass {
+  font-size: 1.5rem;
+  color: #fff;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.search-overlay-menu-btn:hover .fa-magnifying-glass {
+  color: #ffc107;
+}
+
+.search-overlay-menu-btn {
+  cursor: pointer;
+}
