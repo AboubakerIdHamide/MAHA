@@ -1,182 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
-    <title><?php echo SITENAME; ?></title>
-    <!-- Font Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <!-- Swiper JS  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.4/swiper-bundle.css">
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <!-- Style -->
-    <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/main.css" />
-    <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/profilFormateur.css" />
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-    </style>
 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="MAHA a modern educational platform">
+    <title>MAHA </title>
+
+    <!-- Favicons-->
+    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+
+    <!-- GOOGLE WEB FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- BASE CSS -->
+    <link href="<?= URLROOT ?>/public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= URLROOT ?>/public/css/style.css" rel="stylesheet">
+    <link href="<?= URLROOT ?>/public/css/vendors.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- YOUR CUSTOM CSS -->
+    <link href="<?= URLROOT ?>/public/css/custom.css" rel="stylesheet">
+    <style>
+        #hero_in.general:before {
+            background: url(<?= $data['infoFormateur']['img'] ?>) center center no-repeat;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        #avatar-formateur {
+            object-fit: cover;
+            width: 150px;
+            height: 150px;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Header -->
-    <header>
-        <div class="loding-bar"></div>
-        <div class="container">
-            <h1 class="logo"><a href="<?php echo URLROOT . "/pages/index" ?>">M<span>A</span>H<span>A</span></a></h1>
-            <div class="burger-icon" id="menuBtn">
-                <span></span>
-                <span></span>
-                <span></span>
+    <div id="page" class="theia-exception">
+
+        <!-- header -->
+        <header class="header menu_2">
+            <div id="preloader">
+                <div data-loader="circle-side"></div>
+            </div><!-- /Preload -->
+            <div id="logo">
+                <a href="<?= URLROOT ?>"><img class="logo" src="<?= $data['theme']['logo'] ?>" width="149" height="42" alt="logo Maha"></a>
             </div>
-            <ul id="navBarUl" class="hide">
-                <li><a href="<?php echo URLROOT . "/#catalogue" ?>">Catalogue</a></li>
-                <li><a href="<?php echo URLROOT . "/pageFormations/" ?>">Formations</a></li>
-                <li class="menu-drop-down">
-                    <span id="dropMenu">Autre <i class='fa fa-chevron-down'></i></span>
-                    <ul id="droppedMenu" class="hide">
-                        <li><a href="<?php echo URLROOT . "/users/register" ?>">S'inscrire</a></li>
-                        <li><a href="<?php echo URLROOT . "/#popular" ?>">Les Plus Populaires</a></li>
-                        <li><a href="<?php echo URLROOT . "/#equipe" ?>">Notre équipe </a></li>
-                        <li><a href="<?php echo URLROOT . "/#contact" ?>">Contactez-Nous</a></li>
-                    </ul>
-                </li>
-                <li class="search-bar">
-                    <i class="fa fa-search" id="searchIcon"></i>
-                    <form action="" class="hide" id="seacrhForm"><input type="text"></form>
-                </li>
-                <li class="sign-in"><a href="<?php echo URLROOT . "/users/login" ?>">Se Connecter</a></li>
+            <ul id="top_menu">
+                <li class="search-overlay-menu-btn"><i class="fa-solid fa-magnifying-glass"></i></li>
+                <?php if (!isset($_SESSION['user'])) : ?>
+                    <li class="hidden_tablet"><a href="<?= URLROOT . "/users/login" ?>" class="btn_1 rounded">Se
+                            Connecter</a></li>
+                <?php endif ?>
+                <?php if (isset($_SESSION['id_formateur'])) : ?>
+                    <li class="hidden_tablet"><a href="<?= URLROOT . "/formateurs/dashboard" ?>" class="btn_1 rounded">Dashboard</a>
+                    </li>
+                <?php endif ?>
+                <?php if (isset($_SESSION['id_etudiant'])) : ?>
+                    <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiants/dashboard" ?>" class="btn_1 rounded">Mes
+                            Cours</a>
+                    </li>
+                <?php endif ?>
+
             </ul>
-        </div>
-    </header>
-    <!-- Fin Header -->
-
-<?php // echo '<pre>';print_r($data['infoFormateur']);echo '</pre>';?>
-
-<section class="profelFormateur">
-
-    <div class="container">
-        <div class="infos">
-            <div class="main-info"> 
-                <h2>Formateur</h2>
-                <div class="name"><?php echo $data['infoFormateur']['nomFormateur']; ?> <?php echo $data['infoFormateur']['prenomFormateur']; ?></div>
-                <div class="speciel"><?php echo $data['infoFormateur']['categorie']; ?></div>
-                <div class="nb-cours">
-                    <span>Nombre des cours : </span>
-                    <span class="val-nb-cours"><?php echo $data['numFormations']['numFormations']; ?></span>
-                </div>
-                <div class="nb-achter">
-                    <span>Nombre des achtes :</span>
-                    <span class="val-nb-achter"><?php echo $data['numAcht']['numAcht']; ?></span>
-                </div>
-            </div>
-            <div class="autre-info">
-                <div class="img">
-                    <img src="<?php echo $data['infoFormateur']['img']; ?>" alt="Photo-Profel">
-                </div>
-                <div class="linkes">
-                    <div class="d-flex gap-4">
-                        <span style='font-weight:bold'>@</span>
-                        <a href="#"><?php echo $data['infoFormateur']['email']; ?></a>
-                    </div>
-                    <div class="d-flex gap-4">
-                        <span style='font-weight:bold'>Tel</span>
-                        <a href="#"><?php echo $data['infoFormateur']['tel']; ?></a>
+            <!-- /top_menu -->
+            <a href="#menu" class="btn_mobile">
+                <div class="hamburger hamburger--spin" id="hamburger">
+                    <div class="hamburger-box">
+                        <div class="hamburger-inner"></div>
                     </div>
                 </div>
-            </div>
-            <div class="description">
-                    <h2>Informations personnelles</h2>
-                    <p><?php echo $data['infoFormateur']['biography']; ?></p>
-            </div>
-        </div>
-        <div class="coures">
-        <h2>Mes cours</h2>
-        <div class="formations">
-            <?php foreach($data['courses'] as $info) : ?>
-                <!-- start card -->
-                <div class="card_coures">
-                <a href='<?php echo URLROOT."/pageFormations/coursDetails/".$info->IdFormation?>' style='display: block; text-decoration: none;'>
-                    <!-- img formation -->
-                    <div class="img">
-                        <img src="<?php echo $info->imgFormation; ?>" alt="photo">
-                        <div class="duree">
-                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
-                            <div class="time"><?php echo $info->duree; ?></div>
+            </a>
+            <nav id="menu" class="main-menu">
+                <ul>
+                    <li><span><a href="<?= URLROOT ?>">Accueil</a></span></li>
+                    <li><span><a href="<?= URLROOT ?>/pageFormations/">Courses</a></span></li>
+                    <li><span><a href="<?= URLROOT ?>/#catalogue">Categories</a></span></li>
+                    <li><span><a href="<?= URLROOT ?>/#contact">Contactez-nous</a></span></li>
+                    <?php if (!isset($_SESSION['user'])) : ?>
+                        <li><span><a href="<?= URLROOT ?>/users/register">S'inscrire</a></span></li>
+                    <?php endif ?>
+                    <?php if (!isset($_SESSION['user'])) : ?>
+                        <li class="d-lg-none"><a href="<?= URLROOT . "/users/login" ?>">Se
+                                Connecter</a></li>
+                    <?php endif ?>
+                    <?php if (isset($_SESSION['id_formateur'])) : ?>
+                        <li class="d-lg-none"><a href="<?= URLROOT . "/formateurs/dashboard" ?>">Dashboard</a>
+                        </li>
+                    <?php endif ?>
+                    <?php if (isset($_SESSION['id_etudiant'])) : ?>
+                        <li class="d-lg-none"><a href="<?= URLROOT . "/etudiants/dashboard" ?>">Mes
+                                Cours</a>
+                        </li>
+                    <?php endif ?>
+                </ul>
+            </nav>
+            <!-- Search Menu -->
+            <div class="search-overlay-menu">
+                <span class="search-overlay-close"><span class="closebt"><i class="fa-solid fa-xmark"></i></span></span>
+                <form role="search" id="searchform" method="get">
+                    <input id="input-search" type="search" placeholder="Search..." />
+                    <button type="submit"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </form>
+            </div><!-- End Search Menu -->
+        </header>
+        <!-- /header -->
+
+        <main>
+            <section id="hero_in" class="general">
+                <div class="wrapper">
+                    <div class="container">
+                        <h1 class="fadeInUp">
+                            <span></span><?= $data['infoFormateur']['prenomFormateur'] . ' ' . $data['infoFormateur']['nomFormateur'] ?>
+                        </h1>
+                    </div>
+                </div>
+            </section>
+            <!--/hero_in-->
+            <div class="container margin_60_35">
+                <div class="row">
+                    <aside class="col-lg-3" id="sidebar">
+                        <div class="profile">
+                            <figure><img id="avatar-formateur" src="<?= $data['infoFormateur']['img'] ?>" alt="Formateur image" class="rounded-circle"></figure>
+                            <ul>
+                                <li>Name <span class="float-right"><?= $data['infoFormateur']['prenomFormateur'] . ' ' . $data['infoFormateur']['nomFormateur'] ?></span>
+                                </li>
+                                <li>Students <span class="float-right"><?= $data['numAcht']['numAcht'] ?></span></li>
+                                <li>Courses <span class="float-right"><?= $data['numFormations']['numFormations']; ?></span></li>
+                                <li>Email <span class="float-right"><a class="text-muted" href="mailto:<?= $data['infoFormateur']['email'] ?>">
+                                            <?= $data['infoFormateur']['email'] ?></a></span></li>
+                                <li>Phone <span class="float-right"><?= $data['infoFormateur']['tel']; ?></span>
+                                </li>
+                            </ul>
                         </div>
-                    </div>
-                    <!-- informations formation -->
-                    <div class="info_formation">
-                        <div class="categorie"><?php echo $info->categorie; ?></div>
-                        <div class="prix"><?php echo $info->prix; ?></div>
-                    </div>
-                    <!-- name formation -->
-                    <h1><?php echo $info->nomFormation; ?></h1>
-                    <!-- description -->
-                    <div class="description">
-                        <p><?php echo $info->description; ?></p>
-                    </div>
-                    <div class="footer">
-                        <!-- infotrmations formateur -->
-                        <a href='<?php echo URLROOT."/profilFormateur/".$info->IdFormteur?>' style='display: block; text-decoration: none; z-index: 10;'>
-                            <div class="formateur">
-                                <div class="img_formateur">
-                                    <img src="<?php echo $info->imgFormateur; ?>" alt="photo">
-                                </div>
-                                <h2><?php echo $info->nomFormateur; ?> <?php echo $info->prenomFormateur; ?></h2>
+                    </aside>
+                    <!--/aside -->
+
+                    <div class="col-lg-9">
+                        <div class="box_teacher">
+                            <div class="indent_title_in">
+                                <i class="fa-solid fa-user"></i>
+                                <h3>Biography</h3>
+                                <p><?= $data['infoFormateur']['categorie'] ?></p>
                             </div>
-                        </a>
-                        <!-- informations -->
-                        <div class="info">
-                            <div class="etd"><?php echo $info->numbAcht; ?></div>
-                            <i class="fa fa-heart" aria-hidden="true"></i>
-                            <div class="likes"><?php echo $info->likes; ?></div>
-                            <i class="fa fa-users" aria-hidden="true"></i>
+                            <div class="wrapper_indent">
+
+                                <p><?= $data['infoFormateur']['biography']; ?></p>
+                            </div>
+                            <!--wrapper_indent -->
+                            <hr class="styled_2">
+                            <div class="indent_title_in">
+                                <i class="fa-solid fa-desktop"></i>
+                                <h3>Mes Cours</h3>
+                                <p>Fais toujours de ton mieux même si personne ne regarde</p>
+                            </div>
+                            <div class="wrapper_indent">
+                                <div class="table-responsive">
+                                    <table class="table table-striped add_bottom_30">
+                                        <thead>
+                                            <tr>
+                                                <th>Category</th>
+                                                <th>Course name</th>
+                                                <th>Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($data['courses'] as $info) : ?>
+                                                <tr>
+                                                    <td><?= $info->categorie ?></td>
+                                                    <td><a href="<?= URLROOT . "/pageFormations/coursDetails/" . $info->IdFormation ?>"><?= $info->nomFormation; ?></a>
+                                                    </td>
+                                                    <td>$<?= $info->prix ?></td>
+                                                </tr>
+                                            <?php endforeach ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--wrapper_indent -->
                         </div>
                     </div>
-                </a>
+                    <!-- /col -->
                 </div>
-                <!-- end card -->
-            <?php endforeach; ?>
-        </div>
-        </div>
-    </div>
-</section>
-<!-- end page profel formateur -->
-<!-- Footer -->
-<footer class="mt-5" id="footer">
-  <div class="footer-top">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4 col-md-4 footer-contact">
-          <h1 class="logo"><a href="#">M<span>A</span>H<span>A</span></a></h1>
-          <p>
-            Boulevard de Mohammedia <br>
-            QI Azli 40150<br>
-            Maroc <br><br>
-            <strong>Phone:</strong> (+212) 524 34 50 57<br>
-            <strong>Email:</strong> info@maha.com<br>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="container d-md-flex py-4">
-    <div class="me-md-auto text-center text-md-start">
-      <div class="copyright">
-        © Copyright <strong><span>MAHA</span></strong>. All Rights Reserved
-      </div>
-    </div>
-  </div>
-</footer>
-<!-- Fin Footer -->
-<!-- To-up Button -->
-<span class="to-top" href="#"><i class="fa fa-chevron-up"></i></span>
-<!-- To-up Button -->
-<script src="<?php echo URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
-<script src="<?php echo URLROOT; ?>/public/js/main.js"></script>
-</body>
-</html>
+                <!-- /row -->
+            </div>
+            <!-- /container -->
+        </main>
+        <!--/main-->
 
+        <!-- footer -->
+        <footer>
+            <div class="container pt-4">
+                <div class="row justify-content-between">
+                    <div class="col-lg-5 col-md-12">
+                        <p><a href="<?= URLROOT ?>"><img class="logo" src="<?= $data['theme']['logo'] ?>" width="149" height="42" alt="logo Maha"></a></p>
+                        <p>MAHA Est Un Site Internet De Formation En Ligne Qui Contient Des Cours Et Des Vidéos
+                            d'apprentissage Dans Plusieur Domains Tels Que Le Web Development, E-commerce, Digital
+                            Marketing ...</p>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5>Contact with Us</h5>
+                        <ul class="contacts">
+                            <li><a href="tel://0524345057"><i class="fa-solid fa-mobile"></i> (+212) 524 34 50 57</a>
+                            </li>
+                            <li><a href="mailto:mahateamisgi@gmail.com"><i class="fa-solid fa-envelope"></i>
+                                    mahateamisgi@gmail.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!--/row-->
+            </div>
+        </footer>
+        <!--/footer-->
+    </div>
+    <!-- page -->
+
+    <!-- SCRIPTS -->
+    <script src="<?= URLROOT ?>/public/jQuery/jquery-3.6.0.min.js"></script>
+    <script src="<?= URLROOT ?>/public/js/common_scripts.js"></script>
+    <script src="<?= URLROOT ?>/public/js/cours-details.js"></script>
+
+</body>
+
+</html>

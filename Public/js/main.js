@@ -178,5 +178,3 @@ $("#contact-us").submit(function (event) {
     },
   });
 });
-
-// Contact US Form

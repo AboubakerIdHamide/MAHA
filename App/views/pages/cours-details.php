@@ -118,7 +118,7 @@
                     </div>
                 </div>
             </section>
-            <!--/hero_in-->
+            <!--/hero_in -->
 
             <div class="bg_color_1">
                 <nav class="secondary_nav sticky_horizontal">
