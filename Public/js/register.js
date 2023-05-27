@@ -15,6 +15,11 @@ let stepsDivs = document.querySelectorAll(".steps div")
   , ImageINput = document.getElementById("photoInp")
   , pmailInp = document.getElementById("pmail")
   , emailInp = document.getElementById("email")
+  , mahaRegisterBtn = document.getElementById("maha-register")
+  , facebookRegisterBtn = document.getElementById("facebook-register")
+  , googleRegisterBtn = document.getElementById("google-register")
+  , regiterTypeContainer = document.querySelector(".register-type")
+  , mahaRegisterFields = document.querySelector(".maha-fields")
   , UploadFileContainer = document.querySelector(".img-profile-wrapper")
   , emailBackEndError = []
   , paypalBackEndError = []
@@ -404,3 +409,40 @@ ImageINput.addEventListener("change", function() {
     }
     ;
 });
+
+// =================================== Register Type Handling ===============================
+mahaRegisterBtn.addEventListener("click", ()=>{
+    regiterTypeContainer.classList.add("hide");
+    mahaRegisterFields.classList.remove("hide");
+})
+
+//======== Google Auth =========
+googleRegisterBtn.addEventListener("click", ()=>{
+    console.log("hello");
+    google.accounts.id.prompt();
+})
+
+window.onload = function () {
+    google.accounts.id.initialize({
+      client_id: '778408900492-6dbjf9arq9mo3thm3l4fr4fid6sjcis6.apps.googleusercontent.com',
+      callback: handleCredentialResponse
+    });
+};
+
+function handleCredentialResponse(response){
+    const responsePayload = decodeJwtResponse(response.credential);
+    console.log(responsePayload)
+}
+   
+function decodeJwtResponse(credential) {
+    const parts = credential.split('.');
+    if (parts.length !== 3) {
+        throw new Error('Invalid credential format');
+    }
+
+    const payloadBase64 = parts[1];
+    const payloadDecoded = atob(payloadBase64);
+    const payload = JSON.parse(payloadDecoded);
+
+    return payload;
+}

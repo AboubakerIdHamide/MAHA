@@ -10,125 +10,139 @@
     <!-- Font Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- Style -->
-    <link rel="stylesheet" href="<?php echo URLROOT;?>/public/css/register.css">
+    <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/register.css">
 </head>
 
 <body>
     <div class="container">
         <form action="" method="post" enctype="multipart/form-data">
-            <div class="main-form-heading">
-                <h1 class="logo"><a href="<?php echo URLROOT."/pages/index";?>">M<span>A</span>H<span>A</span></a></h1>
-                <div class="form-progress">
-                    <span class="fill-prog" id="fillSpan"></span>
+            <div class="register-type">
+                <h3>S'inscrire <sup>Avec</sup></h3>
+                <button type="button" id="maha-register" class="maha"><i class="fa fa-user-plus"></i> MAHA</button>
+                <button type="button" id="facebook-register" class="facebook"><i class="fa-brands fa-facebook"></i> Facebook</button>
+                <button type="button" id="google-register" class="google"><i class="fa-brands fa-google-plus-g"></i> Google</button>
+                <small class="connection-error">Connection Error Element</small>
+            </div>
+            <div class="maha-fields hide">
+                <div class="main-form-heading">
+                    <h1 class="logo">
+                        <a href="<?php echo URLROOT . "/pages/index"; ?>">
+                            <img src="<?= URLROOT . '/Public/images/MAHA.png' ?>" alt="">
+                        </a>
+                    </h1>
+                    <div class="form-progress">
+                        <span class="fill-prog" id="fillSpan"></span>
 
-                    <div class="steps">
-                        <div>1</div>
-                        <div>2</div>
-                        <div>3</div>
-                        <div>4</div>
+                        <div class="steps">
+                            <div>1</div>
+                            <div>2</div>
+                            <div>3</div>
+                            <div>4</div>
+                        </div>
+                    </div>
+
+                    <span class="last-step hide">Dérniere étape !</span>
+                </div>
+                <div class="inputs-boxs-container">
+                    <div class="inputs-boxs-container-slider" id="inputsSlider">
+                        <div class="input-box">
+                            <div class="field">
+                                <label for="nom">Nom :</label>
+                                <input type="text" id="nom" name="nom" value="<?php echo $data[0]["nom"] ?>">
+                                <span class="error" id="error-nom"><?php echo $data[0]["nom_err"] ?></span>
+                            </div>
+                            <div class="field">
+                                <label for="prenom">Prenom :</label>
+                                <input type="text" id="prenom" name="prenom" value="<?php echo $data[0]["prenom"] ?>">
+                                <span class="error" id="error-prenom"><?php echo $data[0]["prenom_err"] ?></span>
+                            </div>
+                        </div>
+
+                        <div class="input-box">
+                            <div class="field">
+                                <label for="email">E-mail :</label>
+                                <input type="email" id="email" name="email" value="<?php echo $data[0]["email"] ?>">
+                                <span class="error" id="error-email"><?php echo $data[0]["email_err"] ?></span>
+                            </div>
+                            <div class="field">
+                                <label for="tele">N.Telephone :</label>
+                                <input type="text" id="tele" name="tele" value="<?php echo $data[0]["tel"] ?>">
+                                <span class="error" id="error-tele"><?php echo $data[0]["tel_err"] ?></span>
+                            </div>
+                        </div>
+
+                        <div class="input-box">
+                            <div class="field">
+                                <label for="mdp">Mot De Passe :</label>
+                                <input type="password" id="mdp" name="mdp" value="<?php echo $data[0]["mdp"] ?>">
+                                <span class="error" id="error-mdp"><?php echo $data[0]["mdp_err"] ?></span>
+                            </div>
+                            <div class="field">
+                                <label for="vmdp">Vérifier Mot De Passe :</label>
+                                <div class="masquer-mdb">
+                                    <input type="password" id="vmdp" name="vmdp" value="<?php echo $data[0]["vmdp"] ?>">
+                                    <i class="fa fa-eye" id="showPassIcon"></i>
+                                </div>
+                                <span class="error" id="error-vmdp"><?php echo $data[0]["vmdp_err"] ?></span>
+                            </div>
+                        </div>
+
+                        <div class="input-box">
+                            <div class="field upload-img">
+                                <div class="img-profile-wrapper">
+                                    <input type="file" id="photoInp" name="photo">
+                                </div>
+                                <span class="error" id="error-photo"><?php echo $data[0]["img_err"] ?></span>
+                            </div>
+                            <div class="field for-radio">
+                                <input type="radio" id="formateur" name="type" value="formateur">
+                                <label for="formateur">Formateur</label>
+                                <input type="radio" id="etudiant" name="type" value="etudiant" checked>
+                                <label for="etudiant">Etudiant</label>
+                            </div>
+                        </div>
+
+
+                        <div class="input-box" id="lastSection">
+                            <div class="alert-regiter-msg" id="lastSectionEtudiant">
+                                Vous avez terminé l'opération d'inscription
+                                merci de valider
+                            </div>
+                            <div class="input-box hide" id="lastSectionFormateur">
+                                <div class="field">
+                                    <label for="pmail">Email Paypal :</label>
+                                    <input type="email" id="pmail" name="pmail" value="<?php echo $data[0]["pmail"] ?>">
+                                    <span class="error" id="error-pmail"><?php echo $data[0]["pmail_err"] ?></span>
+                                </div>
+                                <div class="field">
+                                    <label spec="bio">Spécialité :</label>
+                                    <select name="specialite" id="spec">
+                                        <option value="aucun">Aucun</option>
+                                        <?php
+                                        foreach ($data[1] as $cat) {
+                                            echo '<option value="' . $cat->id_categorie . '">' . $cat->nom_categorie . '</option>';
+                                        } ?>
+                                    </select>
+                                    <span class="error" id="error-spec"><?php echo $data[0]["spec_err"] ?></span>
+                                </div>
+                                <div class="field">
+                                    <label for="bio">Biography :</label>
+                                    <textarea name="biography" id="bio"><?php echo $data[0]["bio"] ?></textarea>
+                                    <span class="error" id="error-bio"><?php echo $data[0]["bio_err"] ?></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <span class="last-step hide">Dérniere étape !</span>
-            </div>
-            <div class="inputs-boxs-container">
-                <div class="inputs-boxs-container-slider" id="inputsSlider">
-                    <div class="input-box">
-                        <div class="field">
-                            <label for="nom">Nom :</label>
-                            <input type="text" id="nom" name="nom" value="<?php echo $data[0]["nom"]?>">
-                            <span class="error" id="error-nom"><?php echo $data[0]["nom_err"]?></span>
-                        </div>
-                        <div class="field">
-                            <label for="prenom">Prenom :</label>
-                            <input type="text" id="prenom" name="prenom" value="<?php echo $data[0]["prenom"]?>">
-                            <span class="error" id="error-prenom"><?php echo $data[0]["prenom_err"]?></span>
-                        </div>
-                    </div>
-
-                    <div class="input-box">
-                        <div class="field">
-                            <label for="email">E-mail :</label>
-                            <input type="email" id="email" name="email" value="<?php echo $data[0]["email"]?>">
-                            <span class="error" id="error-email"><?php echo $data[0]["email_err"]?></span>
-                        </div>
-                        <div class="field">
-                            <label for="tele">N.Telephone :</label>
-                            <input type="text" id="tele" name="tele" value="<?php echo $data[0]["tel"]?>">
-                            <span class="error" id="error-tele"><?php echo $data[0]["tel_err"]?></span>
-                        </div>
-                    </div>
-
-                    <div class="input-box">
-                        <div class="field">
-                            <label for="mdp">Mot De Passe :</label>
-                            <input type="password" id="mdp" name="mdp" value="<?php echo $data[0]["mdp"]?>">
-                            <span class="error" id="error-mdp"><?php echo $data[0]["mdp_err"]?></span>
-                        </div>
-                        <div class="field">
-                            <label for="vmdp">Vérifier Mot De Passe :</label>
-                            <div class="masquer-mdb">
-                                <input type="password" id="vmdp" name="vmdp" value="<?php echo $data[0]["vmdp"]?>">
-                                <i class="fa fa-eye" id="showPassIcon"></i>
-                            </div>
-                            <span class="error" id="error-vmdp"><?php echo $data[0]["vmdp_err"]?></span>
-                        </div>
-                    </div>
-
-                    <div class="input-box">
-                        <div class="field upload-img">
-                            <div class="img-profile-wrapper">
-                                <input type="file" id="photoInp" name="photo">
-                            </div>
-                            <span class="error" id="error-photo"><?php echo $data[0]["img_err"]?></span>
-                        </div>
-                        <div class="field for-radio">
-                            <input type="radio" id="formateur" name="type" value="formateur">
-                            <label for="formateur">Formateur</label>
-                            <input type="radio" id="etudiant" name="type" value="etudiant" checked>
-                            <label for="etudiant">Etudiant</label>
-                        </div>
-                    </div>
-
-
-                    <div class="input-box" id="lastSection">
-                        <div class="alert-regiter-msg" id="lastSectionEtudiant">
-                            Vous avez terminé l'opération d'inscription
-                            merci de valider
-                        </div>
-                        <div class="input-box hide" id="lastSectionFormateur">
-                            <div class="field">
-                                <label for="pmail">Email Paypal :</label>
-                                <input type="email" id="pmail" name="pmail" value="<?php echo $data[0]["pmail"]?>">
-                                <span class="error" id="error-pmail"><?php echo $data[0]["pmail_err"]?></span>
-                            </div>
-                            <div class="field">
-                                <label spec="bio">Spécialité :</label>
-                                <select name="specialite" id="spec">
-                                    <option value="aucun">Aucun</option>
-                                    <?php
-                                    foreach($data[1] as $cat){
-                                        echo '<option value="'.$cat->id_categorie.'">'.$cat->nom_categorie.'</option>';
-                                    }?>
-                                </select>
-                                <span class="error" id="error-spec"><?php echo $data[0]["spec_err"]?></span>
-                            </div>
-                            <div class="field">
-                                <label for="bio">Biography :</label>
-                                <textarea name="biography" id="bio"><?php echo $data[0]["bio"]?></textarea>
-                                <span class="error" id="error-bio"><?php echo $data[0]["bio_err"]?></span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="form-buttons">
+                    <button class="prev not-allowed" id="prev">Précédent</button>
+                    <button class="next" id="next">Suivant</button>
                 </div>
-            </div>
-            <div class="form-buttons">
-                <button class="prev not-allowed" id="prev">Précédent</button>
-                <button class="next" id="next">Suivant</button>
             </div>
         </form>
     </div>
-    <script src="<?php echo URLROOT."/Public/";?>js/register.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="<?php echo URLROOT . "/Public/"; ?>js/register.js"></script>
 </body>
 
 </html>
