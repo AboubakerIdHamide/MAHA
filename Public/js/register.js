@@ -20,6 +20,7 @@ let stepsDivs = document.querySelectorAll(".steps div")
   , googleRegisterBtn = document.getElementById("google-register")
   , regiterTypeContainer = document.querySelector(".register-type")
   , mahaRegisterFields = document.querySelector(".maha-fields")
+  , registerTypeError = document.querySelector(".connection-error")
   , UploadFileContainer = document.querySelector(".img-profile-wrapper")
   , emailBackEndError = []
   , paypalBackEndError = []
@@ -412,26 +413,31 @@ ImageINput.addEventListener("change", function() {
 
 // =================================== Register Type Handling ===============================
 mahaRegisterBtn.addEventListener("click", ()=>{
+    hideRegisterType();
+})
+
+function hideRegisterType(){
     regiterTypeContainer.classList.add("hide");
     mahaRegisterFields.classList.remove("hide");
-})
+}
 
 //======== Google Auth =========
 googleRegisterBtn.addEventListener("click", ()=>{
-    console.log("hello");
+    google.accounts.id.initialize({
+        client_id: '778408900492-6dbjf9arq9mo3thm3l4fr4fid6sjcis6.apps.googleusercontent.com',
+        callback: handleCredentialResponse
+    });
     google.accounts.id.prompt();
 })
 
-window.onload = function () {
-    google.accounts.id.initialize({
-      client_id: '778408900492-6dbjf9arq9mo3thm3l4fr4fid6sjcis6.apps.googleusercontent.com',
-      callback: handleCredentialResponse
-    });
-};
-
 function handleCredentialResponse(response){
     const responsePayload = decodeJwtResponse(response.credential);
-    console.log(responsePayload)
+    emailInp.value=responsePayload?.email;
+    document.getElementById("nom").value=responsePayload?.family_name;
+    document.getElementById("prenom").value=responsePayload?.given_name;
+    document.getElementById("register-img").value= responsePayload?.picture;
+    UploadFileContainer.style.backgroundImage = `url(${responsePayload?.picture})`;
+    hideRegisterType();
 }
    
 function decodeJwtResponse(credential) {
@@ -445,4 +451,52 @@ function decodeJwtResponse(credential) {
     const payload = JSON.parse(payloadDecoded);
 
     return payload;
+}
+
+//======== Facebook Auth =========
+function statusChangeCallback(response) {
+    if (response.status === 'connected') {
+      testAPI();
+    } else {
+      registerTypeError.innerHTML = 'Please log into this app.';
+    }
+}
+
+function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+    });
+}
+
+window.fbAsyncInit = function() {
+    FB.init({
+        appId: '254302633937045',
+        cookie: true,
+        xfbml: true,
+        version: 'v17.0'
+    });
+
+    facebookRegisterBtn.addEventListener('click', function() {
+      FB.login(checkLoginState);
+    });
+};
+
+(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+function testAPI() {
+    FB.api('/me?fields=id,name,email,picture', function(response) {
+        let fullName=response?.name.split(" ");
+        emailInp.value=response?.email;
+        document.getElementById("nom").value=fullName.length>2? response?.name.replace(fullName[0], "") :fullName[1];
+        document.getElementById("prenom").value=fullName[0];
+        document.getElementById("register-img").value= response?.picture?.data?.url;
+        UploadFileContainer.style.backgroundImage = `url(${response?.picture?.data?.url})`;
+        hideRegisterType();
+    });
 }

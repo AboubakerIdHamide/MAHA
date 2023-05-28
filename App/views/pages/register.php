@@ -21,7 +21,7 @@
                 <button type="button" id="maha-register" class="maha"><i class="fa fa-user-plus"></i> MAHA</button>
                 <button type="button" id="facebook-register" class="facebook"><i class="fa-brands fa-facebook"></i> Facebook</button>
                 <button type="button" id="google-register" class="google"><i class="fa-brands fa-google-plus-g"></i> Google</button>
-                <small class="connection-error">Connection Error Element</small>
+                <small class="connection-error"></small>
             </div>
             <div class="maha-fields hide">
                 <div class="main-form-heading">
@@ -44,6 +44,7 @@
                     <span class="last-step hide">Dérniere étape !</span>
                 </div>
                 <div class="inputs-boxs-container">
+                    <input type="hidden" id="register-img" name="registerImg">
                     <div class="inputs-boxs-container-slider" id="inputsSlider">
                         <div class="input-box">
                             <div class="field">
