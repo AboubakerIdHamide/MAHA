@@ -14,8 +14,13 @@
 <body>
     <div class="container">
         <form action="" method="post" enctype="multipart/form-data">
+        <div class="maha-fields">
             <div class="main-form-heading">
-                <h1 class="logo"><a href="<?php echo URLROOT."/pages/index";?>">M<span>A</span>H<span>A</span></a></h1>
+                <h1 class="logo">
+                    <a href="<?php echo URLROOT . "/pages/index"; ?>">
+                        <img src="<?= URLROOT . '/Public/images/MAHA.png' ?>" alt="">
+                    </a>
+                </h1>
             </div>
             <div class="inputs-boxs-container">
                 <div class="inputs-boxs-container-slider" id="inputsSlider">
@@ -42,6 +47,7 @@
             <div class="form-buttons">
                 <button class="next" id="submit">Envoyez</button>
             </div>
+        </div>
         </form>
     </div>
     <script src="<?php echo URLROOT."/Public/js/forgotpassword.js"?>"></script>

@@ -18,7 +18,7 @@
         <form action="" method="post" enctype="multipart/form-data">
             <div class="register-type">
                 <h3>S'inscrire <sup>Avec</sup></h3>
-                <button type="button" id="maha-register" class="maha"><i class="fa fa-user-plus"></i> MAHA</button>
+                <button type="button" id="maha-register" class="maha"><i class="fa fa-user-plus"></i>MAHA</button>
                 <button type="button" id="facebook-register" class="facebook"><i class="fa-brands fa-facebook"></i> Facebook</button>
                 <button type="button" id="google-register" class="google"><i class="fa-brands fa-google-plus-g"></i> Google</button>
                 <small class="connection-error"></small>

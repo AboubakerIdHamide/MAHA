@@ -170,4 +170,125 @@ class Ajax extends Controller
             echo json_encode($this->fomateurModel->getBalance($_SESSION['id_formateur']));
         }
     }
+
+    public function googleLogin()
+    {
+        $url="";
+        $token = $_POST['token'];
+        $verificationUrl = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=" . $token;
+        $response = file_get_contents($verificationUrl);
+
+        if ($response !== false) {
+            $data = json_decode($response, true);
+
+            if (isset($data['aud']) && $data['aud'] === '778408900492-6dbjf9arq9mo3thm3l4fr4fid6sjcis6.apps.googleusercontent.com') {
+                $email = $data['email'];
+
+                // Shecking If That User Exists
+                $user = $this->etudiantModel->getEtudiantByEmail($email);
+                if (empty($user)) {
+                    $user = $this->fomateurModel->getFormateurByEmail($email);
+                    if (!empty($user)) {
+                        $user["type"] = "formateur";
+                        $url=$this->createUserSessios($user);
+                        echo json_encode([
+                            "authorized"=>true,
+                            "message"=>"Redirecting ...",
+                            "url"=>$url
+                        ]);
+
+                    } else {
+                        echo json_encode([
+                            "authorized"=>false,
+                            "message"=>"Aucun utilisateur avec cet email"
+                        ]);
+                    }
+                } else {
+                    $user["type"] = "etudiant";
+                    $url=$this->createUserSessios($user);
+                    echo json_encode([
+                        "authorized"=>true,
+                        "message"=>"Redirecting ...",
+                        "url"=>$url
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    "authorized"=>false,
+                    "message"=>"Utilisateur non autorisé"
+                ]);
+            }
+        } else {
+            echo json_encode([
+                "authorized"=>false,
+                "message"=>"Erreur Serveur"
+            ]);
+        }
+
+    }
+
+    public function facebookLogin()
+    {
+        $url="";
+        $token = $_POST['token'];
+        $verificationUrl = "https://graph.facebook.com/v17.0/me?access_token=".$token."&fields=id,email";
+        $response = file_get_contents($verificationUrl);
+
+        if ($response !== false) {
+            $data = json_decode($response, true);
+            $email = $data['email'];
+
+            // Shecking If That User Exists
+            $user = $this->etudiantModel->getEtudiantByEmail($email);
+            if (empty($user)) {
+                $user = $this->fomateurModel->getFormateurByEmail($email);
+                if (!empty($user)) {
+                    $user["type"] = "formateur";
+                    $url=$this->createUserSessios($user);
+                    echo json_encode([
+                        "authorized"=>true,
+                        "message"=>"Redirecting ...",
+                        "url"=>$url
+                    ]);
+
+                } else {
+                    echo json_encode([
+                        "authorized"=>false,
+                        "message"=>"Aucun utilisateur avec cet email"
+                    ]);
+                }
+            } else {
+                $user["type"] = "etudiant";
+                $url=$this->createUserSessios($user);
+                echo json_encode([
+                    "authorized"=>true,
+                    "message"=>"Redirecting ...",
+                    "url"=>$url
+                ]);
+            }
+        } else {
+            echo json_encode([
+                "authorized"=>false,
+                "message"=>"Erreur Serveur"
+            ]);
+        }
+
+    }
+
+    public function createUserSessios($user)
+    {
+        if ($user['type'] == 'formateur') {
+            $_SESSION['id_formateur'] = $user['id_formateur'];
+            $_SESSION['user'] = $user;
+            // setting up the image link
+            $_SESSION['user']['avatar'] = URLROOT . "/Public/" . $_SESSION['user']['avatar'];
+            return URLROOT.'/formateurs/dashboard';
+        } else {
+            $_SESSION['id_etudiant'] = $user['id_etudiant'];
+            $_SESSION['user'] = $user;
+            // setting up the image link
+            $_SESSION['user']['avatar'] = URLROOT . "/Public/" . $_SESSION['user']['avatar'];
+            return URLROOT.'/etudiants/dashboard';
+        }
+    }
 }

@@ -20,7 +20,18 @@ html{
 
 body {
   font-family: Inter, sans-serif;
-  background: #b0d4fc;
+  background: var(--maha-gradient);
+}
+
+:root{
+    --main-padding:100px;
+    --main-transition:0.3s;
+    --color-one:#ffc107;
+    --color-two:#ef40ea;
+    --color-three:#aaa;
+    --color-four:#06283D;
+    --transparent-color:#392779cc;
+    --maha-gradient:linear-gradient(45deg, #ffc107, #ef40ea);
 }
 
 body::-webkit-scrollbar{
@@ -28,15 +39,6 @@ body::-webkit-scrollbar{
 }
 body::-webkit-scrollbar-thumb{
     background-color: var(--color-one);
-}
-:root{
-    --main-padding:100px;
-    --main-transition:0.3s;
-    --color-one:#47B5FF;
-    --color-two:#DFF6FF;
-    --color-three:#aaa;
-    --color-four:#06283D;
-    --transparent-color:#0f748fb3;
 }
 .container{
     padding-left: 15px;
@@ -79,7 +81,7 @@ body::-webkit-scrollbar-thumb{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #94c0fb;
+    background-color: #fff;
     border-radius: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -96,15 +98,12 @@ body::-webkit-scrollbar-thumb{
 
 .main-form-heading .logo{
     font-size: 40px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
-.main-form-heading .logo a{
-    color: #ff6584;
-    text-decoration: none;
+.main-form-heading .logo a img{
+    width: 150px;
 }
-.main-form-heading .logo a span{
-    color: var(--color-one);
-}
+
 .container form label,
 .container form p{
     text-align: center;
@@ -115,16 +114,16 @@ body::-webkit-scrollbar-thumb{
     color: var(--color-one);
 }
 .container form p .user-email{
-    color: #ff6584;
+    color: var(--color-two);
 }
 .container form input{
     width: 30%;
     padding: 10px 13px;
     font-size: 30px;
     outline: none;
-    background-color:#b6d6ff;
+    background-color:#ffc10722;
     border: none;
-    border-bottom: 2px solid var(--color-four);
+    border-bottom: 2px solid var(--color-one);
     caret-color: var(--color-one);
     color: var(--color-four);
     transition: var(--main-transition);
@@ -142,7 +141,8 @@ body::-webkit-scrollbar-thumb{
     }
 }
 .container form input:focus{
-    background-color: var(--color-two);
+    background-color: #ef40ea22;
+    border-bottom: 2px solid var(--color-two);
 }
 .container form .submit-btn{
     margin-top: 10px;
@@ -156,7 +156,7 @@ body::-webkit-scrollbar-thumb{
     color: #fff;
     font-weight: 400;
     letter-spacing: 1px;
-    background-color: #313f87f0;
+    background-color: var(--color-one);
     transition: var(--main-transition);
     -webkit-transition: var(--main-transition);
     -moz-transition: var(--main-transition);
@@ -170,24 +170,24 @@ body::-webkit-scrollbar-thumb{
 }
 .container form .submit-btn:hover{
     color: #fff;
-    background-color: #ff6584;
+    background-color: var(--color-two);
 }
 .container form .resend-link{
     border: none;
     text-decoration: underline;
     cursor: pointer;
     margin-top: 10px;
-    color: #fff;
-    background-color: #94c0fb;
+    color: var(--color-one);
     font-size: 13px;
     transition: var(--main-transition);
     -webkit-transition: var(--main-transition);
     -moz-transition: var(--main-transition);
     -ms-transition: var(--main-transition);
     -o-transition: var(--main-transition);
+    background-color: transparent;
 }
 .container form .resend-link:hover{
-    color: var(--color-four);
+    color: var(--color-two);
 }
 .error{
     font-size: 10px;

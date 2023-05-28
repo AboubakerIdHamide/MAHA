@@ -14,7 +14,11 @@
     <div class="container">
         <form action="" method="post" enctype="multipart/form-data">
             <div class="main-form-heading">
-                <h1 class="logo"><a href="<?php echo URLROOT."/pages/index"?>">M<span>A</span>H<span>A</span></a></h1>
+                <h1 class="logo">
+                    <a href="<?php echo URLROOT . "/pages/index"; ?>">
+                        <img src="<?= URLROOT . '/Public/images/MAHA.png' ?>" alt="">
+                    </a>
+                </h1>
             </div>
             <p>Tu es presque! Nous avons envoyé un code de vérification à <span class="user-email"><?php echo $data[0]["email"]?></span> .</p>
             <label for="code">Entrez simplement ce code ici pour vérifier votre identité</label>

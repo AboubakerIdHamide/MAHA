@@ -21,53 +21,64 @@
 <body>
   <div class="container">
     <div class="form login">
-      <div class="main-form-heading">
-        <h1 class="logo">
-          <a href="<?php echo URLROOT . "/pages/index" ?>" class="l">M<span>A</span>H<span>A</span></a>
-        </h1>
+      <div class="login-type">
+          <h3>connexion</h3>
+          <button type="button" id="maha-login" class="maha"><i class="fa fa-arrow-right-to-bracket"></i>MAHA</button>
+          <button type="button" id="facebook-login" class="facebook"><i class="fa-brands fa-facebook"></i> Facebook</button>
+          <button type="button" id="google-login" class="google"><i class="fa-brands fa-google-plus-g"></i> Google</button>
+          <small class="connection-error"></small>
       </div>
-      <?php flash("changePassMsg"); ?>
-      <?php flash("signupMsg"); ?>
-      <form class="mainForm" action="" method="post">
-        <div class="field">
-          <label for="email">Email</label>
-          <div class="input-field">
-            <input type="text" id="email" name="email" value="<?php echo $data["email"]; ?>" />
-            <i class="fa-solid fa-envelope"></i>
-          </div>
-          <span class="error" id="error-email"><?php echo $data["email_err"]; ?></span>
+      <div class="maha-fields hide">
+        <div class="main-form-heading">
+            <h1 class="logo">
+                <a href="<?php echo URLROOT . "/pages/index"; ?>">
+                    <img src="<?= URLROOT . '/Public/images/MAHA.png' ?>" alt="">
+                </a>
+            </h1>
         </div>
-
-        <div class="field">
-          <label for="mdp">Mot De Passe</label>
-          <div class="input-field">
-            <input type="password" name="password" id="password" value="<?php echo $data["password"]; ?>" />
-            <i class="fa-solid fa-lock"></i>
-            <i class="fa-solid fa-eye" id="togglePassword"></i>
-          </div>
-          <span class="error" id="error-mdp"><?php echo !empty($data["password_err"]) ? $data["password_err"] : ""; ?></span>
-          <div class="checkbox-text">
-            <div class="checkbox-content">
-              <input type="checkbox" id="logCheck" name="rememberMe" <?php echo isset($_COOKIE["useremail"]) ? "checked" : ""; ?> />
-              <label for="logCheck">se souvenir de moi</label>
+        <?php flash("changePassMsg"); ?>
+        <?php flash("signupMsg"); ?>
+        <form class="mainForm" action="" method="post">
+          <div class="field">
+            <label for="email">Email</label>
+            <div class="input-field">
+              <input type="text" id="email" name="email" value="<?php echo $data["email"]; ?>" />
+              <i class="fa-solid fa-envelope"></i>
             </div>
-
-            <a href="<?= URLROOT ?>/users/forgotPassword" class="text">Mot de passe oublié ?</a>
+            <span class="error" id="error-email"><?php echo $data["email_err"]; ?></span>
           </div>
-
-          <div class="input-field button">
-            <input type="submit" value="S'identifier" />
+  
+          <div class="field">
+            <label for="mdp">Mot De Passe</label>
+            <div class="input-field">
+              <input type="password" name="password" id="password" value="<?php echo $data["password"]; ?>" />
+              <i class="fa-solid fa-lock"></i>
+              <i class="fa-solid fa-eye" id="togglePassword"></i>
+            </div>
+            <span class="error" id="error-mdp"><?php echo !empty($data["password_err"]) ? $data["password_err"] : ""; ?></span>
+            <div class="checkbox-text">
+              <div class="checkbox-content">
+                <input type="checkbox" id="logCheck" name="rememberMe" <?php echo isset($_COOKIE["useremail"]) ? "checked" : ""; ?> />
+                <label for="logCheck">se souvenir de moi</label>
+              </div>
+              <a href="<?= URLROOT ?>/users/forgotPassword" class="text">Mot de passe oublié ?</a>
+            </div>
+  
+            <div class="input-field button">
+              <input type="submit" value="S'identifier" />
+            </div>
           </div>
+        </form>
+        <div class="login-signup">
+          <span class="text">
+            Pas un membre?
+            <a href="<?php echo URLROOT; ?>/users/register" class="text signup-text">S'inscrire</a>
+          </span>
         </div>
-      </form>
-      <div class="login-signup">
-        <span class="text">
-          Pas un membre?
-          <a href="<?php echo URLROOT; ?>/users/register" class="text signup-text">S'inscrire</a>
-        </span>
       </div>
     </div>
   </div>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="<?php echo URLROOT; ?>/public/js/login.js"></script>
 </body>
 
