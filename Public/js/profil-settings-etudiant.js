@@ -164,7 +164,7 @@ $(document).ready(function() {
         if (motDePasse === "mdp-c" && mdpInp.value === "") {
             Errors.push({
                 id: "error-mdp-c",
-                msg: "Veuillez remplir ce champ pour effectue le changement.",
+                msg: "Veuillez remplir ce champ pour effectue la modification.",
             });
             return Errors;
         }
@@ -172,19 +172,19 @@ $(document).ready(function() {
         if (!mdpInp.value.match(/[!@#$%^&*()\-__+.]/)) {
             Errors.push({
                 id: "error-" + motDePasse,
-                msg: "Le mot de passe doit contient spécial character",
+                msg: "Le mot de passe doit contient au moin un caractère spécial",
             });
         }
         if (!mdpInp.value.match(/\d/)) {
             Errors.push({
                 id: "error-" + motDePasse,
-                msg: "Le mot de passe doit contenir au moins 1 chiffres",
+                msg: "Le mot de passe doit contenir au moins un chiffre",
             });
         }
         if (!mdpInp.value.match(/[a-zA-Z]/)) {
             Errors.push({
                 id: "error-" + motDePasse,
-                msg: "Le mot de passe doit contenir au moins 1 lettre",
+                msg: "Le mot de passe doit contenir au moins une lettre",
             });
         }
 
@@ -285,7 +285,7 @@ $(document).ready(function() {
                         } else {
                             $("p.success-msg").html(`
 							<div class="alert alert-success alert-dismissible fade show" role="alert">
-								<strong>Success!</strong> Your profil has been updated!
+								<strong>Success!</strong> Votre profil a été mis à jour!
 								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 							</div>
 							`);

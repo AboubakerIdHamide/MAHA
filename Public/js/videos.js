@@ -91,13 +91,13 @@ $(document).ready(function () {
     const isInputValid = ({ inputValue, label, maxCara, regExp }) => {
       if (inputValue.length > maxCara) {
         $(".error-" + label).text(
-          `Le nombre maximum de caractères est ${maxCara}`
+          `${maxCara} caractères maximum`
         );
         return false;
       }
 
       if (inputValue.length < 6) {
-        $(".error-" + label).text("Le nombre minimum de caractères est 5");
+        $(".error-" + label).text("5 caractères minimum");
         return false;
       }
 

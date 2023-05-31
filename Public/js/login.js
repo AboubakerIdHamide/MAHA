@@ -36,7 +36,7 @@ function validateEmail() {
     if (!emailInp.value.match(emailRe)) {
         Errors.push({
             id: "error-email",
-            msg: "L'email que vous saisi est invalide"
+            msg: "Email invalide"
         });
     }
 
@@ -59,19 +59,19 @@ function validateMotDePasse() {
     if (!mdpInp.value.match(/[!@#$%^&*()\-__+.]/)) {
         Errors.push({
             id: "error-mdp",
-            msg: "Le mot de passe doit contient spécial character",
+            msg: "Le mot de passe doit contient au moin un caractère spécial",
         });
     }
     if (!mdpInp.value.match(/\d/)) {
         Errors.push({
             id: "error-mdp",
-            msg: "Le mot de passe doit contenir au moins 1 chiffres",
+            msg: "Le mot de passe doit contenir au moins un chiffre",
         });
     }
     if (!mdpInp.value.match(/[a-zA-Z]/)) {
         Errors.push({
             id: "error-mdp",
-            msg: "Le mot de passe doit contenir au moins 1 lettre",
+            msg: "Le mot de passe doit contenir au moins une lettre",
         });
     }
 
@@ -144,7 +144,7 @@ function statusChangeCallback(response) {
         const { accessToken }=response?.authResponse;
         tokenSender(accessToken, "facebookLogin");
     } else {
-      loginTypeError.innerHTML = 'Please log into this app.';
+      loginTypeError.innerHTML = 'Veuillez vous connecter à cette application.';
     }
 }
 
@@ -210,7 +210,7 @@ function tokenSender(token, route){
                     loginTypeError.innerHTML=response?.message;
                 }
             } else {
-                alert("Error Server!");
+                alert("Erreur serveur!");
             }
         }
     }

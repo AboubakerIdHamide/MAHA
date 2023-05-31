@@ -117,13 +117,13 @@ $(document).ready(function () {
     // comment validation
     if ($comment.length > 500) {
       $(".comment-entry .comment-error").text(
-        "Le nombre maximum de caractères est 500"
+        "500 caractères au maximum"
       );
       return;
     } else {
       if ($comment.length < 4) {
         $(".comment-entry .comment-error").text(
-          "Le nombre minimum de caractères est 4"
+          "4 caractères au minimum"
         );
         return;
       }
@@ -155,7 +155,7 @@ $(document).ready(function () {
     if ($cptComment >= 500) {
       $(".cpt-caractere").text(500);
       $(".comment-entry .comment-error").text(
-        "Le nombre maximum de caractères est 500"
+        "500 caractères au maximum"
       );
       return;
     } else {

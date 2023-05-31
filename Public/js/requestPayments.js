@@ -60,7 +60,7 @@ $(document).ready(function() {
                     showFlashMessage("le Montant Minimun 10$", "danger");
                 }
             } else {
-                showFlashMessage("Format Incorrect, le montant doit contenaire que des chiffres.", "danger");
+                showFlashMessage("Format Incorrect, le montant doit contenir que des chiffres.", "danger");
             }
         }
     });
@@ -133,7 +133,7 @@ $(document).ready(function() {
             <div class="row mb-3">
                 <div class="col">
                     <p class="alert alert-primary" role="alert">
-                        There is no payment history
+                    Il n'y a pas d'historique de paiement
                     </p>
                 </div>
             </div>

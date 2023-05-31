@@ -113,9 +113,9 @@ $(document).ready(function() {
                 $(".error-title").text("");
             } else {
                 if (titre.length < 5)
-                    $(".error-title").text("Mininum caracteres 5");
+                    $(".error-title").text("5 caractères au minimum");
                 else
-                    $(".error-title").text("Maxmimun caracteres 25");
+                    $(".error-title").text("25 caractères au maximum");
                 return false;
             }
         } else {
@@ -129,9 +129,9 @@ $(document).ready(function() {
                 $(".error-desc").text("");
             } else {
                 if (desc.length < 10)
-                    $(".error-desc").text("Mininum caracteres 10");
+                    $(".error-desc").text("10 caractères au minimum");
                 else
-                    $(".error-desc").text("Maxmimun caracteres 500");
+                    $(".error-desc").text("500 caractères au maximum");
                 return false;
             }
         } else {
@@ -144,7 +144,7 @@ $(document).ready(function() {
             if (price.match(/^(?!0\d)\d*(\.\d+)?$/gm)) {
                 $(".error-prix").text("");
             } else {
-                $(".error-prix").text("incorrect number !!!");
+                $(".error-prix").text("Nombre incorrect !!!");
                 return false;
             }
         } else {
@@ -316,7 +316,7 @@ $(document).ready(function() {
 
                 const isInputValid = ({inputValue, label, maxCara, regExp})=>{
                     if (inputValue.length > maxCara) {
-                        showFlashMessage(`Le nombre maximum de caractères est ${maxCara}`, "danger");
+                        showFlashMessage(`${maxCara} caractères au maximum`, "danger");
                         return false;
                     }
 
@@ -326,12 +326,12 @@ $(document).ready(function() {
                     }
 
                     if (inputValue.length < 6) {
-                        showFlashMessage("Le nombre minimum de caractères est 5", "danger");
+                        showFlashMessage("5 caractères au minimum", "danger");
                         return false;
                     }
 
                     if (label === "title" && !inputValue.match(regExp)) {
-                        showFlashMessage("Le title ne doit pas contient des caractères speciaux.", "danger");
+                        showFlashMessage("Le titre ne doit pas contient des caractères speciaux.", "danger");
                         return false;
                     }
 

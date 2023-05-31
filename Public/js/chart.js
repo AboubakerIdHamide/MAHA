@@ -113,7 +113,7 @@ function dateCompare(dateD, dateR){
             }
         });
     }else{
-        alert('Date Fin doit etre inferieur a date debut !');
+        alert('Date Fin doit être inferieur a date debut !');
     }
 }
 

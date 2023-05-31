@@ -102,14 +102,14 @@ $(document).ready(function() {
           , emailInp = document.getElementById("email-formateur");
 
         if (!emailInp.value.match(emailRe)) {
-            return "L'email que vous saisi est invalide";
+            return "E-mail invalide";
         }
         if (!teleInp.value.match(phoneRe) || teleInp.value.length != 10) {
-            return "Le numéro de telephone que vous saisi est invalide";
+            return "Numéro de telephone invalide";
         }
 
         if (emailInp.value == "" || emailInp.value == null) {
-            return "L'é-mail est obligatoire";
+            return "L'e-mail est obligatoire";
         }
 
         if (teleInp.value == "" || teleInp.value == null) {
@@ -126,7 +126,7 @@ $(document).ready(function() {
           , pmailInp = document.getElementById("email-pay-formateur");
 
         if (!pmailInp.value.match(emailRe)) {
-            return "L'email de Paypal que vous saisi est invalide";
+            return "L'email de Paypal est invalide";
         }
 
         if (pmailInp.value == "" || pmailInp.value == null) {
@@ -142,7 +142,7 @@ $(document).ready(function() {
         }
 
         if (bioTextarea.value.length > 500) {
-            return "La Biography doit comporter au maximum 500 caractères";
+            return "La Biographie doit comporter au maximum 500 caractères";
         }
 
         return null;

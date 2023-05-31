@@ -163,12 +163,12 @@ $(document).ready(function () {
         $(".error-title").text();
       } else {
         if (titre.length < 5)
-          $(".error-title").text("Mininum caracteres 5 !!!");
-        else $(".error-title").text("Maxmimun caracteres 25 !!!");
+          $(".error-title").text("5 caractères au minimum !!!");
+        else $(".error-title").text("25 caractères au maximum !!!");
         return false;
       }
     } else {
-      $(".error-title").text("le champs est obligatioire !!!");
+      $(".error-title").text("Ce champ est obligatioire !!!");
       return false;
     }
 
@@ -179,12 +179,12 @@ $(document).ready(function () {
         $(".error-desc").text("");
       } else {
         if (desc.length < 10)
-          $(".error-desc").text("Mininum caracteres 10 !!!");
-        else $(".error-desc").text("Maxmimun caracteres 500 !!!");
+          $(".error-desc").text("10 caractères au minimum !!!");
+        else $(".error-desc").text("500 caractères au maximum !!!");
         return false;
       }
     } else {
-      $(".error-desc").text("you can't let description empty !!!");
+      $(".error-desc").text("Ce champ est obligatoire !!!");
       return false;
     }
 
@@ -194,11 +194,11 @@ $(document).ready(function () {
         cours.prix = Number(price);
         $(".error-prix").text("");
       } else {
-        $(".error-prix").text("incorrect number !!!");
+        $(".error-prix").text("Nombre incorrect !!!");
         return false;
       }
     } else {
-      $(".error-prix").text("le champs est obligatioire !!!");
+      $(".error-prix").text("Ce champs est obligatioire !!!");
       return false;
     }
 

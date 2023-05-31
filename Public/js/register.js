@@ -72,7 +72,7 @@ function validateEmailTele() {
     if (!emailInp.value.match(emailRe)) {
         Errors.push({
             id: "error-email",
-            msg: "L'email que vous saisi est invalide",
+            msg: "Email invalide",
         });
     }
     if (!teleInp.value.match(phoneRe) || teleInp.value.length != 10) {
@@ -85,7 +85,7 @@ function validateEmailTele() {
     if (emailInp.value == "" || emailInp.value == null) {
         Errors.push({
             id: "error-email",
-            msg: "L'é-mail est obligatoire"
+            msg: "L'e-mail est obligatoire"
         });
     }
     if (teleInp.value == "" || teleInp.value == null) {
@@ -105,19 +105,19 @@ function validateMotDePasse() {
     if (!mdpInp.value.match(/[!@#$%^&*()\-__+.]/)) {
         Errors.push({
             id: "error-mdp",
-            msg: "Le mot de passe doit contient spécial character",
+            msg: "Le mot de passe doit contient au moin un caractère spécial",
         });
     }
     if (!mdpInp.value.match(/\d/)) {
         Errors.push({
             id: "error-mdp",
-            msg: "Le mot de passe doit contenir au moins 1 chiffres",
+            msg: "Le mot de passe doit contenir au moins un chiffre",
         });
     }
     if (!mdpInp.value.match(/[a-zA-Z]/)) {
         Errors.push({
             id: "error-mdp",
-            msg: "Le mot de passe doit contenir au moins 1 lettre",
+            msg: "Le mot de passe doit contenir au moins une lettre",
         });
     }
 
@@ -154,14 +154,14 @@ function validateBioPmail() {
     if (!pmailInp.value.match(emailRe)) {
         Errors.push({
             id: "error-pmail",
-            msg: "L'email que vous saisi est invalide",
+            msg: "Email invalide",
         });
     }
 
     if (pmailInp.value == "" || pmailInp.value == null) {
         Errors.push({
             id: "error-pmail",
-            msg: "L'é-mail de Paypal est obligatoire",
+            msg: "L'e-mail de Paypal est obligatoire",
         });
     }
 
@@ -182,7 +182,7 @@ function validateBioPmail() {
     if (bioTextarea.value.length > 500) {
         Errors.push({
             id: "error-bio",
-            msg: "La Biography doit comporter au maximum 500 caractères",
+            msg: "La Biographie doit comporter au maximum 500 caractères",
         });
     }
 
@@ -345,7 +345,7 @@ emailInp.addEventListener("keyup", function() {
                     })
                 }
             } else {
-                alert("Error Server!");
+                alert("Erreur serveur!");
             }
         }
     }
@@ -370,7 +370,7 @@ pmailInp.addEventListener("keyup", function() {
                     })
                 }
             } else {
-                alert("Error Server!");
+                alert("Erreur serveur!");
             }
         }
     }
@@ -443,7 +443,7 @@ function handleCredentialResponse(response){
 function decodeJwtResponse(credential) {
     const parts = credential.split('.');
     if (parts.length !== 3) {
-        throw new Error('Invalid credential format');
+        throw new Error("Format d'identifiant non valide");
     }
 
     const payloadBase64 = parts[1];
@@ -458,7 +458,7 @@ function statusChangeCallback(response) {
     if (response.status === 'connected') {
       testAPI();
     } else {
-      registerTypeError.innerHTML = 'Please log into this app.';
+      registerTypeError.innerHTML = 'Veuillez vous connecter à cette application.';
     }
 }
 

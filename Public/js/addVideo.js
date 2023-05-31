@@ -10,7 +10,7 @@ let sectionIndex = 0
   , myForm = document.getElementById("form");
 videoINputErrors = [{
     id: "error_videos",
-    msg: "Telecharger Un Video Au Minumum !"
+    msg: "Télécharger un video au minumum !"
 }],
 videoJsObjects = [],
 filesUploaded = 0,
@@ -47,7 +47,7 @@ prevBtn.addEventListener("click", (e)=>{
     createVideosElements();
     videoINputErrors.push({
         id: "error_videos",
-        msg: "Telecharger Un Video Au Minumum !"
+        msg: "Télécharger un video au minumum !"
     });
 }
 );
@@ -232,7 +232,7 @@ function uploadVideo(file) {
 
                 } else {
                     alert("Upload Server Error!");
-                    videoErrorSpan.textContent = "Erreur De Telechargement !";
+                    videoErrorSpan.textContent = "Erreur De Téléchargement !";
                 }
             }
         }

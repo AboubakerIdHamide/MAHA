@@ -96,14 +96,14 @@ $(document).ready(function() {
           , emailInp = document.getElementById("email-etudiant");
 
         if (!emailInp.value.match(emailRe)) {
-            return "L'email que vous saisi est invalide";
+            return "E-mail invalide";
         }
         if (!teleInp.value.match(phoneRe) || teleInp.value.length != 10) {
-            return "Le numéro de telephone que vous saisi est invalide";
+            return "Numéro de telephone invalide";
         }
 
         if (emailInp.value == "" || emailInp.value == null) {
-            return "L'é-mail est obligatoire";
+            return "L'e-mail est obligatoire";
         }
 
         if (teleInp.value == "" || teleInp.value == null) {

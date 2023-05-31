@@ -45,11 +45,11 @@ emailInp.addEventListener("keyup", ()=>{
                 if (response.thereIsError == false) {
                     emailBackEndError.push({
                         id: "error-email",
-                        msg: "Aucun utilisateur avec cet email"
+                        msg: "Aucun utilisateur avec cet e-mail"
                     })
                 }
             } else {
-                alert("Error Server!");
+                alert("Erreur serveur!");
             }
         }
     }
@@ -63,13 +63,13 @@ function validateData() {
     if (!emailInp.value.match(emailRe)) {
         Errors.push({
             id: "error-email",
-            msg: "L'email que vous saisi est invalide",
+            msg: "E-mail invalide",
         });
     }
     if (emailInp.value == "" || emailInp.value == null) {
         Errors.push({
             id: "error-email",
-            msg: "L'é-mail est obligatoire"
+            msg: "L'e-mail est obligatoire"
         });
     }
 
@@ -77,19 +77,19 @@ function validateData() {
     if (!mdpInp.value.match(/[!@#$%^&*()\-__+.]/)) {
         Errors.push({
             id: "error-mdp",
-            msg: "Le mot de passe doit contient spécial character",
+            msg: "Le mot de passe doit contient au moin un caractère spécial",
         });
     }
     if (!mdpInp.value.match(/\d/)) {
         Errors.push({
             id: "error-mdp",
-            msg: "Le mot de passe doit contenir au moins 1 chiffres",
+            msg: "Le mot de passe doit contenir au moins un chiffre",
         });
     }
     if (!mdpInp.value.match(/[a-zA-Z]/)) {
         Errors.push({
             id: "error-mdp",
-            msg: "Le mot de passe doit contenir au moins 1 lettre",
+            msg: "Le mot de passe doit contenir au moins une lettre",
         });
     }
     if (mdpInp.value == "" || mdpInp.value == null || mdpInp.value.length < 10) {
