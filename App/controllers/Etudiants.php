@@ -217,15 +217,15 @@ class Etudiants extends Controller
 			if (preg_match_all("/\d/", $data["n_mdp"])) {
 				if (!preg_match_all("/[a-zA-Z]/", $data["n_mdp"])) {
 					$data["thereIsError"] = true;
-					$data["n_mdp_err"] = "Le mot de passe doit contenir au moins 1 lettre";
+					$data["n_mdp_err"] = "Le mot de passe doit contenir au moins une lettre";
 				}
 			} else {
 				$data["thereIsError"] = true;
-				$data["n_mdp_err"] = "Le mot de passe doit contenir au moins 1 chiffres";
+				$data["n_mdp_err"] = "Le mot de passe doit contenir au moins un chiffres";
 			}
 		} else {
 			$data["thereIsError"] = true;
-			$data["n_mdp_err"] = "Le mot de passe doit contient spécial character";
+			$data["n_mdp_err"] = "Le mot de passe doit contient au moin un caractère spécial";
 		}
 		if (strlen($data["n_mdp"]) > 50) {
 			$data["thereIsError"] = true;
@@ -245,7 +245,7 @@ class Etudiants extends Controller
 
 		if (!(password_verify($data["c_mdp"], $data['mdpDb']))) {
 			$data["thereIsError"] = true;
-			$data["c_mdp_err"] = "Le mots de passe est incorrect.";
+			$data["c_mdp_err"] = "Mot de passe incorrect !";
 		}
 		return $data;
 	}
@@ -325,11 +325,11 @@ class Etudiants extends Controller
                     $data["img"] = $fileDestination;
                 } else {
                     $data["thereIsError"] = true;
-                    $data["img_err"] = "Une erreur s'est produite lors du téléchargement de votre image ";
+                    $data["img_err"] = "Une erreur s'est produite lors du téléchargement de votre image !";
                 }
             } else {
                 $data["thereIsError"] = true;
-                $data["img_err"] = "Vous ne pouvez pas télécharger ce fichier uniquement (jpg | jpeg | png | ico) autorisé";
+                $data["img_err"] = "Vous ne pouvez pas télécharger ce fichier. (uniquement jpg, jpeg, png, ico sont autorisé)";
             }
         } else {
             $data["img"] = 'images/default.jpg';
@@ -359,12 +359,12 @@ class Etudiants extends Controller
 	public function setStateToSeen($id_notification)
 	{
 		$this->notificationModel->setStateToSeen($id_notification);
-		echo 'DONE!!';
+		echo 'Terminée !!';
 	}
 
 	public function deleteSeenNotifications()
 	{
 		$this->notificationModel->deleteSeenNotifications();
-		echo 'DONE **';
+		echo 'Terminée !!';
 	}
 }

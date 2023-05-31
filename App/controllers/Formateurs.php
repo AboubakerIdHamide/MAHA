@@ -49,7 +49,7 @@ class Formateurs extends Controller
 			if ($this->checkBalance($requestInfo)) {
 				// placer la demande
 				$this->requestPaymentModel->insertRequestPayment($_SESSION['id_formateur'], $requestInfo->montant);
-				echo "votre demande a été placer avec success";
+				echo "votre demande a été mis avec success";
 			}
 		} else {
 			$nbrNotifications = $this->_getNotifications();
@@ -79,7 +79,7 @@ class Formateurs extends Controller
 	public function deleteRequest($id_req)
 	{
 		$this->requestPaymentModel->deleteRequest($id_req);
-		echo 'request deleted with success';
+		echo 'Demande supprimée avec succès !!';
 	}
 
 	public function getAllNotifications()
@@ -103,13 +103,13 @@ class Formateurs extends Controller
 	public function setStateToSeen($id_notification)
 	{
 		$this->notificationModel->setStateToSeen($id_notification);
-		echo 'DONE!!';
+		echo 'Terminée !!';
 	}
 
 	public function deleteSeenNotifications()
 	{
 		$this->notificationModel->deleteSeenNotifications();
-		echo 'DONE **';
+		echo 'Terminée !!';
 	}
 
 	// Update Profil 
@@ -239,15 +239,15 @@ class Formateurs extends Controller
 			if (preg_match_all("/\d/", $data["n_mdp"])) {
 				if (!preg_match_all("/[a-zA-Z]/", $data["n_mdp"])) {
 					$data["thereIsError"] = true;
-					$data["n_mdp_err"] = "Le mot de passe doit contenir au moins 1 lettre";
+					$data["n_mdp_err"] = "Le mot de passe doit contenir au moins une lettre";
 				}
 			} else {
 				$data["thereIsError"] = true;
-				$data["n_mdp_err"] = "Le mot de passe doit contenir au moins 1 chiffres";
+				$data["n_mdp_err"] = "Le mot de passe doit contenir au moins un chiffres";
 			}
 		} else {
 			$data["thereIsError"] = true;
-			$data["n_mdp_err"] = "Le mot de passe doit contient spécial character";
+			$data["n_mdp_err"] = "Le mot de passe doit contient au moin un caractère spécial";
 		}
 		if (strlen($data["n_mdp"]) > 50) {
 			$data["thereIsError"] = true;
@@ -261,7 +261,7 @@ class Formateurs extends Controller
 		// Validate Biography
 		if (strlen($data["bio"]) > 500) {
 			$data["thereIsError"] = true;
-			$data["bio_err"] = "La Biography doit comporter au maximum 500 caractères";
+			$data["bio_err"] = "La Biographie doit comporter au maximum 500 caractères";
 		}
 		if (strlen($data["bio"]) < 130) {
 			$data["thereIsError"] = true;
@@ -282,7 +282,7 @@ class Formateurs extends Controller
 		$data['mdpDb'] = $this->fomateurModel->getMDPFormateurById($data['id'])['mdp'];
 		if (!(password_verify($data["c_mdp"], $data['mdpDb']))) {
 			$data["thereIsError"] = true;
-			$data["c_mdp_err"] = "Le mots de passe est incorrect.";
+			$data["c_mdp_err"] = "Mot de passe incorrect !";
 		}
 		return $data;
 	}
@@ -369,7 +369,7 @@ class Formateurs extends Controller
                 }
             } else {
                 $data["thereIsError"] = true;
-                $data["img_err"] = "Vous ne pouvez pas télécharger ce fichier uniquement (jpg | jpeg | png | ico) autorisé";
+                $data["img_err"] = "Vous ne pouvez pas télécharger ce fichier. (uniquement jpg, jpeg, png, ico sont autorisé)";
             }
         } else {
             $data["img"] = 'images/default.jpg';
@@ -413,6 +413,6 @@ class Formateurs extends Controller
 			// loading the view
 			$this->view("formateur/coursVideos", $data);
 		} else
-			die("Something Went Wrong !!!");
+			die("Une erreur s'est produite !!!");
 	}
 }

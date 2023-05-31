@@ -274,7 +274,7 @@ class Users extends Controller
                         redirect("users/changePassword");
                     }
                 } else {
-                    $data["email_err"] = "Aucun utilisateur avec cet email";
+                    $data["email_err"] = "Aucun utilisateur avec cet e-mail";
                 }
             } else {
                 if (empty($data["mdp_err"]) && empty($data["vmdp_err"])) {
@@ -336,7 +336,7 @@ class Users extends Controller
                 unset($_SESSION["vcode"]);
                 unset($_SESSION["resend"]);
                 unset($_SESSION["changePasswordData"]);
-                flash("changePassMsg", "votre mot de passe changer avec succès.", "alert alert-primary");
+                flash("changePassMsg", "votre mot de passe a été changé avec succès.", "alert alert-primary");
                 redirect("users/login");
             } else {
                 $data[1]["code"] = $_POST["code"];
@@ -450,7 +450,7 @@ class Users extends Controller
             extract($_POST);
             $username = $this->model("Smtp")->getSmtp()['username'];
             $this->sendEmail($username, $email, $name, $subject, $message, 'MAHA', null, null);
-            echo "Votre Message a ete envoyer avec success !";
+            echo "Votre Message a été envoyé avec succès !";
         }
     }
 
@@ -492,11 +492,11 @@ class Users extends Controller
         }
         if (!empty($this->etudiantModel->getEtudiantByEmail($data["email"]))) {
             $data["thereIsError"] = true;
-            $data["email_err"] = "Adresse e-Mail déjà utilisée";
+            $data["email_err"] = "Adresse e-mail déjà utilisée";
         }
         if (!empty($this->fomateurModel->getFormateurByEmail($data["email"]))) {
             $data["thereIsError"] = true;
-            $data["email_err"] = "Adresse e-Mail déjà utilisée";
+            $data["email_err"] = "Adresse e-mail déjà utilisée";
         }
 
 
@@ -512,15 +512,15 @@ class Users extends Controller
             if (preg_match_all("/\d/", $data["mdp"])) {
                 if (!preg_match_all("/[a-zA-Z]/", $data["mdp"])) {
                     $data["thereIsError"] = true;
-                    $data["mdp_err"] = "Le mot de passe doit contenir au moins 1 lettre";
+                    $data["mdp_err"] = "Le mot de passe doit contenir au moins une lettre";
                 }
             } else {
                 $data["thereIsError"] = true;
-                $data["mdp_err"] = "Le mot de passe doit contenir au moins 1 chiffres";
+                $data["mdp_err"] = "Le mot de passe doit contenir au moins un chiffres";
             }
         } else {
             $data["thereIsError"] = true;
-            $data["mdp_err"] = "Le mot de passe doit contient spécial character";
+            $data["mdp_err"] = "Le mot de passe doit contient au moin un caractère spécial";
         }
         if (strlen($data["mdp"]) > 50) {
             $data["thereIsError"] = true;
@@ -539,7 +539,7 @@ class Users extends Controller
         // Validate Type
         if ($data["type"] != "formateur" && $data["type"] != "etudiant") {
             $data["thereIsError"] = true;
-            $data["img_err"] = "Type Invalide";
+            $data["img_err"] = "Type invalide";
         }
 
         // Validate Other Info If UserType Is Formateur
@@ -556,14 +556,14 @@ class Users extends Controller
             }
             if (!empty($this->fomateurModel->getFormateurByPaypalEmail($data["pmail"]))) {
                 $data["thereIsError"] = true;
-                $data["pmail_err"] = "Adresse e-Mail de Paypal déjà utilisée";
+                $data["pmail_err"] = "Adresse e-mail de Paypal déjà utilisée";
             }
 
 
             // Validate Biography
             if (strlen($data["bio"]) > 500) {
                 $data["thereIsError"] = true;
-                $data["bio_err"] = "La Biography doit comporter au maximum 500 caractères";
+                $data["bio_err"] = "La Biographie doit comporter au maximum 500 caractères";
             }
             if (strlen($data["bio"]) < 130) {
                 $data["thereIsError"] = true;
@@ -573,7 +573,7 @@ class Users extends Controller
             // Validate Specialité
             if (empty($this->stockedModel->getCategorieById($data["specId"]))) {
                 $data["thereIsError"] = true;
-                $data["specId_err"] = "Spécialité Invalide";
+                $data["specId_err"] = "Spécialité invalide";
             }
         }
 
@@ -601,11 +601,11 @@ class Users extends Controller
                     $data["img"] = $fileDestination;
                 } else {
                     $data["thereIsError"] = true;
-                    $data["img_err"] = "Une erreur s'est produite lors du téléchargement de votre image ";
+                    $data["img_err"] = "Une erreur s'est produite lors du téléchargement de votre image";
                 }
             } else {
                 $data["thereIsError"] = true;
-                $data["img_err"] = "Vous ne pouvez pas télécharger ce fichier uniquement (jpg | jpeg | png | ico) autorisé";
+                $data["img_err"] = "Vous ne pouvez pas télécharger ce fichier. (uniquement jpg, jpeg, png, ico sont autorisé)";
             }
         } else {
             $data["img"] = 'images/default.jpg';

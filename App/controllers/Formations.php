@@ -34,10 +34,10 @@ class Formations extends Controller
 
 		if ($countTitre > 0) {
 			if ($countTitre < 5)
-				return 'Mininum caracteres 5 !!!';
+				return '5 caractères au maximum !!!';
 			else
 				if ($countTitre > 25)
-				return 'Maxmimun caracteres 25 !!!';
+				return '25 caractères au maximum !!!';
 		} else
 			return 'Veuillez remplir le champ titre !!!';
 
@@ -47,10 +47,10 @@ class Formations extends Controller
 
 		if ($countDesc > 0) {
 			if ($countDesc < 10)
-				return 'Mininum caracteres 10 !!!';
+				return '10 caractères au minimum !!!';
 			else
 				if ($countDesc > 500)
-				return 'Maxmimun caracteres 500 !!!';
+				return '500 caractères au maximum !!!';
 		} else
 			return 'Veuillez remplir le champ description !!!';
 
@@ -65,17 +65,17 @@ class Formations extends Controller
 		//categorie
 		$categorie = $data['categorie'];
 		if (empty($this->stockedModel->getCategorieById($categorie)))
-			return "this categorie doesn't exist in the DB !!!";
+			return "Cette categorie est invalide !!!";
 
 		// level
 		$niveauFormation = $data['niveauFormation'];
 		if (empty($this->stockedModel->getLevelById($niveauFormation)))
-			return "this level doesn't exist in the DB !!!";
+			return "Ce niveau est invalide !!!";
 
 		// langue
 		$langue = $data['langue'];
 		if (empty($this->stockedModel->getLangueById($langue)))
-			return "this language doesn't exist in the DB !!!";
+			return "Ce language est invalide !!!";
 
 		return false;
 	}
@@ -115,7 +115,7 @@ class Formations extends Controller
 							"nomVideo" => $video->name,
 							"duree" => $video->duree,
 							"url" => $video->videoPath,
-							"desc" => "discribe this video or add a ressources !",
+							"desc" => "décrivez ce vidéo ou ajoutez des ressources !",
 						];
 						$this->videoModel->insertVideo($videoData);
 					}
@@ -181,11 +181,11 @@ class Formations extends Controller
 			$res = $this->videoModel->deteleVideo($_SESSION['id_formation'], $_POST['id_video']);
 			if ($res) {
 				unlink($videoDataToDelete["url_video"]);
-				echo 'Le Video a ete supprimer avec success !!!';
-				flash('deteleVideo', 'Le Video a ete supprimer avec success !!!');
+				echo 'Video supprimé avec succès !!!';
+				flash('deteleVideo', 'Video supprimé avec succès !!!');
 			} else {
-				echo 'Une erreur ce produit lors de la suppression !!!';
-				flash('deteleVideo', 'Une erreur ce produit lors de la suppression !!!');
+				echo "Une erreur s'est produite lors de la suppression !!!";
+				flash('deteleVideo', "Une erreur s'est produite lors de la suppression !!!");
 			}
 		}
 	}
@@ -205,10 +205,10 @@ class Formations extends Controller
 
 		if ($countTitre > 0) {
 			if ($countTitre < 5)
-				return 'Mininum caracteres 5 !!!';
+				return '5 caractères au minimum !!!';
 			else
 				if ($countTitre > 50)
-				return 'Maxmimun caracteres 50 !!!';
+				return '50 caractères au maximum !!!';
 		} else
 			return 'Veuillez remplir le champ titre !!!';
 
@@ -218,10 +218,10 @@ class Formations extends Controller
 
 		if ($countDesc > 0) {
 			if ($countDesc < 60)
-				return 'Mininum caracteres 60 !!!';
+				return '60 caractères au minimum !!!';
 			else
 				if ($countDesc > 700)
-				return 'Maxmimun caracteres 700 !!!';
+				return '700 caractères au maximum !!!';
 		} else
 			return 'Veuillez remplir le champ description !!!';
 
@@ -229,19 +229,19 @@ class Formations extends Controller
 		$prix = $data['prix_formation'];
 		if (strlen($prix) > 0) {
 			if (!filter_var($prix, FILTER_VALIDATE_INT))
-				return 'incorrect number !!!';
+				return 'Nombre incorrect !!!';
 		} else
 			return 'Veuillez remplir le champ prix !!!';
 
 		//categorie
 		$categorie = $data['categorie'];
 		if (empty($this->stockedModel->getCategorieById($categorie)))
-			return "this categorie doesn't exist in the DB !!!";
+			return "Cette categorie est invalide !!!";
 
 		// level
 		$niveauFormation = $data['niveau_formation'];
 		if (empty($this->stockedModel->getLevelById($niveauFormation)))
-			return "this level doesn't exist in the DB !!!";
+			return "Ce niveau est invalide !!!";
 
 		return false;
 	}
@@ -268,10 +268,10 @@ class Formations extends Controller
 			$data['id'] = $id;
 			if (explode('/', $path)[2] === 'files') {
 				$this->formationModel->updateFichierAttache($data);
-				echo "Le Fichier Attache a ete ajouter avec success";
+				echo "Pièce jointe ajouté avec succès";
 			} else {
 				$this->formationModel->updateImgFormation($data);
-				echo "Formation image a ete modifier avec success";
+				echo "La vignette de formation ajouté avec succès";
 			}
 		} else {
 			echo json_encode(["error" => $errors]);
@@ -294,7 +294,7 @@ class Formations extends Controller
 					unset($error);
 					// update formation
 					$this->formationModel->updateFormation($_POST);
-					flash('updateFormation', 'La Modification a ete faites avec success !!!');
+					flash('updateFormation', 'Modification affecté avec succès !!!');
 					redirect('formateurs/dashboard');
 				}
 				flash('updateFormation', $error);
@@ -332,7 +332,7 @@ class Formations extends Controller
 
 				$this->view('formateur/videos', $data);
 			} else {
-				flash("formationVide", "Votre cours ne contient aucune vidéo, ajoutez des vidéos", "alert alert-info");
+				flash("formationVide", "Votre cours ne contient aucune vidéo, veuillez ajoutez des vidéos", "alert alert-info");
 				redirect("formations/addVideo/" . $id_formation);
 			}
 		} else {
@@ -349,10 +349,10 @@ class Formations extends Controller
 			$countTitre = strlen($titre);
 			if ($countTitre > 0) {
 				if ($countTitre < 5)
-					return 'Mininum caracteres 5 !!!';
+					return '5 caractères au minimum !!!';
 				else
 					if ($countTitre > 50)
-					return 'Maxmimun caracteres 50 !!!';
+					return '50 caractères au maximum !!!';
 			} else
 				return 'Veuillez remplir le champ titre !!!';
 		}
@@ -364,10 +364,10 @@ class Formations extends Controller
 
 			if ($countDesc > 0) {
 				if ($countDesc < 6)
-					return 'Mininum caracteres 6 !!!';
+					return '6 caractères au minimum !!!';
 				else
 						if ($countDesc > 600)
-					return 'Maxmimun caracteres 600 !!!';
+					return '600 caractères au maximum !!!';
 			} else
 				return 'Veuillez remplir le champ description !!!';
 		}
@@ -385,8 +385,8 @@ class Formations extends Controller
 				$data = $_POST;
 				$data['id_formation'] = $_SESSION['id_formation'];
 				$this->videoModel->updateVideo($data);
-				flash('updateVideo', 'La Modification a ete faites avec success !!!');
-				echo 'La Modification a ete faites avec success !!!';
+				flash('updateVideo', 'Modification affecté avec succès !!!');
+				echo 'Modification affecté avec succès !!!';
 			}
 		}
 	}
@@ -414,7 +414,7 @@ class Formations extends Controller
 					$data["error"] = "Une erreur s'est produite lors du téléchargement de votre image ";
 				}
 			} else {
-				$data["error"] = "Vous ne pouvez pas télécharger ce fichier uniquement (jpg | jpeg | png | ico) autorisé";
+				$data["error"] = "Vous ne pouvez pas télécharger ce fichier. (uniquement jpg, jpeg, png, ico sont autorisé)";
 			}
 		} else {
 			$data["img_formation"] = "images/default_formation.jpg";
@@ -429,8 +429,8 @@ class Formations extends Controller
 			if (isset($_POST['videosWithOrder'])) {
 				// Don't Forget Validation Back-end Order
 				$this->videoModel->setOrderVideos(json_decode($_POST['videosWithOrder']));
-				flash("orderApplied", "L'order a ete appliquer avec succes !!!");
-				echo "DONE !!!";
+				flash("orderApplied", "Demande appliqueé avec succès !!!");
+				echo "Terminée !!!";
 			}
 		}
 	}
@@ -445,7 +445,7 @@ class Formations extends Controller
 	{
 		if (empty($this->previewsModel->getPreviewByFormation($_SESSION['id_formation']))) {
 			$this->previewsModel->insertPreviewVideo($id_video, $_SESSION['id_formation']);
-			echo 'Inserted WELL !!!';
+			echo 'Bien inseré !!!';
 		} else {
 			$this->updatePreviewVideo($id_video);
 		}

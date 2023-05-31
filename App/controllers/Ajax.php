@@ -22,11 +22,11 @@ class Ajax extends Controller
         if (isset($_POST["email"])) {
             if (!empty($this->etudiantModel->getEtudiantByEmail($_POST["email"]))) {
                 $data["thereIsError"] = true;
-                $data["error"] = "Adresse e-Mail déjà utilisée";
+                $data["error"] = "Adresse e-mail déjà utilisée";
             }
             if (!empty($this->fomateurModel->getFormateurByEmail($_POST["email"]))) {
                 $data["thereIsError"] = true;
-                $data["error"] = "Adresse e-Mail déjà utilisée";
+                $data["error"] = "Adresse e-mail déjà utilisée";
             }
         }
 
@@ -43,7 +43,7 @@ class Ajax extends Controller
         if (isset($_POST["pmail"])) {
             if (!empty($this->fomateurModel->getFormateurByPaypalEmail($_POST["pmail"]))) {
                 $data["thereIsError"] = true;
-                $data["error"] = "Adresse e-Mail de Paypal déjà utilisée";
+                $data["error"] = "Adresse e-mail de Paypal déjà utilisée";
             }
         }
 
@@ -75,7 +75,7 @@ class Ajax extends Controller
                     }
                 }
             }
-            echo 'La Formation a ete supprimer avec success !!!';
+            echo 'Formation supprimé avec succès !!!';
         }
     }
 
@@ -193,14 +193,14 @@ class Ajax extends Controller
                         $url=$this->createUserSessios($user);
                         echo json_encode([
                             "authorized"=>true,
-                            "message"=>"Redirecting ...",
+                            "message"=>"rediriger ...",
                             "url"=>$url
                         ]);
 
                     } else {
                         echo json_encode([
                             "authorized"=>false,
-                            "message"=>"Aucun utilisateur avec cet email"
+                            "message"=>"Aucun utilisateur avec cette adresse e-mail !"
                         ]);
                     }
                 } else {
@@ -208,7 +208,7 @@ class Ajax extends Controller
                     $url=$this->createUserSessios($user);
                     echo json_encode([
                         "authorized"=>true,
-                        "message"=>"Redirecting ...",
+                        "message"=>"rediriger ...",
                         "url"=>$url
                     ]);
                 }
@@ -221,7 +221,7 @@ class Ajax extends Controller
         } else {
             echo json_encode([
                 "authorized"=>false,
-                "message"=>"Erreur Serveur"
+                "message"=>"Erreur serveur"
             ]);
         }
 
@@ -247,14 +247,14 @@ class Ajax extends Controller
                     $url=$this->createUserSessios($user);
                     echo json_encode([
                         "authorized"=>true,
-                        "message"=>"Redirecting ...",
+                        "message"=>"rediriger ...",
                         "url"=>$url
                     ]);
 
                 } else {
                     echo json_encode([
                         "authorized"=>false,
-                        "message"=>"Aucun utilisateur avec cet email"
+                        "message"=>"Aucun utilisateur avec cet adresse e-mail"
                     ]);
                 }
             } else {
@@ -262,7 +262,7 @@ class Ajax extends Controller
                 $url=$this->createUserSessios($user);
                 echo json_encode([
                     "authorized"=>true,
-                    "message"=>"Redirecting ...",
+                    "message"=>"rediriger ...",
                     "url"=>$url
                 ]);
             }
