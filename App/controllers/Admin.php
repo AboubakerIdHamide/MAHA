@@ -142,7 +142,7 @@ class Admin extends Controller
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $this->requestPaymentModel->setState($_POST['etat_request'], $_POST['id_payment']);
-            echo 'request payment changed !!!';
+            echo 'Demande de paiement modifiée !!!';
         }
     }
 
@@ -169,7 +169,7 @@ class Admin extends Controller
         $this->checkSession();
 
         $this->fomateurModel->deteleFormateur($id_formateur);
-        echo "Le Formateur Supprimer Avec Success !!!";
+        echo "Formateur supprimé avec succès !!!";
     }
 
     public function editFormateur()
@@ -180,7 +180,7 @@ class Admin extends Controller
             // don't forget validate data
             $data = (array) json_decode($_POST['formateur']);
             $this->fomateurModel->editFormateur($data);
-            echo "Le Formateur a été Modifier Avec Success !!!";
+            echo "Formateur modifié avec succès !!!";
         }
     }
 
@@ -206,7 +206,7 @@ class Admin extends Controller
         $this->checkSession();
 
         $this->etudiantModel->deteleEtudiant($id_etudiant);
-        echo "L'etudiant a été supprimer avec success !!!";
+        echo "Etudiant supprimé avec succès !!!";
     }
 
     public function editEtudiant()
@@ -217,7 +217,7 @@ class Admin extends Controller
             // don't forget validate data
             $data = (array) json_decode($_POST['etudiant']);
             $this->etudiantModel->editEtudiant($data);
-            echo "L'etudiant a été modifier avec success !!!";
+            echo "Etudiant modifiè avec succès !!!";
         }
     }
 
@@ -259,7 +259,7 @@ class Admin extends Controller
         $this->checkSession();
 
         $this->formationModel->deleteFormation($idFormation);
-        echo "La Formation Supprimer Avec Success !!!";
+        echo "Formation supprimé avec succès !!!";
     }
 
     public function editFormation()
@@ -270,7 +270,7 @@ class Admin extends Controller
             // don't forget validate data
             $data = (array) json_decode($_POST['formation']);
             $this->formationModel->updateFormation($data);
-            echo "La Formation Modifier Avec Success !!!";
+            echo "Formation modifiè avec succès !!!";
         }
     }
 
@@ -285,7 +285,7 @@ class Admin extends Controller
             }
             echo json_encode($data);
         } else {
-            echo json_encode("This Formation doesn't have any videos !!!");
+            echo json_encode("Cette formation n'a pas de vidéos !!!");
         }
     }
 
@@ -294,7 +294,7 @@ class Admin extends Controller
         $this->checkSession();
 
         $this->videoModel->deteleVideoId($id_video);
-        echo "La Video Supprimer Avec Success !!!";
+        echo "Video supprimé avec succès !!!";
     }
 
     private function validVideo($data)
@@ -305,10 +305,10 @@ class Admin extends Controller
             $countTitre = strlen($titre);
             if ($countTitre > 0) {
                 if ($countTitre < 5)
-                    return 'Mininum caracteres 5 !!!';
+                    return '5 caractères au minimum !!!';
                 else
 					if ($countTitre > 50)
-                    return 'Maxmimun caracteres 50 !!!';
+                    return '5 caractères au maximum !!!';
             } else
                 return 'Veuillez remplir le champ titre !!!';
         }
@@ -320,10 +320,10 @@ class Admin extends Controller
 
             if ($countDesc > 0) {
                 if ($countDesc < 6)
-                    return 'Mininum caracteres 6 !!!';
+                    return '6 caractères au minimum !!!';
                 else
 						if ($countDesc > 600)
-                    return 'Maxmimun caracteres 600 !!!';
+                    return '600 caractères au maximum !!!';
             } else
                 return 'Veuillez remplir le champ description !!!';
         }
@@ -341,7 +341,7 @@ class Admin extends Controller
                 // update Video
                 $data = $_POST;
                 $this->videoModel->updateVideoId($data);
-                echo 'La Modification a ete faites avec success !!!';
+                echo 'modification affectée avec succès !!!';
             }
         }
     }
@@ -362,7 +362,7 @@ class Admin extends Controller
         $this->checkSession();
 
         $this->inscriptionModel->deteleInscription($id_inscription);
-        echo "L'inscription a été supprimer avec success !!!";
+        echo "Inscription supprimé avec succès !!!";
     }
 
     public function ajaxData($periode = null)
@@ -431,18 +431,18 @@ class Admin extends Controller
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if (isset($_POST['sous_categorie'])) {
                         $this->stockedModel->insertSousCategorie($_POST);
-                        echo 'La Sous-categorie ' . $_POST['sous_categorie'] . ' a été ajouter avec success.';
+                        echo 'Sous-categorie ' . $_POST['sous_categorie'] . ' ajouté avec succès !';
                     } else {
                         $this->stockedModel->insertCategorie($_POST);
-                        echo 'La Categorie ' . $_POST['nom_categorie'] . ' a été ajouter avec success.';
+                        echo 'Categorie ' . $_POST['nom_categorie'] . ' ajouté avec succès !';
                     }
                 } else {
                     if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
                         $this->stockedModel->deleteCategorie(file_get_contents("php://input"));
-                        echo 'La Categorie a été supprimer avec success.';
+                        echo 'Categorie supprimé avec succès !';
                     } else {
                         $this->stockedModel->editCategorie(json_decode(file_get_contents("php://input")));
-                        echo 'La Categorie a été modifier avec success.';
+                        echo 'Categorie  modifiè avec succès !';
                     }
                 }
             }
@@ -452,7 +452,7 @@ class Admin extends Controller
                 echo json_encode($sous_categories);
             } else {
                 $this->stockedModel->deleteSousCategorie($id);
-                echo 'La Sous-Categorie a été supprimer avec success.';
+                echo 'Sous-Categorie supprimé avec succès !';
             }
         }
     }
@@ -466,12 +466,12 @@ class Admin extends Controller
         } else {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $this->stockedModel->insertLangue($_POST['nom_langue']);
-                echo 'La Langue ' . $_POST['nom_langue'] . ' a été ajouter avec success.';
+                echo 'Langue ' . $_POST['nom_langue'] . ' ajouté avec succès !';
             } else {
                 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
                     if (!is_null($langueID)) {
                         $this->stockedModel->deleteLangue($langueID);
-                        echo 'La Langue a été supprimer avec success.';
+                        echo 'Langue supprimé avec succès !';
                     }
                 }
             }
@@ -510,7 +510,7 @@ class Admin extends Controller
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $this->smtpModel->replaceSmtp($_POST);
-            echo "SMTP a été changer avec succee !";
+            echo "SMTP modifié avec succès !";
         }else{
             $smtp = $this->smtpModel->getSmtp();
             $this->view('admin/smtp', $smtp);

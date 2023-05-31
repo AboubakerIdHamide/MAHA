@@ -29,7 +29,7 @@ class Controller
             // require that model
             require_once "../App/views/" . $view . ".php";
         } else {
-            die("View Does Not Exists !");
+            die("Cette page n'existe pas !");
         }
     }
 }
