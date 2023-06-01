@@ -52,7 +52,7 @@
     </header>
     <!-- end Header -->
     <div class="container mt-3">
-        <h5 class="mb-3">Request Payment</h5>
+        <h5 class="mb-3">Demander un paiement</h5>
         <div class="row">
             <div class="col">
                 <div class="form-floating mb-3">
@@ -79,7 +79,7 @@
         </div>
     </div>
     <div class="container mt-3">
-        <h5 class="mb-3">Payments History</h5>
+        <h5 class="mb-3">Historique des paiements</h5>
         <div class="containter history">
 
         </div>

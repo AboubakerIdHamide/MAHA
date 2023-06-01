@@ -87,7 +87,7 @@
                     <div class="widgetbox d-flex align-items-center gap-4 p-3 justify-content-between rounded">
                         <div>
                             <span id="nbr-likes" class="d-block fs-2 nombre">0</span>
-                            <small>Likes</small>
+                            <small>J'aime</small>
                         </div>
                         <i class="fa-solid fa-heart fs-1"></i>
                     </div>
@@ -109,7 +109,7 @@
             <!-- end input hidden toast -->
             <div class="row align-items-center mb-3">
                 <div class="col-12 col-lg-6">
-                    <a href="<?= URLROOT . "/formations/addFormation" ?>" class="custom-btn">Add Formation <i
+                    <a href="<?= URLROOT . "/formations/addFormation" ?>" class="custom-btn">Ajouter Formation <i
                             class="fa-solid fa-folder-plus"></i></a>
                 </div>
                 <div class="col-12 col-lg-6 mt-3 mt-lg-0">
@@ -125,7 +125,7 @@
                     <div class="d-flex justify-content-between my-2 gap-3 align-items-center">
                         <div class="counts-selected">
                             <small id="count-selected" class="text-muted" style="font-size: 12px;"></small> <small
-                                id="count-label" style="display: none"> COURSES SELECTED</small>
+                                id="count-label" style="display: none"> COURS SÉLECTIONNÉS</small>
                         </div>
                         <div class="buttons">
                             <button id="edit" class="btn btn-info btn-sm" disabled data-bs-toggle="modal"
@@ -144,11 +144,11 @@
                                 <tr>
                                     <th class="text-center">Select</th>
                                     <th>Titre</th>
-                                    <th class="text-center">Likes</th>
+                                    <th class="text-center">J'aime</th>
                                     <th>Description</th>
                                     <th class="text-center">Apprenants</th>
                                     <th>Fichiers Attaches</th>
-                                    <th>Added Date</th>
+                                    <th>Date d'ajout</th>
                                     <th>Details</th>
                                     <th class="text-center">Prix</th>
                                 </tr>
@@ -247,7 +247,7 @@
                                 <small class="error-niveau text-danger"></small>
                             </div>
                             <div class="mb-3">
-                                <label for="miniature" class="form-label" style="font-weight: 600;">Miniture</label>
+                                <label for="miniature" class="form-label" style="font-weight: 600;">Miniature</label>
                                 <div class="text-center">
                                     <!-- id :  miniature -->
                                     <img class="img-fluid img-thumbnail rounded" src="" alt="formation image"
@@ -259,7 +259,7 @@
                                     type="file" name='miniature' accept=".jpg, .jpeg, .png">
                                 <!-- id : miniature-uploader -->
                                 <label class="btn btn-warning" for="miniature-uploader">
-                                    <i class="fa-solid fa-image"></i> Changer Miniture
+                                    <i class="fa-solid fa-image"></i> Changer Miniature
                                 </label>
                                 <small class="error-miniature text-danger d-block"></small>
                             </div>

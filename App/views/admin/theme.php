@@ -35,7 +35,7 @@
                 <span class="error" id="error-logo"></span>
             </div>
             <div class="field upload-img">
-                <label>Image Accueil</label>
+                <label>Image d'ccueil</label>
                 <div class="img-profile-wrapper" style="background-image: url(<?=$data["landingImg"]?>);" data-img="<?=$data["landingImg"]?>">
                     <input data-error-id="error-landing-img" type="file" id="landingImgInp" name="landingImg" value="<?=$data[2]?>">
                 </div>

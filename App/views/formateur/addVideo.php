@@ -86,7 +86,7 @@
         </div>
         <div class="form-buttons">
             <button class="prev" id="prev">Annuler</button>
-            <button class="next" id="next">Telecharger</button>
+            <button class="next" id="next">Télécharger</button>
         </div>
     </form>
 </div>

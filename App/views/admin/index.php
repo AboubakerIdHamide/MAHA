@@ -48,10 +48,10 @@
                 <select id="date" class="form-select">
                     <option value="today" selected>Aujourd'hui</option>
                     <option value="yesterday">Hier</option>
-                    <option value="week">Derniere Semaine</option>
+                    <option value="week">Dernière Semaine</option>
                     <option value="month">Dernier Mois</option>
                     <option value="3months">Dernier 3 Mois</option>
-                    <option value="year">Derniere Annee</option>
+                    <option value="year">Dernière Annee</option>
                 </select>
             </div>
             <div class="col-12 col-lg-6">

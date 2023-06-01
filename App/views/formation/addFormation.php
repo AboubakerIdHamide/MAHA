@@ -92,7 +92,7 @@
                         </div>
                         <div class="field-box">
                             <div class="input-field">
-                                <label for="videos">Telecharger des videos :</label>
+                                <label for="videos">Télécharger des videos :</label>
                                 <div class="uploded-videos" id="uplodedVideosContainer">
 
                                 </div>
