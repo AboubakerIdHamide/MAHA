@@ -51,6 +51,8 @@
                             class="fa-solid fa-list"></i><span>Categories</span></a></li>
                 <li><a href="<?= URLROOT . '/admin/langues' ?>"><i
                             class="fa-solid fa-language"></i><span>Langues</span></a></li>
+                <li id="settings"><a href="<?= URLROOT . '/admin/settings' ?>"><i
+                            class="fas fa-user-gear"></i><span>Paramètre</span></a></li>
                 <li id="paiment"><a href="<?= URLROOT . '/admin/requestPayment' ?>"><i
                             class=" far fa-credit-card"></i><span>Paiement</span></a></li>
                 <li id="theme">
