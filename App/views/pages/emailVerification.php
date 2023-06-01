@@ -21,11 +21,11 @@
                 </h1>
             </div>
             <p>Tu es presque! Nous avons envoyé un code de vérification à <span class="user-email"><?php echo $data[0]["email"]?></span> .</p>
-            <label for="code">Entrez simplement ce code ici pour vérifier votre identité</label>
+            <label for="code">Entrez le code ici pour vérifier votre identité</label>
             <input type="text" id="code" placeholder="code" name="code" value="<?php echo $data[1]["code"]?>">
             <span class="error" id="error"><?php echo $data[1]["code_err"]?></span>
             <button class="submit-btn" id="sbmtBtn">Vérifier</button>
-            <button class="resend-link" name="resend" value="true" id="resend">renvoyer</button>
+            <button class="resend-link" name="resend" value="true" id="resend">Renvoyer</button>
         </form>
     </div>
     <script src="<?php echo URLROOT."/Public/js/emailVerification.js"?>"></script>

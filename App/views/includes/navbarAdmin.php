@@ -56,7 +56,7 @@
                 <li id="theme">
                     <a href="<?= URLROOT . '/admin/changeTheme' ?>">
                         <i class="fa-solid fa-palette"></i>
-                        <span>Theme</span>
+                        <span>Thème</span>
                     </a>
                 </li>
                 <li id="smtp">

@@ -41,7 +41,7 @@
 		<div class="container-fluid margin_120_0" id="popular">
 			<div class="main_title_2">
 				<span><em></em></span>
-				<h2>Les Plus Populaires Courses</h2>
+				<h2>Les Plus Populaires Formations</h2>
 			</div>
 			<div id="reccomended" class="owl-carousel owl-theme">
 				<?php foreach ($data['courses'] as $course) : ?>
@@ -69,7 +69,7 @@
 			</div>
 			<!-- /carousel -->
 			<div class="container">
-				<p class="btn_home_align"><a href="<?php echo URLROOT . "/pageFormations/" ?>" class="btn_1 rounded">Plus Courses</a></p>
+				<p class="btn_home_align"><a href="<?php echo URLROOT . "/pageFormations/" ?>" class="btn_1 rounded">Plus Formations</a></p>
 			</div>
 			<!-- /container -->
 			<hr>

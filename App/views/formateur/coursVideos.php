@@ -83,7 +83,7 @@
                         </div>
                         <div class="text-center">
                             <p class="nbr formation-likes"><?= $data->likes ?></p>
-                            <p>Likes</p>
+                            <p>J'aime</p>
                         </div>
                     </div>
                 </div>
@@ -150,7 +150,7 @@
         <div class="row">
             <div class="col mb-2">
                 <div class="ressources">
-                    <p>Vous pouvez télécharger les fichiers attachés avec cette video en cliquant sur la button
+                    <p>Vous pouvez télécharger les fichiers attachés avec cette video en cliquant sur le button
                         au-dessous :</p><a href="#" target="_blank" class="submit-btn" download><i
                             class="fa-sharp fa-solid fa-download"></i>&nbsp;&nbsp;Télécharger</a>
                 </div>

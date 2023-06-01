@@ -115,7 +115,7 @@
                     <small class="error-spec text-danger"></small>
                 </div>
                 <div class="mb-3">
-                    <label for="niveau" class="form-label" style="font-weight: 600;">Niveau Formation</label>
+                    <label for="niveau" class="form-label" style="font-weight: 600;">Niveau de formation</label>
                     <select class="form-select" name="niveauFormation" id="niveau">
                         <?php foreach ($data['levels'] as $level) : ?>
                             <option value="<?= $level->id_niveau ?>"><?= $level->nom_niveau ?></option>
@@ -133,7 +133,7 @@
                     <small class="error-niveau text-danger"></small>
                 </div>
                 <div class="mb-3">
-                    <label for="miniature" class="form-label" style="font-weight: 600;">Miniture</label>
+                    <label for="miniature" class="form-label" style="font-weight: 600;">Miniature</label>
                     <div class="text-center">
                         <!-- id :  miniature -->
                         <img class="img-fluid img-thumbnail rounded" src="" alt="formation image" id="miniature" style="object-fit: cover;">
@@ -143,11 +143,11 @@
                     <input onchange="handleMiniature(this.files);" id="miniature-uploader" class="d-none" type="file" name='miniature' accept=".jpg, .jpeg, .png">
                     <!-- id : miniature-uploader -->
                     <label class="btn btn-warning" for="miniature-uploader">
-                        <i class="fa-solid fa-image"></i> Changer Miniture
+                        <i class="fa-solid fa-image"></i> Changer Miniature
                     </label>
                     <small class="error-miniature text-danger d-block"></small>
                 </div>
-                <label class="mt-2 form-label" style="font-weight: 600;">Fichiers Attaches</label>
+                <label class="mt-2 form-label" style="font-weight: 600;">Fichiers Attachés</label>
                 <div class="text-center">
                     <input onchange="handleRessourse(this.files);" id="ressource" class="d-none" type="file" name='ressource' accept=".zip">
                     <label class="btn btn-warning" for="ressource">
@@ -179,8 +179,8 @@
                 <div class="text-danger"><strong class="nom-formation-modal"></strong></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">fermer</button>
-                <button type="button" class="btn btn-danger btn-sm delete-formation" id="delete-formation">supprimer</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-danger btn-sm delete-formation" id="delete-formation">Supprimer</button>
             </div>
         </div>
     </div>

@@ -188,7 +188,7 @@
                                                     <strong><?= $data['info']['likes']; ?> <i
                                                             class="fa-solid fa-heart"></i></strong>
                                                 </div>
-                                                <span>Likes</span>
+                                                <span>J'aime</span>
                                             </div>
                                         </div>
                                     </div>
@@ -204,16 +204,15 @@
                                     <a href="<?= $data['previewVideo'] ?>" class="video"><i style="color:#FFC107;"
                                             class="fa-solid fa-play fs-2"></i><img
                                             src="<?= $data['info']['imgFormation'] ?>" alt="course image"
-                                            class="img-fluid rounded-corner"><span>View course
-                                            preview</span></a>
+                                            class="img-fluid rounded-corner"><span>Voir l'aperçu du cours</span></a>
                                 </figure>
                                 <div class="price">
                                     $<?= $data['info']['prix'] ?>
                                 </div>
                                 <a href="<?= URLROOT ?>/PaymentPaypal/makePayment/<?= $data['info']['IdFormation'] ?>"
-                                    class="btn_1 full-width">Purchase</a>
+                                    class="btn_1 full-width">Acheter</a>
                                 <div id="list_feat">
-                                    <h3>Course informations</h3>
+                                    <h3>Informations du cours</h3>
                                     <ul>
                                         <li><i class="fa-solid fa-person-chalkboard"></i>
                                             <a
@@ -271,44 +270,45 @@
         <!--/main-->
 
         <footer>
-		<div class="container margin_120_95">
-			<div class="row justify-content-between">
-				<div class="col-lg-5 col-md-12">
-					<p><img src="<?= $data['theme']['logo']?>" width="149" height="42" alt="Photo"></p>
-					<p> 
-                        MAHA Est Un Site Internet De Formation En Ligne Qui Contient Des Cours Et Des Vidéos d'apprentissage
-                        Dans Plusieur Domains Tels Que Le Web Development, E-commerce, Digital Marketing ...
-                    </p>
-				</div>
-				<div class="col-lg-3 col-md-6 ml-lg-auto">
-					<h5>Liens utiles</h5>
-					<ul class="links">
-                        <li><a href="<?= URLROOT ?>">Home</a></li>
-                        <li><a href="<?php echo URLROOT . "/pageFormations/" ?>">Formations</a></li>
-						<li><a href="<?= URLROOT ?>/#catalogue">Catalogue</a></li>
-						<li><a href="<?= URLROOT ?>/#popular">Les Plus Populaires</a></li>
-						<li><a href="<?= URLROOT ?>/#equipe">Notre équipe</a></li>
-						<li><a href="<?= URLROOT ?>/#contact">Contactez-Nous</a></li>
-					</ul>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<h5>En contact avec nous</h5>
-					<ul class="contacts">
-						<li><a href="tel://524 34 50 57"><i class="ti-mobile"></i> (+212) 524 34 50 57</a></li>
-						<li><a href="mailto:info@maha.com.com"><i class="ti-email"></i> info@maha.com</a></li>
-					</ul>
-				</div>
-			</div>
-			<!--/row-->
-			<hr>
-			<div class="row">
-				<div class="col-md-4">
-					<div id="copy">© Copyright <strong><span>MAHA</span></strong>. All Rights Reserved (2023)</div>
-				</div>
-			</div>
-		</div>
-	</footer>
+            <div class="container margin_120_95">
+                <div class="row justify-content-between">
+                    <div class="col-lg-5 col-md-12">
+                        <p><img src="<?= $data['theme']['logo']?>" width="149" height="42" alt="Photo"></p>
+                        <p> 
+                            MAHA Est Un Site Internet De Formation En Ligne Qui Contient Des Cours Et Des Vidéos d'apprentissage
+                            Dans Plusieur Domains Tels Que Le Web Development, E-commerce, Digital Marketing ...
+                        </p>
+                    </div>
+                    <div class="col-lg-3 col-md-6 ml-lg-auto">
+                        <h5>Liens utiles</h5>
+                        <ul class="links">
+                            <li><a href="<?= URLROOT ?>">Home</a></li>
+                            <li><a href="<?php echo URLROOT . "/pageFormations/" ?>">Formations</a></li>
+                            <li><a href="<?= URLROOT ?>/#catalogue">Catalogue</a></li>
+                            <li><a href="<?= URLROOT ?>/#popular">Les Plus Populaires</a></li>
+                            <li><a href="<?= URLROOT ?>/#equipe">Notre équipe</a></li>
+                            <li><a href="<?= URLROOT ?>/#contact">Contactez-Nous</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5>En contact avec nous</h5>
+                        <ul class="contacts">
+                            <li><a href="tel://524 34 50 57"><i class="ti-mobile"></i> (+212) 524 34 50 57</a></li>
+                            <li><a href="mailto:info@maha.com.com"><i class="ti-email"></i> info@maha.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!--/row-->
+                <hr>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div id="copy">© Copyright <strong><span>MAHA</span></strong>. All Rights Reserved (2023)</div>
+                    </div>
+                </div>
+            </div>
+	    </footer>
 	<!--/footer-->
+
     </div>
     <!-- page -->
 

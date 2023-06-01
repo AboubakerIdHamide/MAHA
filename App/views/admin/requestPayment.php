@@ -6,9 +6,9 @@
         </div>
         <div class="col-2">
             <select class="form-select etat">
-                <option value="pending" selected>Pending</option>
-                <option value="accepted">Accepted</option>
-                <option value="declined">Declined</option>
+                <option value="pending" selected>En attente</option>
+                <option value="accepted">Accepté</option>
+                <option value="declined">Refusé</option>
             </select>
         </div>
     </div>

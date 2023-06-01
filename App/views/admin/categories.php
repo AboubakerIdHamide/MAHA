@@ -49,7 +49,7 @@
                     <div class="buttons">
                         <button data-bs-toggle="modal" data-bs-target="#showModal" class="btn btn-primary btn-sm show" data-id-categorie="<?= $categorie->id_categorie ?>">Show</button>
                         <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-info btn-sm mx-2 edit" data-id-categorie="<?= $categorie->id_categorie ?>" data-nom-categorie="<?= $categorie->nom_categorie ?>">Edit</button>
-                        <button id="<?= $categorie->id_categorie ?>" class="btn btn-danger btn-sm delete">Delete</button>
+                        <button id="<?= $categorie->id_categorie ?>" class="btn btn-danger btn-sm delete">Supprimer</button>
                     </div>
                 </li>
             <?php endforeach ?>

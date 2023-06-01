@@ -90,7 +90,7 @@
 						</div>
 						<div class="row mt-3">
 							<div class="col">
-								<label for="mdp-c" class="form-label">Mot de passe current</label>
+								<label for="mdp-c" class="form-label">Mot de passe actuel</label>
 								<div class="input-group flex-nowrap">
 									<input type="password" class="form-control" placeholder="****************" aria-label="password" aria-describedby="addon-wrapping" id="mdp-c" class="mdp-c">
 									<span class="input-group-text border border-start-0 eye-icon" id="eye-icon"><i class="fa-solid fa-eye-slash"></i></span>
@@ -111,7 +111,7 @@
 						<div class="row mt-3">
 							<div class="col">
 								<div class="d-grid gap-2 d-md-block">
-									<button id="update-info" class="btn btn-info">Update Account</button>
+									<button id="update-info" class="btn btn-info">Mise à jour</button>
 								</div>
 							</div>
 						</div>
