@@ -129,11 +129,11 @@
                             <ul>
                                 <li>Name <span class="float-right"><?= $data['infoFormateur']['prenomFormateur'] . ' ' . $data['infoFormateur']['nomFormateur'] ?></span>
                                 </li>
-                                <li>Students <span class="float-right"><?= $data['numAcht']['numAcht'] ?></span></li>
+                                <li>Etudiants <span class="float-right"><?= $data['numAcht']['numAcht'] ?></span></li>
                                 <li>Courses <span class="float-right"><?= $data['numFormations']['numFormations']; ?></span></li>
                                 <li>Email <span class="float-right"><a class="text-muted" href="mailto:<?= $data['infoFormateur']['email'] ?>">
                                             <?= $data['infoFormateur']['email'] ?></a></span></li>
-                                <li>Phone <span class="float-right"><?= $data['infoFormateur']['tel']; ?></span>
+                                <li>Telephone <span class="float-right"><?= $data['infoFormateur']['tel']; ?></span>
                                 </li>
                             </ul>
                         </div>
@@ -144,7 +144,7 @@
                         <div class="box_teacher">
                             <div class="indent_title_in">
                                 <i class="fa-solid fa-user"></i>
-                                <h3>Biography</h3>
+                                <h3>Biographie</h3>
                                 <p><?= $data['infoFormateur']['categorie'] ?></p>
                             </div>
                             <div class="wrapper_indent">
@@ -163,9 +163,9 @@
                                     <table class="table table-striped add_bottom_30">
                                         <thead>
                                             <tr>
-                                                <th>Category</th>
-                                                <th>Course name</th>
-                                                <th>Price</th>
+                                                <th>Categorie</th>
+                                                <th>Nom de formation</th>
+                                                <th>Prix</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -198,9 +198,9 @@
                 <div class="row justify-content-between">
                     <div class="col-lg-5 col-md-12">
                         <p><a href="<?= URLROOT ?>"><img class="logo" src="<?= $data['theme']['logo'] ?>" width="149" height="42" alt="logo Maha"></a></p>
-                        <p>MAHA Est Un Site Internet De Formation En Ligne Qui Contient Des Cours Et Des Vidéos
-                            d'apprentissage Dans Plusieur Domains Tels Que Le Web Development, E-commerce, Digital
-                            Marketing ...</p>
+                        <p>MAHA est un site internet de formation en ligne qui contient des cours et des vidéos
+                            d'apprentissage dans plusieur domains tels que le development web, E-commerce, Digital
+                            Marketing, ...</p>
                     </div>
                     <div class="col-lg-3 col-md-6">
                         <h5>Contact with Us</h5>
