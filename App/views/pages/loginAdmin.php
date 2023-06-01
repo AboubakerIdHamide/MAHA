@@ -22,9 +22,11 @@
   <div class="container">
     <div class="form login">
       <div class="main-form-heading">
-        <h1 class="logo">
-          <a href="<?php echo URLROOT . "/pages/index" ?>" class="l">M<span>A</span>H<span>A</span></a>
-        </h1>
+          <h1 class="logo">
+                <a href="<?php echo URLROOT . "/pages/index"; ?>">
+                    <img src="<?= URLROOT . '/Public/images/MAHA.png' ?>" alt="">
+                </a>
+          </h1>
         <span class="badge bg-primary fs-6">Admin</span>
       </div>
       <?php flash("changePassMsg"); ?>

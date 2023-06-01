@@ -767,6 +767,7 @@ ul#top_menu li a.btn_1:hover {
     left: 0;
     width: 100%;
     text-align: center;
+	z-index:-1;
   }
   #logo img {
     margin-top: 5px;
