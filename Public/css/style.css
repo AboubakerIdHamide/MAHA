@@ -975,8 +975,9 @@ footer ul.links li a:hover:after {
   color: #3f9fff;
 }
 footer ul.links li a:after {
-  font-family: "ElegantIcons";
-  content: "\24";
+  font-family: "Font Awesome 5 Free";
+  content: "\f30b";
+  font-weight: 900;
   position: absolute;
   margin-left: 5px;
   top: 1px;
@@ -3469,15 +3470,15 @@ a#filters_col_bt {
   font-weight: 600;
 }
 a#filters_col_bt:before {
-  font-family: "ElegantIcons";
-  content: "\66";
+  font-family: "Font Awesome 5 Free";
+  content: "\f0b0";
   font-size: 26px;
   font-size: 1.625rem;
   position: absolute;
   right: 0;
   top: 0;
   line-height: 1;
-  font-weight: normal;
+  font-weight: 900;
 }
 
 .filter_type h6 {
@@ -5999,3 +6000,46 @@ ul.bullets li:before {
     padding: 5px 0;
   }
 }
+
+.switch-field {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 10px;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+.switch-field a.dropdown-item{
+  width: fit-content;
+  background-color: #fff;
+  color: #662d91;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 12px;
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 10px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.switch-field a.dropdown-item:hover{
+  background-color: #662d91;
+  color: #fff;
+}
+.form-control{
+  border: 1px solid #662d91 !important;
+  box-shadow: none;
+  outline: none;
+}
+.form-control:focus{
+  border: 1px solid #662d91 !important;
+  box-shadow: none;
+  outline: none;
+}
+.form-control:hover{
+  border: 1px solid #662d91 !important;
+  box-shadow: none;
+  outline: none;
+}
+

@@ -1,34 +1,36 @@
-let $ul_ops = $('.filter ul.ops')[0];
-let $uls = $('.filter ul');
-let $uls_not_main = $('.at-ops');
-let $main_filter = $('.filter .main-filter')[0];
-let $ops_filter = $('.chow-ops');
+const plusPopilaires = $('#plusPopilaires');
+const plusAmais = $('#plusAmais'); 
+const plusAchter = $('#plusAchter'); 
 
-$main_filter.onclick = ()=>{
-    $ul_ops.classList.toggle('hide')
-};
+const currentURL = window.location.href;
 
-// for (let i = 0; i < $ops_filter.length; i++) {
-//     $ops_filter[i].onclick = ()=>{
-//         let $ulOp = $ops_filter[i].nextElementSibling;
-//         for (let i = 0; i < $uls_not_main.length; i++) {
-//             if (!$uls_not_main[i].classList.contains('hide')) {
-//                 $uls_not_main[i].classList.add('hide');
-//             }
-//         }
-//         $ulOp.classList.toggle('hide');
-//     }
-// };
-$ul_ops.onmouseleave = ()=>{
-    $ul_ops.classList.toggle('hide')
+if(currentURL.includes('plusPopilairesFormations')){
+    console.log('yes');
+    plusPopilaires.css('background-color', '#662d91');
+    plusPopilaires.css('color', '#fff');
 }
-;
+
+if(currentURL.includes('plusFormationsAmais')){
+    console.log('yes');
+    plusAmais.css('background-color', '#662d91');
+    plusAmais.css('color', '#fff');
+}
+
+if(currentURL.includes('plusFormationsAchter')){
+    console.log('yes');
+    plusAchter.css('background-color', '#662d91');
+    plusAchter.css('color', '#fff');
+}
 
 //  -------------------------- Pagenition ---------------------
 
 let pages = 25;
 
-document.getElementById('pagination').innerHTML = createPagination(pages, 12);
+const pagenationF = document.getElementById('pagination');
+
+if(pagenationF){
+    pagenationF.innerHTML = createPagination(pages, 12);
+}
 
 function createPagination(pages, page) {
     let str = '<ul>';

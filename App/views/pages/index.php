@@ -1,340 +1,221 @@
 <?php require_once APPROOT . "/views/includes/header.php" ?>
-<div class="preloader">
-  <div class="spinner-border text-info" style="height: 4rem;width: 4rem" role="status">
-  </div>
-</div>
-<!-- Landing Section -->
-<section id="landing" class="landing d-flex align-item-center">
-  <div class="container">
-    <div class="site-info wow slideInLeft" data-wow-duration="2s">
-      <img src="<?php echo URLROOT . "/Public" ?>/images/congruts.png" alt="MAHA-ANIMATION-IMG" class="animation-img">
-      <h2 class="title">
-        <span>M</span>
-        <span>A</span>
-        <span>H</span>
-        <span>A</span>
-      </h2>
-      <p class="short-description">
-        MAHA Est Un Site Internet De Formation En Ligne Qui Contient Des Cours Et Des Vidéos d'apprentissage
-        Dans Plusieur Domains Tels Que Le Web Development, E-commerce, Digital Marketing ...
-      </p>
-      <div class="rejoignez-nous">
-        <div id="circle"></div>
-        <a href="<?= URLROOT . '/users/register' ?>">Rejoignez-nous</a>
-      </div>
-    </div>
-    <div class="landing-image wow slideInRight" data-wow-duration="2s">
-      <img src="<?= $data['theme']['landingImg']?>" alt="MAHA">
-    </div>
-  </div>
-</section>
-<!-- Fin Landing Section -->
+	
+	<main>
+		<section id="landing" class="hero_single version_2">
+			<div class="wrapper">
+				<div class="container">
+					<h3>QU'APPRENDREZ-VOUS ?</h3>
+					<p>
+						Augmentez votre expertise en affaires, en technologie et en développement personnel
+					</p>
+					<form class="searchForm">
+						<div id="custom-search-input">
+							<div class="input-group">
+								<input type="text" class=" search-query" placeholder="Ex. Architecture, Spécialité...">
+								<input type="submit" class="btn_search" value="Search">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+		<!-- /hero_single -->
 
-<!-- Section Statistiques -->
-<section class="counts">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-4 col-md-4 col-sm-4 text-center wow rollIn" data-wow-duration="2s" data-wow-offset="10">
-        <span><?= $data['totalEtudiants'] ?></span>
-        <p>Etudiants</p>
-      </div>
+		<div class="features clearfix">
+			<div class="container">
+				<ul>
+					<li><i class="fa-solid fa-graduation-cap"></i>
+						<h4><?= $data['totalFormations'] ?></h4><span>Formations</span>
+					</li>
+					<li><i class="fa-solid fa-users"></i>
+						<h4><?= $data['totalEtudiants'] ?></h4><span>Etudiants</span>
+					</li>
+					<li><i class="fa-solid fa-chalkboard-user"></i>
+						<h4><?= $data['totalFormateurs'] ?></h4><span>Formateurs</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- /features -->
 
-      <div class="col-lg-4 col-md-4 col-sm-4 text-center wow rollIn" data-wow-duration="2s" data-wow-offset="10">
-        <span><?= $data['totalFormations'] ?></span>
-        <p>Formations</p>
-      </div>
+		<div class="container-fluid margin_120_0" id="popular">
+			<div class="main_title_2">
+				<span><em></em></span>
+				<h2>Les Plus Populaires Courses</h2>
+			</div>
+			<div id="reccomended" class="owl-carousel owl-theme">
+				<?php foreach ($data['courses'] as $course) : ?>
+					<div class="item">
+						<div class="box_grid">
+							<figure>
+								<a href='<?php echo URLROOT . "/pageFormations/coursDetails/" . $course->IdFormation ?>'><img src="<?php echo $course->imgFormation; ?>" class="img-fluid" alt="Photo"></a>
+								<div class="price">$<?php echo $course->prix; ?></div>
+							</figure>
+							<div class="wrapper">
+								<small><?php echo $course->categorie; ?></small>
+								<h3><?php echo $course->nomFormation; ?></h3>
+								<p class='description'><?php echo $course->description; ?></p>
+							</div>
+							<ul>
+								<li><i class="fa-solid fa-clock"></i> <?php echo $course->duree; ?></li>
+								<li><i class="fa-solid fa-user"></i> <?php echo $course->numbAcht; ?></li>
+								<li><i class="fa-solid fa-heart"></i> <?php echo $course->likes; ?></li>
+								<li><a href='<?php echo URLROOT . "/pageFormations/coursDetails/" . $course->IdFormation ?>'>Plus</a></li>
+							</ul>
+						</div>
+					</div>
+					<!-- /item -->
+				<?php endforeach; ?>
+			</div>
+			<!-- /carousel -->
+			<div class="container">
+				<p class="btn_home_align"><a href="<?php echo URLROOT . "/pageFormations/" ?>" class="btn_1 rounded">Plus Courses</a></p>
+			</div>
+			<!-- /container -->
+			<hr>
+		</div>
+		<!-- /container -->
 
-      <div class="col-lg-4 col-md-4 col-sm-4 text-center wow rollIn" data-wow-duration="2s" data-wow-offset="10">
-        <span><?= $data['totalFormateurs'] ?></span>
-        <p>Formateurs</p>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- Fiin  Section Statistiques -->
-<!-- Category Head -->
-<section class="section-title mt-5 wow fadeInLeft" id="catalogue" data-wow-duration="3s" data-wow-offset="100">
-  <div class="container">
-    <div>
-      <h2 class="text-uppercase">catégories</h2>
-      <p>Toutes Les catégories</p>
-    </div>
-  </div>
-</section>
-<!-- Fin Category Head -->
+		<div class="container margin_30_95" id="catalogue">
+			<div class="main_title_2">
+				<span><em></em></span>
+				<h2>Toutes Les catégories</h2>
+			</div>
+			<div class="row">
+				<?php foreach ($data['categories'] as $categorie) : ?>
+					<div class="col-md-4 wow" style="maragin: 5px;" data-wow-offset="150">
+						<a href="<?php echo URLROOT . '/pageFormations/filter/' . $categorie->nom_categorie ?>" class="grid_item">
+							<figure class="block-reveal">
+								<div class="block-horizzontal"></div>
+								<img src="<?php echo URLROOT ?>/public/images/categories.jpg" class="img-fluid" alt="">
+								<div class="info">
+									<h3><?php echo $categorie->icon ?> <?php echo $categorie->nom_categorie ?></h3>
+								</div>
+							</figure>
+						</a>
+					</div>
+					<!-- /grid_item -->
+				<?php endforeach ?>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
 
-<!-- Section Category -->
-<section class="catalogue mt-1 mb-5">
-  <div class="container">
-    <div class="row">
-      <?php foreach ($data['categories'] as $categorie) : ?>
-        <div class="col-lg-3 col-md-4 mt-4">
-          <div class="icon-box rounded-2 wow fadeInDown" data-wow-duration="2s" data-wow-offset="10">
-            <?= $categorie->icon ?>
-            <h3><a href="<?= URLROOT . '/pageFormations/filter/' . $categorie->nom_categorie ?>"><?= $categorie->nom_categorie ?></a>
-            </h3>
-          </div>
-        </div>
-      <?php endforeach ?>
-    </div>
-  </div>
-</section>
-<!-- Fin Section Category -->
-<!-- Formation Head -->
-<section class="section-title mt-2 pb-0 wow fadeInLeft" id="popular" data-wow-duration="3s" data-wow-offset="100">
-  <div class="container">
-    <div>
-      <h2>FORMATIONS</h2>
-      <p>Les Plus Populaires</p>
-    </div>
-  </div>
-</section>
-<!-- Fin Formation Head -->
-<!-- start poplular courses -->
-<section class='poplularCourses'>
-  <div class='container my-5'>
-    <!-- <div class="courses"> -->
-    <div class="row">
-      <div class="col-12 m-auto">
-        <div class="owl-carousel owl-theme">
-          <?php foreach ($data['courses'] as $course) : ?>
-            <!-- start card -->
-            <div class="item mb-4">
-              <div class="card card_coures wow fadeInRight " data-wow-duration="2s" data-wow-offset="100">
-                <a href='<?php echo URLROOT . "/pageFormations/coursDetails/" . $course->IdFormation ?>' style='display: block; text-decoration: none;'>
-                  <!-- img formation -->
-                  <div class="img">
-                    <img src="<?php echo $course->imgFormation; ?>" alt="photo">
-                    <div class="duree">
-                      <i class="fa-solid fa-clock" style="color: #ff6584" aria-hidden="true"></i>
-                      <div class="time"><?php echo $course->duree; ?></div>
-                    </div>
-                  </div>
-                  <!-- informations formation -->
-                  <div class="info_formation">
-                    <div class="categorie"><?php echo $course->categorie; ?></div>
-                    <div class="prix"><?php echo $course->prix; ?></div>
-                  </div>
-                  <!-- name formation -->
-                  <h1><?php echo $course->nomFormation; ?></h1>
-                  <!-- description -->
-                  <div class="description">
-                    <p><?php echo $course->description; ?></p>
-                  </div>
-                  <div class="footer">
-                    <!-- infotrmations formateur -->
-                    <a href='<?php echo URLROOT . "/profilFormateur/index/" . $course->IdFormteur ?>' style='display: block; text-decoration: none; z-index: 10;'>
-                      <div class="formateur">
-                        <div class="img_formateur">
-                          <img src="<?php echo $course->imgFormateur; ?>" alt="photo">
-                        </div>
-                        <div class="d-flex flex-column fw-bold">
-                          <span><?php echo $course->nomFormateur; ?></span>
-                          <span><?php echo $course->prenomFormateur; ?></span>
-                        </div>
-                      </div>
-                    </a>
-                    <!-- informations -->
-                    <div class="info">
-                      <div class="likes d-flex flex-column align-items-center">
-                        <span><?php echo $course->likes; ?></span>
-                        <i class="fa fa-heart" aria-hidden="true"></i>
-                      </div>
-                      <div class="etd d-flex flex-column align-items-center">
-                        <span><?php echo $course->numbAcht; ?></span>
-                        <i class="fa fa-users" aria-hidden="true"></i>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            </div>
-            <!-- end card -->
-          <?php endforeach; ?>
-        </div>
-      </div>
-    </div>
-    <!-- </div> -->
-  </div>
-</section>
-<!-- end poplular courses -->
-<!-- Equipe Head -->
-<section class="section-title mt-2" id="equipe">
-  <div class="container wow fadeInLeft" data-wow-duration="3s" data-wow-offset="100">
-    <div>
-      <h2>EQUIPE</h2>
-      <p>RENCONTREZ-NOUS</p>
-    </div>
-  </div>
-</section>
-<!-- Fin Equipe Head  -->
-<!-- Section equipe -->
-<section class="equipe">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator wow rotateInUpLeft" data-wow-duration="2s" data-wow-offset="100">
-        <div class="member member-odd p-3 mt-3">
-          <div class="text-center">
-            <h2 style="color: #ff6584">M</h2>
-            <img src="<?php echo URLROOT . "/Public" ?>/images/membre.jpg" class="member-img" alt="">
-            <h6 class="fw-bolder">ABDELMOUMEN MUSTAFA</h6>
-            <small class="badge bg-info">Web Developer</small>
-          </div>
-          <div class="member-content">
-            <p>
-              Magni qui quod omnis unde et eos fuga et exercitationem. Odio veritatis perspiciatis quaerat
-              qui aut aut aut.
-            </p>
-            <div class="social d-flex justify-content-center gap-4">
-              <a href="#"><i class="fa-brands fa-facebook"></i></a>
-              <a href="#"><i class="fa-brands fa-github"></i></a>
-              <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator wow rotateInUpLeft" data-wow-duration="2s" data-wow-offset="100">
-        <div class="member member-even p-3 mt-3">
-          <div class="text-center">
-            <h2><span>A</span></h2>
-            <img src="<?php echo URLROOT . "/Public" ?>/images/membre.jpg" class="member-img" alt="">
-            <h6 class="fw-bolder">ID HAMIDE ABOUBAKER</h6>
-            <small class="badge bg-info">Web Developer</small>
-          </div>
-          <div class="member-content">
-            <p>
-              Magni qui quod omnis unde et eos fuga et exercitationem. Odio veritatis perspiciatis quaerat
-              qui aut aut aut.
-            </p>
-            <div class="social d-flex justify-content-center gap-4">
-              <a href="#"><i class="fa-brands fa-facebook"></i></a>
-              <a href="#"><i class="fa-brands fa-github"></i></a>
-              <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator wow rotateInUpLeft" data-wow-duration="2s" data-wow-offset="100">
-        <div class="member member-odd p-3 mt-3">
-          <div class="text-center">
-            <h2 style="color: #ff6584">H</h2>
-            <img src="<?php echo URLROOT . "/Public" ?>/images/membre.jpg" class="member-img" alt="">
-            <h6 class="fw-bolder">TASDIHT HICHAM</h6>
-            <small class="badge bg-info">Web Developer</small>
-          </div>
-          <div class="member-content">
-            <p>
-              Magni qui quod omnis unde et eos fuga et exercitationem. Odio veritatis perspiciatis quaerat
-              qui aut aut aut.
-            </p>
-            <div class="social d-flex justify-content-center gap-4">
-              <a href="#"><i class="fa-brands fa-facebook"></i></a>
-              <a href="#"><i class="fa-brands fa-github"></i></a>
-              <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6 d-flex align-items-stretch creator wow rotateInUpLeft" data-wow-duration="2s" data-wow-offset="100">
-        <div class="member member-even p-3 mt-3">
-          <div class="text-center">
-            <h2><span>A</span></h2>
-            <img src="<?php echo URLROOT . "/Public" ?>/images/membre.jpg" class="member-img" alt="">
-            <h6 class="fw-bolder">BOUDAL AHMED</h6>
-            <small class="badge bg-info">Web Developer</small>
-          </div>
-          <div class="member-content">
-            <p>
-              Magni qui quod omnis unde et eos fuga et exercitationem. Odio veritatis perspiciatis quaerat
-              qui aut aut aut.
-            </p>
-            <div class="social d-flex justify-content-center gap-4">
-              <a href="#"><i class="fa-brands fa-facebook"></i></a>
-              <a href="#"><i class="fa-brands fa-github"></i></a>
-              <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- Fin Equipe -->
-<!-- Contact Head -->
-<section class="section-title mt-5" id="contact">
-  <div class="container wow fadeInLeft" data-wow-duration="3s" data-wow-offset="100">
-    <div>
-      <h2>Contactez-Nous</h2>
-    </div>
-  </div>
-</section>
-<!-- Fin contact Head  -->
-<!-- Contact Section -->
-<section class="contact">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-4 wow slideInLeft" data-wow-duration="2s" data-wow-offset="60">
-        <div class="info">
-          <div class="address">
-            <i class="fa-solid fa-location-dot"></i>
-            <h4>Localisation</h4>
-            <p>Boulevard de Mohammedia, QI Azli 40150</p>
-          </div>
+		<div class="bg_color_1"  id="equipe">
+			<div class="container margin_120_95">
+				<div class="main_title_2">
+					<span><em></em></span>
+					<h2>EQUIPE</h2>
+					<p>RENCONTREZ-NOUS</p>
+				</div>
+			</div>
+			<!-- reccomended -->
+			<div id="carousel" class="owl-carousel owl-theme">
+				<div class="item">
+					<div class="title">
+						<h4>ABDELMOUMEN MUSTAFA<em>Web Developer</em></h4>
+					</div><img src="<?php echo URLROOT . "/Public" ?>/images/membre.jpg" alt="Photo">
+				</div>
+				<div class="item">
+					<div class="title">
+						<h4>ID HAMIDE ABOUBAKER<em>Web Developer</em></h4>
+					</div><img src="<?php echo URLROOT . "/Public" ?>/images/membre.jpg" alt="Photo">
+				</div>
+				<div class="item">
+					<div class="title">
+						<h4>TASDIHT HICHAM<em>Web Developer</em></h4>
+					</div><img src="<?php echo URLROOT . "/Public" ?>/images/membre.jpg" alt="Photo">
+				</div>
+				<div class="item">
+					<div class="title">
+						<h4>BOUDAL AHMED<em>Web Developer</em></h4>
+					</div><img src="<?php echo URLROOT . "/Public" ?>/images/membre.jpg" alt="Photo">
+				</div>
+			</div>
+			<!-- /carousel -->
+			<!-- /container -->
+		</div>
+		<!-- /bg_color_1 -->
 
-          <div class="email">
-            <i class="fa-solid fa-envelope"></i>
-            <h4>Email</h4>
-            <p>info@maha.com</p>
-          </div>
+		<div class="bg_color_1"  id="contact">
+			<div class="container margin_120_95">
+				<div class="main_title_2">
+					<span><em></em></span>
+					<h2>Contactez-Nous</h2>
+				</div>
+			</div>
+			<div class="contact_info">
+				<div class="container">
+					<ul class="clearfix">
+						<li>
+							<i class="pe-7s-map-marker"></i>
+							<h4>Localisation</h4>
+							<span>Boulevard de Mohammedia, QI Azli 40150</span>
+						</li>
+						<li>
+							<i class="pe-7s-mail-open-file"></i>
+							<h4>Email</h4>
+							<span>info@maha.com</span>
 
-          <div class="phone">
-            <i class="fa-solid fa-phone"></i>
-            <h4>Appel</h4>
-            <p>(+212) 524 34 50 57</p>
-          </div>
+						</li>
+						<li>
+							<i class="pe-7s-phone"></i>
+							<h4>Appel</h4>
+							<span>(+212) 524 34 50 57</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="container">
+				<form method="post" id="contact-us" autocomplete="off">
+					<div class="row">
+						<div class="col-md-12">
+							<span class="input">
+								<input class="input_field" type="text" name="name" id="name" required="">
+								<label class="input_label">
+									<span class="input__label-content">Nom</span>
+								</label>
+							</span>
+						</div>
+					</div>
+					<!-- /row -->
+					<div class="row">
+						<div class="col-md-12">
+							<span class="input">
+								<input class="input_field" type="email"  name="email" id="email" required="">
+								<label class="input_label">
+									<span class="input__label-content">Email</span>
+								</label>
+							</span>
+						</div>
+					</div>
+					<!-- /row -->
+					<div class="row">
+						<div class="col-md-12">
+							<span class="input">
+								<input class="input_field" type="email" name="subject" id="subject" required="">
+								<label class="input_label">
+									<span class="input__label-content">Sujet</span>
+								</label>
+							</span>
+						</div>
+					</div>
+					<!-- /row -->
+					<span class="input">
+							<textarea class="input_field" id="message" name="message"  required="" style="height:150px;"></textarea>
+							<label class="input_label">
+								<span class="input__label-content">Message</span>
+							</label>
+					</span>
+					<p class="add_top_30"><input type="submit" value="Envoyer" class="btn_1 rounded" id="submit-contact"></p>
+					<input type="hidden" id="is-send">
+				</form>
+			</div>
+			<!-- /container -->
+			<!--/contact_info-->
+		</div>
+		<!-- /bg_color_1 -->
+	</main>
+	<!-- /main -->
 
-        </div>
-
-      </div>
-
-      <!-- Form -->
-      <div class="col-lg-8 mt-5 mt-lg-0 wow slideInRight" data-wow-duration="2s" data-wow-offset="60">
-        <form id="contact-us" method="post">
-          <div class="row">
-            <div class="col-md-6">
-              <input type="text" name="name" class="form-control" id="name" placeholder="Votre Nom" required="">
-            </div>
-            <div class="col-md-6 mt-3 mt-md-0">
-              <input type="email" class="form-control" name="email" id="email" placeholder="Votre Email" required="">
-            </div>
-          </div>
-          <div class="mt-3">
-            <input type="text" class="form-control" name="subject" id="subject" placeholder="Sujet" required="">
-          </div>
-          <div class="mt-3">
-            <textarea class="form-control" name="message" rows="5" placeholder="Message" required="" style="height: 138px;resize: none;"></textarea>
-          </div>
-          <div class="text-center my-3">
-            <button type="submit" class="submit-btn">Envoyer</button>
-            <input type="hidden" id="is-send">
-          </div>
-        </form>
-
-      </div>
-      <!-- Fin Form -->
-    </div>
-
-  </div>
-</section>
-<!-- Fin Contact Section -->
-<!-- toast start -->
-<div class="toast-container position-fixed top-0 end-0 p-3">
-  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-body rounded d-flex justify-content-between">
-      <span id="message" class="text-white"></span>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-  </div>
-</div>
-<!-- toast end -->
 <?php require_once APPROOT . "/views/includes/footer.php"; ?>

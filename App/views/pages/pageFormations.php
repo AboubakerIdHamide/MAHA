@@ -1,143 +1,131 @@
-<?php require_once APPROOT."/views/includes/header.php";?> 
-    <!-- start page formations -->
-    <section class="pageFormation">
-        <div class="container">
-            <div class="filter">
-                <div class="bF-res">
-                    <div class="main-filter">
-                        <i class="fa fa-filter" aria-hidden="true"></i> <span>Filter</span>
-                    </div>
-                    <div class='resultat'>
-                        <p>Resultats :</p>
-                        <h2><?php echo $data['numbFormations'] ?></h2>
-                    </div>
-                </div>
-                <div class="filter-par" style='height: 105px;'>
-                    <span>Trier par :</span>
-                    <div class="flt-par">            
-                        <div class="dropdown m-2">
-                            <a class="btn btn-secondary dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Les Plus
-                            </a>
+<?php require_once APPROOT."/views/includes/header.php";?>	
 
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="<?php echo URLROOT . "/pageFormations/plusPopilairesFormations" ?>">Les Plus Populaires</a>
-                                <a class="dropdown-item" href="<?php echo URLROOT . "/pageFormations/plusFormationsAmais" ?>">Les Plus Amais</a>
-                                <a class="dropdown-item" href="<?php echo URLROOT . "/pageFormations/plusFormationsAchter" ?>">Les Plus Achter</a>
-                            </div>
-                        </div>               
-                        <div class="dropdown m-2">
-                            <a class="btn btn-secondary dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Langues
-                            </a>
+	<main>
+		<section id="hero_in" class="courses">
+			<div class="wrapper">
+				<div class="container">
+					<h1 class="fadeInUp"><span></span>Les Formations</h1>
+				</div>
+			</div>
+		</section>
+		<!--/hero_in-->
 
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <?php foreach ($data['langages'] as $lang) {
-                                    echo '<a class="dropdown-item" href="' . URLROOT . '/pageFormations/formationsByLangage/' . $lang->id_langue . '">' . $lang->nom_langue . '</a>';
-                                } ?>
-                            </div>
-                        </div>
-                        <div class="dropdown m-2">
-                            <a class="btn btn-secondary dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Niveaux
-                            </a>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <?php foreach ($data['nivaux'] as $niv) {
-                                    echo '<a class="dropdown-item" href="' . URLROOT . '/pageFormations/formationsByNivau/' . $niv->id_niveau . '">' . $niv->nom_niveau . '</a>';
-                                } ?>
-                            </div>
-                        </div>       
-                        <div class="dropdown m-2">
-                            <a class="btn btn-secondary dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Durée
-                            </a>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <form action="<?php echo URLROOT . "/pageFormations/formationsByDuree/" ?>" method="GET">
-                                    <div class="m-3">
+		<div class="filters_listing sticky_horizontal">
+			<div class="container">
+				<ul class="clearfix">
+					<li>
+						<div class="switch-field">
+                            <a class="dropdown-item" id='plusPopilaires' ckecked href="<?php echo URLROOT . "/pageFormations/plusPopilairesFormations" ?>">Les Plus Populaires</a>
+                            <a class="dropdown-item" id='plusAmais' href="<?php echo URLROOT . "/pageFormations/plusFormationsAmais" ?>">Les Plus Amais</a>
+                            <a class="dropdown-item" id='plusAchter' href="<?php echo URLROOT . "/pageFormations/plusFormationsAchter" ?>">Les Plus Achter</a>
+						</div>
+					</li>
+					<!-- <li>
+						<div class="layout_view">
+							<a href="courses-grid.html"><i class="icon-th"></i></a>
+							<a href="#0" class="active"><i class="icon-th-list"></i></a>
+						</div>
+					</li> -->
+				</ul>
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /filters -->
+		<div class="container margin_60_35">
+			<div class="row">
+				<aside class="col-lg-3" id="sidebar">
+					<div id="filters_col"> <a data-bs-toggle="collapse" href="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" id="filters_col_bt">Filters </a>
+						<div class="collapse show" id="collapseFilters">
+							<div class="filter_type">
+								<h6>Categories</h6>
+								<ul>
+									<?php foreach ($data['categories'] as $categorie) : ?>
+										<li>
+											<a class="nav-link" href="<?= URLROOT . '/pageFormations/filter/' . $categorie->nom_categorie ?>"><?= $categorie->nom_categorie ?></a>
+										</li>
+									<?php endforeach ?>
+								</ul>
+							</div>
+							<div class="filter_type">
+								<h6>Langues</h6>
+								<ul>
+									<?php foreach ($data['langages'] as $lang) : ?>
+										<li>
+											<a class="nav-link" href="<?= URLROOT . '/pageFormations/formationsByLangage/' . $lang->id_langue ?>"><?= $lang->nom_langue ?></a>
+										</li>
+									<?php endforeach ?>
+								</ul>
+							</div>
+							<div class="filter_type">
+								<h6>Niveaux</h6>
+								<ul>
+									<?php foreach ($data['nivaux'] as $niv) : ?>
+										<li>
+											<a class="nav-link" href="<?= URLROOT . '/pageFormations/formationsByNivau/' . $niv->id_niveau ?>"><?= $niv->nom_niveau ?></a>
+										</li>
+									<?php endforeach ?>
+								</ul>
+							</div>
+							<div class="filter_type">
+								<h6>Durée :</h6>
+								<form action="<?php echo URLROOT . "/pageFormations/formationsByDuree/" ?>" method="GET">
+                                    <div class="m-2">
                                         <label class="form-label" for="minH">Min heure :</label>
                                         <input type="number" name="minH" class="form-control">
                                     </div>
-                                    <div class="m-3">
+                                    <div class="m-2">
                                         <label class="form-label" for="maxH">Max heure :</label>
                                         <input type="number" name="maxH" class="form-control">
                                     </div>
-                                    <div class="m-3 text-end">
-                                        <input type="submit" value="Filter" class="btn btn-primary">
+                                    <div class="m-2 text-end">
+                                        <input type="submit" value="Filter" class="btn">
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- start main filter -->
-                <ul class="ops hide">
-                    <?php foreach ($data['categories'] as $categorie) : ?>
-                        <li class="chow-ops">
-                            <a class="nav-link w-100" href="<?= URLROOT . '/pageFormations/filter/' . $categorie->nom_categorie ?>">
-                                <?= $categorie->icon ?> <span><?php echo $categorie->nom_categorie ?></span>
-                                <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                            </a>
-                        </li>
-                    <?php endforeach ?>
-                </ul>
-                <!-- end main filter -->
-            </div>
-            <?php if ($data['numbFormations'] == 0) : ?>
-
-                <h2 class='aucunF d-flex justify-content-center'><?php echo $data['info'] ?></h2>
-
-            <?php else : ?>
-                <div class="formations">
-                    <?php foreach ($data['info'] as $info) : ?>
-                        <!-- start card -->
-                        <div class="card_coures">
-                            <a href='<?php echo URLROOT . "/pageFormations/coursDetails/" . $info->IdFormation ?>' style='display: block; text-decoration: none;'>
-                                <!-- img formation -->
-                                <div class="img">
-                                    <img src="<?php echo $info->imgFormation; ?>" alt="photo">
-                                    <div class="duree">
-                                        <i class="fa-solid fa-clock" aria-hidden="true"></i>
-                                        <div class="time"><?php echo $info->duree; ?></div>
-                                    </div>
-                                </div>
-                                <!-- informations formation -->
-                                <div class="info_formation">
-                                    <div class="categorie"><?php echo $info->categorie; ?></div>
-                                    <div class="prix"><?php echo $info->prix; ?></div>
-                                </div>
-                                <!-- name formation -->
-                                <h1><?php echo $info->nomFormation; ?></h1>
-                                <!-- description -->
-                                <div class="description">
-                                    <p><?php echo $info->description; ?></p>
-                                </div>
-                                <div class="footer">
-                                    <!-- infotrmations formateur -->
-                                    <a href='<?php echo URLROOT . "/profilFormateur/index/" . $info->IdFormteur ?>' style='display: block; text-decoration: none; z-index: 10;'>
-                                        <div class="formateur">
-                                            <div class="img_formateur">
-                                                <img src="<?php echo $info->imgFormateur; ?>" alt="photo">
-                                            </div>
-                                            <h2><?php echo $info->nomFormateur; ?> <?php echo $info->prenomFormateur; ?></h2>
-                                        </div>
-                                    </a>
-                                    <!-- informations -->
-                                    <div class="info">
-                                        <div class="etd"><?php echo $info->numbAcht; ?></div>
-                                        <i class="fa fa-heart" aria-hidden="true"></i>
-                                        <div class="likes"><?php echo $info->likes; ?></div>
-                                        <i class="fa fa-users" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <!-- end card -->
-                    <?php endforeach; ?>
-                </div>
-                <!-- start pagenition -->
-                <div class='footer_page_formations'>
+							</div>
+						</div>
+						<!--/collapse -->
+					</div>
+					<!--/filters col-->
+				</aside>
+				<!-- /aside -->
+				<?php if ($data['numbFormations'] == 0) : ?>
+					<div class="col-lg-9">
+						<h2  style="color: #662d91; padding-top: 180px" class='aucunF d-flex justify-content-center'><?php echo $data['info'] ?></h2>
+					</div>
+				<?php else : ?>
+				<div class="col-lg-9">
+					<div class="row">
+            		<?php foreach ($data['info'] as $info) : ?>
+                		<div class="col-md-6">
+							<div class="box_grid wow">
+								<figure class="block-reveal">
+									<div class="block-horizzontal"></div>
+									<a href='<?php echo URLROOT . "/pageFormations/coursDetails/" . $info->IdFormation ?>'><img src="<?php echo $info->imgFormation; ?>" class="img-fluid" alt="Photo"></a>
+									<div class="price">$<?php echo $info->prix; ?></div>
+									<div class="preview"><span>Plus Details</span></div>
+								</figure>
+								<div class="wrapper">
+									<small><?php echo $info->categorie; ?></small>
+									<h3><?php echo $info->nomFormation; ?></h3>
+									<p class='description'><?php echo $info->description; ?></p>
+								</div>
+								<ul>
+									<li><i class="fa-solid fa-clock"></i> <?php echo $info->duree; ?></li>
+									<li><i class="fa-solid fa-user"></i> <?php echo $info->numbAcht; ?></li>
+									<li><i class="fa-solid fa-heart"></i> <?php echo $info->likes; ?></li>
+									<li><a href='<?php echo URLROOT . "/pageFormations/coursDetails/" . $info->IdFormation ?>'>Plus</a></li>
+								</ul>
+                    		</div>
+                		</div>
+                		<!-- /box_list -->
+            		<?php endforeach; ?>
+    				</div>
+    			</div>
+				</div>
+    		</div>
+			<!-- <p class="text-center add_top_60"><a href="#0" class="btn_1">Load more</a></p> -->
+			<!-- start pagenition -->
+			<div class='footer_page_formations'>
                     <ul class="pagination d-flex justify-content-center">
                         <li style='font-size: 22px;' class='page-item'><a class='page-link' href="?pageno=1">First</a></li>
                         <li style='font-size: 22px;' class="page-item <?php if (intval($data['pageno']) <= 1) {
@@ -160,47 +148,12 @@
                         </li>
                         <li style='font-size: 22px;' class='page-item'><a class='page-link' href="?pageno=<?php echo intval($data['totalPages']); ?>">Last</a></li>
                     </ul>
-                </div>
-                <!-- end pagenition -->
-            <?php endif; ?>
-        </div>
-    </section>
-    <!-- end page formations -->
-    <!-- Footer -->
-    <footer class="mt-5" id="footer">
-        <div class="footer-top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 footer-contact">
-                        <h1 class="logo"><a href="#">M<span>A</span>H<span>A</span></a></h1>
-                        <p>
-                            Boulevard de Mohammedia <br>
-                            QI Azli 40150<br>
-                            Maroc <br><br>
-                            <strong>Phone:</strong> (+212) 524 34 50 57<br>
-                            <strong>Email:</strong> info@maha.com<br>
-                        </p>
-                    </div>
-                </div>
             </div>
-        </div>
-        <div class="container d-md-flex py-4">
-            <div class="me-md-auto text-center text-md-start">
-                <div class="copyright">
-                    © Copyright <strong><span>MAHA</span></strong>. All Rights Reserved
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Fin Footer -->
-    <!-- To-up Button -->
-    <span class="to-top" href="#"><i class="fa fa-chevron-up"></i></span>
-    <!-- To-up Button -->
-    <script src="<?php echo URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="<?php echo URLROOT; ?>/public/js/pageFormations.js"></script>
-    <script src="<?php echo URLROOT; ?>/public/js/main.js"></script>
-</body>
+            <!-- end pagenition -->
+			<?php endif; ?>
+		</div>
+		<!-- /container -->
+	</main>
+	<!--/main-->
 
-</html>
+<?php require_once APPROOT . "/views/includes/footer.php"; ?>
