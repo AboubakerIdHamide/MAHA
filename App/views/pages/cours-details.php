@@ -188,7 +188,7 @@
                                                     <strong><?= $data['info']['likes']; ?> <i
                                                             class="fa-solid fa-heart"></i></strong>
                                                 </div>
-                                                <span>Likes</span>
+                                                <span>J'aime</span>
                                             </div>
                                         </div>
                                     </div>
@@ -204,16 +204,15 @@
                                     <a href="<?= $data['previewVideo'] ?>" class="video"><i style="color:#FFC107;"
                                             class="fa-solid fa-play fs-2"></i><img
                                             src="<?= $data['info']['imgFormation'] ?>" alt="course image"
-                                            class="img-fluid rounded-corner"><span>View course
-                                            preview</span></a>
+                                            class="img-fluid rounded-corner"><span>Voir l'aperçu du cours</span></a>
                                 </figure>
                                 <div class="price">
                                     $<?= $data['info']['prix'] ?>
                                 </div>
                                 <a href="<?= URLROOT ?>/PaymentPaypal/makePayment/<?= $data['info']['IdFormation'] ?>"
-                                    class="btn_1 full-width">Purchase</a>
+                                    class="btn_1 full-width">Acheter</a>
                                 <div id="list_feat">
-                                    <h3>Course informations</h3>
+                                    <h3>Informations du cours</h3>
                                     <ul>
                                         <li><i class="fa-solid fa-person-chalkboard"></i>
                                             <a
@@ -276,12 +275,12 @@
                     <div class="col-lg-5 col-md-12">
                         <p><a href="<?= URLROOT ?>"><img class="logo" src="<?= $data['theme']['logo'] ?>" width="149"
                                     height="42" alt="logo Maha"></a></p>
-                        <p>MAHA Est Un Site Internet De Formation En Ligne Qui Contient Des Cours Et Des Vidéos
-                            d'apprentissage Dans Plusieur Domains Tels Que Le Web Development, E-commerce, Digital
-                            Marketing ...</p>
+                        <p>MAHA est un site internet de formation en ligne qui contient des cours et des vidéos
+                            d'apprentissage dans plusieur domains tels que le development web, E-commerce, Digital
+                            Marketing, ...</p>
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <h5>Contact with Us</h5>
+                        <h5>Contactez-nous</h5>
                         <ul class="contacts">
                             <li><a href="tel://0524345057"><i class="fa-solid fa-mobile"></i> (+212) 524 34 50 57</a>
                             </li>

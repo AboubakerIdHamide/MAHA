@@ -15,8 +15,7 @@
         <span>A</span>
       </h2>
       <p class="short-description">
-        MAHA Est Un Site Internet De Formation En Ligne Qui Contient Des Cours Et Des Vidéos d'apprentissage
-        Dans Plusieur Domains Tels Que Le Web Development, E-commerce, Digital Marketing ...
+      MAHA est un site internet de formation en ligne qui contient des cours et des vidéos d'apprentissage dans plusieur domains tels que le development web, E-commerce, Digital Marketing, ...
       </p>
       <div class="rejoignez-nous">
         <div id="circle"></div>
