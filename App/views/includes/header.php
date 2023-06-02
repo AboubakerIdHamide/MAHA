@@ -6,70 +6,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Udema a modern educational site template">
     <meta name="author" content="Ansonika">
-    <link rel="icon" type="image/x-icon" href="<?= URLROOT.'/public' ?>/images/favicon.ico">
-    <title><?php echo SITENAME; ?></title>
+    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+    <title><?= SITENAME ?></title>
 
     <!-- Font Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-   
-	<!-- Bootstrap -->
-	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"> -->
-    
+
+    <!-- Bootstrap -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"> -->
+
 
     <!-- WOW js -->
-    <link rel="stylesheet" href="<?= URLROOT ?>/public/WOW/css/animate.css">
+    <!-- <link rel="stylesheet" href="<?= URLROOT ?>/public/WOW/css/animate.css"> -->
 
     <!-- BASE CSS -->
-    <link href="<?php echo URLROOT.'/public/css/' ?>bootstrap.min.css" rel="stylesheet">
-    <link href="<?= URLROOT.'/public/css/' ?>style.css" rel="stylesheet">
-	<link href="<?= URLROOT.'/public/css/' ?>vendors.css" rel="stylesheet">
+    <link href="<?= URLROOT . '/public/css/' ?>bootstrap.min.css" rel="stylesheet">
+    <link href="<?= URLROOT . '/public/css/' ?>style.css" rel="stylesheet">
+    <link href="<?= URLROOT . '/public/css/' ?>vendors.css" rel="stylesheet">
 
     <!-- YOUR CUSTOM CSS -->
-    <link href="<?= URLROOT.'/public/css/' ?>custom.css" rel="stylesheet">
+    <link href="<?= URLROOT . '/public/css/' ?>custom.css" rel="stylesheet">
 
     <!-- SPECIFIC CSS -->
-	<link href="<?= URLROOT.'/public/css/' ?>grey.css" rel="stylesheet">
+    <link href="<?= URLROOT . '/public/css/' ?>grey.css" rel="stylesheet">
 
-    <!-- Styles --> 
-    <!-- <link rel="stylesheet" href="<?php // echo URLROOT; ?>/public/css/main.css" /> -->
-    <!-- <link rel="stylesheet" href="<?php // echo URLROOT; ?>/public/css/pageFormations.css" /> -->
+    <!-- Styles -->
+    <!-- <link rel="stylesheet" href="<?php // echo URLROOT; 
+                                        ?>/public/css/main.css" /> -->
+    <!-- <link rel="stylesheet" href="<?php // echo URLROOT; 
+                                        ?>/public/css/pageFormations.css" /> -->
 
     <style>
         #hero_in.courses:before {
-            background: url("<?php echo URLROOT ?>/public/images/bg_courses.jpg") center center no-repeat;
+            background: url("<?= URLROOT ?>/public/images/bg_courses.jpg") center center no-repeat;
         }
-		.hero_single.version_2:before {
-            background: url("<?php echo URLROOT ?>/public/images/home_section_1.jpg") center center no-repeat;
-		}
+
+        .hero_single.version_2:before {
+            background: url("<?= URLROOT ?>/public/images/home_section_1.jpg") center center no-repeat;
+        }
     </style>
 </head>
 
 <body>
-		
-	<div id="page">
-		<header class="header menu_2">
+
+    <div id="page">
+        <header class="header menu_2">
             <div id="preloader">
                 <div data-loader="circle-side"></div>
             </div><!-- /Preload -->
             <div id="logo">
-                <a href="<?= URLROOT ?>"><img class="logo" src="<?= $data['theme']['logo'] ?>" width="149" height="42"
-                        alt="logo Maha"></a>
+                <a href="<?= URLROOT ?>"><img class="logo" src="<?= $data['theme']['logo'] ?>" width="149" height="42" alt="logo Maha"></a>
             </div>
             <ul id="top_menu">
                 <li class="search-overlay-menu-btn"><i class="fa-solid fa-magnifying-glass"></i></li>
                 <?php if (!isset($_SESSION['user'])) : ?>
-                <li class="hidden_tablet"><a href="<?= URLROOT . "/users/login" ?>" class="btn_1 rounded">Se
-                        Connecter</a></li>
+                    <li class="hidden_tablet"><a href="<?= URLROOT . "/users/login" ?>" class="btn_1 rounded">Se
+                            Connecter</a></li>
                 <?php endif ?>
                 <?php if (isset($_SESSION['id_formateur'])) : ?>
-                <li class="hidden_tablet"><a href="<?= URLROOT . "/formateurs/dashboard" ?>"
-                        class="btn_1 rounded">Dashboard</a>
-                </li>
+                    <li class="hidden_tablet"><a href="<?= URLROOT . "/formateurs/dashboard" ?>" class="btn_1 rounded">Dashboard</a>
+                    </li>
                 <?php endif ?>
                 <?php if (isset($_SESSION['id_etudiant'])) : ?>
-                <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiants/dashboard" ?>" class="btn_1 rounded">Mes
-                        Cours</a>
-                </li>
+                    <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiants/dashboard" ?>" class="btn_1 rounded">Mes
+                            Cours</a>
+                    </li>
                 <?php endif ?>
 
             </ul>
@@ -88,20 +89,20 @@
                     <li><span><a href="<?= URLROOT ?>/#catalogue">Categories</a></span></li>
                     <li><span><a href="<?= URLROOT ?>/#contact">Contactez-nous</a></span></li>
                     <?php if (!isset($_SESSION['user'])) : ?>
-                    <li><span><a href="<?= URLROOT ?>/users/register">S'inscrire</a></span></li>
+                        <li><span><a href="<?= URLROOT ?>/users/register">S'inscrire</a></span></li>
                     <?php endif ?>
                     <?php if (!isset($_SESSION['user'])) : ?>
-                    <li class="d-lg-none"><a href="<?= URLROOT . "/users/login" ?>">Se
-                            Connecter</a></li>
+                        <li class="d-lg-none"><a href="<?= URLROOT . "/users/login" ?>">Se
+                                Connecter</a></li>
                     <?php endif ?>
                     <?php if (isset($_SESSION['id_formateur'])) : ?>
-                    <li class="d-lg-none"><a href="<?= URLROOT . "/formateurs/dashboard" ?>">Dashboard</a>
-                    </li>
+                        <li class="d-lg-none"><a href="<?= URLROOT . "/formateurs/dashboard" ?>">Dashboard</a>
+                        </li>
                     <?php endif ?>
                     <?php if (isset($_SESSION['id_etudiant'])) : ?>
-                    <li class="d-lg-none"><a href="<?= URLROOT . "/etudiants/dashboard" ?>">Mes
-                            Cours</a>
-                    </li>
+                        <li class="d-lg-none"><a href="<?= URLROOT . "/etudiants/dashboard" ?>">Mes
+                                Cours</a>
+                        </li>
                     <?php endif ?>
                 </ul>
             </nav>

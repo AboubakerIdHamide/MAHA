@@ -29,16 +29,32 @@ class Administrateur
         return $admin;
     }
 
-    public function updateAdminBalance()
+    public function getProfitAndPaypalToken()
     {
+        $request = $this->connect->prepare("
+            SELECT platform_pourcentage, password_paypal, username_paypal FROM admin 
+        ");
+        $request->execute();
+        $settings = $request->fetch(PDO::FETCH_OBJ);
+        return $settings;
     }
 
-    public function updateAdminPasswordByEmail($admin)
+    public function replaceSettings($data)
     {
-    }
 
-    public function deteleAdmin($admin_id)
-    {
-    }
+        $request = $this->connect->prepare("
+			UPDATE admin 
+			SET 
+                platform_pourcentage = :platform_pourcentage, 
+			    username_paypal = :username_p, 
+			    password_paypal = :password_p
+		");
 
+        $request->bindParam(':platform_pourcentage', $data['platform_pourcentage']);
+        $request->bindParam(':username_p', $data['username_p']);
+        $request->bindParam(':password_p', $data['password_p']);
+        $response = $request->execute();
+
+        return $response;
+    }
 }

@@ -891,6 +891,7 @@ ul#top_menu li a.btn_1:hover {
   animation-delay: 0.2s;
   -webkit-animation-delay: 0.2s;
   -moz-animation-delay: 0.2s;
+  z-index: -1;
 }
 
 ul#top_menu {

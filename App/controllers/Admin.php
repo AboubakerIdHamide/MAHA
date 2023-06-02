@@ -385,19 +385,19 @@ class Admin extends Controller
                 $inscriptions = $this->inscriptionModel->top5BestSellersLast3Months();
                 break;
             case 'year':
-                $inscriptions = $this->inscriptionModel->top5BestSellersLastYear(); 
+                $inscriptions = $this->inscriptionModel->top5BestSellersLastYear();
                 break;
             default:
-                if(isset($_GET['debut'], $_GET['fin']) && !empty($_GET['debut']) && !empty($_GET['fin'])){
+                if (isset($_GET['debut'], $_GET['fin']) && !empty($_GET['debut']) && !empty($_GET['fin'])) {
                     extract($_GET);
                     $inscriptions = $this->inscriptionModel->top5BestSellersBetween2Days($debut, $fin);
-                }else{
+                } else {
                     exit;
                 }
-                
+
                 break;
         }
-        
+
         echo json_encode($inscriptions);
     }
 
@@ -423,36 +423,22 @@ class Admin extends Controller
 
     public function categories($id = null)
     {
-        if (is_null($id)) {
-            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                $data['categories'] = $this->stockedModel->getAllCategories();
-                $this->view('admin/categories', $data);
-            } else {
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    if (isset($_POST['sous_categorie'])) {
-                        $this->stockedModel->insertSousCategorie($_POST);
-                        echo 'Sous-categorie ' . $_POST['sous_categorie'] . ' ajouté avec succès !';
-                    } else {
-                        $this->stockedModel->insertCategorie($_POST);
-                        echo 'Categorie ' . $_POST['nom_categorie'] . ' ajouté avec succès !';
-                    }
-                } else {
-                    if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-                        $this->stockedModel->deleteCategorie(file_get_contents("php://input"));
-                        echo 'Categorie supprimé avec succès !';
-                    } else {
-                        $this->stockedModel->editCategorie(json_decode(file_get_contents("php://input")));
-                        echo 'Categorie  modifiè avec succès !';
-                    }
-                }
-            }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $data['categories'] = $this->stockedModel->getAllCategories();
+            $this->view('admin/categories', $data);
         } else {
-            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                $sous_categories = $this->stockedModel->getAllSousCategoriesOfCategorie($id);
-                echo json_encode($sous_categories);
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $this->stockedModel->insertCategorie($_POST);
+                echo 'Categorie ' . $_POST['nom_categorie'] . ' ajouté avec succès !';
             } else {
-                $this->stockedModel->deleteSousCategorie($id);
-                echo 'Sous-Categorie supprimé avec succès !';
+                if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+                    $this->stockedModel->deleteCategorie(file_get_contents("php://input"));
+                    echo 'Categorie supprimé avec succès !';
+                } else {
+                    $this->stockedModel->editCategorie(json_decode(file_get_contents("php://input")));
+                    echo 'Categorie  modifiè avec succès !';
+                }
             }
         }
     }
@@ -478,71 +464,83 @@ class Admin extends Controller
         }
     }
 
-    public function changeTheme(){
-        $data=$this->stockedModel->getThemeData();
+    public function changeTheme()
+    {
+        $data = $this->stockedModel->getThemeData();
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $logo=$this->uploadImage($_FILES["logo"]);
-            $landingImg=$this->uploadImage($_FILES["landingImg"]);
-            
-            if($logo==false){
-                $logo=$data["logo"];
+            $logo = $this->uploadImage($_FILES["logo"]);
+            $landingImg = $this->uploadImage($_FILES["landingImg"]);
+
+            if ($logo == false) {
+                $logo = $data["logo"];
             }
 
-            if($landingImg==false){
-                $landingImg=$data["landingImg"];
+            if ($landingImg == false) {
+                $landingImg = $data["landingImg"];
             }
 
             $this->stockedModel->setThemeData([
-                "logo"=>$logo,
-                "landingImg"=>$landingImg
+                "logo" => $logo,
+                "landingImg" => $landingImg
             ]);
 
             redirect("admin/");
-        }else{
-            $data["logo"]=URLROOT."/Public/".$data["logo"];
-            $data["landingImg"]=URLROOT."/Public/".$data["landingImg"];
+        } else {
+            $data["logo"] = URLROOT . "/Public/" . $data["logo"];
+            $data["landingImg"] = URLROOT . "/Public/" . $data["landingImg"];
             $this->view('admin/theme', $data);
         }
     }
 
     public function smtp()
     {
-        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->smtpModel->replaceSmtp($_POST);
             echo "SMTP modifié avec succès !";
-        }else{
+        } else {
             $smtp = $this->smtpModel->getSmtp();
             $this->view('admin/smtp', $smtp);
         }
     }
 
     private  function uploadImage($file)
-	{
-		$fileName = $file["name"]; // name
-		$fileTmpName = $file["tmp_name"]; // location
-		$fileError = $file["error"]; // error
+    {
+        $fileName = $file["name"]; // name
+        $fileTmpName = $file["tmp_name"]; // location
+        $fileError = $file["error"]; // error
 
-		if (!empty($fileTmpName)) {
-			$fileExt = explode(".", $fileName);
-			$fileRealExt = strtolower(end($fileExt));
-			$allowed = array("jpg", "jpeg", "png");
+        if (!empty($fileTmpName)) {
+            $fileExt = explode(".", $fileName);
+            $fileRealExt = strtolower(end($fileExt));
+            $allowed = array("jpg", "jpeg", "png");
 
 
-			if (in_array($fileRealExt, $allowed)) {
-				if ($fileError === 0) {
-					$fileNameNew = substr(number_format(time() * rand(), 0, '', ''), 0, 5) . "." . $fileRealExt;
-					$fileDestination = 'images/' . $fileNameNew;
-					move_uploaded_file($fileTmpName, $fileDestination);
-					return $fileDestination;
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		} else {
-			return  false;
-		}
-	}
+            if (in_array($fileRealExt, $allowed)) {
+                if ($fileError === 0) {
+                    $fileNameNew = substr(number_format(time() * rand(), 0, '', ''), 0, 5) . "." . $fileRealExt;
+                    $fileDestination = 'images/' . $fileNameNew;
+                    move_uploaded_file($fileTmpName, $fileDestination);
+                    return $fileDestination;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return  false;
+        }
+    }
+
+    public function settings()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->adminModel->replaceSettings($_POST);
+            echo "Paramètre modifié avec succès !";
+        } else {
+            $settings = $this->adminModel->getProfitAndPaypalToken();
+            $this->view('admin/settings', $settings);
+        }
+    }
 }
