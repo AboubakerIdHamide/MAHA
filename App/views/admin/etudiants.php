@@ -3,7 +3,8 @@
     <div class="row mb-3 justify-content-center">
         <form class="col d-flex gap-3">
             <input placeholder="Nom Etudiant" type="text" class="form-control form-control-sm" name="q">
-            <button class="btn btn-primary btn-sm" style="white-space: nowrap;">Chercher <i class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
+            <button class="btn btn-primary btn-sm" style="white-space: nowrap;">Chercher <i
+                    class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
         </form>
     </div>
     <div class="row">
@@ -23,26 +24,34 @@
                     </thead>
                     <tbody>
                         <?php foreach ($data as $etudiant) : ?>
-                            <tr>
-                                <td class="text-center"><?= $etudiant->id_etudiant ?></td>
-                                <td class="d-flex gap-1" style="font-weight: 500;">
-                                    <img style="width: 35px;" class="img-fluid rounded-circle avatar-etudiant" src="<?= $etudiant->img_etudiant ?>" alt="etudiant avatar">
-                                    <div class="d-flex flex-column me-3">
-                                        <span class="nom-etudiant"><?= $etudiant->nom_etudiant ?></span>
-                                        <span class="prenom-etudiant"><?= $etudiant->prenom_etudiant ?></span>
-                                    </div>
-                                </td>
-                                <td class="email-etudiant"><?= $etudiant->email_etudiant ?></td>
-                                <td class="tele-etudiant"><?= $etudiant->tel_etudiant ?></td>
-                                <td><?= $etudiant->date_creation_etudiant ?></td>
-                                <td class="text-center"><span class="nbr-inscriptions"><?= $etudiant->total_inscription ?></span> inscriptions <?php if ($etudiant->total_inscription != 0) echo '<button class="btn btn-primary btn-sm show" id="' . $etudiant->id_etudiant . '" data-bs-toggle="modal" data-bs-target="#showModal"><i class="fa-solid fa-eye"></i></button>' ?></td>
-                                <td class="text-center">
-                                    <button id="<?= $etudiant->id_etudiant ?>" class="btn btn-info btn-sm edit" type="button" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa-solid fa-pen-to-square"></i> Modifier</button>
-                                </td>
-                                <td class="text-center">
-                                    <button id="<?= $etudiant->id_etudiant ?>" class="btn btn-danger btn-sm delete" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="fa-solid fa-trash"></i> Supprimer</button>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td class="text-center"><?= $etudiant->id_etudiant ?></td>
+                            <td class="d-flex gap-1" style="font-weight: 500;">
+                                <img style="width: 35px;" class="img-fluid rounded-circle avatar-etudiant"
+                                    src="<?= $etudiant->img_etudiant ?>" alt="etudiant avatar">
+                                <div class="d-flex flex-column me-3">
+                                    <span class="nom-etudiant"><?= $etudiant->nom_etudiant ?></span>
+                                    <span class="prenom-etudiant"><?= $etudiant->prenom_etudiant ?></span>
+                                </div>
+                            </td>
+                            <td class="email-etudiant"><?= $etudiant->email_etudiant ?></td>
+                            <td class="tele-etudiant"><?= $etudiant->tel_etudiant ?></td>
+                            <td><?= $etudiant->date_creation_etudiant ?></td>
+                            <td class="text-center"><span
+                                    class="nbr-inscriptions"><?= $etudiant->total_inscription ?></span> inscriptions
+                                <?php if ($etudiant->total_inscription != 0) echo '<button class="btn btn-primary btn-sm show" id="' . $etudiant->id_etudiant . '" data-bs-toggle="modal" data-bs-target="#showModal"><i class="fa-solid fa-eye"></i></button>' ?>
+                            </td>
+                            <td class="text-center">
+                                <button id="<?= $etudiant->id_etudiant ?>" class="btn btn-info btn-sm edit"
+                                    type="button" data-bs-toggle="modal" data-bs-target="#editModal"><i
+                                        class="fa-solid fa-pen-to-square"></i> Modifier</button>
+                            </td>
+                            <td class="text-center">
+                                <button id="<?= $etudiant->id_etudiant ?>" class="btn btn-danger btn-sm delete"
+                                    type="button" data-bs-toggle="modal" data-bs-target="#deleteModal"><i
+                                        class="fa-solid fa-trash"></i> Supprimer</button>
+                            </td>
+                        </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -57,14 +66,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">Modification</h1>
-                <button type="button" class="btn-close close-modal-edit" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close close-modal-edit" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
                     <label for="avatar-etudiant" class="form-label" style="font-weight: 600;">Photo de profil</label>
                     <div class="text-center">
                         <!-- avatar -->
-                        <img class="img-fluid rounded" src="<?php echo URLROOT; ?>/public/images/membre.jpg" alt="etudiant avatar" id="avatar-etudiant" style="object-fit: cover;width:50%">
+                        <img class="img-fluid rounded" src="<?= URLROOT; ?>/public/images/membre.jpg"
+                            alt="etudiant avatar" id="avatar-etudiant" style="object-fit: cover;width:50%">
                     </div>
                 </div>
                 <div class="mb-3">
@@ -103,7 +114,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="deleteModalLabel">Confirmer la suppression</h1>
-                <button type="button" class="btn-close close-modal-delete" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close close-modal-delete" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>Etes-vous sûr que vous voulez supprimer ?</p>
@@ -123,7 +135,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="deleteModalLabel">Inscriptions</h1>
-                <button type="button" class="btn-close close-modal-delete" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close close-modal-delete" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <div class="modal-body">
             </div>
@@ -145,10 +158,12 @@
 </div>
 <!-- toast end -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-<script src="<?php echo URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
-<script src="<?php echo URLROOT; ?>/public/js/dashBoardNav.js"></script>
-<script src="<?php echo URLROOT; ?>/public/js/adminEtudiants.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
+</script>
+<script src="<?= URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
+<script src="<?= URLROOT; ?>/public/js/dashBoardNav.js"></script>
+<script src="<?= URLROOT; ?>/public/js/adminEtudiants.js"></script>
 </body>
 
 </html>

@@ -198,7 +198,7 @@
                         class="d-flex gap-2 mb-2 <?php if ($comment->type_user === "formateur") echo "flex-row-reverse" ?>">
                         <img class="align-self-start" src="<?= $comment->image ?>" alt="my-photo">
                         <div
-                            class="d-flex flex-column <?php echo ($comment->type_user === "formateur") ? "formateur-comment" : "etudiant-comment" ?>">
+                            class="d-flex flex-column <?= ($comment->type_user === "formateur") ? "formateur-comment" : "etudiant-comment" ?>">
                             <span class="my-name"><?= $comment->nom . " " . $comment->prenom ?></span>
                             <p><?= $comment->commentaire ?></p>
                             <div class="d-flex justify-content-between">

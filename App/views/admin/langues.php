@@ -7,7 +7,8 @@
                 <div class="mb-3">
                     <div class="mb-3">
                         <label for="langue" class="form-label">Entrer une langue</label>
-                        <input type="text" name="nom_langue" class="form-control" id="langue" placeholder="Entrer une langue" required>
+                        <input type="text" name="nom_langue" class="form-control" id="langue"
+                            placeholder="Entrer une langue" required>
                     </div>
                     <div class="d-grid">
                         <button id="ajouter-langue" class="btn btn-primary">Ajouter une langue</button>
@@ -19,10 +20,11 @@
             <h3>List Langues</h3>
             <ul class="list-group" id="langues">
                 <?php foreach ($data['langues'] as $langue) : ?>
-                    <li class="list-group-item langue d-flex justify-content-between align-items-center">
-                        <span><?= $langue->nom_langue ?></span>
-                        <button data-id-langue="<?= $langue->id_langue ?>" class="btn btn-danger btn-sm delete"><i class="fa-solid fa-trash"></i></button>
-                    </li>
+                <li class="list-group-item langue d-flex justify-content-between align-items-center">
+                    <span><?= $langue->nom_langue ?></span>
+                    <button data-id-langue="<?= $langue->id_langue ?>" class="btn btn-danger btn-sm delete"><i
+                            class="fa-solid fa-trash"></i></button>
+                </li>
 
                 <?php endforeach ?>
             </ul>
@@ -39,11 +41,12 @@
     </div>
 </div>
 <!-- toast end -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
 </script>
-<script src="<?php echo URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
-<script src="<?php echo URLROOT; ?>/public/js/dashBoardNav.js"></script>
-<script src="<?php echo URLROOT; ?>/public/js/langues.js"></script>
+<script src="<?= URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
+<script src="<?= URLROOT; ?>/public/js/dashBoardNav.js"></script>
+<script src="<?= URLROOT; ?>/public/js/langues.js"></script>
 </body>
 
 </html>

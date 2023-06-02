@@ -39,7 +39,7 @@
     <script src="<?= URLROOT . "/Public/jQuery/jquery-3.6.0.min.js" ?>"></script>
     <script src="<?= URLROOT . "/Public/js/dashBoardNav.js" ?>"></script>
     <script src="<?= URLROOT . "/Public/js/etudiantFormations.js" ?>"></script>
-    <script src="<?php echo URLROOT; ?>/public/js/notifications.js"></script>
+    <script src="<?= URLROOT; ?>/public/js/notifications.js"></script>
 </body>
 
 </html>

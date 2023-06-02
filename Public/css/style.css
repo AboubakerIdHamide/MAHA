@@ -5766,6 +5766,9 @@ ul.bullets li:before {
   -ms-backface-visibility: hidden;
   -o-backface-visibility: hidden;
   backface-visibility: hidden;
+  width: 500px;
+  height: 300px;
+  object-fit: cover;
 }
 
 @keyframes reveal_left_to_right {

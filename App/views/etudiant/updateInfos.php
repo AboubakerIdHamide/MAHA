@@ -31,7 +31,7 @@
 				<div class="avatar card p-2 border-0">
 					<div class="text-center">
 						<div class="avatar-container">
-							<img id="" src="<?php echo $data['img'] ?>" alt="user image" class="rounded-pill w-50 h-50">
+							<img id="" src="<?= $data['img'] ?>" alt="user image" class="rounded-pill w-50 h-50">
 							<div class="mt-2">
 								<input id="avatar" class="d-none" type="file" accept=".jpg, .jpeg, .png">
 								<label class="btn btn-warning" for="avatar">
@@ -40,7 +40,7 @@
 								<small id="error-img-avatar" class="error text-danger"></small>
 							</div>
 						</div>
-						<h5 class="mt-2 nom-prenom" id='nom-prenom-aff'><?php echo $data['nom'] ?> <?php echo $data['prenom'] ?></h5>
+						<h5 class="mt-2 nom-prenom" id='nom-prenom-aff'><?= $data['nom'] ?> <?= $data['prenom'] ?></h5>
 						<span class="type-account badge rounded-pill text-bg-info"><i class="fa-solid fa-person-chalkboard"></i> Etudiant</span>
 					</div>
 				</div>
@@ -55,25 +55,25 @@
 							<div class="col-md-6 col-12">
 								<label for="nom" class="form-label">Nom</label>
 								<div class="input-group flex-nowrap">
-									<input type="text" class="form-control" aria-label="nom" aria-describedby="addon-wrapping" value="<?php echo $data['nom'] ?>" disabled id="nom">
+									<input type="text" class="form-control" aria-label="nom" aria-describedby="addon-wrapping" value="<?= $data['nom'] ?>" disabled id="nom">
 									<span class="input-group-text" id="nom-icon"><i class="fa-solid fa-pen-to-square"></i></span>
 								</div>
-								<small id="error-nom" class="error text-danger"><?php echo $data['nom_err'] ?></small>
+								<small id="error-nom" class="error text-danger"><?= $data['nom_err'] ?></small>
 							</div>
 							<div class="col mt-3 mt-md-0">
 								<label for="prenom" class="form-label">Prénom</label>
 								<div class="input-group flex-nowrap">
-									<input value="<?php echo $data['prenom'] ?>" type="text" class="form-control" aria-label="prenom" aria-describedby="addon-wrapping" id="prenom" disabled>
+									<input value="<?= $data['prenom'] ?>" type="text" class="form-control" aria-label="prenom" aria-describedby="addon-wrapping" id="prenom" disabled>
 									<span class="input-group-text" id="prenom-icon"><i class="fa-solid fa-pen-to-square"></i></span>
 								</div>
-								<small id="error-prenom" class="error text-danger"><?php echo $data['prenom_err'] ?></small>
+								<small id="error-prenom" class="error text-danger"><?= $data['prenom_err'] ?></small>
 							</div>
 						</div>
 						<div class="row mt-3">
 							<div class="col">
 								<label for="email" class="form-label">Email</label>
 								<div class="input-group flex-nowrap">
-									<input type="email" class="form-control" id="email" value="<?php echo $data['email'] ?>" disabled>
+									<input type="email" class="form-control" id="email" value="<?= $data['email'] ?>" disabled>
 								</div>
 								<small class="error text-danger" id="error-email"></small>
 							</div>
@@ -82,10 +82,10 @@
 							<div class="col">
 								<label for="tele" class="form-label">Numéro Téléphone</label>
 								<div class="input-group flex-nowrap">
-									<input value="<?php echo $data['tel'] ?>" type="text" class="form-control" aria-label="Numero Telephone" aria-describedby="addon-wrapping" id="tele" disabled>
+									<input value="<?= $data['tel'] ?>" type="text" class="form-control" aria-label="Numero Telephone" aria-describedby="addon-wrapping" id="tele" disabled>
 									<span class="input-group-text" id="phone-icon"><i class="fa-solid fa-pen-to-square"></i></span>
 								</div>
-								<small class="error text-danger" id="error-tele"><?php echo $data['tel_err'] ?></small>
+								<small class="error text-danger" id="error-tele"><?= $data['tel_err'] ?></small>
 							</div>
 						</div>
 						<div class="row mt-3">
@@ -120,10 +120,11 @@
 			</div>
 		</div>
 	</section>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-	<script src="<?php echo URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
-	<script src="<?php echo URLROOT; ?>/public/js/dashBoardNav.js"></script>
-	<script src="<?php echo URLROOT; ?>/public/js/profil-settings-etudiant.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
+	</script>
+	<script src="<?= URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
+	<script src="<?= URLROOT; ?>/public/js/dashBoardNav.js"></script>
+	<script src="<?= URLROOT; ?>/public/js/profil-settings-etudiant.js"></script>
 </body>
 
 </html>

@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- Custom Styles -->
     <link rel="stylesheet" href="<?= URLROOT . "/Public/css/addVideo.css" ?>">
-    <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/dashBoardNav.css">
+    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/dashBoardNav.css">
     <title>MAHA | Ajouter Videos</title>
 </head>
 <!-- Header -->
@@ -91,7 +91,7 @@
     </form>
 </div>
 <script src="<?= URLROOT . "/Public/js/addVideo.js" ?>"></script>
-<script src="<?php echo URLROOT; ?>/public/js/dashBoardNav.js"></script>
+<script src="<?= URLROOT; ?>/public/js/dashBoardNav.js"></script>
 </body>
 
 </html>

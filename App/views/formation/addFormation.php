@@ -108,7 +108,7 @@
         </form>
     </div>
     <script src="<?= URLROOT . "/Public/js/addFormation.js" ?>"></script>
-    <script src="<?php echo URLROOT; ?>/public/js/dashBoardNav.js"></script>
+    <script src="<?= URLROOT; ?>/public/js/dashBoardNav.js"></script>
 </body>
 
 </html>

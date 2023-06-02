@@ -48,21 +48,20 @@
             <div class="item">
                 <div class="box_grid">
                     <figure>
-                        <a href='<?php echo URLROOT . "/pageFormations/coursDetails/" . $course->IdFormation ?>'><img
-                                src="<?php echo $course->imgFormation; ?>" class="img-fluid" alt="Photo"></a>
-                        <div class="price">$<?php echo $course->prix; ?></div>
+                        <a href='<?= URLROOT . "/pageFormations/coursDetails/" . $course->IdFormation ?>'><img
+                                src="<?= $course->imgFormation; ?>" class="img-fluid" alt="Photo"></a>
+                        <div class="price">$<?= $course->prix; ?></div>
                     </figure>
                     <div class="wrapper">
-                        <small><?php echo $course->categorie; ?></small>
-                        <h3><?php echo $course->nomFormation; ?></h3>
-                        <p class='description'><?php echo $course->description; ?></p>
+                        <small><?= $course->categorie; ?></small>
+                        <h3><?= $course->nomFormation; ?></h3>
+                        <p class='description'><?= $course->description; ?></p>
                     </div>
                     <ul>
-                        <li><i class="fa-solid fa-clock"></i> <?php echo $course->duree; ?></li>
-                        <li><i class="fa-solid fa-user"></i> <?php echo $course->numbAcht; ?></li>
-                        <li><i class="fa-solid fa-heart"></i> <?php echo $course->likes; ?></li>
-                        <li><a
-                                href='<?php echo URLROOT . "/pageFormations/coursDetails/" . $course->IdFormation ?>'>Plus</a>
+                        <li><i class="fa-solid fa-clock"></i> <?= $course->duree; ?></li>
+                        <li><i class="fa-solid fa-user"></i> <?= $course->numbAcht; ?></li>
+                        <li><i class="fa-solid fa-heart"></i> <?= $course->likes; ?></li>
+                        <li><a href='<?= URLROOT . "/pageFormations/coursDetails/" . $course->IdFormation ?>'>Plus</a>
                         </li>
                     </ul>
                 </div>
@@ -72,7 +71,7 @@
         </div>
         <!-- /carousel -->
         <div class="container">
-            <p class="btn_home_align"><a href="<?php echo URLROOT . "/pageFormations/" ?>" class="btn_1 rounded">Plus
+            <p class="btn_home_align"><a href="<?= URLROOT . "/pageFormations/" ?>" class="btn_1 rounded">Plus
                     Formations</a></p>
         </div>
         <!-- /container -->
