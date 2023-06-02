@@ -4,18 +4,6 @@ let menuBtn = document.querySelector("header .menu-i")
   , headerUl = document.querySelector("header nav ul")
   , allHeaderLi = document.querySelectorAll("header nav ul li");
 
-window.onscroll = function() {
-    var phoneMedia = window.matchMedia("(max-width: 767px)");
-    if (phoneMedia.matches) {
-        if (!headerUl.classList.contains("hide-menu")) {
-            headerUl.classList.add("hide-menu");
-        }
-        if (smallSpan.classList.contains("fullWidth")) {
-            smallSpan.classList.remove("fullWidth");
-        }
-    }
-}
-
 menuBtn.addEventListener('click', function() {
     headerUl.classList.toggle("hide-menu");
     smallSpan.classList.toggle("fullWidth");

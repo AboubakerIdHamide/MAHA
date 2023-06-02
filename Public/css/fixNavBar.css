@@ -2,5 +2,12 @@ header, header:hover{
     height: initial;
 }
 header nav ul{
-    padding-top: 0px !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+}
+@media (max-width:767px) {
+    header nav ul{
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+    }
 }

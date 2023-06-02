@@ -36,7 +36,7 @@ header {
   direction: rtl;
   padding: 60px 10px;
   width: 80px;
-  height: 100vh;
+  height: 100vh !important;
   background: var(--main-color);
   position: fixed;
   left: 0;
@@ -88,7 +88,7 @@ header nav ul li a:hover {
 @media (max-width: 767px) {
   header {
     padding: 0;
-    height: 80px;
+    height: 80px !important;
     width: 100%;
     flex-direction: row;
     justify-content: space-between;
@@ -166,7 +166,12 @@ header nav ul {
   align-items: center;
 }
 header nav {
-  height: 70%;
+  margin-top: 30px;
+  height: 85% !important;
+  overflow-y: auto;
+}
+header nav::-webkit-scrollbar {
+  width: 0px;
 }
 @media (max-width: 767px) {
   header nav {

@@ -65,8 +65,11 @@
                         <span>SMTP</span>
                     </a>
                 </li>
-                <li id="disconnect"><a href="<?= URLROOT . '/admin/logout' ?>"><i
-                            class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
+                <li id="disconnect">
+                    <a href="<?= URLROOT . '/admin/logout' ?>">
+                        <i class="fas fa-sign-out-alt"></i><span>Déconnexion</span>
+                    </a>
+                </li>
             </ul>
         </nav>
     </header>
