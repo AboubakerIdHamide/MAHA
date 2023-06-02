@@ -22,7 +22,6 @@ $(document).ready(function () {
   }
 
   const $categorie = $("#categorie-form");
-  const $sousCategorie = $("#sous-categorie-form");
   const $deleteCategorie = $(".delete");
   const $editCategorie = $(".edit");
   const $showCategorie = $(".show");
@@ -30,19 +29,6 @@ $(document).ready(function () {
 
   addToastToBtn("ajouter-categorie");
   $categorie.submit(function (event) {
-    event.preventDefault();
-    $.ajax({
-      url: "http://localhost/maha/admin/categories",
-      type: "POST",
-      data: $(this).serialize(),
-      success: function (response) {
-        showFlashMessage(response, "success");
-      },
-    });
-  });
-
-  addToastToBtn("ajouter-sous-categorie");
-  $sousCategorie.submit(function (event) {
     event.preventDefault();
     $.ajax({
       url: "http://localhost/maha/admin/categories",
@@ -84,43 +70,6 @@ $(document).ready(function () {
           showFlashMessage(response, "success");
         },
       });
-    });
-  });
-
-  $showCategorie.click(function () {
-    const categorieID = $(this).data("idCategorie");
-    $.ajax({
-      url: "http://localhost/maha/admin/categories/" + categorieID,
-      type: "GET",
-      success: function (response) {
-        const sousCategories = JSON.parse(response);
-        const $modalList = $("#modal-sous-categorie");
-        $modalList.html("");
-        if (sousCategories.length === 0)
-          return $modalList.html(`<div class="alert alert-primary" role="alert">
-        Aucune sous categorie
-      </div>`);
-        for (let sousCat of sousCategories) {
-          $modalList.append(
-            `<li class="list-group-item d-flex justify-content-between">
-              <span>${sousCat.nom}</span>
-              <button data-id="${sousCat.id}"  class="btn btn-danger btn-sm delete-sous-cat"><i class="fa-solid fa-trash"></i></button>
-            </li>`
-          );
-        }
-
-        $(".delete-sous-cat").off();
-        $(".delete-sous-cat").click(function () {
-          $(this).parent().remove();
-          $.ajax({
-            url: "http://localhost/maha/admin/categories/" + $(this).data("id"),
-            type: "DELETE",
-            success: function (response) {
-              console.log(response);
-            },
-          });
-        });
-      },
     });
   });
 });

@@ -20,3 +20,21 @@
 .search-overlay-menu-btn {
   cursor: pointer;
 }
+
+.categories {
+  background-color: #FFC107;
+  transition: background-color 0.3s;
+}
+
+.categories a {
+  color: #580a48;
+  transition: color 0.3s;
+}
+
+.categories:hover a {
+  color: rgb(239,64,234);
+}
+
+.categories:hover {
+  background-color: #ae3e48;
+}
