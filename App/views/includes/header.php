@@ -12,13 +12,6 @@
     <!-- Font Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
-    <!-- Bootstrap -->
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"> -->
-
-
-    <!-- WOW js -->
-    <!-- <link rel="stylesheet" href="<?= URLROOT ?>/public/WOW/css/animate.css"> -->
-
     <!-- BASE CSS -->
     <link href="<?= URLROOT . '/public/css/' ?>bootstrap.min.css" rel="stylesheet">
     <link href="<?= URLROOT . '/public/css/' ?>style.css" rel="stylesheet">
@@ -30,19 +23,13 @@
     <!-- SPECIFIC CSS -->
     <link href="<?= URLROOT . '/public/css/' ?>grey.css" rel="stylesheet">
 
-    <!-- Styles -->
-    <!-- <link rel="stylesheet" href="<?php // echo URLROOT; 
-                                        ?>/public/css/main.css" /> -->
-    <!-- <link rel="stylesheet" href="<?php // echo URLROOT; 
-                                        ?>/public/css/pageFormations.css" /> -->
-
     <style>
         #hero_in.courses:before {
             background: url("<?= URLROOT ?>/public/images/bg_courses.jpg") center center no-repeat;
         }
 
         .hero_single.version_2:before {
-            background: url("<?= URLROOT ?>/public/images/home_section_1.jpg") center center no-repeat;
+            background: url("<?= $data['theme']['landingImg'] ?>") center center no-repeat;
         }
     </style>
 </head>
