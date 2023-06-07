@@ -22,18 +22,18 @@ class Pages extends Controller
 
 		foreach ($courses as $course) {
 			$course->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($course->IdFormteur, $course->IdFormation)['total_apprenants'];
-			$course->imgFormation = URLROOT."/Public/".$course->imgFormation;
-			$course->imgFormateur = URLROOT."/Public/".$course->imgFormateur;
+			$course->imgFormation = URLROOT . "/Public/" . $course->imgFormation;
+			$course->imgFormateur = URLROOT . "/Public/" . $course->imgFormateur;
 		}
-		$themeData["logo"]=URLROOT."/Public/".$themeData["logo"];
-		$themeData["landingImg"]=URLROOT."/Public/".$themeData["landingImg"];
+		$themeData["logo"] = URLROOT . "/Public/" . $themeData["logo"];
+		$themeData["landingImg"] = URLROOT . "/Public/" . $themeData["landingImg"];
 		$data = [
 			'courses' => $courses,
 			'categories' => $categories,
 			'totalEtudiants' => $totalEtudiants,
 			'totalFormations' => $totalFormations,
 			'totalFormateurs' => $totalFormateurs,
-			'theme'=>$themeData
+			'theme' => $themeData
 		];
 
 		$this->view("pages/index", $data);

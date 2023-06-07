@@ -4,8 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Udema a modern educational site template">
-    <meta name="author" content="Ansonika">
+    <meta name="description" content="Maha a modern educational site template">
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
     <title><?= SITENAME ?></title>
 

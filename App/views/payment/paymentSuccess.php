@@ -1,26 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Congratulation</title>
+	<link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+	<title>MAHA | Congratulation</title>
 	<!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <style>
-    	body {
-    		height: 100vh;
-    		display: flex;
-    		/* flex-direction: column; */
-    		align-items: center;
-    		justify-content: center;
-    		padding: 3rem;
-    	}
-    </style>
+	<link href="<?= URLROOT . '/public/css/' ?>vapor.min.css" rel="stylesheet">
+	<style>
+		body {
+			height: 100vh;
+			margin: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: #eee;
+			flex-direction: column;
+		}
+
+		#animContainer {
+			width: 50%;
+			height: 50%;
+		}
+	</style>
 </head>
+
 <body>
-	<div class="alert alert-success">
-		<h2>Bonjour! Félicitations pour votre achat de la plateforme MAHA. Nous espérons que cela répondra à vos besoins et améliorera votre productivité et votre efficacité.</h2>
-		<a href="<?= URLROOT.'/etudiants/dashboard' ?>" class="btn btn-info mt-3">Voire Mes Formations</a>
+	<div class="container bg-dark p-3 rounded">
+		<div class="d-flex justify-content-center">
+			<div id="animContainer"> </div>
+		</div>
+		<h6 class="text-center text-white">Félicitations pour votre achat de la plateforme MAHA. Nous espérons que cela
+			répondra à
+			vos besoins
+			et améliorera votre productivité et votre efficacité.</h6>
+		<div class="text-center">
+			<a href="<?= URLROOT . '/etudiants/dashboard' ?>" class="btn btn-success mt-3">Mes
+				Cours</a>
+		</div>
 	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.0/lottie.min.js" integrity="sha512-NbKgMv0o4r7P6qWzHvk9L4S7rQzZaccsgD52bffgInf0OCdDg45Ta8uBBKxAbIutsrM5TqB88DYp1EP0NePcdg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script>
+		var animation = bodymovin.loadAnimation({
+			container: document.getElementById('animContainer'),
+			renderer: 'svg',
+			loop: false,
+			autoplay: true,
+			path: '<?= URLROOT ?>/public/images/payment-successful.json' // lottie file path
+		})
+	</script>
 </body>
+
 </html>
