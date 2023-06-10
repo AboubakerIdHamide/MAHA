@@ -205,6 +205,8 @@ INSERT INTO `formations` (`id_formation`, `niveau_formation`, `id_formateur`, `c
 	(10, 2, 'FOR5', 12, 'Magnam et labore hic', 'images/formations/images/30011.jpg', '00:00:11', '2023-03-29 03:24:24', 21.00, 'Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und ', 3, 1, NULL),
 	(11, 3, 'FOR5', 11, 'Porro earum pariatur', 'images/formations/images/27600.jpg', '00:00:11', '2023-03-29 03:24:36', 14.00, 'Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do ', 4, 0, NULL);
 /*!40000 ALTER TABLE `formations` ENABLE KEYS */;
+ALTER TABLE formations ADD etat_formation varchar(255) DEFAULT "public";
+ALTER TABLE formations ADD code_formation text;
 
 -- Dumping structure for table maha.inscriptions
 CREATE TABLE IF NOT EXISTS `inscriptions` (

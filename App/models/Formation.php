@@ -25,8 +25,8 @@ class Formation
     public function insertFormation($dataFormation)
     {
         $request = $this->connect->prepare("INSERT INTO formations
-            ( niveau_formation, id_formateur, categorie, nom_formation, image_formation, mass_horaire,  prix_formation, description)VALUES
-            (:niveau_formation, :id_formateur, :categorie, :nom_formation, :img_formation, :mass_horaire, :prix_formation, :description);");
+            ( niveau_formation, id_formateur, categorie, nom_formation, image_formation, mass_horaire,  prix_formation, description, etat_formation, id_langue, code_formation)VALUES
+            (:niveau_formation, :id_formateur, :categorie, :nom_formation, :img_formation, :mass_horaire, :prix_formation, :description, :etat_formation, :id_langue, :code_formation);");
 
         $request->bindParam(":niveau_formation", $dataFormation["niveau_formation"]);
         $request->bindParam(":id_formateur", $dataFormation["id_formateur"]);
@@ -36,6 +36,9 @@ class Formation
         $request->bindParam(":mass_horaire", $dataFormation["masse_horaire"]);
         $request->bindParam(":prix_formation", $dataFormation["prix_formation"]);
         $request->bindParam(":description", $dataFormation["description"]);
+        $request->bindParam(":etat_formation", $dataFormation["etat_formation"]);
+        $request->bindParam(":id_langue", $dataFormation["id_langue"]);
+        $request->bindParam(":code_formation", $dataFormation["code_formation"]);
 
         $response = $request->execute();
 
@@ -712,5 +715,16 @@ class Formation
         $response = $request->fetchAll(PDO::FETCH_OBJ);
         return $response;
     }
-    // =============================== Filter + Trier + Recherche ==================================
+    
+    // checking code of formation is already used
+    public function isValideCode($code){
+        $request = $this->connect->prepare("SELECT code_formation FROM formations WHERE code_formation=:code");
+        $request->bindParam(":code", $code);
+        $request->execute();
+        $response = $request->fetch();
+        if(!empty($response)){
+            return false;
+        }
+        return true;
+    }
 }

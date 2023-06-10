@@ -60,6 +60,25 @@
                                 <span class="error" id="error_categorie"><?php $data["error"] ?></span>
                             </div>
                         </div>
+                        <div class="field-box">
+                            <div class="input-field">
+                                <label for="language">Langue De Formation :</label>
+                                <select name="language" id="language">
+                                    <?php foreach ($data["languages"] as $lang) {
+                                        echo '<option value="' . $lang->id_langue . '">' . $lang->nom_langue . '</option>';
+                                    } ?>
+                                </select>
+                                <span class="error" id="error_language"><?php $data["error"] ?></span>
+                            </div>
+                            <div class="input-field">
+                                <label for="visibility">Visibilité de formation :</label>
+                                <select name="visibility" id="visibility">
+                                    <option value="public">Public</option>
+                                    <option value="private">Privé</option>
+                                </select>
+                                <span class="error" id="error_visibility"><?php $data["error"] ?></span>
+                            </div>
+                        </div>
                     </div>
                     <div class="field-section">
                         <div class="field-box">

@@ -92,7 +92,8 @@ ul{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #6fa4e0;
+    background-color: #fff;
+    border-radius: 3px;
 }
 @media (max-width:767px){
     .container form{
@@ -117,7 +118,7 @@ ul{
     position: absolute;
     top: 0;
     left: 0;
-    /* background-color:var(--color-one); */
+    background-color:var(--color-one);
     transition: .7s;
     -webkit-transition: .7s;
     -moz-transition: .7s;
@@ -225,7 +226,7 @@ ul{
     width: 80%;
     caret-color: var(--color-one);
     background-color: #fafafa;
-    border-bottom:2px solid var(--color-four);
+    border-bottom:2px solid var(--color-one);
     margin: 10px 0;
     color: var(--color-four);
 }
@@ -348,7 +349,7 @@ ul{
     padding: 20px;
     overflow-x: hidden;
     overflow-y: scroll;
-    background-color: #dff6ff;
+    background-color: #fbfeff;
     margin-top: -7px;
 }
 .container form  .field-box .input-field .uploded-videos::-webkit-scrollbar{
