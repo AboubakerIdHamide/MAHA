@@ -20,8 +20,12 @@
 
 <body>
     <?php require_once APPROOT . "/views/includes/etudiantHeader.php"; ?>
+
     <section class="pageFormation">
         <div class="container">
+            <?php flash('joined') ?>
+            <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary mt-3">Rejoindre
+                un Cours Privé</button>
             <?php if (count($data["inscriptions"]) === 0) : ?>
             <div class="alert alert-danger mt-3">vous êtes inscrit a aucune formation !</div>
             <?php endif ?>
@@ -72,13 +76,34 @@
             </div>
         </div>
     </section>
-
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="form-floating">
+                        <input type="text" class="form-control code-formation" id="code"
+                            placeholder="veuillez entrer Code de la Formation" required>
+                        <label for="code">Code de la Formation</label>
+                        <small class="text-danger" id="code-error" style="font-weight: 500;font-size:12px"></small>
+                    </div>
+                </div>
+                <div class="p-3 d-flex justify-content-end gap-3">
+                    <button type="button" class="btn btn-sm btn-primary" id="join">Rejoindre</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
     const urlRoot = "<?= URLROOT ?>";
     </script>
     <script src="<?= URLROOT . "/Public/jQuery/jquery-3.6.0.min.js" ?>"></script>
     <script src="<?= URLROOT . "/Public/js/dashBoardNav.js" ?>"></script>
     <script src="<?= URLROOT . "/Public/js/etudiantFormations.js" ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
+    </script>
 </body>
 
 </html>

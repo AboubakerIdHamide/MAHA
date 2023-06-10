@@ -173,7 +173,7 @@ class Ajax extends Controller
 
     public function googleLogin()
     {
-        $url="";
+        $url = "";
         $token = $_POST['token'];
         $verificationUrl = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=" . $token;
         $response = file_get_contents($verificationUrl);
@@ -190,48 +190,46 @@ class Ajax extends Controller
                     $user = $this->fomateurModel->getFormateurByEmail($email);
                     if (!empty($user)) {
                         $user["type"] = "formateur";
-                        $url=$this->createUserSessios($user);
+                        $url = $this->createUserSessios($user);
                         echo json_encode([
-                            "authorized"=>true,
-                            "message"=>"rediriger ...",
-                            "url"=>$url
+                            "authorized" => true,
+                            "message" => "rediriger ...",
+                            "url" => $url
                         ]);
-
                     } else {
                         echo json_encode([
-                            "authorized"=>false,
-                            "message"=>"Aucun utilisateur avec cette adresse e-mail !"
+                            "authorized" => false,
+                            "message" => "Aucun utilisateur avec cette adresse e-mail !"
                         ]);
                     }
                 } else {
                     $user["type"] = "etudiant";
-                    $url=$this->createUserSessios($user);
+                    $url = $this->createUserSessios($user);
                     echo json_encode([
-                        "authorized"=>true,
-                        "message"=>"rediriger ...",
-                        "url"=>$url
+                        "authorized" => true,
+                        "message" => "rediriger ...",
+                        "url" => $url
                     ]);
                 }
             } else {
                 echo json_encode([
-                    "authorized"=>false,
-                    "message"=>"Utilisateur non autorisé"
+                    "authorized" => false,
+                    "message" => "Utilisateur non autorisé"
                 ]);
             }
         } else {
             echo json_encode([
-                "authorized"=>false,
-                "message"=>"Erreur serveur"
+                "authorized" => false,
+                "message" => "Erreur serveur"
             ]);
         }
-
     }
 
     public function facebookLogin()
     {
-        $url="";
+        $url = "";
         $token = $_POST['token'];
-        $verificationUrl = "https://graph.facebook.com/v17.0/me?access_token=".$token."&fields=id,email";
+        $verificationUrl = "https://graph.facebook.com/v17.0/me?access_token=" . $token . "&fields=id,email";
         $response = file_get_contents($verificationUrl);
 
         if ($response !== false) {
@@ -244,35 +242,33 @@ class Ajax extends Controller
                 $user = $this->fomateurModel->getFormateurByEmail($email);
                 if (!empty($user)) {
                     $user["type"] = "formateur";
-                    $url=$this->createUserSessios($user);
+                    $url = $this->createUserSessios($user);
                     echo json_encode([
-                        "authorized"=>true,
-                        "message"=>"rediriger ...",
-                        "url"=>$url
+                        "authorized" => true,
+                        "message" => "rediriger ...",
+                        "url" => $url
                     ]);
-
                 } else {
                     echo json_encode([
-                        "authorized"=>false,
-                        "message"=>"Aucun utilisateur avec cet adresse e-mail"
+                        "authorized" => false,
+                        "message" => "Aucun utilisateur avec cet adresse e-mail"
                     ]);
                 }
             } else {
                 $user["type"] = "etudiant";
-                $url=$this->createUserSessios($user);
+                $url = $this->createUserSessios($user);
                 echo json_encode([
-                    "authorized"=>true,
-                    "message"=>"rediriger ...",
-                    "url"=>$url
+                    "authorized" => true,
+                    "message" => "rediriger ...",
+                    "url" => $url
                 ]);
             }
         } else {
             echo json_encode([
-                "authorized"=>false,
-                "message"=>"Erreur Serveur"
+                "authorized" => false,
+                "message" => "Erreur Serveur"
             ]);
         }
-
     }
 
     public function createUserSessios($user)
@@ -282,13 +278,56 @@ class Ajax extends Controller
             $_SESSION['user'] = $user;
             // setting up the image link
             $_SESSION['user']['avatar'] = URLROOT . "/Public/" . $_SESSION['user']['avatar'];
-            return URLROOT.'/formateurs/dashboard';
+            return URLROOT . '/formateurs/dashboard';
         } else {
             $_SESSION['id_etudiant'] = $user['id_etudiant'];
             $_SESSION['user'] = $user;
             // setting up the image link
             $_SESSION['user']['avatar'] = URLROOT . "/Public/" . $_SESSION['user']['avatar'];
-            return URLROOT.'/etudiants/dashboard';
+            return URLROOT . '/etudiants/dashboard';
+        }
+    }
+
+    public function joinCourse($code = null)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_null($code)) {
+                echo json_encode("le code de la formation est obligatoire.");
+                http_response_code(400);
+                exit;
+            }
+
+            $course = $this->formationModel->joinCourse($code);
+            if ($course) {
+                $inscription = $this->inscriptionModel->checkIfAlready($_SESSION['id_etudiant'], $course->id_formation);
+                if (!empty($inscription)) {
+                    echo json_encode("Vous etes deja inscrit dans cette formation.");
+                    http_response_code(400);
+                    exit;
+                }
+
+                $inscriptionData = [
+                    "id_formation" => $course->id_formation,
+                    "id_etudiant" => $_SESSION['id_etudiant'],
+                    "id_formateur" => $course->id_formateur,
+                    "prix" => 0,
+                    "transaction_info" => 0,
+                    "payment_id" => 0,
+                    "payment_state" => 0,
+                    "date_inscription" => date('Y-m-d H:i:s'),
+                    "approval_url" => 0
+                ];
+
+                $this->inscriptionModel->insertInscription($inscriptionData);
+                http_response_code(201);
+                flash("joined", "Vous avez rejoindre cette formation avec success.");
+            } else {
+                echo json_encode("ce code est invalid.");
+                http_response_code(404);
+            }
+        } else {
+            redirect('');
+            exit;
         }
     }
 }

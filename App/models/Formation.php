@@ -715,16 +715,36 @@ class Formation
         $response = $request->fetchAll(PDO::FETCH_OBJ);
         return $response;
     }
-    
+
     // checking code of formation is already used
-    public function isValideCode($code){
+    public function isValideCode($code)
+    {
         $request = $this->connect->prepare("SELECT code_formation FROM formations WHERE code_formation=:code");
         $request->bindParam(":code", $code);
         $request->execute();
         $response = $request->fetch();
-        if(!empty($response)){
+        if (!empty($response)) {
             return false;
         }
         return true;
+    }
+
+    public function joinCourse($code)
+    {
+        $query = $this->connect->prepare("
+        SELECT 
+            id_formation,
+            id_formateur  
+        FROM formations
+        WHERE BINARY code_formation = :code");
+
+        $query->execute(['code' => htmlspecialchars($code)]);
+        $formation = $query->fetch(PDO::FETCH_OBJ);
+
+        if ($query->rowCount() > 0) {
+            return $formation;
+        }
+
+        return false;
     }
 }
