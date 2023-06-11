@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
 	<title>MAHA | Congratulation</title>
-	<!-- Bootstrap -->
+	<!-- Bootstrap Vapor -->
 	<link href="<?= URLROOT . '/public/css/' ?>vapor.min.css" rel="stylesheet">
 	<style>
 		body {
@@ -40,8 +40,7 @@
 				Cours</a>
 		</div>
 	</div>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.0/lottie.min.js" integrity="sha512-NbKgMv0o4r7P6qWzHvk9L4S7rQzZaccsgD52bffgInf0OCdDg45Ta8uBBKxAbIutsrM5TqB88DYp1EP0NePcdg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="<?= URLROOT ?>/public/js/lottie.min.js"></script>
 	<script>
 		var animation = bodymovin.loadAnimation({
 			container: document.getElementById('animContainer'),

@@ -7,21 +7,16 @@
     <meta name="description" content="Maha a modern educational site template">
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
     <title><?= SITENAME ?></title>
-
     <!-- Font Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-
     <!-- BASE CSS -->
     <link href="<?= URLROOT . '/public/css/' ?>bootstrap.min.css" rel="stylesheet">
     <link href="<?= URLROOT . '/public/css/' ?>style.css" rel="stylesheet">
     <link href="<?= URLROOT . '/public/css/' ?>vendors.css" rel="stylesheet">
-
     <!-- YOUR CUSTOM CSS -->
     <link href="<?= URLROOT . '/public/css/' ?>custom.css" rel="stylesheet">
-
     <!-- SPECIFIC CSS -->
     <link href="<?= URLROOT . '/public/css/' ?>grey.css" rel="stylesheet">
-
     <style>
         #hero_in.courses:before {
             background: url("<?= URLROOT ?>/public/images/bg_courses.jpg") center center no-repeat;

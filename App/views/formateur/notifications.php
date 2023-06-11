@@ -8,8 +8,8 @@
     <title>MAHA | Notifications</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <!-- BootStrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/bootstrap.min.css" />
     <!-- Custom Styles -->
     <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/dashBoardNav.css">
     <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/dashboard-formateur.css" />

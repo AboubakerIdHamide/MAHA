@@ -11,7 +11,7 @@ class PageFormations extends Controller
         $this->stockedModel = $this->model("Stocked");
         $this->videoModel = $this->model("Video");
         $this->previewsModel = $this->model("Previews");
-		$this->categorieModel = $this->model("Stocked");
+        $this->categorieModel = $this->model("Stocked");
     }
     public function index()
     {
@@ -35,8 +35,8 @@ class PageFormations extends Controller
             $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
             $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
         }
-        $themeData["logo"]=URLROOT."/Public/".$themeData["logo"];
-		$themeData["landingImg"]=URLROOT."/Public/".$themeData["landingImg"];
+        $themeData["logo"] = URLROOT . "/Public/" . $themeData["logo"];
+        $themeData["landingImg"] = URLROOT . "/Public/" . $themeData["landingImg"];
         $data = [
             'nivaux' => $nivaux,
             'langages' => $langages,
@@ -45,14 +45,14 @@ class PageFormations extends Controller
             'info' => $info,
             'pageno' => $pageno,
             'totalPages' => $totalPages,
-            'theme'=>$themeData,
+            'theme' => $themeData,
         ];
         $this->view("pages/pageFormations", $data);
     }
 
     public function coursDetails($id = null)
     {
-        if(is_null($id)) {
+        if (is_null($id)) {
             redirect('pageFormations');
             exit;
         }
@@ -68,17 +68,17 @@ class PageFormations extends Controller
         $info['imgFormation'] = URLROOT . "/Public/" . $info['imgFormation'];
         $previewVideo = $this->previewsModel->getPreviewVideo($info['IdFormation']);
         $previewVideo = $previewVideo ? URLROOT . "/Public/" . $previewVideo->url_video : null;
-               
+
         $themeData = $this->stockedModel->getThemeData();
-        $themeData["logo"]=URLROOT."/Public/".$themeData["logo"];
-		$themeData["landingImg"]=URLROOT."/Public/".$themeData["landingImg"];
+        $themeData["logo"] = URLROOT . "/Public/" . $themeData["logo"];
+        $themeData["landingImg"] = URLROOT . "/Public/" . $themeData["landingImg"];
 
         $data = [
             'info' => $info,
             'videos' => $videos,
             'numbVIdeo' => $numVideos,
             'previewVideo' => $previewVideo,
-            'theme'=>$themeData
+            'theme' => $themeData
         ];
         $this->view("pages/cours-details", $data);
     }
@@ -89,8 +89,8 @@ class PageFormations extends Controller
         $nivaux = $this->stockedModel->getAllLevels();
         $categories = $this->categorieModel->getAllCategories();
         $themeData = $this->stockedModel->getThemeData();
-        $themeData["logo"]=URLROOT."/Public/".$themeData["logo"];
-		$themeData["landingImg"]=URLROOT."/Public/".$themeData["landingImg"];
+        $themeData["logo"] = URLROOT . "/Public/" . $themeData["logo"];
+        $themeData["landingImg"] = URLROOT . "/Public/" . $themeData["landingImg"];
 
         $errs = false;
         // ================  Valide Valeur de Recherche  ================
@@ -123,7 +123,7 @@ class PageFormations extends Controller
                     'categories' => $categories,
                     'numbFormations' => 0,
                     'info' => 'Aucun Formations',
-                    'theme'=>$themeData
+                    'theme' => $themeData
                 ];
 
                 $this->view("pages/pageFormations", $data);
@@ -143,7 +143,7 @@ class PageFormations extends Controller
                     'info' => $formations,
                     'pageno' => $pageno,
                     'totalPages' => $totalPages,
-                    'theme'=>$themeData
+                    'theme' => $themeData
                 ];
 
                 $this->view("pages/pageFormations", $data);
@@ -157,7 +157,7 @@ class PageFormations extends Controller
                 'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations',
-                'theme'=>$themeData
+                'theme' => $themeData
             ];
 
             $this->view("pages/pageFormations", $data);
@@ -171,10 +171,10 @@ class PageFormations extends Controller
         $categories = $this->categorieModel->getAllCategories();
 
         $numbFormations = $this->formationModel->countFormationsFilter($cat, $choi);
-        
+
         $themeData = $this->stockedModel->getThemeData();
-        $themeData["logo"]=URLROOT."/Public/".$themeData["logo"];
-		$themeData["landingImg"]=URLROOT."/Public/".$themeData["landingImg"];
+        $themeData["logo"] = URLROOT . "/Public/" . $themeData["logo"];
+        $themeData["landingImg"] = URLROOT . "/Public/" . $themeData["landingImg"];
 
         $dataPages = $this->pagenition($numbFormations['numbFormations']);
 
@@ -191,7 +191,7 @@ class PageFormations extends Controller
                 'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations',
-                'theme'=>$themeData
+                'theme' => $themeData
             ];
 
             $this->view("pages/pageFormations", $data);
@@ -212,7 +212,7 @@ class PageFormations extends Controller
                 'info' => $info,
                 'pageno' => $pageno,
                 'totalPages' => $totalPages,
-                'theme'=>$themeData
+                'theme' => $themeData
             ];
             $this->view("pages/pageFormations", $data);
         }
@@ -224,10 +224,10 @@ class PageFormations extends Controller
         $nivaux = $this->stockedModel->getAllLevels();
         $categories = $this->categorieModel->getAllCategories();
         $numbFormations = $this->formationModel->countAllFormations();
-       
+
         $themeData = $this->stockedModel->getThemeData();
-        $themeData["logo"]=URLROOT."/Public/".$themeData["logo"];
-		$themeData["landingImg"]=URLROOT."/Public/".$themeData["landingImg"];
+        $themeData["logo"] = URLROOT . "/Public/" . $themeData["logo"];
+        $themeData["landingImg"] = URLROOT . "/Public/" . $themeData["landingImg"];
 
         $dataPages = $this->pagenition($numbFormations['numbFormations']);
 
@@ -244,7 +244,7 @@ class PageFormations extends Controller
                 'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations',
-                'theme'=>$themeData
+                'theme' => $themeData
             ];
 
             $this->view("pages/pageFormations", $data);
@@ -264,7 +264,7 @@ class PageFormations extends Controller
                 'info' => $info,
                 'pageno' => $pageno,
                 'totalPages' => $totalPages,
-                'theme'=>$themeData
+                'theme' => $themeData
             ];
             $this->view("pages/pageFormations", $data);
         }
@@ -276,10 +276,10 @@ class PageFormations extends Controller
         $nivaux = $this->stockedModel->getAllLevels();
         $categories = $this->categorieModel->getAllCategories();
         $numbFormations = $this->formationModel->countAllFormations();
-       
+
         $themeData = $this->stockedModel->getThemeData();
-        $themeData["logo"]=URLROOT."/Public/".$themeData["logo"];
-		$themeData["landingImg"]=URLROOT."/Public/".$themeData["landingImg"];
+        $themeData["logo"] = URLROOT . "/Public/" . $themeData["logo"];
+        $themeData["landingImg"] = URLROOT . "/Public/" . $themeData["landingImg"];
 
         $dataPages = $this->pagenition($numbFormations['numbFormations']);
 
@@ -296,7 +296,7 @@ class PageFormations extends Controller
                 'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations',
-                'theme'=>$themeData
+                'theme' => $themeData
             ];
 
             $this->view("pages/pageFormations", $data);
@@ -317,7 +317,7 @@ class PageFormations extends Controller
                 'info' => $info,
                 'pageno' => $pageno,
                 'totalPages' => $totalPages,
-                'theme'=>$themeData
+                'theme' => $themeData
             ];
             $this->view("pages/pageFormations", $data);
         }
@@ -329,10 +329,10 @@ class PageFormations extends Controller
         $nivaux = $this->stockedModel->getAllLevels();
         $categories = $this->categorieModel->getAllCategories();
         $numbFormations = $this->formationModel->countAllFormations();
-       
+
         $themeData = $this->stockedModel->getThemeData();
-        $themeData["logo"]=URLROOT."/Public/".$themeData["logo"];
-		$themeData["landingImg"]=URLROOT."/Public/".$themeData["landingImg"];
+        $themeData["logo"] = URLROOT . "/Public/" . $themeData["logo"];
+        $themeData["landingImg"] = URLROOT . "/Public/" . $themeData["landingImg"];
 
         $dataPages = $this->pagenition($numbFormations['numbFormations']);
 
@@ -349,7 +349,7 @@ class PageFormations extends Controller
                 'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations',
-                'theme'=>$themeData
+                'theme' => $themeData
             ];
 
             $this->view("pages/pageFormations", $data);
@@ -370,7 +370,7 @@ class PageFormations extends Controller
                 'info' => $info,
                 'pageno' => $pageno,
                 'totalPages' => $totalPages,
-                'theme'=>$themeData
+                'theme' => $themeData
             ];
             $this->view("pages/pageFormations", $data);
         }
@@ -382,10 +382,10 @@ class PageFormations extends Controller
         $nivaux = $this->stockedModel->getAllLevels();
         $categories = $this->categorieModel->getAllCategories();
         $numbFormations = $this->formationModel->countFormationsByLangage($lang);
-       
+
         $themeData = $this->stockedModel->getThemeData();
-        $themeData["logo"]=URLROOT."/Public/".$themeData["logo"];
-		$themeData["landingImg"]=URLROOT."/Public/".$themeData["landingImg"];
+        $themeData["logo"] = URLROOT . "/Public/" . $themeData["logo"];
+        $themeData["landingImg"] = URLROOT . "/Public/" . $themeData["landingImg"];
 
         $dataPages = $this->pagenition($numbFormations['numbFormations']);
 
@@ -400,7 +400,7 @@ class PageFormations extends Controller
                 'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations',
-                'theme'=>$themeData
+                'theme' => $themeData
             ];
 
             $this->view("pages/pageFormations", $data);
@@ -419,7 +419,7 @@ class PageFormations extends Controller
                 'info' => $info,
                 'pageno' => $pageno,
                 'totalPages' => $totalPages,
-                'theme'=>$themeData
+                'theme' => $themeData
             ];
             $this->view("pages/pageFormations", $data);
         }
@@ -431,10 +431,10 @@ class PageFormations extends Controller
         $nivaux = $this->stockedModel->getAllLevels();
         $categories = $this->categorieModel->getAllCategories();
         $numbFormations = $this->formationModel->countFormationsByNiveau($niv);
-       
+
         $themeData = $this->stockedModel->getThemeData();
-        $themeData["logo"]=URLROOT."/Public/".$themeData["logo"];
-		$themeData["landingImg"]=URLROOT."/Public/".$themeData["landingImg"];
+        $themeData["logo"] = URLROOT . "/Public/" . $themeData["logo"];
+        $themeData["landingImg"] = URLROOT . "/Public/" . $themeData["landingImg"];
 
         $dataPages = $this->pagenition($numbFormations['numbFormations']);
 
@@ -449,7 +449,7 @@ class PageFormations extends Controller
                 'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations',
-                'theme'=>$themeData
+                'theme' => $themeData
             ];
 
             $this->view("pages/pageFormations", $data);
@@ -468,7 +468,7 @@ class PageFormations extends Controller
                 'info' => $info,
                 'pageno' => $pageno,
                 'totalPages' => $totalPages,
-                'theme'=>$themeData
+                'theme' => $themeData
             ];
             $this->view("pages/pageFormations", $data);
         }
@@ -483,14 +483,14 @@ class PageFormations extends Controller
         $minH = $_REQUEST['minH'];
         $maxH = $_REQUEST['maxH'];
 
-        if($minH !== 0 || $maxH !== 0){
+        if ($minH !== 0 || $maxH !== 0) {
             // ================  Valide Valeur de Recherche  ================
             $minH = str_split($minH);
             $maxH = str_split($maxH);
 
             $newMinH = [];
             $newMaxH = [];
-    
+
             foreach ($minH as $car) {
                 if (preg_match('/[0-9]/', $car) == 1) {
                     array_push($newMinH, $car);
@@ -506,17 +506,17 @@ class PageFormations extends Controller
             // ================  Valide Valeur de Recherche  ================
             if (strlen($minH) > 3 || strlen($maxH) > 3) {
                 $errs = true;
-            }  
+            }
         }
 
         $langages = $this->stockedModel->getAllLangues();
         $nivaux = $this->stockedModel->getAllLevels();
         $categories = $this->categorieModel->getAllCategories();
         $numbFormations = $this->formationModel->countFormationsByDuree($minH, $maxH);
-       
+
         $themeData = $this->stockedModel->getThemeData();
-        $themeData["logo"]=URLROOT."/Public/".$themeData["logo"];
-		$themeData["landingImg"]=URLROOT."/Public/".$themeData["landingImg"];
+        $themeData["logo"] = URLROOT . "/Public/" . $themeData["logo"];
+        $themeData["landingImg"] = URLROOT . "/Public/" . $themeData["landingImg"];
 
         $dataPages = $this->pagenition($numbFormations['numbFormations']);
 
@@ -524,7 +524,7 @@ class PageFormations extends Controller
         $offset = $dataPages['offset'];
         $totalPages = $dataPages['total_pages'];
 
-        if($errs == false){
+        if ($errs == false) {
 
             if ($numbFormations['numbFormations'] == 0) {
                 $data = [
@@ -533,7 +533,7 @@ class PageFormations extends Controller
                     'categories' => $categories,
                     'numbFormations' => 0,
                     'info' => 'Aucun Formations',
-                    'theme'=>$themeData
+                    'theme' => $themeData
                 ];
 
                 $this->view("pages/pageFormations", $data);
@@ -552,23 +552,22 @@ class PageFormations extends Controller
                     'info' => $info,
                     'pageno' => $pageno,
                     'totalPages' => $totalPages,
-                    'theme'=>$themeData
+                    'theme' => $themeData
                 ];
                 $this->view("pages/pageFormations", $data);
             }
-        }else{
+        } else {
             $data = [
                 'nivaux' => $nivaux,
                 'langages' => $langages,
                 'categories' => $categories,
                 'numbFormations' => 0,
                 'info' => 'Aucun Formations',
-                'theme'=>$themeData
+                'theme' => $themeData
             ];
 
             $this->view("pages/pageFormations", $data);
         }
-
     }
 
     public function pagenition($num)

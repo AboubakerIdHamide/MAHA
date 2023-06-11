@@ -8,9 +8,8 @@
     <title>MAHA | Dashboard</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <!-- BootStrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/bootstrap.min.css" />
     <!-- Custom Styles -->
     <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/dashBoardNav.css">
     <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/dashboard-formateur.css" />
@@ -37,22 +36,17 @@
                     <a href="<?= URLROOT . '/formateurs/notifications' ?>">
                         <i style="font-size:25px;" class="fa-solid fa-bell position-relative">
                             <?php if ($data['nbrNotifications']->totalNew != 0) : ?>
-                            <span style="font-size: 9px;"
-                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger nbr-notifications">
-                                <?= $data['nbrNotifications']->totalNew ?>
-                            </span>
+                                <span style="font-size: 9px;" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger nbr-notifications">
+                                    <?= $data['nbrNotifications']->totalNew ?>
+                                </span>
                             <?php endif ?>
                         </i>
                     </a>
                 </li>
-                <li id="dashboard"><a href="<?= URLROOT . '/formateurs/dashboard' ?>"><i
-                            class="fa-solid fa-chart-line"></i><span>Dashboard</span></a></li>
-                <li id="paiment"><a href="<?= URLROOT . '/formateurs/requestPayment' ?>"><i
-                            class=" far fa-credit-card"></i><span>Paiement</span></a></li>
-                <li id="settings"><a href="<?= URLROOT . '/formateurs/updateInfos' ?>"><i
-                            class="fas fa-user-gear"></i><span>Paramètre</span></a></li>
-                <li id="disconnect"><a href="<?= URLROOT . '/users/logout' ?>"><i
-                            class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
+                <li id="dashboard"><a href="<?= URLROOT . '/formateurs/dashboard' ?>"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a></li>
+                <li id="paiment"><a href="<?= URLROOT . '/formateurs/requestPayment' ?>"><i class=" far fa-credit-card"></i><span>Paiement</span></a></li>
+                <li id="settings"><a href="<?= URLROOT . '/formateurs/updateInfos' ?>"><i class="fas fa-user-gear"></i><span>Paramètre</span></a></li>
+                <li id="disconnect"><a href="<?= URLROOT . '/users/logout' ?>"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
             </ul>
         </nav>
     </header>
@@ -109,14 +103,12 @@
             <!-- end input hidden toast -->
             <div class="row align-items-center mb-3">
                 <div class="col-12 col-lg-6">
-                    <a href="<?= URLROOT . "/formations/addFormation" ?>" class="custom-btn">Ajouter Formation <i
-                            class="fa-solid fa-folder-plus"></i></a>
+                    <a href="<?= URLROOT . "/formations/addFormation" ?>" class="custom-btn">Ajouter Formation <i class="fa-solid fa-folder-plus"></i></a>
                 </div>
                 <div class="col-12 col-lg-6 mt-3 mt-lg-0">
                     <div class="d-flex gap-3">
                         <input placeholder="Titre Formation" type="text" class="btn-search" name="q">
-                        <button id="chercher" class="btn btn-primary"><i
-                                class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
+                        <button id="chercher" class="btn btn-primary"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
                     </div>
                 </div>
             </div>
@@ -124,14 +116,11 @@
                 <div class="col px-5">
                     <div class="d-flex justify-content-between my-2 gap-3 align-items-center">
                         <div class="counts-selected">
-                            <small id="count-selected" class="text-muted" style="font-size: 12px;"></small> <small
-                                id="count-label" style="display: none"> COURS SÉLECTIONNÉS</small>
+                            <small id="count-selected" class="text-muted" style="font-size: 12px;"></small> <small id="count-label" style="display: none"> COURS SÉLECTIONNÉS</small>
                         </div>
                         <div class="buttons">
-                            <button id="edit" class="btn btn-info btn-sm" disabled data-bs-toggle="modal"
-                                data-bs-target="#editModal">Modifier <i class="fa-solid fa-pen-to-square"></i></button>
-                            <button id="delete" class="btn btn-danger btn-sm" disabled data-bs-toggle="modal"
-                                data-bs-target="#deleteModal">Supprimer <i class="fa-solid fa-trash"></i></button>
+                            <button id="edit" class="btn btn-info btn-sm" disabled data-bs-toggle="modal" data-bs-target="#editModal">Modifier <i class="fa-solid fa-pen-to-square"></i></button>
+                            <button id="delete" class="btn btn-danger btn-sm" disabled data-bs-toggle="modal" data-bs-target="#deleteModal">Supprimer <i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
                 </div>
@@ -177,8 +166,7 @@
                                 ?</span>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary fermer"
-                                data-bs-dismiss="modal">Annuler</button>
+                            <button type="button" class="btn btn-secondary fermer" data-bs-dismiss="modal">Annuler</button>
                             <button id="deleteCours" type="button" class="btn btn-primary">Oui</button>
                         </div>
                     </div>
@@ -211,8 +199,7 @@
                                 <small class="error-prix text-danger"></small>
                             </div>
                             <div class="mb-3">
-                                <label for="description" class="form-label"
-                                    style="font-weight: 600;">Description</label>
+                                <label for="description" class="form-label" style="font-weight: 600;">Description</label>
                                 <!-- id : description -->
                                 <textarea name="description" class="form-control" id="description" rows="3"></textarea>
                                 <small class="error-desc text-danger"></small>
@@ -221,8 +208,8 @@
                                 <label for="categorie" class="form-label" style="font-weight: 600;">Categories</label>
                                 <select class="form-select" name="categorie" id="categorie">
                                     <?php foreach ($data['categories'] as $categorie) : ?>
-                                    <option value="<?= $categorie->id_categorie ?>"><?= $categorie->nom_categorie ?>
-                                    </option>
+                                        <option value="<?= $categorie->id_categorie ?>"><?= $categorie->nom_categorie ?>
+                                        </option>
                                     <?php endforeach; ?>
                                 </select>
                                 <small class="error-spec text-danger"></small>
@@ -232,7 +219,7 @@
                                     Formation</label>
                                 <select class="form-select" name="niveauFormation" id="niveau">
                                     <?php foreach ($data['levels'] as $level) : ?>
-                                    <option value="<?= $level->id_niveau ?>"><?= $level->nom_niveau ?></option>
+                                        <option value="<?= $level->id_niveau ?>"><?= $level->nom_niveau ?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <small class="error-niveau text-danger"></small>
@@ -241,7 +228,7 @@
                                 <label for="langue" class="form-label" style="font-weight: 600;">Langue</label>
                                 <select class="form-select" name="langue" id="langue">
                                     <?php foreach ($data['langues'] as $langue) : ?>
-                                    <option value="<?= $langue->id_langue ?>"><?= $langue->nom_langue ?></option>
+                                        <option value="<?= $langue->id_langue ?>"><?= $langue->nom_langue ?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <small class="error-niveau text-danger"></small>
@@ -250,13 +237,11 @@
                                 <label for="miniature" class="form-label" style="font-weight: 600;">Miniature</label>
                                 <div class="text-center">
                                     <!-- id :  miniature -->
-                                    <img class="img-fluid img-thumbnail rounded" src="" alt="formation image"
-                                        id="miniature" style="object-fit: cover;">
+                                    <img class="img-fluid img-thumbnail rounded" src="" alt="formation image" id="miniature" style="object-fit: cover;">
                                 </div>
                             </div>
                             <div class="mt-2 text-center">
-                                <input onchange="handleMiniature(this.files);" id="miniature-uploader" class="d-none"
-                                    type="file" name='miniature' accept=".jpg, .jpeg, .png">
+                                <input onchange="handleMiniature(this.files);" id="miniature-uploader" class="d-none" type="file" name='miniature' accept=".jpg, .jpeg, .png">
                                 <!-- id : miniature-uploader -->
                                 <label class="btn btn-warning" for="miniature-uploader">
                                     <i class="fa-solid fa-image"></i> Changer Miniature
@@ -265,8 +250,7 @@
                             </div>
                             <label class="mt-2 form-label" style="font-weight: 600;">Fichiers Attaches</label>
                             <div class="text-center">
-                                <input onchange="handleRessourse(this.files);" id="ressource" class="d-none" type="file"
-                                    name='ressource' accept=".zip">
+                                <input onchange="handleRessourse(this.files);" id="ressource" class="d-none" type="file" name='ressource' accept=".zip">
                                 <label class="btn btn-warning" for="ressource">
                                     <!-- id : ressource -->
                                     <i class="fa-solid fa-file"></i> Charger Ressources

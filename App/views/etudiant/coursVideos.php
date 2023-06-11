@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
-    <title><?= $data->nom_formation ?></title>
+    <title>MAHA | <?= $data->nom_formation ?></title>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/bootstrap.min.css" />
     <!-- Custom Styles -->
     <link rel="stylesheet" href="<?= URLROOT . "/Public/css/cours-details-paid.css" ?>">
 </head>
@@ -98,9 +98,7 @@
             <div class="col">
                 <h4 class="main-video-name">1. <?= $data->videos[0]->nom_video ?>
                 </h4>
-                <section class="main-video ratio ratio-16x9">
-                    <video id="video" src="<?= $data->videos[0]->url_video ?>" controls controlsList="nodownload"></video>
-                </section>
+                <section id="playerContainer"></section>
             </div>
         </div>
         <div class="row">
@@ -225,6 +223,8 @@
     <!-- To-up Button -->
     <span class="to-top" href="#"><i class="fa fa-chevron-up"></i></span>
     <!-- To-up Button -->
+    <div id="playerContainer"></div>
+    <script src="<?= URLROOT . "/Public/js/indigo-player.js" ?>"></script>
     <script>
         const urlRoot = "<?= URLROOT ?>";
         const formationId = <?= $data->id_formation ?>;
@@ -232,9 +232,22 @@
         const etudiantImageSrc = "<?= $data->img_etudiant ?>";
         const etudiantFullName = "<?= $data->nom_etudiant . " " . $data->prenom_etudiant ?>";
         let videoId = <?= $data->videos[0]->id_video ?>;
+        const config = {
+            sources: [{
+                type: "mp4",
+                src: "<?= $data->videos[0]->url_video ?>",
+            }, ],
+            ui: {
+                pip: true, // by default, pip is not enabled in the UI.
+            },
+        };
+
+        const element = document.getElementById("playerContainer");
+        const player = IndigoPlayer.init(element, config);
     </script>
     <script src="<?= URLROOT . "/Public/jQuery/jquery-3.6.0.min.js" ?>"></script>
     <script src="<?= URLROOT . "/Public/js/cours-details-paid.js" ?>"></script>
+
 </body>
 
 </html>

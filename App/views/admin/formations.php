@@ -31,7 +31,8 @@
                         <div class="d-flex gap-2 justify-content-center align-items-center">
                             <img class="img-fluid rounded-circle border border-info" style="width: 38px;" src="<?= $formation->img_formateur ?>" alt="avatar formateur">
                             <div class="d-flex flex-column align-items-start">
-                                <span style="font-weight: 600;font-size: 13px;"><?= $formation->nom_formateur ?> <?= $formation->prenom_formateur ?></span>
+                                <span style="font-weight: 600;font-size: 13px;"><?= $formation->nom_formateur ?>
+                                    <?= $formation->prenom_formateur ?></span>
                                 <small style="max-width: 200px;" class="badge bg-info d-inline-block text-truncate categorie" id="<?= $formation->id_categorie ?>" title="<?= $formation->nom_categorie ?>"><?= $formation->nom_categorie ?></small>
                             </div>
                         </div>
@@ -42,7 +43,8 @@
                     <div class="card-body">
                         <img class="img-fluid rounded miniature" style="max-height: 250px;object-fit:cover" src="<?= $formation->image_formation ?>" alt="formation image">
                         <h6 style="font-weight: 800;" title="<?= $formation->nom_formation ?>" class="card-title mt-2 mb-1 text-truncate title"><?= $formation->nom_formation ?></h6>
-                        <span class="badge bg-secondary mb-2"><i class="fas fa-clock"></i> <?= $formation->mass_horaire ?></span>
+                        <span class="badge bg-secondary mb-2"><i class="fas fa-clock"></i>
+                            <?= $formation->mass_horaire ?></span>
                         <p class="card-text text-truncate description" title="<?= $formation->description ?>">
                             <?= $formation->description ?>
                         </p>
@@ -156,7 +158,9 @@
                     </label>
                     <small class="error-ressources text-danger d-block"></small>
                 </div>
-                <small style="font-size: 12px;" class="text-danger d-block mt-2">Veuillez compresser tous les fichiers et dossiers dans un seul document <strong>ZIP</strong>, l'ancien document sera supprimé après le chargement !!!</small>
+                <small style="font-size: 12px;" class="text-danger d-block mt-2">Veuillez compresser tous les fichiers
+                    et dossiers dans un seul document <strong>ZIP</strong>, l'ancien document sera supprimé après le
+                    chargement !!!</small>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Annuler</button>
@@ -196,7 +200,7 @@
     </div>
 </div>
 <!-- toast end -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<script src="<?= URLROOT ?>/public/js/bootstrap.bundle.min.js"></script>
 <script src="<?php echo URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
 <script src="<?php echo URLROOT; ?>/public/js/dashBoardNav.js"></script>
 <script src="<?php echo URLROOT; ?>/public/js/adminFormations.js"></script>

@@ -5,36 +5,35 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="MAHA a modern educational platform">
-    <title>MAHA </title>
-
+    <title>MAHA | Formateur</title>
     <!-- Favicons-->
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
-
     <!-- GOOGLE WEB FONT -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <!-- BASE CSS -->
     <link href="<?= URLROOT ?>/public/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?= URLROOT ?>/public/css/style.css" rel="stylesheet">
     <link href="<?= URLROOT ?>/public/css/vendors.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <!-- font awesome -->
+    <!-- Font Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- YOUR CUSTOM CSS -->
     <link href="<?= URLROOT ?>/public/css/custom.css" rel="stylesheet">
     <style>
-        #hero_in.general:before {
-            background: url(<?= $data['infoFormateur']['img'] ?>) center center no-repeat;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-        }
+    #hero_in.general:before {
+        background: url(<?= $data['infoFormateur']['img'] ?>) center center no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
 
-        #avatar-formateur {
-            object-fit: cover;
-            width: 150px;
-            height: 150px;
-        }
+    #avatar-formateur {
+        object-fit: cover;
+        width: 150px;
+        height: 150px;
+    }
     </style>
 </head>
 
@@ -47,22 +46,24 @@
                 <div data-loader="circle-side"></div>
             </div><!-- /Preload -->
             <div id="logo">
-                <a href="<?= URLROOT ?>"><img class="logo" src="<?= $data['theme']['logo'] ?>" width="149" height="42" alt="logo Maha"></a>
+                <a href="<?= URLROOT ?>"><img class="logo" src="<?= $data['theme']['logo'] ?>" width="149" height="42"
+                        alt="logo Maha"></a>
             </div>
             <ul id="top_menu">
                 <li class="search-overlay-menu-btn"><i class="fa-solid fa-magnifying-glass"></i></li>
                 <?php if (!isset($_SESSION['user'])) : ?>
-                    <li class="hidden_tablet"><a href="<?= URLROOT . "/users/login" ?>" class="btn_1 rounded">Se
-                            Connecter</a></li>
+                <li class="hidden_tablet"><a href="<?= URLROOT . "/users/login" ?>" class="btn_1 rounded">Se
+                        Connecter</a></li>
                 <?php endif ?>
                 <?php if (isset($_SESSION['id_formateur'])) : ?>
-                    <li class="hidden_tablet"><a href="<?= URLROOT . "/formateurs/dashboard" ?>" class="btn_1 rounded">Dashboard</a>
-                    </li>
+                <li class="hidden_tablet"><a href="<?= URLROOT . "/formateurs/dashboard" ?>"
+                        class="btn_1 rounded">Dashboard</a>
+                </li>
                 <?php endif ?>
                 <?php if (isset($_SESSION['id_etudiant'])) : ?>
-                    <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiants/dashboard" ?>" class="btn_1 rounded">Mes
-                            Cours</a>
-                    </li>
+                <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiants/dashboard" ?>" class="btn_1 rounded">Mes
+                        Cours</a>
+                </li>
                 <?php endif ?>
 
             </ul>
@@ -81,20 +82,20 @@
                     <li><span><a href="<?= URLROOT ?>/#catalogue">Categories</a></span></li>
                     <li><span><a href="<?= URLROOT ?>/#contact">Contactez-nous</a></span></li>
                     <?php if (!isset($_SESSION['user'])) : ?>
-                        <li><span><a href="<?= URLROOT ?>/users/register">S'inscrire</a></span></li>
+                    <li><span><a href="<?= URLROOT ?>/users/register">S'inscrire</a></span></li>
                     <?php endif ?>
                     <?php if (!isset($_SESSION['user'])) : ?>
-                        <li class="d-lg-none"><a href="<?= URLROOT . "/users/login" ?>">Se
-                                Connecter</a></li>
+                    <li class="d-lg-none"><a href="<?= URLROOT . "/users/login" ?>">Se
+                            Connecter</a></li>
                     <?php endif ?>
                     <?php if (isset($_SESSION['id_formateur'])) : ?>
-                        <li class="d-lg-none"><a href="<?= URLROOT . "/formateurs/dashboard" ?>">Dashboard</a>
-                        </li>
+                    <li class="d-lg-none"><a href="<?= URLROOT . "/formateurs/dashboard" ?>">Dashboard</a>
+                    </li>
                     <?php endif ?>
                     <?php if (isset($_SESSION['id_etudiant'])) : ?>
-                        <li class="d-lg-none"><a href="<?= URLROOT . "/etudiants/dashboard" ?>">Mes
-                                Cours</a>
-                        </li>
+                    <li class="d-lg-none"><a href="<?= URLROOT . "/etudiants/dashboard" ?>">Mes
+                            Cours</a>
+                    </li>
                     <?php endif ?>
                 </ul>
             </nav>
@@ -125,13 +126,17 @@
                 <div class="row">
                     <aside class="col-lg-3" id="sidebar">
                         <div class="profile">
-                            <figure><img id="avatar-formateur" src="<?= $data['infoFormateur']['img'] ?>" alt="Formateur image" class="rounded-circle"></figure>
+                            <figure><img id="avatar-formateur" src="<?= $data['infoFormateur']['img'] ?>"
+                                    alt="Formateur image" class="rounded-circle"></figure>
                             <ul>
-                                <li>Name <span class="float-right"><?= $data['infoFormateur']['prenomFormateur'] . ' ' . $data['infoFormateur']['nomFormateur'] ?></span>
+                                <li>Name <span
+                                        class="float-right"><?= $data['infoFormateur']['prenomFormateur'] . ' ' . $data['infoFormateur']['nomFormateur'] ?></span>
                                 </li>
                                 <li>Etudiants <span class="float-right"><?= $data['numAcht']['numAcht'] ?></span></li>
-                                <li>Courses <span class="float-right"><?= $data['numFormations']['numFormations']; ?></span></li>
-                                <li>Email <span class="float-right"><a class="text-muted" href="mailto:<?= $data['infoFormateur']['email'] ?>">
+                                <li>Courses <span
+                                        class="float-right"><?= $data['numFormations']['numFormations']; ?></span></li>
+                                <li>Email <span class="float-right"><a class="text-muted"
+                                            href="mailto:<?= $data['infoFormateur']['email'] ?>">
                                             <?= $data['infoFormateur']['email'] ?></a></span></li>
                                 <li>Telephone <span class="float-right"><?= $data['infoFormateur']['tel']; ?></span>
                                 </li>
@@ -170,12 +175,13 @@
                                         </thead>
                                         <tbody>
                                             <?php foreach ($data['courses'] as $info) : ?>
-                                                <tr>
-                                                    <td><?= $info->categorie ?></td>
-                                                    <td><a href="<?= URLROOT . "/pageFormations/coursDetails/" . $info->IdFormation ?>"><?= $info->nomFormation; ?></a>
-                                                    </td>
-                                                    <td>$<?= $info->prix ?></td>
-                                                </tr>
+                                            <tr>
+                                                <td><?= $info->categorie ?></td>
+                                                <td><a
+                                                        href="<?= URLROOT . "/pageFormations/coursDetails/" . $info->IdFormation ?>"><?= $info->nomFormation; ?></a>
+                                                </td>
+                                                <td>$<?= $info->prix ?></td>
+                                            </tr>
                                             <?php endforeach ?>
                                         </tbody>
                                     </table>

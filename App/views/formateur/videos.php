@@ -8,9 +8,8 @@
     <title>MAHA | <?= $data["videos"][0]->nom_formation ?></title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <!-- BootStrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/bootstrap.min.css" />
     <!-- Custom Styles -->
     <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/dashBoardNav.css">
     <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/dashboard-formateur.css" />
@@ -37,22 +36,17 @@
                     <a href="<?= URLROOT . '/formateurs/notifications' ?>">
                         <i style="font-size:25px;" class="fa-solid fa-bell position-relative">
                             <?php if ($data['nbrNotifications']->totalNew != 0) : ?>
-                            <span style="font-size: 9px;"
-                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger nbr-notifications">
-                                <?= $data['nbrNotifications']->totalNew ?>
-                            </span>
+                                <span style="font-size: 9px;" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger nbr-notifications">
+                                    <?= $data['nbrNotifications']->totalNew ?>
+                                </span>
                             <?php endif ?>
                         </i>
                     </a>
                 </li>
-                <li id="addnews"><a href="<?= URLROOT . '/formateurs/dashboard' ?>"><i
-                            class="fa-solid fa-chart-line"></i><span>Dashboard</span></a></li>
-                <li id="paiment"><a href="<?= URLROOT . '/formateurs/requestPayment' ?>"><i
-                            class=" far fa-credit-card"></i><span>Paiement</span></a></li>
-                <li id="statistics"><a href="<?= URLROOT . '/formateurs/updateInfos' ?>"><i
-                            class="fas fa-user-gear"></i><span>Paramètre</span></a></li>
-                <li id="disconnect"><a href="<?= URLROOT . '/users/logout' ?>"><i
-                            class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
+                <li id="addnews"><a href="<?= URLROOT . '/formateurs/dashboard' ?>"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a></li>
+                <li id="paiment"><a href="<?= URLROOT . '/formateurs/requestPayment' ?>"><i class=" far fa-credit-card"></i><span>Paiement</span></a></li>
+                <li id="statistics"><a href="<?= URLROOT . '/formateurs/updateInfos' ?>"><i class="fas fa-user-gear"></i><span>Paramètre</span></a></li>
+                <li id="disconnect"><a href="<?= URLROOT . '/users/logout' ?>"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
             </ul>
         </nav>
     </header>
@@ -65,12 +59,10 @@
             <div class="col-6 col-md-7 col-lg-9">
                 <h1><?= $data["videos"][0]->nom_formation ?></h1>
                 <p><?= $data["videos"][0]->date_creation_formation ?></p>
-                <span>Total videos (<?= count($data["videos"]) ?> videos) · <span class="badge bg-primary"><i
-                            class="fas fa-clock"></i> <?= $data["videos"][0]->masse_horaire ?></span></span>
+                <span>Total videos (<?= count($data["videos"]) ?> videos) · <span class="badge bg-primary"><i class="fas fa-clock"></i> <?= $data["videos"][0]->masse_horaire ?></span></span>
             </div>
             <div class="col">
-                <a href="<?= URLROOT ?>/formations/addVideo/<?= $_SESSION['id_formation'] ?>"
-                    class="btn btn-primary">Add
+                <a href="<?= URLROOT ?>/formations/addVideo/<?= $_SESSION['id_formation'] ?>" class="btn btn-primary">Add
                     Video <i class="fa-solid fa-file-circle-plus"></i></a>
             </div>
         </div>
@@ -81,40 +73,28 @@
         <div class="row mb-3">
             <?php flash("orderApplied") ?>
             <div class="col">
-                <button class="btn btn-primary btn-sm order">Appliquer L'ordre <i
-                        class="fa-solid fa-check-to-slot"></i></button>
+                <button class="btn btn-primary btn-sm order">Appliquer L'ordre <i class="fa-solid fa-check-to-slot"></i></button>
             </div>
         </div>
         <?php foreach ($data["videos"] as $video) : ?>
-        <div class="row mb-3 p-2 video rounded">
-            <div class="col-12 col-md-6">
-                <input style="width: 55px;text-align: center;" maxlength="3" type="text"
-                    class="order-video form-control d-inline-block" placeholder="<?= $order ?>" />
-                <span class="video-name text-white"><?= $video->nom_video ?></span>
-                <span class="badge bg-secondary"><i class="fas fa-clock"></i> <?= $video->duree_video ?></span>
-            </div>
-            <input id="description-video" type="hidden" value="<?= $video->description_video ?>">
-            <input id="link-video" type="hidden" value="<?= $video->url_video ?>">
-            <div class="col-12 col-md-6">
-                <div class="d-flex gap-1 justify-content-end">
-                    <a data-bs-custom-class="custom-tooltip" data-bs-title="Télécharger" data-bs-toggle="tooltip"
-                        data-bs-placement="top" href="<?= $video->url_video ?>" class="btn btn-warning btn-sm"
-                        download><i class="fa-solid fa-download"></i></a>
-                    <button id="<?= $video->id_video ?>" class="btn btn-info btn-sm edit" data-bs-toggle="modal"
-                        data-bs-target="#modifier"> <i class="fa-solid fa-pen-to-square"
-                            data-bs-custom-class="custom-tooltip" data-bs-title="Modifier" data-bs-toggle="tooltip"
-                            data-bs-placement="top"></i></button>
-                    <button id="<?= $video->id_video ?>" class="btn btn-primary btn-sm preview"
-                        <?php if ($video->preview == 1) echo 'disabled' ?>> <i class="fa-solid fa-video"
-                            data-bs-custom-class="custom-tooltip" data-bs-title="Apercu Video" data-bs-toggle="tooltip"
-                            data-bs-placement="top"></i></button>
-                    <button id="<?= $video->id_video ?>" class="btn btn-danger btn-sm delete" data-bs-toggle="modal"
-                        data-bs-target="#supprimer"> <i class="fa-solid fa-trash" data-bs-custom-class="custom-tooltip"
-                            data-bs-title="Supprimer" data-bs-toggle="tooltip" data-bs-placement="top"></i></button>
+            <div class="row mb-3 p-2 video rounded">
+                <div class="col-12 col-md-6">
+                    <input style="width: 55px;text-align: center;" maxlength="3" type="text" class="order-video form-control d-inline-block" placeholder="<?= $order ?>" />
+                    <span class="video-name text-white"><?= $video->nom_video ?></span>
+                    <span class="badge bg-secondary"><i class="fas fa-clock"></i> <?= $video->duree_video ?></span>
+                </div>
+                <input id="description-video" type="hidden" value="<?= $video->description_video ?>">
+                <input id="link-video" type="hidden" value="<?= $video->url_video ?>">
+                <div class="col-12 col-md-6">
+                    <div class="d-flex gap-1 justify-content-end">
+                        <a data-bs-custom-class="custom-tooltip" data-bs-title="Télécharger" data-bs-toggle="tooltip" data-bs-placement="top" href="<?= $video->url_video ?>" class="btn btn-warning btn-sm" download><i class="fa-solid fa-download"></i></a>
+                        <button id="<?= $video->id_video ?>" class="btn btn-info btn-sm edit" data-bs-toggle="modal" data-bs-target="#modifier"> <i class="fa-solid fa-pen-to-square" data-bs-custom-class="custom-tooltip" data-bs-title="Modifier" data-bs-toggle="tooltip" data-bs-placement="top"></i></button>
+                        <button id="<?= $video->id_video ?>" class="btn btn-primary btn-sm preview" <?php if ($video->preview == 1) echo 'disabled' ?>> <i class="fa-solid fa-video" data-bs-custom-class="custom-tooltip" data-bs-title="Apercu Video" data-bs-toggle="tooltip" data-bs-placement="top"></i></button>
+                        <button id="<?= $video->id_video ?>" class="btn btn-danger btn-sm delete" data-bs-toggle="modal" data-bs-target="#supprimer"> <i class="fa-solid fa-trash" data-bs-custom-class="custom-tooltip" data-bs-title="Supprimer" data-bs-toggle="tooltip" data-bs-placement="top"></i></button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <?php $order++; ?>
+            <?php $order++; ?>
         <?php endforeach; ?>
 
     </main>
@@ -129,8 +109,7 @@
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="modifier">Modification</h1>
                         <small class="nom-video text-muted ms-3"></small>
-                        <button type="button" class="btn-close fermer" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="btn-close fermer" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div>
@@ -149,8 +128,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                            class="fermer">Fermer</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" class="fermer">Fermer</button>
                         <button id="apply-btn" type="button" class="btn btn-primary">Appliquer</button>
                     </div>
                 </div>

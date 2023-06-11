@@ -9,12 +9,9 @@
     <title><?= SITENAME ?> | Login</title>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
-        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/bootstrap.min.css" />
+    <!-- Font Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- Style -->
     <link rel="stylesheet" href="<?= URLROOT . "/Public/css/mahaAlert.css"; ?>" />
     <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/login.css" />
@@ -26,8 +23,7 @@
         <div class="form login">
             <div class="login-type">
                 <h3>connexion</h3>
-                <button type="button" id="maha-login" class="maha"><i
-                        class="fa fa-arrow-right-to-bracket"></i>MAHA</button>
+                <button type="button" id="maha-login" class="maha"><i class="fa fa-arrow-right-to-bracket"></i>MAHA</button>
                 <button type="button" id="facebook-login" class="facebook"><i class="fa-brands fa-facebook"></i>
                     Facebook</button>
                 <button type="button" id="google-login" class="google"><i class="fa-brands fa-google-plus-g"></i>
@@ -61,12 +57,10 @@
                             <i class="fa-solid fa-lock"></i>
                             <i class="fa-solid fa-eye" id="togglePassword"></i>
                         </div>
-                        <span class="error"
-                            id="error-mdp"><?= !empty($data["password_err"]) ? $data["password_err"] : ""; ?></span>
+                        <span class="error" id="error-mdp"><?= !empty($data["password_err"]) ? $data["password_err"] : ""; ?></span>
                         <div class="checkbox-text">
                             <div class="checkbox-content">
-                                <input type="checkbox" id="logCheck" name="rememberMe"
-                                    <?= isset($_COOKIE["useremail"]) ? "checked" : ""; ?> />
+                                <input type="checkbox" id="logCheck" name="rememberMe" <?= isset($_COOKIE["useremail"]) ? "checked" : ""; ?> />
                                 <label for="logCheck">se souvenir de moi</label>
                             </div>
                             <a href="<?= URLROOT ?>/users/forgotPassword" class="text">Mot de passe oublié ?</a>

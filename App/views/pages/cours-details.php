@@ -5,33 +5,27 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="MAHA a modern educational platform">
-    <title>MAHA - <?= $data['info']['nomFormation'] ?></title>
-
+    <title>MAHA | <?= $data['info']['nomFormation'] ?></title>
     <!-- Favicons-->
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
-
     <!-- GOOGLE WEB FONT -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- BASE CSS -->
     <link href="<?= URLROOT ?>/public/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?= URLROOT ?>/public/css/style.css" rel="stylesheet">
     <link href="<?= URLROOT ?>/public/css/vendors.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <!-- Font Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- YOUR CUSTOM CSS -->
     <link href="<?= URLROOT ?>/public/css/custom.css" rel="stylesheet">
     <style>
-    #hero_in.courses:before {
-        background: url(<?= $data['info']['imgFormation'] ?>) center center no-repeat;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-    }
+        #hero_in.courses:before {
+            background: url(<?= $data['info']['imgFormation'] ?>) center center no-repeat;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
     </style>
 
 </head>
@@ -45,24 +39,22 @@
                 <div data-loader="circle-side"></div>
             </div><!-- /Preload -->
             <div id="logo">
-                <a href="<?= URLROOT ?>"><img class="logo" src="<?= $data['theme']['logo'] ?>" width="149" height="42"
-                        alt="logo Maha"></a>
+                <a href="<?= URLROOT ?>"><img class="logo" src="<?= $data['theme']['logo'] ?>" width="149" height="42" alt="logo Maha"></a>
             </div>
             <ul id="top_menu">
                 <li class="search-overlay-menu-btn"><i class="fa-solid fa-magnifying-glass"></i></li>
                 <?php if (!isset($_SESSION['user'])) : ?>
-                <li class="hidden_tablet"><a href="<?= URLROOT . "/users/login" ?>" class="btn_1 rounded">Se
-                        Connecter</a></li>
+                    <li class="hidden_tablet"><a href="<?= URLROOT . "/users/login" ?>" class="btn_1 rounded">Se
+                            Connecter</a></li>
                 <?php endif ?>
                 <?php if (isset($_SESSION['id_formateur'])) : ?>
-                <li class="hidden_tablet"><a href="<?= URLROOT . "/formateurs/dashboard" ?>"
-                        class="btn_1 rounded">Dashboard</a>
-                </li>
+                    <li class="hidden_tablet"><a href="<?= URLROOT . "/formateurs/dashboard" ?>" class="btn_1 rounded">Dashboard</a>
+                    </li>
                 <?php endif ?>
                 <?php if (isset($_SESSION['id_etudiant'])) : ?>
-                <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiants/dashboard" ?>" class="btn_1 rounded">Mes
-                        Cours</a>
-                </li>
+                    <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiants/dashboard" ?>" class="btn_1 rounded">Mes
+                            Cours</a>
+                    </li>
                 <?php endif ?>
 
             </ul>
@@ -81,20 +73,20 @@
                     <li><span><a href="<?= URLROOT ?>/#catalogue">Categories</a></span></li>
                     <li><span><a href="<?= URLROOT ?>/#contact">Contactez-nous</a></span></li>
                     <?php if (!isset($_SESSION['user'])) : ?>
-                    <li><span><a href="<?= URLROOT ?>/users/register">S'inscrire</a></span></li>
+                        <li><span><a href="<?= URLROOT ?>/users/register">S'inscrire</a></span></li>
                     <?php endif ?>
                     <?php if (!isset($_SESSION['user'])) : ?>
-                    <li class="d-lg-none"><a href="<?= URLROOT . "/users/login" ?>">Se
-                            Connecter</a></li>
+                        <li class="d-lg-none"><a href="<?= URLROOT . "/users/login" ?>">Se
+                                Connecter</a></li>
                     <?php endif ?>
                     <?php if (isset($_SESSION['id_formateur'])) : ?>
-                    <li class="d-lg-none"><a href="<?= URLROOT . "/formateurs/dashboard" ?>">Dashboard</a>
-                    </li>
+                        <li class="d-lg-none"><a href="<?= URLROOT . "/formateurs/dashboard" ?>">Dashboard</a>
+                        </li>
                     <?php endif ?>
                     <?php if (isset($_SESSION['id_etudiant'])) : ?>
-                    <li class="d-lg-none"><a href="<?= URLROOT . "/etudiants/dashboard" ?>">Mes
-                            Cours</a>
-                    </li>
+                        <li class="d-lg-none"><a href="<?= URLROOT . "/etudiants/dashboard" ?>">Mes
+                                Cours</a>
+                        </li>
                     <?php endif ?>
                 </ul>
             </nav>
@@ -152,17 +144,17 @@
                                 <div class="lesson-container">
                                     <?php $i = 1; ?>
                                     <?php foreach ($data['videos'] as $video) : ?>
-                                    <div class="row mb-3 border p-2 rounded">
-                                        <div class="col">
-                                            <div class="lesson d-flex justify-content-between">
-                                                <span class="lesson-titre"><i class="fa-solid fa-lock me-2"></i>
-                                                    <?= $i++; ?>.
-                                                    <?= $video->NomVideo; ?>
-                                                </span>
-                                                <span class="lesson-time"><?= $video->DureeVideo; ?></span>
+                                        <div class="row mb-3 border p-2 rounded">
+                                            <div class="col">
+                                                <div class="lesson d-flex justify-content-between">
+                                                    <span class="lesson-titre"><i class="fa-solid fa-lock me-2"></i>
+                                                        <?= $i++; ?>.
+                                                        <?= $video->NomVideo; ?>
+                                                    </span>
+                                                    <span class="lesson-time"><?= $video->DureeVideo; ?></span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                     <?php endforeach; ?>
                                 </div>
                                 <!-- /Lessons -->
@@ -176,8 +168,7 @@
                                         <div class="col-12 col-md-6">
                                             <div class="statistics">
                                                 <div>
-                                                    <strong><?= $data['info']['numbAcht'] ?> <i
-                                                            class="fa-solid fa-graduation-cap"></i></strong>
+                                                    <strong><?= $data['info']['numbAcht'] ?> <i class="fa-solid fa-graduation-cap"></i></strong>
                                                 </div>
                                                 <span>Apprenants</span>
                                             </div>
@@ -185,8 +176,7 @@
                                         <div class="col-12 col-md-6">
                                             <div class="statistics">
                                                 <div>
-                                                    <strong><?= $data['info']['likes']; ?> <i
-                                                            class="fa-solid fa-heart"></i></strong>
+                                                    <strong><?= $data['info']['likes']; ?> <i class="fa-solid fa-heart"></i></strong>
                                                 </div>
                                                 <span>J'aime</span>
                                             </div>
@@ -201,22 +191,17 @@
                         <aside class="col-lg-4" id="sidebar">
                             <div class="box_detail">
                                 <figure class="rounded-corner">
-                                    <a href="<?= $data['previewVideo'] ?>" class="video"><i style="color:#FFC107;"
-                                            class="fa-solid fa-play fs-2"></i><img
-                                            src="<?= $data['info']['imgFormation'] ?>" alt="course image"
-                                            class="img-fluid rounded-corner"><span>Voir l'aperçu du cours</span></a>
+                                    <a href="<?= $data['previewVideo'] ?>" class="video"><i style="color:#FFC107;" class="fa-solid fa-play fs-2"></i><img src="<?= $data['info']['imgFormation'] ?>" alt="course image" class="img-fluid rounded-corner"><span>Voir l'aperçu du cours</span></a>
                                 </figure>
                                 <div class="price">
                                     $<?= $data['info']['prix'] ?>
                                 </div>
-                                <a href="<?= URLROOT ?>/PaymentPaypal/makePayment/<?= $data['info']['IdFormation'] ?>"
-                                    class="btn_1 full-width">Acheter</a>
+                                <a href="<?= URLROOT ?>/PaymentPaypal/makePayment/<?= $data['info']['IdFormation'] ?>" class="btn_1 full-width">Acheter</a>
                                 <div id="list_feat">
                                     <h3>Informations du cours</h3>
                                     <ul>
                                         <li><i class="fa-solid fa-person-chalkboard"></i>
-                                            <a
-                                                href="<?= URLROOT . "/profilFormateur/" . $data['info']['IdFormteur'] ?>">
+                                            <a href="<?= URLROOT . "/profilFormateur/" . $data['info']['IdFormteur'] ?>">
                                                 <?= $data['info']['prenomFormateur'] . ' ' . $data['info']['nomFormateur'] ?>
                                             </a>
                                         </li>
@@ -225,32 +210,29 @@
                                             <?= $data['info']['langageFormation'] ?></li>
                                         <li>
                                             <?php if ($data['info']['niveauFormation'] == 'Débutant') : ?>
-                                            <svg width="58" height="30" viewBox="0 0 38 10" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path fill="#E5E5E5" d="M9 4h6v2H9zM23 4h6v2h-6z"></path>
-                                                <circle cx="5" cy="5" r="5" fill="#555555"></circle>
-                                                <circle fill="#E5E5E5" cx="19" cy="5" r="5"></circle>
-                                                <circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle>
-                                            </svg>
+                                                <svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="#E5E5E5" d="M9 4h6v2H9zM23 4h6v2h-6z"></path>
+                                                    <circle cx="5" cy="5" r="5" fill="#555555"></circle>
+                                                    <circle fill="#E5E5E5" cx="19" cy="5" r="5"></circle>
+                                                    <circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle>
+                                                </svg>
                                             <?php endif ?>
                                             <?php if ($data['info']['niveauFormation'] == 'Intermédiaire') : ?>
-                                            <svg width="58" height="30" viewBox="0 0 38 10" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M9 4h6v2H9z" fill="#555555"></path>
-                                                <path d="M23 4h6v2h-6z" fill="#E5E5E5"></path>
-                                                <circle cx="5" cy="5" r="5" fill="#555555"></circle>
-                                                <circle cx="19" cy="5" r="5" fill="#555555"></circle>
-                                                <circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle>
-                                            </svg>
+                                                <svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M9 4h6v2H9z" fill="#555555"></path>
+                                                    <path d="M23 4h6v2h-6z" fill="#E5E5E5"></path>
+                                                    <circle cx="5" cy="5" r="5" fill="#555555"></circle>
+                                                    <circle cx="19" cy="5" r="5" fill="#555555"></circle>
+                                                    <circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle>
+                                                </svg>
                                             <?php endif ?>
                                             <?php if ($data['info']['niveauFormation'] == 'Avancé') : ?>
-                                            <svg width="58" height="30" viewBox="0 0 38 10" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path fill="#555555" d="M9 4h6v2H9zM23 4h6v2h-6z"></path>
-                                                <circle cx="5" cy="5" r="5" fill="#555555"></circle>
-                                                <circle fill="#555555" cx="19" cy="5" r="5"></circle>
-                                                <circle fill="#555555" cx="33" cy="5" r="5"></circle>
-                                            </svg>
+                                                <svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="#555555" d="M9 4h6v2H9zM23 4h6v2h-6z"></path>
+                                                    <circle cx="5" cy="5" r="5" fill="#555555"></circle>
+                                                    <circle fill="#555555" cx="19" cy="5" r="5"></circle>
+                                                    <circle fill="#555555" cx="33" cy="5" r="5"></circle>
+                                                </svg>
                                             <?php endif ?>
                                             <?= $data['info']['niveauFormation']; ?>
                                         <li><i class="fa-solid fa-calendar-days"></i>

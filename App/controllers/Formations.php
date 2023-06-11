@@ -102,18 +102,19 @@ class Formations extends Controller
 			$data["levels"] = $this->stockedModel->getAllLevels();
 			$data["languages"] = $this->stockedModel->getAllLangues();
 
+
 			// Generate formation code if private
-			if($data["etat_formation"]=="private"){
-				$code_formation=bin2hex(random_bytes(20));
-				$isValideCode=$this->formationModel->isValideCode($code_formation);
+			if ($data["etat_formation"] == "private") {
+				$code_formation = bin2hex(random_bytes(20));
+				$isValideCode = $this->formationModel->isValideCode($code_formation);
 				// if the code already used generate other one
-				while(!$isValideCode){
-					$code_formation=bin2hex(random_bytes(20));
-					$isValideCode=$this->formationModel->isValideCode($code_formation);
+				while (!$isValideCode) {
+					$code_formation = bin2hex(random_bytes(20));
+					$isValideCode = $this->formationModel->isValideCode($code_formation);
 				}
-				$data["code_formation"]=$code_formation;
-			}else{
-				$data["code_formation"]=null;
+				$data["code_formation"] = $code_formation;
+			} else {
+				$data["code_formation"] = null;
 			}
 
 			// validate data
@@ -154,6 +155,8 @@ class Formations extends Controller
 			$data["levels"] = $this->stockedModel->getAllLevels();
 			$data["languages"] = $this->stockedModel->getAllLangues();
 			$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
+			$themeData = $this->stockedModel->getThemeData();
+			$data["logo"] = URLROOT . "/Public/" . $themeData["logo"];
 			$this->view("formation/addFormation", $data);
 		}
 	}

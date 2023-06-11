@@ -72,10 +72,26 @@ $(document).ready(function () {
     const videoComments = JSON.parse(
       $(this).find(".video-duration").attr("data-video-comments")
     );
-    $(".main-video video").attr("src", videoUrl);
+
     $(".container .main-video-name").text(videoName);
     $(".main-video-duration").text(videoDuration);
     $("p.desc").text(videoDesc);
+
+    const config = {
+      sources: [
+        {
+          type: "mp4",
+          src: videoUrl,
+        },
+      ],
+      ui: {
+        pip: true, // by default, pip is not enabled in the UI.
+      },
+    };
+
+    const element = document.getElementById("playerContainer");
+    element.innerHTML = "";
+    const player = IndigoPlayer.init(element, config);
 
     // comments
     let commentsText = "";
@@ -116,15 +132,11 @@ $(document).ready(function () {
 
     // comment validation
     if ($comment.length > 500) {
-      $(".comment-entry .comment-error").text(
-        "500 caractères au maximum"
-      );
+      $(".comment-entry .comment-error").text("500 caractères au maximum");
       return;
     } else {
       if ($comment.length < 4) {
-        $(".comment-entry .comment-error").text(
-          "4 caractères au minimum"
-        );
+        $(".comment-entry .comment-error").text("4 caractères au minimum");
         return;
       }
     }
@@ -154,9 +166,7 @@ $(document).ready(function () {
     $(".cpt-caractere").text($cptComment);
     if ($cptComment >= 500) {
       $(".cpt-caractere").text(500);
-      $(".comment-entry .comment-error").text(
-        "500 caractères au maximum"
-      );
+      $(".comment-entry .comment-error").text("500 caractères au maximum");
       return;
     } else {
       $(".comment-entry .comment-error").text("");
@@ -192,41 +202,41 @@ $(document).ready(function () {
 });
 
 // video Time Trucking
-const videoTag = document.getElementById("video");
-videoTag.addEventListener("timeupdate", (e) => {
-  // set as watch if finched
-  if (videoTag.currentTime == videoTag.duration) {
-    watchVideo(etudiantId, videoId, true);
-  }
-  // tracking time
-  if (videoTag.currentTime != 0) {
-    let trackingData = [],
-      videoTracked = false;
-    if (window.localStorage.getItem("videosTimeData")) {
-      trackingData = JSON.parse(window.localStorage.getItem("videosTimeData"));
-    } else {
-      trackingData = [
-        {
-          videoid: videoId,
-          time: videoTag.currentTime,
-        },
-      ];
-    }
-    trackingData.forEach((video) => {
-      if (video.videoid == videoId) {
-        video.time = videoTag.currentTime;
-        videoTracked = true;
-      }
-    });
-    if (videoTracked == false) {
-      trackingData.push({
-        videoid: videoId,
-        time: videoTag.currentTime,
-      });
-    }
-    window.localStorage.setItem("videosTimeData", JSON.stringify(trackingData));
-  }
-});
+// const videoTag = document.getElementById("video");
+// videoTag.addEventListener("timeupdate", (e) => {
+//   // set as watch if finched
+//   if (videoTag.currentTime == videoTag.duration) {
+//     watchVideo(etudiantId, videoId, true);
+//   }
+//   // tracking time
+//   if (videoTag.currentTime != 0) {
+//     let trackingData = [],
+//       videoTracked = false;
+//     if (window.localStorage.getItem("videosTimeData")) {
+//       trackingData = JSON.parse(window.localStorage.getItem("videosTimeData"));
+//     } else {
+//       trackingData = [
+//         {
+//           videoid: videoId,
+//           time: videoTag.currentTime,
+//         },
+//       ];
+//     }
+//     trackingData.forEach((video) => {
+//       if (video.videoid == videoId) {
+//         video.time = videoTag.currentTime;
+//         videoTracked = true;
+//       }
+//     });
+//     if (videoTracked == false) {
+//       trackingData.push({
+//         videoid: videoId,
+//         time: videoTag.currentTime,
+//       });
+//     }
+//     window.localStorage.setItem("videosTimeData", JSON.stringify(trackingData));
+//   }
+// });
 
 // ======================================== Ajax Calls =========================================
 function likeToIt(idEtudiant, idFormation) {
