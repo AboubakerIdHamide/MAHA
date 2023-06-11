@@ -120,9 +120,25 @@ $(document).ready(function () {
     const $modalLangue = $("#langue");
     const $modalIdFormation = $("#id");
     const $miniatureUploader = $("#miniature-uploader");
+    const $codeFormationBtn = $("#copy-code-btn");
+    const $visibility = $("#visibility");
+
     const currentCours = courses.filter(
       (cours) => cours.id == coursesSelected[0]
     )[0];
+
+    if(currentCours.etat_formation=="private" && currentCours.code_formation!=null){
+      $codeFormationBtn.show();
+      $codeFormationBtn.on('click', ()=>{
+        navigator.clipboard.writeText(currentCours.code_formation);
+        $codeFormationBtn.html(`Copié <i class="fa-solid fa-check"></i>`);
+        setTimeout(()=>{
+          $codeFormationBtn.html(`Code privé <i class="fa-solid fa-copy"></i>`);
+        }, 5000)
+      })
+    }else{
+      $codeFormationBtn.hide();
+    }
 
     $modalTitle.val(currentCours.titre);
     $modalDescription.val(currentCours.description);
@@ -137,6 +153,10 @@ $(document).ready(function () {
     $modalIdFormation.val(currentCours.id);
     $ressource.attr("data-id-formation", currentCours.id);
     $miniatureUploader.attr("data-id-formation", currentCours.id);
+    $visibility.html(`
+      <option value="public" ${currentCours.etat_formation=='public'?'selected':''}>Public</option>
+      <option value="private"  ${currentCours.etat_formation=='private'?'selected':''}>Privé</option>
+    `);
   });
 
   function removeTags(str) {
@@ -151,7 +171,7 @@ $(document).ready(function () {
 
   // Validation inputs
   function ValidationInputs({ title, description, prix }) {
-    const cours = courses.filter((cours) => cours.id === coursesSelected[0])[0];
+    const cours = courses.filter((cours) => cours.id == coursesSelected[0])[0];
     const titre = removeTags(title.val());
     const desc = removeTags(description.val());
     const price = prix.val();
@@ -174,13 +194,13 @@ $(document).ready(function () {
 
     // description
     if (desc.length > 0) {
-      if (desc.length < 500 && desc.length >= 10) {
+      if (desc.length < 700 && desc.length >= 10) {
         cours.description = desc;
         $(".error-desc").text("");
       } else {
         if (desc.length < 10)
           $(".error-desc").text("10 caractères au minimum !!!");
-        else $(".error-desc").text("500 caractères au maximum !!!");
+        else $(".error-desc").text("700 caractères au maximum !!!");
         return false;
       }
     } else {

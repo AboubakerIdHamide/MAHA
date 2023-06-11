@@ -49,8 +49,8 @@ class Formations extends Controller
 			if ($countDesc < 10)
 				return '10 caractères au minimum !!!';
 			else
-				if ($countDesc > 500)
-				return '500 caractères au maximum !!!';
+				if ($countDesc > 700)
+				return '700 caractères au maximum !!!';
 		} else
 			return 'Veuillez remplir le champ description !!!';
 
@@ -76,6 +76,10 @@ class Formations extends Controller
 		$langue = $data['langue'];
 		if (empty($this->stockedModel->getLangueById($langue)))
 			return "Ce language est invalide !!!";
+
+		// visibilty
+		if($data['visibility']!="public" && $data['visibility']!="private")
+			return "Etat de formation invalide !!!";
 
 		return false;
 	}

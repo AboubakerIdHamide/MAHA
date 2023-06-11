@@ -72,7 +72,7 @@ INSERT INTO `categories` (`id_categorie`, `icon`, `nom_categorie`) VALUES
 	(1, '<i class="fa-brands fa-unity"></i>', '3D'),
 	(2, '<i class="fa-solid fa-ruler-combined"></i>', 'Architecture & BIM'),
 	(3, '<i class="fa-solid fa-sliders"></i>', 'Audio-MAO'),
-	(4, '<i class="fa-sharp fa-solid fa-briefcase"></i>', 'Business & Efficacité professionnelle'),
+	(4, '<i class="fa-sharp fa-solid fa-briefcase"></i>', 'Business & Finance'),
 	(5, '<i class="fa-solid fa-code"></i>', 'Code'),
 	(6, '<i class="fa-sharp fa-solid fa-pen-nib"></i>', 'Infographie'),
 	(7, '<i class="fa-solid fa-camera-retro"></i>', 'Photographie'),
@@ -80,8 +80,7 @@ INSERT INTO `categories` (`id_categorie`, `icon`, `nom_categorie`) VALUES
 	(9, '<i class="fa-solid fa-chart-simple"></i>', 'Webmarketing'),
 	(10, '<i class="fa-solid fa-network-wired"></i>', 'Réseaux informatique'),
 	(11, '<i class="fa-solid fa-list-check"></i>', 'Management'),
-	(12, '<i class="fa-solid fa-computer-mouse"></i>', 'Bureautique'),
-	(13, 'sdfsd', 'Somf');
+	(12, '<i class="fa-solid fa-computer-mouse"></i>', 'Bureautique');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 
 -- Dumping structure for table maha.commentaires
@@ -587,7 +586,7 @@ CREATE TABLE IF NOT EXISTS `theme` (
 -- Dumping data for table maha.theme: ~0 rows (approximately)
 /*!40000 ALTER TABLE `theme` DISABLE KEYS */;
 INSERT INTO `theme` (`id`, `logo`, `landingImg`) VALUES
-	(1, 'images/maha.png', 'images/online_learning.svg');
+	(1, 'images/maha.png', 'images/banner_home.jpg');
 /*!40000 ALTER TABLE `theme` ENABLE KEYS */;
 
 -- Dumping structure for table maha.videos

@@ -190,7 +190,7 @@ class Ajax extends Controller
                     $user = $this->fomateurModel->getFormateurByEmail($email);
                     if (!empty($user)) {
                         $user["type"] = "formateur";
-                        $url = $this->createUserSessios($user);
+                        $url = $this->createUserSessions($user);
                         echo json_encode([
                             "authorized" => true,
                             "message" => "rediriger ...",
@@ -204,7 +204,7 @@ class Ajax extends Controller
                     }
                 } else {
                     $user["type"] = "etudiant";
-                    $url = $this->createUserSessios($user);
+                    $url = $this->createUserSessions($user);
                     echo json_encode([
                         "authorized" => true,
                         "message" => "rediriger ...",
@@ -242,7 +242,7 @@ class Ajax extends Controller
                 $user = $this->fomateurModel->getFormateurByEmail($email);
                 if (!empty($user)) {
                     $user["type"] = "formateur";
-                    $url = $this->createUserSessios($user);
+                    $url = $this->createUserSessions($user);
                     echo json_encode([
                         "authorized" => true,
                         "message" => "rediriger ...",
@@ -256,7 +256,7 @@ class Ajax extends Controller
                 }
             } else {
                 $user["type"] = "etudiant";
-                $url = $this->createUserSessios($user);
+                $url = $this->createUserSessions($user);
                 echo json_encode([
                     "authorized" => true,
                     "message" => "rediriger ...",
@@ -271,7 +271,7 @@ class Ajax extends Controller
         }
     }
 
-    public function createUserSessios($user)
+    public function createUserSessions($user)
     {
         if ($user['type'] == 'formateur') {
             $_SESSION['id_formateur'] = $user['id_formateur'];

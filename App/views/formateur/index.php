@@ -182,6 +182,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5">Modification</h1>
+                        <button class="btn btn-primary ms-2" id="copy-code-btn">
+                            Code privé <i class="fa-solid fa-copy"></i>
+                        </button>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -232,6 +235,13 @@
                                     <?php endforeach; ?>
                                 </select>
                                 <small class="error-niveau text-danger"></small>
+                            </div>
+                            <div class="mb-3">
+                                <label for="visibility" class="form-label" style="font-weight: 600;">Etat de Formation</label>
+                                <select class="form-select" name="visibility" id="visibility">
+                                    <!-- Public | Private -->
+                                </select>
+                                <small class="error-visibility text-danger"></small>
                             </div>
                             <div class="mb-3">
                                 <label for="miniature" class="form-label" style="font-weight: 600;">Miniature</label>

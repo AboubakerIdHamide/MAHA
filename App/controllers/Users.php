@@ -227,7 +227,7 @@ class Users extends Controller
         // send Email Verification
         if (isset($_SESSION["vcode"]) == true && $_SESSION["resend"] == true) {
             $email = $this->model("Smtp")->getSmtp()['username'];
-            $this->sendEmail($data[0]["email"], $email, 'MAHA', 'Email vérification', null, $data[0]["prenom"], $_SESSION["vcode"], URLROOT . "/pages/verifyEmail");
+            $this->sendEmail($data[0]["email"], $email, 'MAHA', 'Email verification', null, $data[0]["prenom"], $_SESSION["vcode"], URLROOT . "/pages/verifyEmail");
             $_SESSION["resend"] = false;
         }
     }

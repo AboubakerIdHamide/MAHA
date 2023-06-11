@@ -50,9 +50,33 @@ class Formation
     public function updateFormation($dataFormation)
     {
         $request = $this->connect->prepare("UPDATE formations 
-            SET niveau_formation=:niveau_formation, categorie=:categorie, nom_formation=:nom_formation, prix_formation=:prix_formation, description=:description, id_langue=:langue 
+            SET 
+            niveau_formation=:niveau_formation,
+            categorie=:categorie,
+            nom_formation=:nom_formation,
+            prix_formation=:prix_formation,
+            description=:description,
+            id_langue=:langue,
+            etat_formation=:etat_formation,
+            code_formation=:code_formation
             WHERE  id_formation=:id");
 
+        // Generate formation code if private
+        if ($dataFormation["visibility"] == "private") {
+            $code_formation = bin2hex(random_bytes(20));
+            $isValideCode = $this->isValideCode($code_formation);
+            // if the code already used generate other one
+            while (!$isValideCode) {
+                $code_formation = bin2hex(random_bytes(20));
+                $isValideCode = $this->isValideCode($code_formation);
+            }
+            $dataFormation["code_formation"] = $code_formation;
+        } else {
+            $dataFormation["code_formation"] = null;
+        }
+
+
+        //  validate
         $dataFormation["niveauFormation"] = htmlspecialchars($dataFormation["niveauFormation"]);
         $dataFormation["langue"] = htmlspecialchars($dataFormation["langue"]);
         $dataFormation["categorie"] = htmlspecialchars($dataFormation["categorie"]);
@@ -67,6 +91,8 @@ class Formation
         $request->bindParam(":nom_formation", $dataFormation["titre"]);
         $request->bindParam(":prix_formation", $dataFormation["prix"]);
         $request->bindParam(":description", $dataFormation["description"]);
+        $request->bindParam(":etat_formation", $dataFormation["visibility"]);
+        $request->bindParam(":code_formation", $dataFormation["code_formation"]);
         $request->bindParam(":id", $dataFormation["id_formation"]);
 
         $response = $request->execute();
@@ -128,7 +154,9 @@ class Formation
                     id_langue AS langue,
                     niveau_formation AS niveauFormation,
                     categorie,
-                    fichier_attache AS file
+                    fichier_attache AS file,
+                    etat_formation,
+                    code_formation
                 FROM formations f
                 JOIN formateurs USING (id_formateur)
                 WHERE id_formateur = :id
@@ -196,6 +224,7 @@ class Formation
                     formateurs.img_formateur as 'imgFormateur'
             from formations, formateurs,categories, inscriptions
             where formations.id_formateur = formateurs.id_formateur
+            and formations.etat_formation = 'public'
             and categories.id_categorie = formations.categorie
             and inscriptions.payment_state = 'approved'
             order by formations.likes desc
@@ -223,7 +252,9 @@ class Formation
                     formateurs.img_formateur as 'imgFormateur'
             from formations, formateurs, categories
             where formations.id_formateur = formateurs.id_formateur and formations.id_formateur = :id
-            and categories.id_categorie = formations.categorie;
+            and categories.id_categorie = formations.categorie
+            and formations.etat_formation = 'public'
+            ;
         ");
         $request->bindParam(":id", $id);
         $request->execute();
@@ -376,6 +407,7 @@ class Formation
                     formateurs.img_formateur as 'imgFormateur'
             from formations, formateurs,categories
             where formations.id_formateur = formateurs.id_formateur
+            and formations.etat_formation = 'public'
             and categories.id_categorie = formations.categorie
             order by formations.likes desc
             limit  {$numbDeb}, 10;
@@ -392,6 +424,7 @@ class Formation
             from formations,categories
             where categories.id_categorie = formations.categorie
             and categories.nom_categorie = :categorie
+            and formations.etat_formation = 'public'
             and (
                 formations.nom_formation like '%{$choi}%' 
                 or formations.description like '%{$choi}%'
@@ -423,6 +456,7 @@ class Formation
             where formations.id_formateur = formateurs.id_formateur
             and categories.id_categorie = formations.categorie
             and categories.nom_categorie = :categorie
+            and formations.etat_formation = 'public'
             and (
                 formations.nom_formation like '%{$choi}%' 
                 or formations.description like '%{$choi}%'
@@ -443,6 +477,7 @@ class Formation
             from formations, formateurs,categories
             where formations.id_formateur = formateurs.id_formateur
             and categories.id_categorie = formations.categorie
+            and formations.etat_formation = 'public'
             and (
                 categories.nom_categorie like '%{$val}%'
                 or formateurs.nom_formateur like '%{$val}%'
@@ -476,6 +511,7 @@ class Formation
             from formations, formateurs,categories
             where formations.id_formateur = formateurs.id_formateur
             and categories.id_categorie = formations.categorie
+            and formations.etat_formation = 'public'
             and (
                 categories.nom_categorie like '%{$val}%'
                 or formateurs.nom_formateur like '%{$val}%'
@@ -511,6 +547,7 @@ class Formation
             from formations, formateurs,categories
             where formations.id_formateur = formateurs.id_formateur
             and categories.id_categorie = formations.categorie
+            and formations.etat_formation = 'public'
             order by formations.likes desc
             limit  {$numbDeb} , 10;
         ");
@@ -539,6 +576,7 @@ class Formation
             from formations, formateurs,categories
             where formations.id_formateur = formateurs.id_formateur
             and categories.id_categorie = formations.categorie
+            and formations.etat_formation = 'public'
             order by 'numbAcht' desc
             limit  {$numbDeb} , 10;
         ");
