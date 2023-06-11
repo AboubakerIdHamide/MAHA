@@ -56,27 +56,30 @@
                         <div class="fomation-niveau text-center mb-1">
                             <div class="level-indicator">
                                 <?php if ($data->niveau_formation == 1) { ?>
-                                    <svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="#E5E5E5" d="M9 4h6v2H9zM23 4h6v2h-6z"></path>
-                                        <circle cx="5" cy="5" r="5" fill="#8887FF"></circle>
-                                        <circle fill="#E5E5E5" cx="19" cy="5" r="5"></circle>
-                                        <circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle>
-                                    </svg>
+                                <svg width="58" height="30" viewBox="0 0 38 10" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill="#E5E5E5" d="M9 4h6v2H9zM23 4h6v2h-6z"></path>
+                                    <circle cx="5" cy="5" r="5" fill="#8887FF"></circle>
+                                    <circle fill="#E5E5E5" cx="19" cy="5" r="5"></circle>
+                                    <circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle>
+                                </svg>
                                 <?php } elseif ($data->niveau_formation == 2) { ?>
-                                    <svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M9 4h6v2H9z" fill="#8887FF"></path>
-                                        <path d="M23 4h6v2h-6z" fill="#E5E5E5"></path>
-                                        <circle cx="5" cy="5" r="5" fill="#8887FF"></circle>
-                                        <circle cx="19" cy="5" r="5" fill="#8887FF"></circle>
-                                        <circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle>
-                                    </svg>
+                                <svg width="58" height="30" viewBox="0 0 38 10" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 4h6v2H9z" fill="#8887FF"></path>
+                                    <path d="M23 4h6v2h-6z" fill="#E5E5E5"></path>
+                                    <circle cx="5" cy="5" r="5" fill="#8887FF"></circle>
+                                    <circle cx="19" cy="5" r="5" fill="#8887FF"></circle>
+                                    <circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle>
+                                </svg>
                                 <?php } elseif ($data->niveau_formation == 3) { ?>
-                                    <svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="#8887FF" d="M9 4h6v2H9zM23 4h6v2h-6z"></path>
-                                        <circle cx="5" cy="5" r="5" fill="#8887FF"></circle>
-                                        <circle fill="#8887FF" cx="19" cy="5" r="5"></circle>
-                                        <circle fill="#8887FF" cx="33" cy="5" r="5"></circle>
-                                    </svg>
+                                <svg width="58" height="30" viewBox="0 0 38 10" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill="#8887FF" d="M9 4h6v2H9zM23 4h6v2h-6z"></path>
+                                    <circle cx="5" cy="5" r="5" fill="#8887FF"></circle>
+                                    <circle fill="#8887FF" cx="19" cy="5" r="5"></circle>
+                                    <circle fill="#8887FF" cx="33" cy="5" r="5"></circle>
+                                </svg>
                                 <?php }; ?>
                             </div>
                             <p>Niveau <?= $data->niveau ?></p>
@@ -112,18 +115,27 @@
                         <ul>
                             <?php $cpt = 1 ?>
                             <?php foreach ($data->videos as $video) { ?>
-                                <!-- max 50 chars video name or less -->
-                                <li class="d-flex justify-content-between mt-1 <?= $video == $data->videos[0] ? "selected" : "" ?>">
-                                    <div class="d-flex align-items-center"><i class="fa-solid <?= $video == $data->videos[0] ? "fa-circle-pause" : "fa-circle-play" ?>"></i>&nbsp;&nbsp;&nbsp;<span data-video-id="<?= $video->id_video ?>" data-video-desc="<?= $video->description_video ?>" class="video-name"><?= $cpt++ . ". " . $video->nom_video ?></span></div>
-                                    <div class="d-flex align-items-center">
-                                        <span class="tooltip-circle-check me-3">
-                                            <i class="<?= $video->watched ? "fa-solid" : "fa-regular" ?> fa-circle-check" id="watch-<?= $video->id_video ?>"></i>
-                                        </span>
-                                        <span class="tooltip-bookmark">
-                                            <i class="<?= $video->bookmarked ? "fa-solid" : "fa-regular" ?> fa-bookmark"></i></span>&nbsp;&nbsp;&nbsp;
-                                        <span class="video-duration" data-video-url="<?= $video->url_video ?>" id="video-<?= $video->id_video ?>" data-video-comments='<?= json_encode($video->comments) ?>'><?= $video->duree_video ?></span>
-                                    </div>
-                                </li>
+                            <!-- max 50 chars video name or less -->
+                            <li
+                                class="d-flex justify-content-between mt-1 <?= $video == $data->videos[0] ? "selected" : "" ?>">
+                                <div class="d-flex align-items-center"><i
+                                        class="fa-solid <?= $video == $data->videos[0] ? "fa-circle-pause" : "fa-circle-play" ?>"></i>&nbsp;&nbsp;&nbsp;<span
+                                        data-video-id="<?= $video->id_video ?>"
+                                        data-video-desc="<?= $video->description_video ?>"
+                                        class="video-name"><?= $cpt++ . ". " . $video->nom_video ?></span></div>
+                                <div class="d-flex align-items-center">
+                                    <span class="tooltip-circle-check me-3">
+                                        <i class="<?= $video->watched ? "fa-solid" : "fa-regular" ?> fa-circle-check"
+                                            id="watch-<?= $video->id_video ?>"></i>
+                                    </span>
+                                    <span class="tooltip-bookmark">
+                                        <i
+                                            class="<?= $video->bookmarked ? "fa-solid" : "fa-regular" ?> fa-bookmark"></i></span>&nbsp;&nbsp;&nbsp;
+                                    <span class="video-duration" data-video-url="<?= $video->url_video ?>"
+                                        id="video-<?= $video->id_video ?>"
+                                        data-video-comments='<?= json_encode($video->comments) ?>'><?= $video->duree_video ?></span>
+                                </div>
+                            </li>
                             <?php } ?>
                         </ul>
                     </div>
@@ -133,25 +145,26 @@
     </section>
     <!-- RESSOURCES -->
     <?php if (isset($data->ressources)) { ?>
-        <section class="section-title" id="catalogue">
-            <div class="container">
-                <div>
-                    <h2>RESSOURCES</h2>
-                    <p>LES FICHIERS ATTACHÉS</p>
+    <section class="section-title" id="catalogue">
+        <div class="container">
+            <div>
+                <h2>RESSOURCES</h2>
+                <p>LES FICHIERS ATTACHÉS</p>
+            </div>
+        </div>
+    </section>
+    <!-- Fin RESSOURCES -->
+    <section class="container">
+        <div class="row">
+            <div class="col mb-2">
+                <div class="ressources">
+                    <p>Vous pouvez télécharger les fichiers attachés avec cette video en cliquant sur le button
+                        au-dessous :</p><a href="#" target="_blank" class="submit-btn" download><i
+                            class="fa-sharp fa-solid fa-download"></i>&nbsp;&nbsp;Télécharger</a>
                 </div>
             </div>
-        </section>
-        <!-- Fin RESSOURCES -->
-        <section class="container">
-            <div class="row">
-                <div class="col mb-2">
-                    <div class="ressources">
-                        <p>Vous pouvez télécharger les fichiers attachés avec cette video en cliquant sur le button
-                            au-dessous :</p><a href="#" target="_blank" class="submit-btn" download><i class="fa-sharp fa-solid fa-download"></i>&nbsp;&nbsp;Télécharger</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
+    </section>
     <?php } ?>
     <!-- DESCRIPTION Head -->
     <section class="section-title mt-4" id="catalogue">
@@ -189,16 +202,19 @@
             <div class="col">
                 <div class="my-comments">
                     <?php foreach ($data->videos[0]->comments as $comment) { ?>
-                        <div class="d-flex gap-2 mb-2 <?php if ($comment->type_user === "formateur") echo "flex-row-reverse" ?>">
-                            <img class="align-self-start" src="http://localhost/maha/public/<?= $comment->image ?>" alt="my-photo">
-                            <div class="d-flex flex-column <?= ($comment->type_user === "formateur") ? "formateur-comment" : "etudiant-comment" ?>">
-                                <span class="my-name"><?= $comment->nom . " " . $comment->prenom ?></span>
-                                <p><?= $comment->commentaire ?></p>
-                                <div class="d-flex justify-content-between">
-                                    <small><?= $comment->created_at ?></small>
-                                </div>
+                    <div
+                        class="d-flex gap-2 mb-2 <?php if ($comment->type_user === "formateur") echo "flex-row-reverse" ?>">
+                        <img class="align-self-start" src="http://localhost/maha/public/<?= $comment->image ?>"
+                            alt="my-photo">
+                        <div
+                            class="d-flex flex-column <?= ($comment->type_user === "formateur") ? "formateur-comment" : "etudiant-comment" ?>">
+                            <span class="my-name"><?= $comment->nom . " " . $comment->prenom ?></span>
+                            <p><?= $comment->commentaire ?></p>
+                            <div class="d-flex justify-content-between">
+                                <small><?= $comment->created_at ?></small>
                             </div>
                         </div>
+                    </div>
                     <?php } ?>
                 </div>
             </div>
@@ -216,7 +232,9 @@
                 </div>
             </div>
             <div class="col-lg-2 col-md-2 d-lg-block d-md-block d-flex justify-content-center">
-                <button data-to-user="<?= $data->id_formateur ?>" data-type-user="<?= trim($_SESSION['user']['type']) ?>" type="submit" class="submit-btn">Envoyer</button>
+                <button data-to-user="<?= $data->id_formateur ?>"
+                    data-type-user="<?= trim($_SESSION['user']['type']) ?>" type="submit"
+                    class="submit-btn">Envoyer</button>
             </div>
         </div>
     </section>
@@ -224,26 +242,26 @@
     <span class="to-top" href="#"><i class="fa fa-chevron-up"></i></span>
     <!-- To-up Button -->
     <div id="playerContainer"></div>
-    <script src="<?= URLROOT . "/Public/js/indigo-player.js" ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/indigo-player@1/lib/indigo-player.js"></script>
     <script>
-        const urlRoot = "<?= URLROOT ?>";
-        const formationId = <?= $data->id_formation ?>;
-        const fromUser = "<?= $data->id_etudiant ?>";
-        const etudiantImageSrc = "<?= $data->img_etudiant ?>";
-        const etudiantFullName = "<?= $data->nom_etudiant . " " . $data->prenom_etudiant ?>";
-        let videoId = <?= $data->videos[0]->id_video ?>;
-        const config = {
-            sources: [{
-                type: "mp4",
-                src: "<?= $data->videos[0]->url_video ?>",
-            }, ],
-            ui: {
-                pip: true, // by default, pip is not enabled in the UI.
-            },
-        };
+    const urlRoot = "<?= URLROOT ?>";
+    const formationId = <?= $data->id_formation ?>;
+    const fromUser = "<?= $data->id_etudiant ?>";
+    const etudiantImageSrc = "<?= $data->img_etudiant ?>";
+    const etudiantFullName = "<?= $data->nom_etudiant . " " . $data->prenom_etudiant ?>";
+    let videoId = <?= $data->videos[0]->id_video ?>;
+    const config = {
+        sources: [{
+            type: "mp4",
+            src: "<?= $data->videos[0]->url_video ?>",
+        }, ],
+        ui: {
+            pip: true, // by default, pip is not enabled in the UI.
+        },
+    };
 
-        const element = document.getElementById("playerContainer");
-        const player = IndigoPlayer.init(element, config);
+    const element = document.getElementById("playerContainer");
+    const player = IndigoPlayer.init(element, config);
     </script>
     <script src="<?= URLROOT . "/Public/jQuery/jquery-3.6.0.min.js" ?>"></script>
     <script src="<?= URLROOT . "/Public/js/cours-details-paid.js" ?>"></script>
