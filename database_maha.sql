@@ -274,6 +274,7 @@ begin
                     from formations, formateurs,categories
                     where formations.id_formateur = formateurs.id_formateur
                     and categories.id_categorie = formations.categorie
+                    and formations.etat_formation = "public"
     );
   open cur;
       while (i<=nb) do 
@@ -324,6 +325,7 @@ begin
                     where formations.id_formateur = formateurs.id_formateur
                     and categories.id_categorie = formations.categorie
                     and categories.nom_categorie = arg1
+                    and formations.etat_formation = "public"
                     and (
                     formations.nom_formation like concat('%',arg2,'%') 
                       or formations.description like concat('%',arg2,'%')
@@ -377,6 +379,7 @@ begin
                     from formations, formateurs,categories
                     where formations.id_formateur = formateurs.id_formateur
                     and categories.id_categorie = formations.categorie
+                    and formations.etat_formation = "public"
                     and (
                       categories.nom_categorie like concat('%',arg,'%')
                       or formateurs.nom_formateur like concat('%',arg,'%')
