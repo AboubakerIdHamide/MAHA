@@ -155,8 +155,7 @@ class Formation
                     niveau_formation AS niveauFormation,
                     categorie,
                     fichier_attache AS file,
-                    etat_formation,
-                    code_formation
+                    etat_formation
                 FROM formations f
                 JOIN formateurs USING (id_formateur)
                 WHERE id_formateur = :id
@@ -755,17 +754,17 @@ class Formation
     }
 
     // checking code of formation is already used
-    public function isValideCode($code)
-    {
-        $request = $this->connect->prepare("SELECT code_formation FROM formations WHERE code_formation=:code");
-        $request->bindParam(":code", $code);
-        $request->execute();
-        $response = $request->fetch();
-        if (!empty($response)) {
-            return false;
-        }
-        return true;
-    }
+    // public function isValideCode($code)
+    // {
+    //     $request = $this->connect->prepare("SELECT code_formation FROM formations WHERE code_formation=:code");
+    //     $request->bindParam(":code", $code);
+    //     $request->execute();
+    //     $response = $request->fetch();
+    //     if (!empty($response)) {
+    //         return false;
+    //     }
+    //     return true;
+    // }
 
     public function joinCourse($code)
     {
