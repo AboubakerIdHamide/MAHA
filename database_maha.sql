@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
   PRIMARY KEY (`id_admin`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.admin: ~0 rows (approximately)
+-- Dumping data for table maha.admin: ~1 rows (approximately)
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
 INSERT INTO `admin` (`id_admin`, `nom_admin`, `prenom_admin`, `email_admin`, `img_admin`, `mot_de_passe`, `balance`, `platform_pourcentage`, `username_paypal`, `password_paypal`) VALUES
 	(1, 'sdknsdf', 'sdfsdfsdf', 'sarouti@gmail.com', 'images/membre.jpg', 'admin123@@@', 431, 10, 'Af173BC6L0TzwyZG3Q1ToevB8qmvCAOI_xmgtNnbKex2QydeYCM335mCsvJwvuupkJmABbUxYnThj9wE', 'ELTMVnjyg1lmDXDnZZTTVJKeLrWBfz5Cgg0GGp-9hPKzKwqY7GwkQEm5upYE4t6y2ip_JutuifOMD_0x');
@@ -204,8 +204,7 @@ INSERT INTO `formations` (`id_formation`, `niveau_formation`, `id_formateur`, `c
 	(8, 1, 'FOR4', 2, 'Dolores quos nisi pl', 'images/formations/images/16798.jpg', '00:00:11', '2023-03-29 03:23:03', 86.00, 'Eveniet earum et ve Eveniet earum et ve Eveniet earum et ve Eveniet earum et ve Eveniet earum et ve Eveniet earum et ve Eveniet earum et ve Eveniet earum et ve Eveniet earum et ve Eveniet earum et ve Eveniet earum et ve Eveniet earum et ve Eveniet ', 2, 0, NULL, 'public'),
 	(9, 2, 'FOR4', 1, 'Molestiae aute paria', 'images/formations/images/22679.jpg', '00:00:11', '2023-03-29 03:23:20', 96.00, 'Optio amet et ab o Optio amet et ab oOptio amet et ab oOptio amet et ab oOptio amet et ab oOptio amet et ab oOptio amet et ab oOptio amet et ab oOptio amet et ab oOptio amet et ab oOptio amet et ab oOptio amet et ab oOptio amet et ab oOptio amet et ab oOptio amet et ab oOptio amet et ab oOptio amet et ab o', 4, 1, NULL, 'public'),
 	(10, 2, 'FOR5', 12, 'Magnam et labore hic', 'images/formations/images/30011.jpg', '00:00:11', '2023-03-29 03:24:24', 21.00, 'Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und Nihil aspernatur und ', 3, 1, NULL, 'public'),
-	(11, 3, 'FOR5', 11, 'Porro earum pariatur', 'images/formations/images/27600.jpg', '00:00:11', '2023-03-29 03:24:36', 14.00, 'Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do ', 4, 0, NULL, 'public'),
-	(12, 2, 'FOR1', 4, 'Aut doloribus veniam', 'images/default_formation.jpg', '00:04:25', '2023-06-16 15:42:20', 44.00, 'Sit nulla sed labor Sit nulla sed laborSit nulla sed laborSit nulla sed laborSit nulla sed laborSit nulla sed laborSit nulla sed laborSit nulla sed laborSit nulla sed laborSit nulla sed laborSit nulla sed laborSit nulla sed laborSit nulla sed laborSit nulla sed laborSit nulla sed labor', 3, 0, NULL, 'private');
+	(11, 3, 'FOR5', 11, 'Porro earum pariatur', 'images/formations/images/27600.jpg', '00:00:11', '2023-03-29 03:24:36', 14.00, 'Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do Ducimus suscipit do ', 4, 0, NULL, 'public');
 /*!40000 ALTER TABLE `formations` ENABLE KEYS */;
 
 -- Dumping structure for table maha.inscriptions
@@ -498,7 +497,7 @@ CREATE TABLE IF NOT EXISTS `previews` (
   CONSTRAINT `previews_ibfk_2` FOREIGN KEY (`id_video`) REFERENCES `videos` (`id_video`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.previews: ~0 rows (approximately)
+-- Dumping data for table maha.previews: ~1 rows (approximately)
 /*!40000 ALTER TABLE `previews` DISABLE KEYS */;
 INSERT INTO `previews` (`id_formation`, `id_video`) VALUES
 	(1, 1);
@@ -516,7 +515,7 @@ CREATE TABLE IF NOT EXISTS `request_payment` (
   CONSTRAINT `FK_request_payment_formateurs` FOREIGN KEY (`id_formateur`) REFERENCES `formateurs` (`id_formateur`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.request_payment: ~0 rows (approximately)
+-- Dumping data for table maha.request_payment: ~1 rows (approximately)
 /*!40000 ALTER TABLE `request_payment` DISABLE KEYS */;
 INSERT INTO `request_payment` (`id_payment`, `id_formateur`, `request_prix`, `date_request`, `etat_request`) VALUES
 	(2, 'FOR1', 200, '2023-03-29 03:53:51', 'accepted');
@@ -532,7 +531,7 @@ CREATE TABLE IF NOT EXISTS `smtp` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.smtp: ~0 rows (approximately)
+-- Dumping data for table maha.smtp: ~1 rows (approximately)
 /*!40000 ALTER TABLE `smtp` DISABLE KEYS */;
 INSERT INTO `smtp` (`id`, `host`, `username`, `password`, `port`) VALUES
 	(1, 'smtp.gmail.com', 'mahateamisgi@gmail.com', 'nlazavosyxsxztqf', '465');
@@ -587,7 +586,7 @@ CREATE TABLE IF NOT EXISTS `theme` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.theme: ~0 rows (approximately)
+-- Dumping data for table maha.theme: ~1 rows (approximately)
 /*!40000 ALTER TABLE `theme` DISABLE KEYS */;
 INSERT INTO `theme` (`id`, `logo`, `landingImg`) VALUES
 	(1, 'images/maha.png', 'images/banner_home.jpg');
