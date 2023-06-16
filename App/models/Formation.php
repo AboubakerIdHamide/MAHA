@@ -771,15 +771,18 @@ class Formation
         $query = $this->connect->prepare("
         SELECT 
             id_formation,
-            id_formateur  
-        FROM formations
-        WHERE BINARY code_formation = :code");
+            formateurs.id_formateur,
+            nom_formateur,
+            prenom_formateur
+        FROM formateurs
+        JOIN formations ON formateurs.id_formateur = formations.id_formateur
+        WHERE BINARY code_formateur = :code");
 
         $query->execute(['code' => htmlspecialchars($code)]);
-        $formation = $query->fetch(PDO::FETCH_OBJ);
+        $formations = $query->fetchAll(PDO::FETCH_OBJ);
 
         if ($query->rowCount() > 0) {
-            return $formation;
+            return $formations;
         }
 
         return false;

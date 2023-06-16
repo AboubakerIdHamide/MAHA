@@ -297,30 +297,29 @@ class Ajax extends Controller
                 exit;
             }
 
-            $course = $this->formationModel->joinCourse($code);
-            if ($course) {
-                $inscription = $this->inscriptionModel->checkIfAlready($_SESSION['id_etudiant'], $course->id_formation);
-                if (!empty($inscription)) {
-                    echo json_encode("Vous etes deja inscrit dans cette formation.");
-                    http_response_code(400);
-                    exit;
+            $courses = $this->formationModel->joinCourse($code);
+            if ($courses) {
+                foreach ($courses as $course) {
+                    $inscription = $this->inscriptionModel->checkIfAlready($_SESSION['id_etudiant'], $course->id_formation);
+                    if (empty($inscription)) {
+                        $inscriptionData = [
+                            "id_formation" => $course->id_formation,
+                            "id_etudiant" => $_SESSION['id_etudiant'],
+                            "id_formateur" => $course->id_formateur,
+                            "prix" => 0,
+                            "transaction_info" => 0,
+                            "payment_id" => 0,
+                            "payment_state" => 0,
+                            "date_inscription" => date('Y-m-d H:i:s'),
+                            "approval_url" => 0
+                        ];
+
+                        $this->inscriptionModel->insertInscription($inscriptionData);
+                        http_response_code(201);
+                    }
                 }
 
-                $inscriptionData = [
-                    "id_formation" => $course->id_formation,
-                    "id_etudiant" => $_SESSION['id_etudiant'],
-                    "id_formateur" => $course->id_formateur,
-                    "prix" => 0,
-                    "transaction_info" => 0,
-                    "payment_id" => 0,
-                    "payment_state" => 0,
-                    "date_inscription" => date('Y-m-d H:i:s'),
-                    "approval_url" => 0
-                ];
-
-                $this->inscriptionModel->insertInscription($inscriptionData);
-                http_response_code(201);
-                flash("joined", "Vous avez rejoindre cette formation avec success.");
+                flash("joined", "Vous avez rejoindre toutes les formations de formateur <strong>{$courses[0]->nom_formateur} {$courses[0]->prenom_formateur}</strong>.");
             } else {
                 echo json_encode("ce code est invalid.");
                 http_response_code(404);
