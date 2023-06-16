@@ -1,5 +1,8 @@
 <?php
-// class Notifications
+
+/**
+ *  Model Notifications
+ */
 
 class Notification
 {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * class Etudiant
+ * Model Etudiant
  */
 
 class Etudiant
@@ -91,16 +91,17 @@ class Etudiant
 
 
 
-	public function updateEtudiantPasswordByEmail($dataEtudiant){
-			$request = $this->connect->prepare("UPDATE etudiants SET mot_de_passe = :mdp WHERE email_etudiant = :email");
-			$request->bindParam(':email', $dataEtudiant['email']);
-			$request->bindParam(':mdp', $dataEtudiant['mdp']);
-			$response = $request->execute();
+	public function updateEtudiantPasswordByEmail($dataEtudiant)
+	{
+		$request = $this->connect->prepare("UPDATE etudiants SET mot_de_passe = :mdp WHERE email_etudiant = :email");
+		$request->bindParam(':email', $dataEtudiant['email']);
+		$request->bindParam(':mdp', $dataEtudiant['mdp']);
+		$response = $request->execute();
 		return $response;
 	}
 
 
-		public function updateEtudiant($dataEtudiant)
+	public function updateEtudiant($dataEtudiant)
 	{
 		$request = $this->connect->prepare("
 								UPDATE etudiants
@@ -121,20 +122,22 @@ class Etudiant
 		return $response;
 	}
 
-	public function changeImg($img, $id){
+	public function changeImg($img, $id)
+	{
 		$request = $this->connect->prepare("
 							UPDATE etudiants
 							SET img_etudiant = :img
 							WHERE id_etudiant = :id");
-		
+
 		$request->bindParam(':img', $img);
 		$request->bindParam(':id', $id);
 		$response = $request->execute();
 
 		return $response;
 	}
-	
-	public function getMDPEtudiantById($id){
+
+	public function getMDPEtudiantById($id)
+	{
 		$request = $this->connect->prepare("
 				SELECT etudiants.mot_de_passe as 'mdp'
 				FROM  etudiants
@@ -146,7 +149,8 @@ class Etudiant
 		$mdp = $request->fetch();
 		return $mdp;
 	}
-	public function getEtudiantById($id){
+	public function getEtudiantById($id)
+	{
 		$request = $this->connect->prepare("SELECT etudiants.id_etudiant as 'IdEtudiant',
 												etudiants.nom_etudiant as 'nomEtudiant',
 												etudiants.prenom_etudiant as 'prenomEtudiant',

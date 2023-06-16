@@ -2,10 +2,14 @@
 
 class ProfilFormateur extends Controller
 {
+    private $stockedModel;
+    private $formationModel;
+    private $inscriptionModel;
+    private $fomateurModel;
+
     public function __construct()
     {
         $this->fomateurModel = $this->model("Formateur");
-        $this->etudiantModel = $this->model("Etudiant");
         $this->formationModel = $this->model("Formation");
         $this->inscriptionModel = $this->model("Inscription");
         $this->stockedModel = $this->model("Stocked");

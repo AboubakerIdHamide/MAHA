@@ -2,6 +2,12 @@
 
 class Formations extends Controller
 {
+	private $previewsModel;
+	private $formationModel;
+	private $videoModel;
+	private $stockedModel;
+	private $notificationModel;
+
 	public function __construct()
 	{
 		if (!isset($_SESSION['id_formateur'])) {
@@ -78,7 +84,7 @@ class Formations extends Controller
 			return "Ce language est invalide !!!";
 
 		// visibilty
-		if($data['visibility']!="public" && $data['visibility']!="private")
+		if ($data['visibility'] != "public" && $data['visibility'] != "private")
 			return "Etat de formation invalide !!!";
 
 		return false;

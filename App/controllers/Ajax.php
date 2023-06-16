@@ -2,6 +2,13 @@
 
 class Ajax extends Controller
 {
+    private $fomateurModel;
+    private $etudiantModel;
+    private $formationModel;
+    private $videoModel;
+    private $inscriptionModel;
+    private $commentaireModel;
+
     public function __construct()
     {
         $this->fomateurModel = $this->model("Formateur");

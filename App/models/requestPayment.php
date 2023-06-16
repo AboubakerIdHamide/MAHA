@@ -1,7 +1,7 @@
 <?php
 
 /**
- * class requestPayment
+ * Model requestPayment
  */
 
 class requestPayment

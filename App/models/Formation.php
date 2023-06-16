@@ -1,7 +1,7 @@
 <?php
 
 /**
- * class Model Formation
+ *  Model Formation
  */
 
 
@@ -754,17 +754,17 @@ class Formation
     }
 
     // checking code of formation is already used
-    // public function isValideCode($code)
-    // {
-    //     $request = $this->connect->prepare("SELECT code_formation FROM formations WHERE code_formation=:code");
-    //     $request->bindParam(":code", $code);
-    //     $request->execute();
-    //     $response = $request->fetch();
-    //     if (!empty($response)) {
-    //         return false;
-    //     }
-    //     return true;
-    // }
+    public function isValideCode($code)
+    {
+        $request = $this->connect->prepare("SELECT code_formation FROM formations WHERE code_formation=:code");
+        $request->bindParam(":code", $code);
+        $request->execute();
+        $response = $request->fetch();
+        if (!empty($response)) {
+            return false;
+        }
+        return true;
+    }
 
     public function joinCourse($code)
     {

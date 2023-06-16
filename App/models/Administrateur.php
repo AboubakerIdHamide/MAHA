@@ -1,7 +1,7 @@
 <?php
 
 /**
- * class Admin
+ * Model Admin
  */
 
 class Administrateur

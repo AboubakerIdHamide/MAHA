@@ -1,7 +1,7 @@
 <?php
 
 /**
- * class Formateur
+ * Model Formateur
  */
 
 class Formateur

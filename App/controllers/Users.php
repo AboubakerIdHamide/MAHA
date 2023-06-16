@@ -8,6 +8,10 @@ use PHPMailer\PHPMailer\Exception;
 
 class Users extends Controller
 {
+    private $stockedModel;
+    private $etudiantModel;
+    private $fomateurModel;
+
     public function __construct()
     {
         $this->fomateurModel = $this->model("Formateur");

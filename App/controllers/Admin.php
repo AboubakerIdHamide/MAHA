@@ -2,6 +2,16 @@
 
 class Admin extends Controller
 {
+    private $fomateurModel;
+    private $etudiantModel;
+    private $formationModel;
+    private $videoModel;
+    private $inscriptionModel;
+    private $adminModel;
+    private $requestPaymentModel;
+    private $stockedModel;
+    private $smtpModel;
+
     public function __construct()
     {
         $this->fomateurModel = $this->model("Formateur");

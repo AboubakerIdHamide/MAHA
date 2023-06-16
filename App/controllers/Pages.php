@@ -2,6 +2,13 @@
 
 class Pages extends Controller
 {
+	private $stockedModel;
+	private $formationModel;
+	private $inscriptionModel;
+	private $categorieModel;
+	private $formateurModel;
+	private $etudiantModel;
+
 	public function __construct()
 	{
 		$this->categorieModel = $this->model("Stocked");

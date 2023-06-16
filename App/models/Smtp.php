@@ -1,7 +1,7 @@
 <?php
 
 /**
- * class Smtp
+ * Model Smtp
  */
 
 class Smtp
@@ -15,7 +15,7 @@ class Smtp
 
 	public function replaceSmtp($smtpData)
 	{
-		if($this->getSmtp()){
+		if ($this->getSmtp()) {
 			$request = $this->connect->prepare("
 				UPDATE smtp 
 				SET host = :host, 
@@ -23,12 +23,12 @@ class Smtp
 				password = :password, 
 				port = :port
 			");
-		}else{
+		} else {
 			$request = $this->connect->prepare("
 				INSERT INTO smtp VALUES (DEFAULT, :host, :username, :password, :port)
 			");
 		}
-		
+
 
 		$request->bindParam(':host', $smtpData['host']);
 		$request->bindParam(':username', $smtpData['username']);

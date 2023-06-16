@@ -6,11 +6,11 @@ require_once './../vendor/autoload.php';
 class PaymentPaypal extends Controller
 {
 	private $access_token;
-	// private $username = 'Af173BC6L0TzwyZG3Q1ToevB8qmvCAOI_xmgtNnbKex2QydeYCM335mCsvJwvuupkJmABbUxYnThj9wE';
 	private $username;
 	private $password;
-	// private $password = 'ELTMVnjyg1lmDXDnZZTTVJKeLrWBfz5Cgg0GGp-9hPKzKwqY7GwkQEm5upYE4t6y2ip_JutuifOMD_0x';
-
+	private $adminModel;
+	private $formationModel;
+	private $inscriptionModel;
 
 	public function __construct()
 	{

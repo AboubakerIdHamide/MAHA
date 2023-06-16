@@ -1,7 +1,7 @@
 <?php
 
 /**
- * class Video
+ * Model Video
  */
 
 class Video

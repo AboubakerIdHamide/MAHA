@@ -2,6 +2,15 @@
 
 class Formateurs extends Controller
 {
+	private $fomateurModel;
+	private $formationModel;
+	private $videoModel;
+	private $inscriptionModel;
+	private $stockedModel;
+	private $commentModel;
+	private $notificationModel;
+	private $requestPaymentModel;
+
 	public function __construct()
 	{
 		if (!isset($_SESSION['id_formateur'])) {
@@ -118,7 +127,7 @@ class Formateurs extends Controller
 	{
 		$idFormateur = $_SESSION['id_formateur'];;
 		$info = $this->fomateurModel->getFormateurById($idFormateur);
-		$info['img'] = URLROOT."/Public/".$info['img'];
+		$info['img'] = URLROOT . "/Public/" . $info['img'];
 		$categories = $this->stockedModel->getAllCategories();
 		$nbrNotifications = $this->_getNotifications();
 
@@ -160,7 +169,7 @@ class Formateurs extends Controller
 				$_SESSION["user_data"] = $data;
 
 				$info = $this->fomateurModel->getFormateurById($idFormateur);
-				$info['img'] = URLROOT."/Public/".$info['img'];
+				$info['img'] = URLROOT . "/Public/" . $info['img'];
 
 				$data = [
 					"nom" => $info['nomFormateur'],
@@ -291,7 +300,7 @@ class Formateurs extends Controller
 	{
 		$idFormateur = $_SESSION['id_formateur'];
 		$info = $this->fomateurModel->getFormateurById($idFormateur);
-		$info['img'] = URLROOT."/Public/".$info['img'];
+		$info['img'] = URLROOT . "/Public/" . $info['img'];
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$data['img'] = $_FILES["img"];
@@ -317,7 +326,7 @@ class Formateurs extends Controller
 				$_SESSION["user_data"] = $data;
 
 				$infos = $this->fomateurModel->getFormateurById($idFormateur);
-				$info['img'] = URLROOT."/Public/".$info['img'];
+				$info['img'] = URLROOT . "/Public/" . $info['img'];
 				$data = [
 					"img" => $infos['img'],
 				];
@@ -345,38 +354,38 @@ class Formateurs extends Controller
 	}
 
 	private  function uploadImage($data)
-    {
-        $file = $data["img"]; // Image Array
-        $fileName = $file["name"]; // name
-        $fileTmpName = $file["tmp_name"]; // location
-        $fileError = $file["error"]; // error
+	{
+		$file = $data["img"]; // Image Array
+		$fileName = $file["name"]; // name
+		$fileTmpName = $file["tmp_name"]; // location
+		$fileError = $file["error"]; // error
 
-        if (!empty($fileTmpName)) {
-            $fileExt = explode(".", $fileName);
-            $fileRealExt = strtolower(end($fileExt));
-            $allowed = array("jpg", "jpeg", "png");
+		if (!empty($fileTmpName)) {
+			$fileExt = explode(".", $fileName);
+			$fileRealExt = strtolower(end($fileExt));
+			$allowed = array("jpg", "jpeg", "png");
 
 
-            if (in_array($fileRealExt, $allowed)) {
-                if ($fileError === 0) {
-                    $fileNameNew = substr(number_format(time() * rand(), 0, '', ''), 0, 5) . "." . $fileRealExt;
-                    $fileDestination = 'images/userImage/' . $fileNameNew;
-                    move_uploaded_file($fileTmpName, $fileDestination);
-                    $data["img"] = $fileDestination;
-                } else {
-                    $data["thereIsError"] = true;
-                    $data["img_err"] = "Une erreur s'est produite lors du téléchargement de votre image ";
-                }
-            } else {
-                $data["thereIsError"] = true;
-                $data["img_err"] = "Vous ne pouvez pas télécharger ce fichier. (uniquement jpg, jpeg, png, ico sont autorisé)";
-            }
-        } else {
-            $data["img"] = 'images/default.jpg';
-        }
+			if (in_array($fileRealExt, $allowed)) {
+				if ($fileError === 0) {
+					$fileNameNew = substr(number_format(time() * rand(), 0, '', ''), 0, 5) . "." . $fileRealExt;
+					$fileDestination = 'images/userImage/' . $fileNameNew;
+					move_uploaded_file($fileTmpName, $fileDestination);
+					$data["img"] = $fileDestination;
+				} else {
+					$data["thereIsError"] = true;
+					$data["img_err"] = "Une erreur s'est produite lors du téléchargement de votre image ";
+				}
+			} else {
+				$data["thereIsError"] = true;
+				$data["img_err"] = "Vous ne pouvez pas télécharger ce fichier. (uniquement jpg, jpeg, png, ico sont autorisé)";
+			}
+		} else {
+			$data["img"] = 'images/default.jpg';
+		}
 
-        return $data;
-    }
+		return $data;
+	}
 
 	private function _isFormateurHaveThisFormation($idFormation)
 	{
@@ -390,9 +399,9 @@ class Formateurs extends Controller
 		if ($this->_isFormateurHaveThisFormation($idFormation)) {
 			// preparing data
 			$data = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, $id_etudiant, $_SESSION['id_formateur']);
-			$data->img_formateur = URLROOT."/Public/".$data->img_formateur;
-			$data->image_formation = URLROOT."/Public/".$data->image_formation;
-			$data->img_etudiant = URLROOT."/Public/".$data->img_etudiant;
+			$data->img_formateur = URLROOT . "/Public/" . $data->img_formateur;
+			$data->image_formation = URLROOT . "/Public/" . $data->image_formation;
+			$data->img_etudiant = URLROOT . "/Public/" . $data->img_etudiant;
 			$data->categorie = $this->stockedModel->getCategorieById($data->categorie)["nom_categorie"];
 			$data->specialiteId = $this->stockedModel->getCategorieById($data->specialiteId)["nom_categorie"];
 			$data->id_langue = $this->stockedModel->getLangueById($data->id_langue)["nom_langue"];
@@ -403,11 +412,11 @@ class Formateurs extends Controller
 
 			foreach ($data->videos as $video) {
 				// settingUp Video Link
-				$video->url_video = URLROOT."/Public/".$video->url_video;
+				$video->url_video = URLROOT . "/Public/" . $video->url_video;
 				$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video, $_SESSION['id_formateur'], $id_etudiant);
 				// settingUp User image Link for comment
 				foreach ($video->comments as $comment) {
-					$comment->image = URLROOT."/Public/".$comment->image;
+					$comment->image = URLROOT . "/Public/" . $comment->image;
 				}
 			}
 			// loading the view

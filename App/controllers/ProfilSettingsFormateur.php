@@ -2,6 +2,8 @@
 
 class ProfilSettingsFormateur extends Controller
 {
+    private $fomateurModel;
+
     public function __construct()
     {
         if (!isset($_SESSION['id_formateur'])) {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * class Commentaire
+ * Model Commentaire
  */
 
 class Commentaire

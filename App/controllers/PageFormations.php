@@ -2,10 +2,15 @@
 
 class PageFormations extends Controller
 {
+    private $stockedModel;
+    private $previewsModel;
+    private $formationModel;
+    private $videoModel;
+    private $inscriptionModel;
+    private $categorieModel;
+
     public function __construct()
     {
-        $this->fomateurModel = $this->model("Formateur");
-        $this->etudiantModel = $this->model("Etudiant");
         $this->formationModel = $this->model("Formation");
         $this->inscriptionModel = $this->model("Inscription");
         $this->stockedModel = $this->model("Stocked");

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * class Preview
+ * Model Preview
  */
 
 class Previews

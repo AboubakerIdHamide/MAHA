@@ -1,6 +1,8 @@
 <?php
 
-// class Inscription
+/**
+ *  Model Inscription
+ */
 
 class Inscription
 {
@@ -225,7 +227,7 @@ class Inscription
                 $periode = date('Y-m-d');
                 break;
             case 'yesterday':
-                $periode = date('Y-m-d',strtotime("-1 days"));
+                $periode = date('Y-m-d', strtotime("-1 days"));
                 break;
             default:
                 exit;
