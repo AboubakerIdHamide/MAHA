@@ -39,3 +39,15 @@ main span.delete {
 .custom-tooltip {
   --bs-tooltip-bg: #ff6584;
 }
+
+.avatar-formateur {
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+}
+
+.miniature {
+  width: 400px;
+  height: 250px;
+  object-fit: cover;
+}

@@ -3,8 +3,7 @@
     <div class="row mb-3 justify-content-center">
         <form class="col d-flex gap-3">
             <input placeholder="Nom Formateur" type="text" class="form-control form-control-sm" name="q">
-            <button class="btn btn-primary btn-sm" style="white-space: nowrap;">Chercher <i
-                    class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
+            <button class="btn btn-primary btn-sm" style="white-space: nowrap;">Chercher <i class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
         </form>
     </div>
     <div class="row">
@@ -26,35 +25,30 @@
                     </thead>
                     <tbody>
                         <?php foreach ($data['formateurs'] as $formateur) : ?>
-                        <tr>
-                            <input type="hidden" value="<?= $formateur->biography ?>" class="biographie-formateur">
-                            <td><?= $formateur->id_formateur ?></td>
-                            <td class="d-flex gap-1" style="font-weight: 500;">
-                                <img style="width: 35px;" class="img-fluid rounded-circle avatar-formateur"
-                                    src="<?= $formateur->img_formateur ?>" alt="formateur avatar">
-                                <div class="d-flex flex-column me-3">
-                                    <span class="nom-formateur"><?= $formateur->nom_formateur ?></span>
-                                    <span class="prenom-formateur"><?= $formateur->prenom_formateur ?></span>
-                                </div>
-                            </td>
-                            <td class="email-formateur"><?= $formateur->email_formateur ?></td>
-                            <td class="tele-formateur"><?= $formateur->tel_formateur ?></td>
-                            <td><?= $formateur->date_creation_formateur ?></td>
-                            <td class="paypal-formateur"><?= $formateur->paypalMail ?></td>
-                            <td class="specialite-formateur" id="<?= $formateur->id_categorie ?>">
-                                <?= $formateur->nom_categorie ?></td>
-                            <td class="text-center"><strong><span style="font-size: 15px;"
-                                        class="badge bg-dark"><?= $formateur->balance ?> $</span></strong></td>
-                            <td class="text-center">
-                                <input id="<?= $formateur->id_formateur ?>" class="btn btn-danger btn-sm delete"
-                                    type="button" value="Supprimer" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                            </td>
-                            <td class="text-center">
-                                <input id="<?= $formateur->id_formateur ?>" class="btn btn-info btn-sm edit"
-                                    type="button" value="Modifier" data-bs-toggle="modal" data-bs-target="#editModal">
-                            </td>
-                        </tr>
+                            <tr>
+                                <input type="hidden" value="<?= $formateur->biography ?>" class="biographie-formateur">
+                                <td><?= $formateur->id_formateur ?></td>
+                                <td class="d-flex gap-1" style="font-weight: 500;">
+                                    <img class="img-fluid rounded-circle avatar-formateur me-1" src="<?= $formateur->img_formateur ?>" alt="formateur avatar">
+                                    <div class="d-flex flex-column me-3">
+                                        <span class="nom-formateur"><?= $formateur->nom_formateur ?></span>
+                                        <span class="prenom-formateur"><?= $formateur->prenom_formateur ?></span>
+                                    </div>
+                                </td>
+                                <td class="email-formateur"><?= $formateur->email_formateur ?></td>
+                                <td class="tele-formateur"><?= $formateur->tel_formateur ?></td>
+                                <td><?= $formateur->date_creation_formateur ?></td>
+                                <td class="paypal-formateur"><?= $formateur->paypalMail ?></td>
+                                <td class="specialite-formateur" id="<?= $formateur->id_categorie ?>">
+                                    <?= $formateur->nom_categorie ?></td>
+                                <td class="text-center"><strong><span style="font-size: 15px;" class="badge bg-dark"><?= $formateur->balance ?> $</span></strong></td>
+                                <td class="text-center">
+                                    <input id="<?= $formateur->id_formateur ?>" class="btn btn-danger btn-sm delete" type="button" value="Supprimer" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                </td>
+                                <td class="text-center">
+                                    <input id="<?= $formateur->id_formateur ?>" class="btn btn-info btn-sm edit" type="button" value="Modifier" data-bs-toggle="modal" data-bs-target="#editModal">
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -68,16 +62,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">Modification</h1>
-                <button type="button" class="btn-close close-modal-edit" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                <button type="button" class="btn-close close-modal-edit" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
                     <label for="avatar-formateur" class="form-label" style="font-weight: 600;">Photo de profil</label>
                     <div class="text-center">
                         <!-- avatar -->
-                        <img class="img-fluid rounded" src="" alt="formateur avatar" id="avatar-formateur"
-                            style="object-fit: cover;width:50%">
+                        <img class="img-fluid rounded" src="" alt="formateur avatar" id="avatar-formateur" style="object-fit: cover;width:50%">
                     </div>
                 </div>
                 <div class="mb-3">
@@ -109,7 +101,7 @@
                     <label for="categorie" class="form-label" style="font-weight: 600;">Spécialité</label>
                     <select class="form-select" id="specialite">
                         <?php foreach ($data['specialite'] as $specialite) : ?>
-                        <option value="<?= $specialite->id_categorie ?>"><?= $specialite->nom_categorie ?></option>
+                            <option value="<?= $specialite->id_categorie ?>"><?= $specialite->nom_categorie ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -134,8 +126,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="deleteModalLabel">Supprimer Formation</h1>
-                <button type="button" class="btn-close close-modal-delete" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                <button type="button" class="btn-close close-modal-delete" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>Etes-vous sûr que vous voulez supprimer ?</p>

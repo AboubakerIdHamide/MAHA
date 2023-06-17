@@ -19,18 +19,18 @@ class requestPayment
             SELECT 
                 id_payment,
                 id_formateur,
-                query_prix,
-                date_query,
-                etat_query,
+                request_prix,
+                date_request,
+                etat_request,
                 nom_formateur,
                 prenom_formateur,
                 paypalMail,
                 img_formateur
-            FROM query_payment
+            FROM request_payment
             JOIN formateurs USING (id_formateur)
-            WHERE etat_query = :etat_query
+            WHERE etat_request = :etat_request
         ");
-        $query->bindParam(':etat_query', $etat);
+        $query->bindParam(':etat_request', $etat);
         $query->execute();
         $queryPayments = $query->fetchAll(PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
@@ -39,17 +39,17 @@ class requestPayment
         return [];
     }
 
-    public function setState($etat_query, $id_payment)
+    public function setState($etat_request, $id_payment)
     {
         $query = $this->connect->prepare("
-            UPDATE query_payment 
-            SET etat_query = :etat_query
+            UPDATE request_payment 
+            SET etat_request = :etat_request
             WHERE id_payment = :id_payment
         ");
 
-        $etat_query = htmlspecialchars($etat_query);
+        $etat_request = htmlspecialchars($etat_request);
         $id_payment = htmlspecialchars($id_payment);
-        $query->bindParam(":etat_query", $etat_query);
+        $query->bindParam(":etat_request", $etat_request);
         $query->bindParam(":id_payment", $id_payment);
         $query->execute();
         if ($query->rowCount() > 0) {
@@ -58,14 +58,14 @@ class requestPayment
         return false;
     }
 
-    public function insertRequestPayment($id_formateur, $query_prix)
+    public function insertRequestPayment($id_formateur, $request_prix)
     {
         $query = $this->connect->prepare("
-            INSERT INTO query_payment(id_formateur, query_prix)	VALUES (:id_formateur, :query_prix)
+            INSERT INTO request_payment(id_formateur, request_prix)	VALUES (:id_formateur, :request_prix)
         ");
 
         $query->bindParam(':id_formateur', $id_formateur);
-        $query->bindParam(':query_prix', $query_prix);
+        $query->bindParam(':request_prix', $request_prix);
         $query->execute();
         $lastInsertId = $this->connect->lastInsertId();
         if ($lastInsertId > 0) {
@@ -78,7 +78,7 @@ class requestPayment
     {
         $query = $this->connect->prepare("
             SELECT *
-            FROM query_payment
+            FROM request_payment
             WHERE id_formateur = :id_formateur
         ");
 
@@ -94,7 +94,7 @@ class requestPayment
     public function deleteRequest($id_req)
     {
         $query = $this->connect->prepare("
-            DELETE FROM query_payment 
+            DELETE FROM request_payment 
             WHERE id_payment = :id_req
         ");
 

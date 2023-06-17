@@ -97,6 +97,13 @@ main a.critere:hover {
   border-radius: 50%;
 }
 
+.avatar-formateur,
+.avatar-etudiant {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
 .custom-btn:hover {
   background-color: #ff6584;
   color: #fff;

@@ -27,7 +27,7 @@
                         <tr>
                             <td class="text-center"><?= $etudiant->id_etudiant ?></td>
                             <td class="d-flex gap-1" style="font-weight: 500;">
-                                <img style="width: 35px;" class="img-fluid rounded-circle avatar-etudiant"
+                                <img class="img-fluid me-1 rounded-circle avatar-etudiant"
                                     src="<?= $etudiant->img_etudiant ?>" alt="etudiant avatar">
                                 <div class="d-flex flex-column me-3">
                                     <span class="nom-etudiant"><?= $etudiant->nom_etudiant ?></span>
