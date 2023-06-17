@@ -230,7 +230,7 @@ class Users extends Controller
 
         // send Email Verification
         if (isset($_SESSION["vcode"]) == true && $_SESSION["resend"] == true) {
-            $email = $this->model("Smtp")->getSmtp()['username'];
+            $email = $this->model("Smtp")->getSmtp()->username;
             $this->sendEmail($data[0]["email"], $email, 'MAHA', 'Email verification', null, $data[0]["prenom"], $_SESSION["vcode"], URLROOT . "/pages/verifyEmail");
             $_SESSION["resend"] = false;
         }
@@ -358,7 +358,7 @@ class Users extends Controller
 
         // send Email Change Password
         if (isset($_SESSION["vcode"]) == true && $_SESSION["resend"] == true) {
-            $email = $this->model("Smtp")->getSmtp()['username'];
+            $email = $this->model("Smtp")->getSmtp()->username;
             $this->sendEmail($data[0]["email"], $email, 'MAHA', 'Email vérification', null, '', $_SESSION["vcode"], URLROOT . "/pages/changePassword");
             $_SESSION["resend"] = false;
         }
@@ -404,22 +404,22 @@ class Users extends Controller
             $mail->isSMTP();
 
             //Set the SMTP server to send through => 'smtp.gmail.com'
-            $mail->Host = $smtp['host'];
+            $mail->Host = $smtp->host;
 
             //Enable SMTP authentication
             $mail->SMTPAuth = true;
 
             //SMTP username => 'mahateamisgi@gmail.com'
-            $mail->Username = $smtp['username'];
+            $mail->Username = $smtp->username;
 
             //SMTP password => 'fmllrxzwfsrovexr'
-            $mail->Password = $smtp['password'];
+            $mail->Password = $smtp->password;
 
             //Enable TLS encryption;
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
 
             //TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
-            $mail->Port = $smtp['port'];
+            $mail->Port = $smtp->port;
 
             //Recipients
             $mail->setFrom($from, $name);
@@ -452,7 +452,7 @@ class Users extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             extract($_POST);
-            $username = $this->model("Smtp")->getSmtp()['username'];
+            $username = $this->model("Smtp")->getSmtp()->username;
             $this->sendEmail($username, $email, $name, $subject, $message, 'MAHA', null, null);
             echo "Votre Message a été envoyé avec succès !";
         }

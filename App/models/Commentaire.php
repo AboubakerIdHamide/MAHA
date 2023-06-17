@@ -72,11 +72,12 @@ class Commentaire
 		$query->bindParam(':etudiantId', $etudiantId);
 		$query->execute();
 
+
 		$commentaires = $query->fetchAll(PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $commentaires;
 		}
-		return false;
+		return [];
 	}
 
 	public function updateCommentaire($dataCommentaire)

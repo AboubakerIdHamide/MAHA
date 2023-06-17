@@ -25,7 +25,7 @@ class Stocked
 		if ($query->rowCount() > 0) {
 			return $categories;
 		}
-		return false;
+		return [];
 	}
 
 	public function getCategorieById($id)
@@ -91,7 +91,7 @@ class Stocked
 		if ($query->rowCount() > 0) {
 			return $langues;
 		}
-		return false;
+		return [];
 	}
 
 	public function getAllLevels()
@@ -106,7 +106,7 @@ class Stocked
 		if ($query->rowCount() > 0) {
 			return $levels;
 		}
-		return false;
+		return [];
 	}
 
 	public function insertCategorie($data)

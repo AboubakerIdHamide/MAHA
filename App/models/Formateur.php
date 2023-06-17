@@ -60,7 +60,7 @@ class Formateur
 		if ($query->rowCount() > 0) {
 			return $formateurs;
 		}
-		return false;
+		return [];
 	}
 
 	public function insertFormateur($dataFormateur)
@@ -102,9 +102,10 @@ class Formateur
 				specialiteId,
 				img_formateur as avatar, 
 				email_formateur as email, 
-				prenom_formateur as prenom
+				prenom_formateur as prenom,
+				mot_de_passe
 			FROM formateurs
-			WHERE email = :email
+			WHERE email_formateur = :email
 		");
 		$query->bindParam(':email', $email);
 		$query->execute();

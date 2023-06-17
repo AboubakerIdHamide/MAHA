@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Model queryPayment
+ * Model requestPayment
  */
 
-class queryPayment
+class requestPayment
 {
     private $connect;
 
@@ -13,7 +13,7 @@ class queryPayment
         $this->connect = $database;
     }
 
-    public function getquerysPaymentsByState($etat)
+    public function getRequestsPaymentsByState($etat)
     {
         $query = $this->connect->prepare("
             SELECT 
@@ -36,7 +36,7 @@ class queryPayment
         if ($query->rowCount() > 0) {
             return $queryPayments;
         }
-        return false;
+        return [];
     }
 
     public function setState($etat_query, $id_payment)
@@ -58,7 +58,7 @@ class queryPayment
         return false;
     }
 
-    public function insertqueryPayment($id_formateur, $query_prix)
+    public function insertRequestPayment($id_formateur, $query_prix)
     {
         $query = $this->connect->prepare("
             INSERT INTO query_payment(id_formateur, query_prix)	VALUES (:id_formateur, :query_prix)
@@ -74,7 +74,7 @@ class queryPayment
         return false;
     }
 
-    public function getquerysOfFormateur($id_formateur)
+    public function getRequestsOfFormateur($id_formateur)
     {
         $query = $this->connect->prepare("
             SELECT *
@@ -88,10 +88,10 @@ class queryPayment
         if ($query->rowCount() > 0) {
             return $queryPayments;
         }
-        return false;
+        return [];
     }
 
-    public function deletequery($id_req)
+    public function deleteRequest($id_req)
     {
         $query = $this->connect->prepare("
             DELETE FROM query_payment 

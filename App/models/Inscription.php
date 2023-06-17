@@ -113,7 +113,7 @@ class Inscription
         if ($query->rowCount() > 0) {
             return $inscriptions;
         }
-        return false;
+        return [];
     }
 
     public function getInscriptionOfOneFormation($id_formation, $id_etudiant, $id_formateur)
@@ -169,7 +169,7 @@ class Inscription
         if ($query->rowCount() > 0) {
             return $inscriptions;
         }
-        return false;
+        return [];
     }
 
     //================ For Paypal Payment and Validation ==================
@@ -249,7 +249,7 @@ class Inscription
         if ($query->rowCount() > 0) {
             return $inscriptions;
         }
-        return false;
+        return [];
     }
 
     public function top5BestSellersTodayOrYesterday($periode)

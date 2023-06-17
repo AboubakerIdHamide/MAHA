@@ -151,7 +151,7 @@ class Formation
         if ($query->rowCount() > 0) {
             return $formations;
         }
-        return false;
+        return [];
     }
 
     public function getAllFormationsOfFormateur($id_formateur, $words = '')
@@ -183,7 +183,7 @@ class Formation
         if ($query->rowCount() > 0) {
             return $formations;
         }
-        return false;
+        return [];
     }
 
     public function setLike($etudiant_id, $formation_id)
@@ -338,7 +338,7 @@ class Formation
         if ($query->rowCount() > 0) {
             return $formations;
         }
-        return false;
+        return [];
     }
 
     public function getFormationByNomFormation($q)
@@ -362,7 +362,7 @@ class Formation
         if ($query->rowCount() > 0) {
             return $formations;
         }
-        return false;
+        return [];
     }
 
     // ===================================== Insert Into Table Formations =====================
@@ -936,6 +936,6 @@ class Formation
         if ($query->rowCount() > 0) {
             return $formations;
         }
-        return false;
+        return [];
     }
 }

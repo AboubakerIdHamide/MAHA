@@ -53,7 +53,7 @@ class Etudiant
 		if ($query->rowCount() > 0) {
 			return $etudiants;
 		}
-		return false;
+		return [];
 	}
 
 	public function countTotalInscriById($id_etudiant)
@@ -106,9 +106,10 @@ class Etudiant
 				date_creation_etudiant,
 				img_etudiant as avatar, 
 				email_etudiant as email, 
-				prenom_etudiant as prenom
+				prenom_etudiant as prenom,
+				mot_de_passe
 			FROM etudiants 
-			WHERE email = :email
+			WHERE email_etudiant = :email
 		");
 
 		$query->bindParam(':email', $email);

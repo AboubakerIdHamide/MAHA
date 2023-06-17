@@ -41,7 +41,7 @@ class Notification
         if ($query->rowCount() > 0) {
             return $notifications;
         }
-        return false;
+        return [];
     }
 
     public function getNotificationsOfEtudiant($id_etudiant)
@@ -72,7 +72,7 @@ class Notification
         if ($query->rowCount() > 0) {
             return $notifications;
         }
-        return false;
+        return [];
     }
 
     public function getNewNotificationsOfEtudiant($id_etudiant)

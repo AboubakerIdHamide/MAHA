@@ -116,7 +116,7 @@ class Video
 		if ($query->rowCount() > 0) {
 			return $videos;
 		}
-		return false;
+		return [];
 	}
 
 	public function updateVideo($dataVideo)
@@ -235,7 +235,7 @@ class Video
 		if ($query->rowCount() > 0) {
 			return $videos;
 		}
-		return false;
+		return [];
 	}
 
 	public function setBookmark($etudiant_id, $video_id)
@@ -300,7 +300,7 @@ class Video
 		if ($query->rowCount() > 0) {
 			return $videos;
 		}
-		return false;
+		return [];
 	}
 
 
@@ -377,7 +377,7 @@ class Video
 		if ($query->rowCount() > 0) {
 			return $videos;
 		}
-		return false;
+		return [];
 	}
 
 	public function countVideosFormationById($id)

@@ -17,6 +17,7 @@ class Formateurs extends Controller
 			redirect('users/login');
 			return;
 		}
+
 		$this->stockedModel = $this->model("Stocked");
 		$this->fomateurModel = $this->model("Formateur");
 		$this->requestPaymentModel = $this->model("requestPayment");
@@ -38,7 +39,7 @@ class Formateurs extends Controller
 		$categories = $this->stockedModel->getAllCategories();
 		$langues = $this->stockedModel->getAllLangues();
 		$levels = $this->stockedModel->getAllLevels();
-		$balance = $this->fomateurModel->getFormateurByEmail($_SESSION['user']['email_formateur'])['balance'];
+		$balance = $this->fomateurModel->getFormateurByEmail($_SESSION['user']['email'])['balance'];
 		$nbrNotifications = $this->_getNotifications();
 		$data = [
 			'balance' => $balance,
@@ -71,7 +72,7 @@ class Formateurs extends Controller
 	{
 		if ($requestInfo->paypalEmail == $_SESSION['user']['paypalMail']) {
 			if ($requestInfo->montant >= 10) {
-				$formateur_balance = $this->fomateurModel->getFormateurByEmail($_SESSION['user']['email_formateur'])['balance'];
+				$formateur_balance = $this->fomateurModel->getFormateurByEmail($_SESSION['user']['email'])['balance'];
 				if ($requestInfo->montant <= $formateur_balance)
 					return true;
 				return false;
