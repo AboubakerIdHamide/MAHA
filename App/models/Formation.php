@@ -32,7 +32,7 @@ class Formation
     public function insertFormation($dataFormation)
     {
         $query = $this->connect->prepare("
-            INSERT INTO formations (niveau_formation, id_formateur, categorie, nom_formation, image_formation, mass_horaire,  prix_formation, description, etat_formation, id_langue, code_formation) VALUES (:niveau_formation, :id_formateur, :categorie, :nom_formation, :img_formation, :mass_horaire, :prix_formation, :description, :etat_formation, :id_langue, :code_formation)
+            INSERT INTO formations (niveau_formation, id_formateur, categorie, nom_formation, image_formation, mass_horaire,  prix_formation, description, etat_formation, id_langue) VALUES (:niveau_formation, :id_formateur, :categorie, :nom_formation, :img_formation, :mass_horaire, :prix_formation, :description, :etat_formation, :id_langue)
         ");
 
         $query->bindParam(":niveau_formation", $dataFormation["niveau_formation"]);
@@ -45,7 +45,6 @@ class Formation
         $query->bindParam(":description", $dataFormation["description"]);
         $query->bindParam(":etat_formation", $dataFormation["etat_formation"]);
         $query->bindParam(":id_langue", $dataFormation["id_langue"]);
-        $query->bindParam(":code_formation", $dataFormation["code_formation"]);
         $query->execute();
 
         $lastInsertId = $this->connect->lastInsertId();

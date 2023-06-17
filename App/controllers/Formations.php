@@ -112,21 +112,6 @@ class Formations extends Controller
 			$data["levels"] = $this->stockedModel->getAllLevels();
 			$data["languages"] = $this->stockedModel->getAllLangues();
 
-
-			// Generate formation code if private
-			if ($data["etat_formation"] == "private") {
-				$code_formation = bin2hex(random_bytes(20));
-				$isValideCode = $this->formationModel->isValideCode($code_formation);
-				// if the code already used generate other one
-				while (!$isValideCode) {
-					$code_formation = bin2hex(random_bytes(20));
-					$isValideCode = $this->formationModel->isValideCode($code_formation);
-				}
-				$data["code_formation"] = $code_formation;
-			} else {
-				$data["code_formation"] = null;
-			}
-
 			// validate data
 			$data['error'] = $this->validateInsertedData($data);
 

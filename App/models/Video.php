@@ -16,7 +16,7 @@ class Video
 	public function insertVideo($dataVideo)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO videos(id_formation, nom_video, url_video, duree_video, description_video VALUES (:formation, :nom, :url, SEC_TO_TIME(:duree ), :description)
+			INSERT INTO videos(id_formation, nom_video, url_video, duree_video, description_video) VALUES (:formation, :nom, :url, SEC_TO_TIME(:duree), :description)
 		");
 
 		$query->bindParam(':formation', $dataVideo['Idformation']);
