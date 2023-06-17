@@ -13,48 +13,55 @@ class Administrateur
         $this->connect = $database;
     }
 
-    public function insertAdmin($admin)
-    {
-    }
-
     public function getAdminByEmail($email)
     {
-        $request = $this->connect->prepare("
+        $query = $this->connect->prepare("
             SELECT * FROM admin 
             WHERE email_admin = :email
         ");
-        $request->bindParam(':email', $email);
-        $request->execute();
-        $admin = $request->fetch(PDO::FETCH_OBJ);
-        return $admin;
+        $query->bindParam(':email', $email, PDO::PARAM_STR);
+        $query->execute();
+        $admin = $query->fetch(PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $admin;
+        }
+        return false;
     }
 
     public function getProfitAndPaypalToken()
     {
-        $request = $this->connect->prepare("
-            SELECT platform_pourcentage, password_paypal, username_paypal FROM admin 
+        $query = $this->connect->prepare("
+            SELECT 
+                platform_pourcentage, 
+                password_paypal, 
+                username_paypal 
+            FROM admin 
         ");
-        $request->execute();
-        $settings = $request->fetch(PDO::FETCH_OBJ);
-        return $settings;
+        $query->execute();
+        $settings = $query->fetch(PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $settings;
+        }
+        return false;
     }
 
     public function replaceSettings($data)
     {
-
-        $request = $this->connect->prepare("
+        $query = $this->connect->prepare("
 			UPDATE admin 
-			SET 
-                platform_pourcentage = :platform_pourcentage, 
+			SET platform_pourcentage = :platform_pourcentage, 
 			    username_paypal = :username_p, 
 			    password_paypal = :password_p
 		");
 
-        $request->bindParam(':platform_pourcentage', $data['platform_pourcentage']);
-        $request->bindParam(':username_p', $data['username_p']);
-        $request->bindParam(':password_p', $data['password_p']);
-        $response = $request->execute();
+        $query->bindParam(':platform_pourcentage', $data['platform_pourcentage'], PDO::PARAM_STR);
+        $query->bindParam(':username_p', $data['username_p'], PDO::PARAM_STR);
+        $query->bindParam(':password_p', $data['password_p'], PDO::PARAM_STR);
+        $query->execute();
 
-        return $response;
+        if ($query->rowCount() > 0) {
+            return true;
+        }
+        return false;
     }
 }

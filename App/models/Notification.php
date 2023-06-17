@@ -15,18 +15,18 @@ class Notification
 
     public function getNotificationsOfFormateur($id_formateur)
     {
-        $request = $this->connect->prepare("
+        $query = $this->connect->prepare("
             SELECT
                 id_notification, 
                 commentaire,
                 created_at,
-                nom_etudiant as nom,
-                prenom_etudiant as prenom,
+                nom_etudiant AS nom,
+                prenom_etudiant AS prenom,
                 nom_video,
                 nom_formation,
                 etat_notification,
                 id_formation,
-                id_etudiant as id_user
+                id_etudiant AS id_user
             FROM notifications n
             JOIN commentaires c USING (id_commentaire)
             JOIN etudiants e ON c.from_user = e.id_etudiant 
@@ -35,26 +35,29 @@ class Notification
             WHERE c.to_user = :id_formateur
         ");
 
-        $request->bindParam(':id_formateur', $id_formateur);
-        $request->execute();
-        $notifications = $request->fetchAll(PDO::FETCH_OBJ);
-        return $notifications;
+        $query->bindParam(':id_formateur', $id_formateur);
+        $query->execute();
+        $notifications = $query->fetchAll(PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $notifications;
+        }
+        return false;
     }
 
     public function getNotificationsOfEtudiant($id_etudiant)
     {
-        $request = $this->connect->prepare("
+        $query = $this->connect->prepare("
             SELECT
                 id_notification, 
                 commentaire,
                 created_at,
-                nom_formateur as nom,
-                prenom_formateur as prenom,
+                nom_formateur AS nom,
+                prenom_formateur AS prenom,
                 nom_video,
                 nom_formation,
                 etat_notification,
                 id_formation,
-                f.id_formateur as id_user
+                f.id_formateur AS id_user
             FROM notifications n
             JOIN commentaires c USING (id_commentaire)
             JOIN formateurs f ON c.from_user = f.id_formateur 
@@ -63,15 +66,18 @@ class Notification
             WHERE c.to_user = :id_etudiant
         ");
 
-        $request->bindParam(':id_etudiant', $id_etudiant);
-        $request->execute();
-        $notifications = $request->fetchAll(PDO::FETCH_OBJ);
-        return $notifications;
+        $query->bindParam(':id_etudiant', $id_etudiant);
+        $query->execute();
+        $notifications = $query->fetchAll(PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $notifications;
+        }
+        return false;
     }
 
     public function getNewNotificationsOfEtudiant($id_etudiant)
     {
-        $request = $this->connect->prepare("
+        $query = $this->connect->prepare("
             SELECT
                 COUNT(*) AS totalNew
             FROM notifications n
@@ -80,15 +86,15 @@ class Notification
             WHERE c.to_user = :id_etudiant AND etat_notification = 1
         ");
 
-        $request->bindParam(':id_etudiant', $id_etudiant);
-        $request->execute();
-        $totalNew = $request->fetch(PDO::FETCH_OBJ);
+        $query->bindParam(':id_etudiant', $id_etudiant);
+        $query->execute();
+        $totalNew = $query->fetch(PDO::FETCH_OBJ);
         return $totalNew;
     }
 
     public function getNewNotificationsOfFormateur($id_formateur)
     {
-        $request = $this->connect->prepare("
+        $query = $this->connect->prepare("
             SELECT
                 COUNT(*) AS totalNew
             FROM notifications n
@@ -97,32 +103,43 @@ class Notification
             WHERE c.to_user = :id_formateur AND etat_notification = 1
         ");
 
-        $request->bindParam(':id_formateur', $id_formateur);
-        $request->execute();
-        $totalNew = $request->fetch(PDO::FETCH_OBJ);
-        return $totalNew;
+        $query->bindParam(':id_formateur', $id_formateur);
+        $query->execute();
+        $totalNew = $query->fetch(PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $totalNew;
+        }
+        return false;
     }
 
     public function setStateToSeen($id_notification)
     {
-        $request = $this->connect->prepare("
+        $query = $this->connect->prepare("
             UPDATE notifications
             SET etat_notification = 0
             WHERE id_notification = :id_notification
         ");
 
-        $request->bindParam(':id_notification', $id_notification);
-        $response = $request->execute();
-        return $response;
+        $query->bindParam(':id_notification', $id_notification);
+        $query->execute();
+
+        if ($query->rowCount() > 0) {
+            return true;
+        }
+        return false;
     }
 
     public function deleteSeenNotifications()
     {
-        $request = $this->connect->prepare("
+        $query = $this->connect->prepare("
             DELETE FROM notifications
             WHERE etat_notification = 0
         ");
-        $response = $request->execute();
-        return $response;
+
+        $query->execute();
+        if ($query->rowCount() > 0) {
+            return true;
+        }
+        return false;
     }
 }

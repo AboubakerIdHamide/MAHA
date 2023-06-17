@@ -15,25 +15,28 @@ class Commentaire
 
 	public function insertCommentaire($dataCommentaire)
 	{
-		$request = $this->connect->prepare("
+		$query = $this->connect->prepare("
 			INSERT INTO commentaires(from_user, to_user, id_video, commentaire, type_user) 
 			VALUES (:from_user, :to_user, :id_video, :commentaire, :type_user)
 		");
 
-		$request->bindParam(':id_video', $dataCommentaire['idVideo']);
-		$request->bindParam(':commentaire', $dataCommentaire['commentaire']);
-		$request->bindParam(':type_user', $dataCommentaire['type_user']);
-		$request->bindParam(':from_user', $dataCommentaire['from_user']);
-		$request->bindParam(':to_user', $dataCommentaire['to_user']);
-		$response = $request->execute();
+		$query->bindParam(':id_video', $dataCommentaire['idVideo']);
+		$query->bindParam(':commentaire', $dataCommentaire['commentaire']);
+		$query->bindParam(':type_user', $dataCommentaire['type_user']);
+		$query->bindParam(':from_user', $dataCommentaire['from_user']);
+		$query->bindParam(':to_user', $dataCommentaire['to_user']);
+		$query->execute();
 
-		return $response;
+		$lastInsertId = $this->connect->lastInsertId();
+		if ($lastInsertId > 0) {
+			return $lastInsertId;
+		}
+		return false;
 	}
-
 
 	public function getCommentaireByVideoId($videoId, $formateurId, $etudiantId)
 	{
-		$request = $this->connect->prepare("	
+		$query = $this->connect->prepare("	
 			SELECT 
 				from_user,
 				to_user, 
@@ -63,34 +66,48 @@ class Commentaire
 			WHERE id_video = :videoId AND to_user = :etudiantId
 			ORDER BY created_at
 		");
-		$request->bindParam(':videoId', $videoId);
-		$request->bindParam(':formateurId', $formateurId);
-		$request->bindParam(':etudiantId', $etudiantId);
-		$request->execute();
-		$commentaire = $request->fetchAll(PDO::FETCH_OBJ);
-		return $commentaire;
+
+		$query->bindParam(':videoId', $videoId);
+		$query->bindParam(':formateurId', $formateurId);
+		$query->bindParam(':etudiantId', $etudiantId);
+		$query->execute();
+
+		$commentaires = $query->fetchAll(PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $commentaires;
+		}
+		return false;
 	}
 
 	public function updateCommentaire($dataCommentaire)
 	{
-		$request = $this->connect->prepare("
-								UPDATE commentaires
-								SET commentaire = :commentaire
-								WHERE id_commentaire = :id");
-		$request->bindParam(':id', $dataCommentaire['id']);
-		$request->bindParam(':commentaire', $dataCommentaire['commentaire']);
-		$response = $request->execute();
-
-		return $response;
+		$query = $this->connect->prepare("
+			UPDATE commentaires
+			SET commentaire = :commentaire
+			WHERE id_commentaire = :id
+		");
+		$query->bindParam(':id', $dataCommentaire['id']);
+		$query->bindParam(':commentaire', $dataCommentaire['commentaire']);
+		$query->execute();
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	public function deteleCommentaire($id)
 	{
-		$request = $this->connect->prepare("
-								DELETE FROM commentaires
-								WHERE id_commentaire = :id");
-		$request->bindParam(':id', $id);
-		$response = $request->execute();
-		return $response;
+		$query = $this->connect->prepare("
+			DELETE FROM commentaires
+			WHERE id_commentaire = :id
+		");
+
+		$query->bindParam(':id', $id);
+		$query->execute();
+
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 }

@@ -15,55 +15,69 @@ class Previews
 
     public function insertPreviewVideo($id_video, $id_formation)
     {
-        $request = $this->connect->prepare("
-			INSERT INTO previews
-            VALUES (:id_formation, :id_video)
+        $query = $this->connect->prepare("
+			INSERT INTO previews VALUES (:id_formation, :id_video)
 		");
 
-        $request->bindParam(':id_video', $id_video);
-        $request->bindParam(':id_formation', $id_formation);
-        $response = $request->execute();
-        return $response;
+        $query->bindParam(':id_video', $id_video);
+        $query->bindParam(':id_formation', $id_formation);
+        $query->execute();
+
+        $lastInsertId = $this->connect->lastInsertId();
+        if ($lastInsertId > 0) {
+            return $lastInsertId;
+        }
+        return false;
     }
 
     public function getPreviewByFormation($id_formation)
     {
-        $request = $this->connect->prepare("
-            SELECT * FROM previews 
+        $query = $this->connect->prepare("
+            SELECT * 
+            FROM previews 
             WHERE id_formation = :id_formation
         ");
-        $request->bindParam(':id_formation', $id_formation);
-        $request->execute();
-        $preview = $request->fetch(PDO::FETCH_OBJ);
-        return $preview;
+        $query->bindParam(':id_formation', $id_formation);
+        $query->execute();
+        $preview = $query->fetch(PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $preview;
+        }
+        return false;
     }
 
     public function getPreviewVideo($id_formation)
     {
-        $request = $this->connect->prepare("
+        $query = $this->connect->prepare("
             SELECT  
                 url_video
             FROM previews p
             JOIN videos USING (id_video)
             WHERE p.id_formation = :id_formation
         ");
-        $request->bindParam(':id_formation', $id_formation);
-        $request->execute();
-        $previewVideo = $request->fetch(PDO::FETCH_OBJ);
-        return $previewVideo;
+        $query->bindParam(':id_formation', $id_formation);
+        $query->execute();
+        $previewVideo = $query->fetch(PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $previewVideo;
+        }
+        return false;
     }
 
     public function updatePreview($id_video, $id_formation)
     {
-        $request = $this->connect->prepare("
+        $query = $this->connect->prepare("
 			UPDATE previews
             SET id_video = :id_video
             WHERE id_formation = :id_formation
 		");
 
-        $request->bindParam(':id_video', $id_video);
-        $request->bindParam(':id_formation', $id_formation);
-        $response = $request->execute();
-        return $response;
+        $query->bindParam(':id_video', $id_video);
+        $query->bindParam(':id_formation', $id_formation);
+        $query->execute();
+        if ($query->rowCount() > 0) {
+            return true;
+        }
+        return false;
     }
 }

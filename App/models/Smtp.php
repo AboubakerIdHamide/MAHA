@@ -16,7 +16,7 @@ class Smtp
 	public function replaceSmtp($smtpData)
 	{
 		if ($this->getSmtp()) {
-			$request = $this->connect->prepare("
+			$query = $this->connect->prepare("
 				UPDATE smtp 
 				SET host = :host, 
 				username = :username, 
@@ -24,28 +24,36 @@ class Smtp
 				port = :port
 			");
 		} else {
-			$request = $this->connect->prepare("
+			$query = $this->connect->prepare("
 				INSERT INTO smtp VALUES (DEFAULT, :host, :username, :password, :port)
 			");
 		}
 
+		$query->bindParam(':host', $smtpData['host']);
+		$query->bindParam(':username', $smtpData['username']);
+		$query->bindParam(':password', $smtpData['password']);
+		$query->bindParam(':port', $smtpData['port']);
+		$query->execute();
 
-		$request->bindParam(':host', $smtpData['host']);
-		$request->bindParam(':username', $smtpData['username']);
-		$request->bindParam(':password', $smtpData['password']);
-		$request->bindParam(':port', $smtpData['port']);
-		$response = $request->execute();
-
-		return $response;
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	public function getSmtp()
 	{
-		$request = $this->connect->prepare("
-			SELECT * FROM smtp WHERE id = 1
+		$query = $this->connect->prepare("
+			SELECT * 
+			FROM smtp 
+			WHERE id = 1
 		");
 
-		$request->execute();
-		return $request->fetch();
+		$query->execute();
+		$smtp = $query->fetch(PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $smtp;
+		}
+		return false;
 	}
 }

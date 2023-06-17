@@ -15,119 +15,201 @@ class Stocked
 
 	public function getAllCategories()
 	{
-		$req = $this->connect->prepare("SELECT * FROM categories");
-		$req->execute();
-		$res = $req->fetchAll(PDO::FETCH_OBJ);
-		return $res;
+		$query = $this->connect->prepare("
+			SELECT * 
+			FROM categories
+		");
+
+		$query->execute();
+		$categories = $query->fetchAll(PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $categories;
+		}
+		return false;
 	}
 
 	public function getCategorieById($id)
 	{
-		$req = $this->connect->prepare("SELECT * FROM categories WHERE id_categorie=:id");
-		$req->bindParam(':id', $id);
-		$req->execute();
-		$res = $req->fetch();
-		return $res;
+		$query = $this->connect->prepare("
+			SELECT * 
+			FROM categories 
+			WHERE id_categorie=:id
+		");
+
+		$query->bindParam(':id', $id);
+		$query->execute();
+		$categorie = $query->fetch();
+		if ($query->rowCount() > 0) {
+			return $categorie;
+		}
+		return false;
 	}
 
 	public function getLangueById($id)
 	{
-		$req = $this->connect->prepare("SELECT * FROM langues WHERE id_langue=:id");
-		$req->bindParam(':id', $id);
-		$req->execute();
-		$res = $req->fetch();
-		return $res;
+		$query = $this->connect->prepare("
+			SELECT * 
+			FROM langues 
+			WHERE id_langue=:id
+		");
+
+		$query->bindParam(':id', $id);
+		$query->execute();
+		$langue = $query->fetch();
+		if ($query->rowCount() > 0) {
+			return $langue;
+		}
+		return false;
 	}
 
 	public function getLevelById($id)
 	{
-		$req = $this->connect->prepare("SELECT * FROM niveaux WHERE id_niveau=:id");
-		$req->bindParam(':id', $id);
-		$req->execute();
-		$res = $req->fetch();
-		return $res;
+		$query = $this->connect->prepare("
+			SELECT * 
+			FROM niveaux 
+			WHERE id_niveau=:id
+		");
+
+		$query->bindParam(':id', $id);
+		$query->execute();
+		$level = $query->fetch();
+		if ($query->rowCount() > 0) {
+			return $level;
+		}
+		return false;
 	}
 
 	public function getAllLangues()
 	{
-		$req = $this->connect->prepare("SELECT * FROM langues");
-		$req->execute();
-		$res = $req->fetchAll(PDO::FETCH_OBJ);
-		return $res;
+		$query = $this->connect->prepare("
+			SELECT * 
+			FROM langues
+		");
+
+		$query->execute();
+		$langues = $query->fetchAll(PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $langues;
+		}
+		return false;
 	}
 
 	public function getAllLevels()
 	{
-		$req = $this->connect->prepare("SELECT * FROM niveaux");
-		$req->execute();
-		$res = $req->fetchAll(PDO::FETCH_OBJ);
-		return $res;
+		$query = $this->connect->prepare("
+			SELECT * 
+			FROM niveaux
+		");
+
+		$query->execute();
+		$levels = $query->fetchAll(PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $levels;
+		}
+		return false;
 	}
 
 	public function insertCategorie($data)
 	{
-		$req = $this->connect->prepare("
+		$query = $this->connect->prepare("
 			INSERT INTO categories VALUES (DEFAULT, :icon, :nom_categorie)
 		");
-		$res = $req->execute(['icon' => $data['icon'], 'nom_categorie' => $data['nom_categorie']]);
-		return $res;
+		$query->execute(['icon' => $data['icon'], 'nom_categorie' => $data['nom_categorie']]);
+		$lastInsertId = $this->connect->lastInsertId();
+		if ($lastInsertId > 0) {
+			return $lastInsertId;
+		}
+		return false;
 	}
 
 
 	public function deleteCategorie($categorie_id)
 	{
-		$req = $this->connect->prepare("
-			DELETE FROM categories WHERE id_categorie = :id_categorie
+		$query = $this->connect->prepare("
+			DELETE FROM categories 
+			WHERE id_categorie = :id_categorie
 		");
-		$res = $req->execute(['id_categorie' => $categorie_id]);
-		return $res;
+
+		$query->execute(['id_categorie' => $categorie_id]);
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	public function editCategorie($data)
 	{
-		$req = $this->connect->prepare("
+		$query = $this->connect->prepare("
 			UPDATE categories 
 			SET nom_categorie = :nom_categorie
 			WHERE id_categorie = :id_categorie
 		");
-		$res = $req->execute(['id_categorie' => $data->categorieID, 'nom_categorie' => $data->NouveauNom]);
-		return $res;
+		$query->execute(['id_categorie' => $data->categorieID, 'nom_categorie' => $data->NouveauNom]);
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	public function insertLangue($langue)
 	{
-		$req = $this->connect->prepare("
+		$query = $this->connect->prepare("
 			INSERT INTO langues VALUES (DEFAULT, :nom_langue)
 		");
-		$res = $req->execute(['nom_langue' => $langue]);
-		return $res;
+		$query->execute(['nom_langue' => $langue]);
+		$lastInsertId = $this->connect->lastInsertId();
+		if ($lastInsertId > 0) {
+			return $lastInsertId;
+		}
+		return false;
 	}
 
 	public function deleteLangue($langueID)
 	{
-		$req = $this->connect->prepare("
-			DELETE FROM langues WHERE id_langue = :id
+		$query = $this->connect->prepare("
+			DELETE FROM langues 
+			WHERE id_langue = :id
 		");
-		$res = $req->execute(['id' => $langueID]);
-		return $res;
+		$query->execute(['id' => $langueID]);
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	public function getThemeData()
 	{
-		$req = $this->connect->prepare("SELECT * FROM theme WHERE id=1");
-		$res = $req->execute();
-		return $req->fetch();
+		$query = $this->connect->prepare("
+			SELECT * 
+			FROM theme 
+			WHERE id = 1
+		");
+
+		$query->execute();
+		$theme = $query->fetch();
+		if ($query->rowCount() > 0) {
+			return $theme;
+		}
+		return false;
 	}
 
 	public function setThemeData($data)
 	{
-		$req = $this->connect->prepare("
-			UPDATE theme SET logo=:logo , landingImg=:landingImg WHERE id=1
+		$query = $this->connect->prepare("
+			UPDATE theme 
+			SET logo=:logo, 
+				landingImg=:landingImg 
+			WHERE id=1
 		");
-		$res = $req->execute([
+
+		$query->execute([
 			'logo' => $data["logo"],
 			'landingImg' => $data["landingImg"],
 		]);
-		return $res;
+
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 }

@@ -15,64 +15,81 @@ class Video
 
 	public function insertVideo($dataVideo)
 	{
-		$request = $this->connect->prepare(
-			"INSERT INTO 
-				videos(id_formation, nom_video, url_video, duree_video, description_video) 
-				VALUES (:formation, :nom, :url, SEC_TO_TIME(:duree ), :description)"
-		);
+		$query = $this->connect->prepare("
+			INSERT INTO videos(id_formation, nom_video, url_video, duree_video, description_video VALUES (:formation, :nom, :url, SEC_TO_TIME(:duree ), :description)
+		");
 
-		$request->bindParam(':formation', $dataVideo['Idformation']);
-		$request->bindParam(':nom', $dataVideo['nomVideo']);
-		$request->bindParam(':url', $dataVideo['url']);
-		$request->bindParam(':duree', $dataVideo['duree']);
-		$request->bindParam(':description', $dataVideo['desc']);
-		$response = $request->execute();
+		$query->bindParam(':formation', $dataVideo['Idformation']);
+		$query->bindParam(':nom', $dataVideo['nomVideo']);
+		$query->bindParam(':url', $dataVideo['url']);
+		$query->bindParam(':duree', $dataVideo['duree']);
+		$query->bindParam(':description', $dataVideo['desc']);
+		$query->execute();
 
-		return $response;
+		$lastInsertId = $this->connect->lastInsertId();
+		if ($lastInsertId > 0) {
+			return $lastInsertId;
+		}
+		return false;
 	}
 
 	public function getVideo($idFormation, $idVideo)
 	{
-		$request = $this->connect->prepare("SELECT * FROM videos WHERE id_formation = :id_formation AND id_video = :id_video");
+		$query = $this->connect->prepare("
+			SELECT * 
+			FROM videos 
+			WHERE id_formation = :id_formation 
+			AND id_video = :id_video
+		");
 
-		$request->bindParam(':id_formation', $idFormation);
-		$request->bindParam(':id_video', $idVideo);
-		$request->execute();
+		$query->bindParam(':id_formation', $idFormation);
+		$query->bindParam(':id_video', $idVideo);
+		$query->execute();
 
-		$video = $request->fetch();
-		return $video;
+		$video = $query->fetch();
+		if ($query->rowCount() > 0) {
+			return $video;
+		}
+		return false;
 	}
 
 	public function countMassHorraire($id_formation)
 	{
-		$request = $this->connect->prepare("
-					SELECT  SEC_TO_TIME(SUM(TIME_TO_SEC(duree_video))) AS mass_horaire  
-					FROM videos
-					WHERE id_formation = :id_formation
-					GROUP BY id_formation");
-		$request->bindParam(':id_formation', $id_formation);
-		$request->execute();
-		$time = $request->fetch(PDO::FETCH_OBJ);
-		return $time->mass_horaire;
+		$query = $this->connect->prepare("
+			SELECT 
+				SEC_TO_TIME(SUM(TIME_TO_SEC(duree_video))) AS mass_horaire  
+			FROM videos
+			WHERE id_formation = :id_formation
+			GROUP BY id_formation
+		");
+
+		$query->bindParam(':id_formation', $id_formation);
+		$query->execute();
+
+		$time = $query->fetch(PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $time->mass_horaire;
+		}
+		return false;
 	}
 
 	public function setOrderVideos($data)
 	{
-		foreach ($data as $key => $value) {
-			$request = $this->connect->prepare("
+		foreach ($data as $value) {
+			$query = $this->connect->prepare("
 				UPDATE videos
-				SET 
-					order_video = :order_video
-				WHERE id_video = :id_video");
-			$request->bindParam(':order_video', $value->order);
-			$request->bindParam(':id_video', $value->id);
-			$response = $request->execute();
+				SET order_video = :order_video
+				WHERE id_video = :id_video
+			");
+			$query->bindParam(':order_video', $value->order);
+			$query->bindParam(':id_video', $value->id);
+			$query->execute();
 		}
 	}
 
 	public function getVideosOfFormation($idFormation)
 	{
-		$request = $this->connect->prepare("
+		$query = $this->connect->prepare("
 			SELECT 
 				v.id_video,
 				f.id_formation,
@@ -92,55 +109,68 @@ class Video
 			ORDER BY order_video
 		");
 
-		$request->bindParam(':id_formation', $idFormation);
-		$request->execute();
+		$query->bindParam(':id_formation', $idFormation);
+		$query->execute();
 
-		$videos = $request->fetchAll(PDO::FETCH_OBJ);
-		return $videos;
+		$videos = $query->fetchAll(PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $videos;
+		}
+		return false;
 	}
 
 	public function updateVideo($dataVideo)
 	{
 		if (isset($dataVideo['description']) && isset($dataVideo['titre'])) {
-			$request = $this->connect->prepare("
+			$query = $this->connect->prepare("
 				UPDATE videos
-				SET 
-					description_video = :description,
+				SET description_video = :description,
 					nom_video = :titre
-				WHERE id_formation = :id_formation AND id_video = :id_video");
-			$request->bindParam(':description', $dataVideo['description']);
-			$request->bindParam(':titre', $dataVideo['titre']);
+				WHERE id_formation = :id_formation AND id_video = :id_video
+			");
+			$query->bindParam(':description', $dataVideo['description']);
+			$query->bindParam(':titre', $dataVideo['titre']);
 		} else {
 			if (isset($dataVideo['description'])) {
-				$request = $this->connect->prepare("
+				$query = $this->connect->prepare("
 					UPDATE videos
 					SET description_video = :description
-					WHERE id_formation = :id_formation AND id_video = :id_video");
-				$request->bindParam(':description', $dataVideo['description']);
+					WHERE id_formation = :id_formation AND id_video = :id_video
+				");
+				$query->bindParam(':description', $dataVideo['description']);
 			} else {
-				$request = $this->connect->prepare("
+				$query = $this->connect->prepare("
 					UPDATE videos
 					SET nom_video = :titre
-					WHERE id_formation = :id_formation AND id_video = :id_video");
-				$request->bindParam(':titre', $dataVideo['titre']);
+					WHERE id_formation = :id_formation AND id_video = :id_video
+				");
+				$query->bindParam(':titre', $dataVideo['titre']);
 			}
 		}
 
-		$request->bindParam(':id_formation', $dataVideo['id_formation']);
-		$request->bindParam(':id_video', $dataVideo['id_video']);
-		$response = $request->execute();
-		return $response;
+		$query->bindParam(':id_formation', $dataVideo['id_formation']);
+		$query->bindParam(':id_video', $dataVideo['id_video']);
+		$query->execute();
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	public function deteleVideo($idFormation, $idVideo)
 	{
-		$request = $this->connect->prepare("
-								DELETE FROM videos
-								WHERE id_formation = :id_formation AND id_video = :id_video");
-		$request->bindParam(':id_formation', $idFormation);
-		$request->bindParam(':id_video', $idVideo);
-		$response = $request->execute();
-		return $response;
+		$query = $this->connect->prepare("
+			DELETE FROM videos
+			WHERE id_formation = :id_formation 
+			AND id_video = :id_video
+		");
+		$query->bindParam(':id_formation', $idFormation);
+		$query->bindParam(':id_video', $idVideo);
+		$query->execute();
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	public function setWatch($etudiant_id, $video_id)
@@ -149,25 +179,40 @@ class Video
 		$watched = $this->watchedBefore($etudiant_id, $video_id);
 		if ($watched) {
 			// watch
-			$req = $this->connect->prepare("DELETE FROM watched WHERE id_etudiant=:eId AND id_video=:vId");
+			$query = $this->connect->prepare("
+				DELETE FROM watched 
+				WHERE id_etudiant=:eId 
+				AND id_video=:vId
+			");
 		} else {
 			// unwatch
-			$req = $this->connect->prepare("INSERT INTO watched(id_etudiant, id_video) VALUES (:eId,:vId)");
+			$query = $this->connect->prepare("
+				INSERT INTO watched(id_etudiant, id_video) VALUES (:eId,:vId)
+			");
 		}
-		$req->bindParam(':eId', $etudiant_id);
-		$req->bindParam(':vId', $video_id);
-		$res = $req->execute();
-		return $res;
+		$query->bindParam(':eId', $etudiant_id);
+		$query->bindParam(':vId', $video_id);
+		$query->execute();
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	public function watchedBefore($etudiant_id, $video_id)
 	{
-		$req = $this->connect->prepare("SELECT * FROM watched WHERE id_etudiant=:eId AND id_video=:vId");
-		$req->bindParam(':eId', $etudiant_id);
-		$req->bindParam(':vId', $video_id);
-		$req->execute();
-		$res = $req->fetch();
-		if (!empty($res)) {
+		$query = $this->connect->prepare("
+			SELECT * 
+			FROM watched 
+			WHERE id_etudiant=:eId 
+			AND id_video=:vId
+		");
+
+		$query->bindParam(':eId', $etudiant_id);
+		$query->bindParam(':vId', $video_id);
+		$query->execute();
+		$watched = $query->fetch();
+		if ($query->rowCount() > 0) {
 			return true;
 		}
 		return false;
@@ -175,16 +220,22 @@ class Video
 
 	public function getWatchedVideos($etudiant_id)
 	{
-		$request = $this->connect->prepare("SELECT * FROM watched w
-		JOIN videos USING(id_video) 
-		JOIN formations USING (id_formation)
-		WHERE w.id_etudiant=:id_etudiant");
+		$query = $this->connect->prepare("
+			SELECT * 
+			FROM watched w
+			JOIN videos USING(id_video) 
+			JOIN formations USING (id_formation)
+			WHERE w.id_etudiant=:id_etudiant
+		");
 
-		$request->bindParam(':id_etudiant', $etudiant_id);
-		$request->execute();
+		$query->bindParam(':id_etudiant', $etudiant_id);
+		$query->execute();
 
-		$videos = $request->fetchAll(PDO::FETCH_OBJ);
-		return $videos;
+		$videos = $query->fetchAll(PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $videos;
+		}
+		return false;
 	}
 
 	public function setBookmark($etudiant_id, $video_id)
@@ -193,25 +244,40 @@ class Video
 		$bookmarked = $this->bookmarked($etudiant_id, $video_id);
 		if ($bookmarked) {
 			// watch
-			$req = $this->connect->prepare("DELETE FROM bookmarks WHERE id_etudiant=:eId AND id_video=:vId");
+			$query = $this->connect->prepare("
+				DELETE FROM bookmarks 
+				WHERE id_etudiant=:eId 
+				AND id_video=:vId
+			");
 		} else {
 			// unwatch
-			$req = $this->connect->prepare("INSERT INTO bookmarks(id_etudiant, id_video) VALUES (:eId,:vId)");
+			$query = $this->connect->prepare("
+				INSERT INTO bookmarks(id_etudiant, id_video) VALUES (:eId,:vId)
+			");
 		}
-		$req->bindParam(':eId', $etudiant_id);
-		$req->bindParam(':vId', $video_id);
-		$res = $req->execute();
-		return $res;
+		$query->bindParam(':eId', $etudiant_id);
+		$query->bindParam(':vId', $video_id);
+		$query->execute();
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	public function bookmarked($etudiant_id, $video_id)
 	{
-		$req = $this->connect->prepare("SELECT * FROM bookmarks WHERE id_etudiant=:eId AND id_video=:vId");
-		$req->bindParam(':eId', $etudiant_id);
-		$req->bindParam(':vId', $video_id);
-		$req->execute();
-		$res = $req->fetch();
-		if (!empty($res)) {
+		$query = $this->connect->prepare("
+			SELECT * 
+			FROM bookmarks 
+			WHERE id_etudiant=:eId 
+			AND id_video=:vId
+		");
+
+		$query->bindParam(':eId', $etudiant_id);
+		$query->bindParam(':vId', $video_id);
+		$query->execute();
+		$bookmarks = $query->fetch();
+		if ($query->rowCount() > 0) {
 			return true;
 		}
 		return false;
@@ -219,98 +285,124 @@ class Video
 
 	public function getBookmarkedVideos($etudiant_id)
 	{
-		$request = $this->connect->prepare("SELECT * FROM bookmarks b
-		JOIN videos USING(id_video) 
-		JOIN formations USING (id_formation)
-		WHERE b.id_etudiant=:id_etudiant");
+		$query = $this->connect->prepare("
+			SELECT * 
+			FROM bookmarks b
+			JOIN videos USING(id_video) 
+			JOIN formations USING (id_formation)
+			WHERE b.id_etudiant=:id_etudiant
+		");
 
-		$request->bindParam(':id_etudiant', $etudiant_id);
-		$request->execute();
+		$query->bindParam(':id_etudiant', $etudiant_id);
+		$query->execute();
 
-		$videos = $request->fetchAll(PDO::FETCH_OBJ);
-		return $videos;
+		$videos = $query->fetchAll(PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $videos;
+		}
+		return false;
 	}
 
 
 	public function deteleVideoId($idVideo)
 	{
-		$request = $this->connect->prepare("
+		$query = $this->connect->prepare("
 			DELETE FROM videos
 			WHERE id_video = :id_video
 		");
+
 		$idVideo = htmlspecialchars($idVideo);
-		$request->bindParam(':id_video', $idVideo);
-		$response = $request->execute();
-		return $response;
+		$query->bindParam(':id_video', $idVideo);
+		$query->execute();
+
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	public function updateVideoId($dataVideo)
 	{
 		if (isset($dataVideo['description']) && isset($dataVideo['titre'])) {
-			$request = $this->connect->prepare("
+			$query = $this->connect->prepare("
 				UPDATE videos
-				SET 
-					description_video = :description,
+				SET description_video = :description,
 					nom_video = :titre
-				WHERE id_video = :id_video");
-			$request->bindParam(':description', $dataVideo['description']);
-			$request->bindParam(':titre', $dataVideo['titre']);
+				WHERE id_video = :id_video
+			");
+			$query->bindParam(':description', $dataVideo['description']);
+			$query->bindParam(':titre', $dataVideo['titre']);
 		} else {
 			if (isset($dataVideo['description'])) {
-				$request = $this->connect->prepare("
+				$query = $this->connect->prepare("
 					UPDATE videos
 					SET description_video = :description
-					WHERE id_video = :id_video");
-				$request->bindParam(':description', $dataVideo['description']);
+					WHERE id_video = :id_video
+				");
+				$query->bindParam(':description', $dataVideo['description']);
 			} else {
-				$request = $this->connect->prepare("
+				$query = $this->connect->prepare("
 					UPDATE videos
 					SET nom_video = :titre
-					WHERE id_video = :id_video");
-				$request->bindParam(':titre', $dataVideo['titre']);
+					WHERE id_video = :id_video
+				");
+				$query->bindParam(':titre', $dataVideo['titre']);
 			}
 		}
 
-		$request->bindParam(':id_video', $dataVideo['id_video']);
-		$response = $request->execute();
-		return $response;
+		$query->bindParam(':id_video', $dataVideo['id_video']);
+		$query->execute();
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	public function getInfoVideosFormationById($id)
 	{
-		$request = $this->connect->prepare("
-				SELECT videos.id_video as 'IdVideo',
-						videos.nom_video as 'NomVideo',
-						videos.duree_video as 'DureeVideo'
-				FROM videos
-				JOIN formations USING (id_formation)
-				WHERE id_formation = :id_formation");
+		$query = $this->connect->prepare("
+			SELECT 
+				videos.id_video AS IdVideo,
+				videos.nom_video AS NomVideo,
+				videos.duree_video AS DureeVideo
+			FROM videos
+			JOIN formations USING (id_formation)
+			WHERE id_formation = :id_formation
+		");
 
-		$request->bindParam(':id_formation', $id);
-		$request->execute();
+		$query->bindParam(':id_formation', $id);
+		$query->execute();
 
-		$videos = $request->fetchAll(PDO::FETCH_OBJ);
-		return $videos;
+		$videos = $query->fetchAll(PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $videos;
+		}
+		return false;
 	}
 
 	public function countVideosFormationById($id)
 	{
-		$request = $this->connect->prepare("
-				SELECT 
-					count(videos.id_formation) as 'NumbVideo'
-				FROM videos
-				JOIN formations USING (id_formation)
-				WHERE id_formation = :id_formation");
+		$query = $this->connect->prepare("
+			SELECT 
+				COUNT(videos.id_formation) AS NumbVideo
+			FROM videos
+			JOIN formations USING (id_formation)
+			WHERE id_formation = :id_formation
+		");
 
-		$request->bindParam(':id_formation', $id);
-		$request->execute();
-		$videos = $request->fetch();
-		return $videos;
+		$query->bindParam(':id_formation', $id);
+		$query->execute();
+
+		$videos = $query->fetch();
+		if ($query->rowCount() > 0) {
+			return $videos;
+		}
+		return false;
 	}
 
 	public function getFormateurOfVideo($videoId)
 	{
-		$request = $this->connect->prepare("
+		$query = $this->connect->prepare("
 			SELECT 
 				id_formateur
 			FROM videos
@@ -319,9 +411,13 @@ class Video
 			WHERE id_video = :id_video
 		");
 
-		$request->bindParam(':id_video', $videoId);
-		$request->execute();
-		$formateur = $request->fetch(PDO::FETCH_OBJ);
-		return $formateur;
+		$query->bindParam(':id_video', $videoId);
+		$query->execute();
+
+		$formateur = $query->fetch(PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $formateur;
+		}
+		return false;
 	}
 }

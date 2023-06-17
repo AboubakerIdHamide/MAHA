@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Model requestPayment
+ * Model queryPayment
  */
 
-class requestPayment
+class queryPayment
 {
     private $connect;
 
@@ -13,82 +13,96 @@ class requestPayment
         $this->connect = $database;
     }
 
-    public function getRequestsPaymentsByState($etat)
+    public function getquerysPaymentsByState($etat)
     {
-        $request = $this->connect->prepare("
+        $query = $this->connect->prepare("
             SELECT 
                 id_payment,
                 id_formateur,
-                request_prix,
-                date_request,
-                etat_request,
+                query_prix,
+                date_query,
+                etat_query,
                 nom_formateur,
                 prenom_formateur,
                 paypalMail,
                 img_formateur
-            FROM request_payment
+            FROM query_payment
             JOIN formateurs USING (id_formateur)
-            WHERE etat_request = :etat_request
+            WHERE etat_query = :etat_query
         ");
-        $request->bindParam(':etat_request', $etat);
-        $request->execute();
-        $requestPayments = $request->fetchAll(PDO::FETCH_OBJ);
-        return $requestPayments;
+        $query->bindParam(':etat_query', $etat);
+        $query->execute();
+        $queryPayments = $query->fetchAll(PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $queryPayments;
+        }
+        return false;
     }
 
-    public function setState($etat_request, $id_payment)
+    public function setState($etat_query, $id_payment)
     {
-        $request = $this->connect->prepare("
-            UPDATE request_payment 
-            SET etat_request = :etat_request
+        $query = $this->connect->prepare("
+            UPDATE query_payment 
+            SET etat_query = :etat_query
             WHERE id_payment = :id_payment
         ");
 
-        $etat_request = htmlspecialchars($etat_request);
+        $etat_query = htmlspecialchars($etat_query);
         $id_payment = htmlspecialchars($id_payment);
-        $request->bindParam(":etat_request", $etat_request);
-        $request->bindParam(":id_payment", $id_payment);
-
-        $response = $request->execute();
-        return $response;
+        $query->bindParam(":etat_query", $etat_query);
+        $query->bindParam(":id_payment", $id_payment);
+        $query->execute();
+        if ($query->rowCount() > 0) {
+            return true;
+        }
+        return false;
     }
 
-    public function insertRequestPayment($id_formateur, $request_prix)
+    public function insertqueryPayment($id_formateur, $query_prix)
     {
-        $request = $this->connect->prepare("
-            INSERT INTO request_payment(id_formateur, request_prix)	
-			VALUES (:id_formateur, :request_prix)
+        $query = $this->connect->prepare("
+            INSERT INTO query_payment(id_formateur, query_prix)	VALUES (:id_formateur, :query_prix)
         ");
 
-        $request->bindParam(':id_formateur', $id_formateur);
-        $request->bindParam(':request_prix', $request_prix);
-        $response = $request->execute();
-        return $response;
+        $query->bindParam(':id_formateur', $id_formateur);
+        $query->bindParam(':query_prix', $query_prix);
+        $query->execute();
+        $lastInsertId = $this->connect->lastInsertId();
+        if ($lastInsertId > 0) {
+            return $lastInsertId;
+        }
+        return false;
     }
 
-    public function getRequestsOfFormateur($id_formateur)
+    public function getquerysOfFormateur($id_formateur)
     {
-        $request = $this->connect->prepare("
-            SELECT 
-                *
-            FROM request_payment
+        $query = $this->connect->prepare("
+            SELECT *
+            FROM query_payment
             WHERE id_formateur = :id_formateur
         ");
-        $request->bindParam(':id_formateur', $id_formateur);
-        $request->execute();
-        $requestPayments = $request->fetchAll(PDO::FETCH_OBJ);
-        return $requestPayments;
+
+        $query->bindParam(':id_formateur', $id_formateur);
+        $query->execute();
+        $queryPayments = $query->fetchAll(PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $queryPayments;
+        }
+        return false;
     }
 
-    public function deleteRequest($id_req)
+    public function deletequery($id_req)
     {
-        $request = $this->connect->prepare("
-            DELETE FROM request_payment 
+        $query = $this->connect->prepare("
+            DELETE FROM query_payment 
             WHERE id_payment = :id_req
         ");
 
-        $request->bindParam(":id_req", $id_req);
-        $response = $request->execute();
-        return $response;
+        $query->bindParam(":id_req", $id_req);
+        $query->execute();
+        if ($query->rowCount() > 0) {
+            return true;
+        }
+        return false;
     }
 }
