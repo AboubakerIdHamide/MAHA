@@ -120,25 +120,11 @@ $(document).ready(function () {
     const $modalLangue = $("#langue");
     const $modalIdFormation = $("#id");
     const $miniatureUploader = $("#miniature-uploader");
-    const $codeFormationBtn = $("#copy-code-btn");
     const $visibility = $("#visibility");
 
     const currentCours = courses.filter(
       (cours) => cours.id == coursesSelected[0]
     )[0];
-
-    if(currentCours.etat_formation=="private" && currentCours.code_formation!=null){
-      $codeFormationBtn.show();
-      $codeFormationBtn.on('click', ()=>{
-        navigator.clipboard.writeText(currentCours.code_formation);
-        $codeFormationBtn.html(`Copié <i class="fa-solid fa-check"></i>`);
-        setTimeout(()=>{
-          $codeFormationBtn.html(`Code privé <i class="fa-solid fa-copy"></i>`);
-        }, 5000)
-      })
-    }else{
-      $codeFormationBtn.hide();
-    }
 
     $modalTitle.val(currentCours.titre);
     $modalDescription.val(currentCours.description);
@@ -242,6 +228,16 @@ $(document).ready(function () {
   $chercheBtn.click(function (event) {
     render($("input[name='q']").val());
   });
+
+  $codeFormateurBtn=$("#copy-code-btn");
+  $codeFormateurBtn.on('click', ()=>{
+    navigator.clipboard.writeText($codeFormateurBtn.attr('data-code-formateur'));
+    $codeFormateurBtn.html(`Copié <i class="fa-solid fa-check"></i>`);
+    setTimeout(()=>{
+      $codeFormateurBtn.html(`Code privé <i class="fa-solid fa-copy"></i>`);
+    }, 5000)
+  })
+
 });
 
 function addToastToBtn(btnId) {

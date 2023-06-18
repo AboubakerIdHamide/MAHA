@@ -66,7 +66,7 @@ class Formateur
 	public function insertFormateur($dataFormateur)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO formateurs(nom_formateur, prenom_formateur, email_formateur, tel_formateur, mot_de_passe, img_formateur, biography,  paypalMail, specialiteId) VALUES (:nom, :prenom, :email, :tel, :mdp, :img_for, :bio, :pmail, :spId)
+			INSERT INTO formateurs(nom_formateur, prenom_formateur, email_formateur, tel_formateur, mot_de_passe, img_formateur, biography,  paypalMail, specialiteId, code_formateur) VALUES (:nom, :prenom, :email, :tel, :mdp, :img_for, :bio, :pmail, :spId, :code_formateur)
 		");
 
 		$query->bindParam(':nom', $dataFormateur['nom']);
@@ -78,6 +78,7 @@ class Formateur
 		$query->bindParam(':pmail', $dataFormateur['pmail']);
 		$query->bindParam(':bio', $dataFormateur['bio']);
 		$query->bindParam(':spId', $dataFormateur['specId']);
+		$query->bindParam(':code_formateur', $dataFormateur['code_formateur']);
 		$query->execute();
 
 		$lastInsertId = $this->connect->lastInsertId();
@@ -103,7 +104,8 @@ class Formateur
 				img_formateur as avatar, 
 				email_formateur as email, 
 				prenom_formateur as prenom,
-				mot_de_passe
+				mot_de_passe,
+				code_formateur
 			FROM formateurs
 			WHERE email_formateur = :email
 		");
@@ -384,6 +386,46 @@ class Formateur
 		$formateur = $query->fetch(PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $formateur->balance;
+		}
+		return false;
+	}
+
+	// checking code of formateur is already used
+	public function isValideCode($code)
+	{
+		$request = $this->connect->prepare("SELECT code_formateur FROM formateurs WHERE code_formateur=:code");
+		$request->bindParam(":code", $code);
+		$request->execute();
+		$response = $request->fetch();
+		if (!empty($response)) {
+			return false;
+		}
+		return true;
+	}
+
+	// changer le code de formateur
+	public function refreshCode($id){
+		$isValideCode = false;
+		$code_formateur="";
+
+		// Generate formateur code & if the code already used generate other one
+		while (!$isValideCode) {
+			$code_formateur = bin2hex(random_bytes(20));
+			$isValideCode = $this->isValideCode($code_formateur);
+		}
+
+		$query = $this->connect->prepare("
+			UPDATE formateurs 
+			SET code_formateur = :code
+			WHERE id_formateur = :id_formateur
+		");
+
+		$query->bindParam(':code', $code_formateur);
+		$query->bindParam(':id_formateur', $id);
+		$query->execute();
+
+		if ($query->rowCount() > 0) {
+			return $code_formateur;
 		}
 		return false;
 	}

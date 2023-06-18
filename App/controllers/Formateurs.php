@@ -425,4 +425,16 @@ class Formateurs extends Controller
 		} else
 			die("Une erreur s'est produite !!!");
 	}
+
+	public function subscriptionCode(){
+		$nbrNotifications = $this->_getNotifications();
+		$data = ['nbrNotifications' => $nbrNotifications];
+
+		// refresh code
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$data['code_formateur']=$this->fomateurModel->refreshCode($_SESSION['user']['id_formateur']);
+		}
+
+		$this->view("formateur/subscriptionCode", $data);
+	}
 }

@@ -46,45 +46,41 @@
                 <li id="addnews"><a href="<?= URLROOT . '/formateurs/dashboard' ?>"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a></li>
                 <li id="paiment"><a href="<?= URLROOT . '/formateurs/requestPayment' ?>"><i class=" far fa-credit-card"></i><span>Paiement</span></a></li>
                 <li id="statistics"><a href="<?= URLROOT . '/formateurs/updateInfos' ?>"><i class="fas fa-user-gear"></i><span>Paramètre</span></a></li>
-                <li id="statistics"><a href="<?= URLROOT . '/formateurs/subscriptionCode' ?>"><i class="fa-solid fa-lock"></i> <span>Code</span></a></li>
+                <li id="statistics"><a href="<?= URLROOT . '/formateurs/subscriptionCode' ?>"><i class="fa-solid fa-lock"></i><span> Code</span></a></li>
                 <li id="disconnect"><a href="<?= URLROOT . '/users/logout' ?>"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
             </ul>
         </nav>
     </header>
     <!-- end Header -->
     <div class="container mt-3">
-        <h5 class="mb-3">Demander un paiement</h5>
-        <div class="row">
-            <div class="col">
-                <div class="form-floating mb-3">
-                    <input value="<?= $_SESSION['user']['paypalMail'] ?>" type="email" class="form-control" id="paypal-email" placeholder="name@example.com" disabled>
-                    <label for="paypal-email">Paypal email</label>
+        <h5 class="mb-3 ms-4">Code D'abonnement Privé</h5>
+        <form action="" method="POST" class="ms-4">
+            <div class="form-group">
+                <label for="code-formateur">Changer le code d'abonnement</label>
+                <div class="d-flex gap-3 mt-1">
+                    <input type="text" id="code-formateur" value="<?= isset($data['code_formateur']) ? $data['code_formateur'] : $_SESSION['user']['code_formateur'] ?>" disabled class="form-control">
+                    <button type="button" class="btn btn-primary" id="copy-btn">
+                        <i class="fa-solid fa-copy"></i>
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fa-solid fa-refresh"></i>
+                    </button>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div class="input-group mb-3">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" id="montant" placeholder="Montant">
-                        <label for="montant">Montant</label>
-                    </div>
-                    <span class="input-group-text">$</span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <button id="request-payment" class="btn btn-info">Demander le paiement</button>
-            </div>
-        </div>
+        </form>
     </div>
-    <div class="container mt-3">
-        <h5 class="mb-3">Historique des paiements</h5>
-        <div class="containter history">
 
-        </div>
-    </div>
+    <script>
+        const copyBtn=document.getElementById("copy-btn");
+        const inputCode=document.getElementById("code-formateur");
+        copyBtn.addEventListener('click', ()=>{
+            navigator.clipboard.writeText(inputCode.value);
+            copyBtn.innerHTML=`<i class="fa-solid fa-check"></i>`;
+            setTimeout(()=>{
+                copyBtn.innerHTML=`<i class="fa-solid fa-copy"></i>`;
+            }, 5000)
+        })
+    </script>
 
 
     <!-- toast start -->

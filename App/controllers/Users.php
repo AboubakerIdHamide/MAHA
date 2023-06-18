@@ -205,6 +205,15 @@ class Users extends Controller
             if ($_POST["code"] == $_SESSION["vcode"]) {
                 // Insert The User 
                 if ($data[0]["type"] == "formateur") {
+                    $isValideCode = false;
+
+                    // Generate formateur code & if the code already used generate other one
+                    while (!$isValideCode) {
+                        $code_formateur = bin2hex(random_bytes(20));
+                        $isValideCode = $this->fomateurModel->isValideCode($code_formateur);
+                        $data[0]["code_formateur"] = $code_formateur;
+                    }
+
                     $this->fomateurModel->insertFormateur($data[0]);
                 } else {
                     $this->etudiantModel->insertEtudiant($data[0]);
