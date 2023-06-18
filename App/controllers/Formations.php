@@ -186,6 +186,8 @@ class Formations extends Controller
 			flash("videoAdded", "Vos vidéos ajoutées avec succès !", "alert alert-info mt-1");
 		} else {
 			$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
+			$themeData = $this->stockedModel->getThemeData();
+			$data["logo"]= URLROOT . "/Public/" . $themeData["logo"];
 			$this->view("formateur/addVideo", $data);
 		}
 	}
@@ -298,7 +300,7 @@ class Formations extends Controller
 	{
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			if (isset($_FILES['file']) && !is_null($id)) {
-				if ($_FILES['file']['type'] !== 'application/zip') {
+				if ($_FILES['file']['type'] !== 'application/zip' && $_FILES['file']['type'] !== 'application/x-zip-compressed') {
 					$path = 'images/formations/images/';
 				} else {
 					$path = 'images/formations/files/';

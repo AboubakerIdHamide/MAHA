@@ -318,6 +318,7 @@ class Formateurs extends Controller
 				echo json_encode($data);
 			} else {
 				// Delete The Old Image
+				print_r($data["img"]);
 				if ($data["img"] != "images/default.jpg") {
 					unlink($info['img']);
 				}

@@ -53,7 +53,11 @@
         <input type="hidden" name="JsonVideos" id="jsonVideos">
         <div class="prog" id="prog_bar"></div>
         <div class="main-form-heading">
-            <h1 class="logo"><a href="<?= URLROOT ?>/formateurs/dashboard">M<span>A</span>H<span>A</span></a></h1>
+            <h1 class="logo">
+                <a href="<?= URLROOT . "/pages/index"; ?>">
+                    <img src="<?= $data['logo'] ?>" alt="">
+                </a>
+            </h1>
         </div>
         <div class="field-container">
             <?php flash("formationVide") ?>

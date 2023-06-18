@@ -268,9 +268,9 @@ function showFlashMessage(message, colorClass) {
 const handleRessourse = (files) => {
   const fileType = files[0].type;
 
-  if (fileType !== "application/zip") {
+  if (fileType != "application/x-zip-compressed" && fileType != "application/zip") {
     $(".error-ressources").text("error only zip file !!!");
-    e.preventDefault();
+    event.preventDefault();
     return;
   }
   const formData = new FormData();

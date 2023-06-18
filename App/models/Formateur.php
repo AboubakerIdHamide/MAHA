@@ -182,7 +182,7 @@ class Formateur
 	{
 		$query = $this->connect->prepare("
 			UPDATE formateurs
-			SET image_formation = :img
+			SET img_formateur = :img
 			WHERE id_formateur = :id
 		");
 
