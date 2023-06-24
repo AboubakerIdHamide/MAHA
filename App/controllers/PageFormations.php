@@ -35,11 +35,16 @@ class PageFormations extends Controller
         $this->formationModel->insertIntoTableFilter($type = 'all', $numbFormations['numbFormations'], $arg1 = '', $arg2 = '');
 
         $info = $this->formationModel->getPlusPopilairesFormations($offset);
-        foreach ($info as $row) {
-            $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
-            $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
-            $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
+        if ($info) {
+            foreach ($info as $row) {
+                $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
+                $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
+                $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
+            }
+        } else {
+            $info = "Aucun Formations";
         }
+
         $themeData["logo"] = URLROOT . "/Public/" . $themeData["logo"];
         $themeData["landingImg"] = URLROOT . "/Public/" . $themeData["landingImg"];
         $data = [

@@ -313,10 +313,10 @@ class Ajax extends Controller
                             "id_formation" => $course->id_formation,
                             "id_etudiant" => $_SESSION['id_etudiant'],
                             "id_formateur" => $course->id_formateur,
-                            "prix" => 0,
+                            "prix" => $course->prix_formation,
                             "transaction_info" => 0,
                             "payment_id" => 0,
-                            "payment_state" => 0,
+                            "payment_state" => 'approved',
                             "date_inscription" => date('Y-m-d H:i:s'),
                             "approval_url" => 0
                         ];

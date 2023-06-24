@@ -76,7 +76,7 @@ class Etudiants extends Controller
 			$video->bookmarked = $this->videoModel->bookmarked($data->id_etudiant, $video->id_video);
 			// settingUp User image Link for comment
 			foreach ($video->comments as $comment) {
-				$comment->image == URLROOT . "/Public/" . $comment->image;
+				$comment->image = URLROOT . "/Public/" . $comment->image;
 			}
 		}
 

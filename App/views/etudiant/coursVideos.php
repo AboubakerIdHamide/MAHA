@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/bootstrap.min.css" />
     <!-- Custom Styles -->
     <link rel="stylesheet" href="<?= URLROOT . "/Public/css/cours-details-paid.css" ?>">
+
 </head>
 
 <body>
@@ -38,7 +39,7 @@
                             </div>
                             <div class="love-ses-formations d-flex align-items-center gap-2">
                                 <i class="<?= $data->liked ? "fa-solid" : "fa-regular" ?> fa-heart"></i>
-                                <a href="#">Voir Profil</a>
+                                <a href="<?= URLROOT . '/profilFormateur/' . $data->id_formateur ?>">Voir Profil</a>
                             </div>
                         </div>
                         <div class="mt-3 masse-h d-flex flex-row justify-content-between">
@@ -241,7 +242,6 @@
     <!-- To-up Button -->
     <span class="to-top" href="#"><i class="fa fa-chevron-up"></i></span>
     <!-- To-up Button -->
-    <div id="playerContainer"></div>
     <script src="https://cdn.jsdelivr.net/npm/indigo-player@1/lib/indigo-player.js"></script>
     <script>
     const urlRoot = "<?= URLROOT ?>";

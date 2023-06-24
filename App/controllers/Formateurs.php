@@ -399,7 +399,7 @@ class Formateurs extends Controller
 	public function coursVideos($id_etudiant = "", $idFormation = "")
 	{
 		if ($this->_isFormateurHaveThisFormation($idFormation)) {
-			// preparing data
+			// preparing data 
 			$data = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, $id_etudiant, $_SESSION['id_formateur']);
 			$data->img_formateur = URLROOT . "/Public/" . $data->img_formateur;
 			$data->image_formation = URLROOT . "/Public/" . $data->image_formation;
@@ -427,13 +427,14 @@ class Formateurs extends Controller
 			die("Une erreur s'est produite !!!");
 	}
 
-	public function subscriptionCode(){
+	public function subscriptionCode()
+	{
 		$nbrNotifications = $this->_getNotifications();
 		$data = ['nbrNotifications' => $nbrNotifications];
 
 		// refresh code
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$data['code_formateur']=$this->fomateurModel->refreshCode($_SESSION['user']['id_formateur']);
+			$data['code_formateur'] = $this->fomateurModel->refreshCode($_SESSION['user']['id_formateur']);
 		}
 
 		$this->view("formateur/subscriptionCode", $data);

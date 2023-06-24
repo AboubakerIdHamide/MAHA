@@ -96,11 +96,20 @@ $(document).ready(function () {
     // comments
     let commentsText = "";
     videoComments.forEach((comment) => {
+      console.log(comment);
       commentsText += `
-				<div class="d-flex gap-2 mb-2" data-video-id="${comment.id_video}" data-etudiant-id="${comment.id_etudiant}">
-					  <img class="align-self-start" src="${comment.img_etudiant}" alt="my-photo">
-					  <div class="d-flex flex-column etudiant-comment">
-						  <span class="my-name">${comment.nom_etudiant} ${comment.prenom_etudiant}</span>
+				<div class="d-flex gap-2 mb-2 ${
+          comment.type_user === "formateur" && "flex-row-reverse"
+        }" data-video-id="${comment.id_video}" data-etudiant-id="${
+        comment.id_etudiant
+      }">
+					  <img class="align-self-start" src="${comment.image}" alt="my-photo">
+					  <div class="d-flex flex-column ${
+              comment.type_user === "formateur"
+                ? "formateur-comment"
+                : "etudiant-comment"
+            } ">
+						  <span class="my-name">${comment.nom} ${comment.prenom}</span>
 						  <p>${comment.commentaire}</p>
 						  <div class="d-flex justify-content-between">
 							<small>${comment.created_at}</small>

@@ -65,12 +65,16 @@ class PaymentPaypal extends Controller
 			exit;
 		}
 
+
+
 		$formation = $this->formationModel->getFormationById($idFormation);
 		if (empty($formation)) {
 			// cette formation n'existe pas redirect to URLROOT
 			redirect();
 			exit;
 		}
+
+
 
 		$inscription = $this->inscriptionModel->checkIfAlready($_SESSION['id_etudiant'], $idFormation);
 		if (!empty($inscription)) {
@@ -85,12 +89,16 @@ class PaymentPaypal extends Controller
 			}
 		}
 
+
 		$client = new \GuzzleHttp\Client([
 			'headers' => [
 				'Content-Type' => 'application/json',
 				'Authorization' => 'Bearer ' . $this->access_token
 			]
 		]);
+
+
+
 
 		$url = 'https://api-m.sandbox.paypal.com/v1/payments/payment';
 		$data = [
@@ -140,12 +148,14 @@ class PaymentPaypal extends Controller
 		];
 
 
+
 		$response = $client->post(
 			$url,
 			[
 				'body' => json_encode($data)
 			]
 		);
+
 
 
 		$paypalData = json_decode($response->getBody());
@@ -167,6 +177,7 @@ class PaymentPaypal extends Controller
 		];
 
 		$this->inscriptionModel->insertInscription($inscriptionData);
+
 
 		// redirect to paypal page to make payment
 		header('location: ' . $approvalURL);

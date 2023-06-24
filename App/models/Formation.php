@@ -923,7 +923,8 @@ class Formation
                 id_formation,
                 formateurs.id_formateur,
                 nom_formateur,
-                prenom_formateur
+                prenom_formateur,
+                prix_formation
             FROM formateurs
             JOIN formations ON formateurs.id_formateur = formations.id_formateur
             WHERE BINARY code_formateur = :code
