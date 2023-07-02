@@ -82,7 +82,7 @@
                 <!--/filters col-->
             </aside>
             <!-- /aside -->
-            <?php if ($data['numbFormations'] == 0) : ?>
+            <?php if (!is_array($data['info'])) : ?>
                 <div class="col-lg-9">
                     <h2 style="color: #662d91; padding-top: 180px" class='aucunF d-flex justify-content-center'>
                         <?= $data['info'] ?></h2>

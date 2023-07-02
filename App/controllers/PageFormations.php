@@ -35,6 +35,7 @@ class PageFormations extends Controller
         $this->formationModel->insertIntoTableFilter($type = 'all', $numbFormations['numbFormations'], $arg1 = '', $arg2 = '');
 
         $info = $this->formationModel->getPlusPopilairesFormations($offset);
+	
         if ($info) {
             foreach ($info as $row) {
                 $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
@@ -57,6 +58,7 @@ class PageFormations extends Controller
             'totalPages' => $totalPages,
             'theme' => $themeData,
         ];
+	
         $this->view("pages/pageFormations", $data);
     }
 
