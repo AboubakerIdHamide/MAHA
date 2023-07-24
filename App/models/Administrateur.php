@@ -16,8 +16,8 @@ class Administrateur
     public function getAdminByEmail($email)
     {
         $query = $this->connect->prepare("
-            SELECT * FROM admin 
-            WHERE email_admin = :email
+            SELECT * FROM admins 
+            WHERE email = :email
         ");
         $query->bindParam(':email', $email, PDO::PARAM_STR);
         $query->execute();
@@ -35,7 +35,7 @@ class Administrateur
                 platform_pourcentage, 
                 password_paypal, 
                 username_paypal 
-            FROM admin 
+            FROM admins 
         ");
         $query->execute();
         $settings = $query->fetch(PDO::FETCH_OBJ);
@@ -48,7 +48,7 @@ class Administrateur
     public function replaceSettings($data)
     {
         $query = $this->connect->prepare("
-			UPDATE admin 
+			UPDATE admins 
 			SET platform_pourcentage = :platform_pourcentage, 
 			    username_paypal = :username_p, 
 			    password_paypal = :password_p
