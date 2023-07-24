@@ -34,22 +34,22 @@ class Formateur
 	{
 		$query = $this->connect->prepare("
 			SELECT  
-				id_formateur,  
-				nom_formateur,  
-				prenom_formateur,  
-				email_formateur,  
-				tel_formateur,  
-				date_creation_formateur, 
-				img_formateur,    
+				id_formateur,
+				nom,
+				prenom,
+				email,
+				tel,
+				date_creation,
+				img,
 				paypalMail, 
-				biography,  
-				nom_categorie,  
+				biography,
+				c.nom,
 				balance,
 				c.id_categorie
 			FROM formateurs f
-			JOIN categories c ON f.specialiteId = c.id_categorie
-			WHERE nom_formateur LIKE CONCAT('%', :q,'%')
-			OR prenom_formateur LIKE CONCAT('%', :q,'%')
+			JOIN categories c ON f.id_categorie = c.id_categorie
+			WHERE f.nom LIKE CONCAT('%', :q,'%')
+			OR f.prenom LIKE CONCAT('%', :q,'%')
 		");
 
 		$q = htmlspecialchars($q);
@@ -66,7 +66,7 @@ class Formateur
 	public function insertFormateur($dataFormateur)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO formateurs(nom_formateur, prenom_formateur, email_formateur, tel_formateur, mot_de_passe, img_formateur, biography,  paypalMail, specialiteId, code_formateur) VALUES (:nom, :prenom, :email, :tel, :mdp, :img_for, :bio, :pmail, :spId, :code_formateur)
+			INSERT INTO formateurs(nom, prenom, email, tel, mot_de_passe, img, biography,  paypalMail, id_categorie, code) VALUES (:nom, :prenom, :email, :tel, :mdp, :img_for, :bio, :pmail, :spId, :code_formateur)
 		");
 
 		$query->bindParam(':nom', $dataFormateur['nom']);
@@ -93,21 +93,21 @@ class Formateur
 		$query = $this->connect->prepare("
 			SELECT 
 				id_formateur,
-				nom_formateur,
-				tel_formateur,
-				date_creation_formateur,
+				nom,
+				tel,
+				date_creation,
 				paypalMail,
 				biography,
 				balance,
-				code_formateur,
-				specialiteId,
-				img_formateur as avatar, 
-				email_formateur as email, 
-				prenom_formateur as prenom,
+				code,
+				id_categorie,
+				img as avatar, 
+				email, 
+				prenom,
 				mot_de_passe,
-				code_formateur
+				code
 			FROM formateurs
-			WHERE email_formateur = :email
+			WHERE email = :email
 		");
 		$query->bindParam(':email', $email);
 		$query->execute();
@@ -125,17 +125,17 @@ class Formateur
 		$query = $this->connect->prepare("
 			SELECT 
 				id_formateur,
-				nom_formateur,
-				tel_formateur,
-				date_creation_formateur,
+				nom,
+				tel,
+				date_creation,
 				paypalMail,
 				biography,
 				balance,
-				code_formateur,
-				specialiteId,
-				img_formateur, 
-				email_formateur, 
-				prenom_formateur 
+				code,
+				id_categorie,
+				img, 
+				email, 
+				prenom 
 			FROM formateurs 
 			WHERE paypalMail = :pmail
 		");
@@ -154,11 +154,11 @@ class Formateur
 	{
 		$query = $this->connect->prepare("
 			UPDATE formateurs
-			SET nom_formateur = :nom,
-				prenom_formateur = :prenom, 
-				tel_formateur = :tel,
+			SET nom = :nom,
+				prenom = :prenom, 
+				tel = :tel,
 				biography = :bio,
-				specialiteId= :specialite,
+				id_categorie = :specialite,
 				mot_de_passe = :mdp
 			WHERE id_formateur = :id
 		");
@@ -182,7 +182,7 @@ class Formateur
 	{
 		$query = $this->connect->prepare("
 			UPDATE formateurs
-			SET img_formateur = :img
+			SET img = :img
 			WHERE id_formateur = :id
 		");
 
@@ -200,7 +200,7 @@ class Formateur
 	{
 		$query = $this->connect->prepare("
 			SELECT 
-				formateurs.mot_de_passe as mdp
+				mot_de_passe as mdp
 			FROM formateurs
 			WHERE id_formateur = :id
 		");
@@ -219,12 +219,12 @@ class Formateur
 	{
 		$query = $this->connect->prepare("
 			UPDATE formateurs
-			SET nom_formateur = :nom_formateur,
-				prenom_formateur = :prenom_formateur, 
-				email_formateur = :email_formateur, 
-				tel_formateur = :tel_formateur,
+			SET nom = :nom_formateur,
+				prenom = :prenom_formateur, 
+				email = :email_formateur, 
+				tel = :tel_formateur,
 				paypalMail = :paypalMail,
-				specialiteId = :specialiteId,
+				id_categorie = :specialiteId,
 				biography = :biography
 			WHERE id_formateur = :id_formateur
 		");
@@ -259,7 +259,7 @@ class Formateur
 		$query = $this->connect->prepare("
 			UPDATE formateurs 
 			SET mot_de_passe = :mdp 
-			WHERE email_formateur = :email
+			WHERE email = :email
 		");
 
 		$query->bindParam(':email', $dataFormateur['email']);
@@ -293,16 +293,16 @@ class Formateur
 		$query = $this->connect->prepare("
 			SELECT 
 				formateurs.id_formateur as 'IdFormateur',
-				formateurs.nom_formateur as 'nomFormateur',
-				formateurs.prenom_formateur as 'prenomFormateur',
-				formateurs.img_formateur as 'img',
-				formateurs.biography as 'biography',
-				categories.nom_categorie as 'categorie',
-				formateurs.specialiteId as 'id_categorie',
-				formateurs.email_formateur as 'email',
-				formateurs.tel_formateur as 'tel'
+				formateurs.nom as 'nomFormateur',
+				formateurs.prenom as 'prenomFormateur',
+				formateurs.img,
+				formateurs.biography,
+				categories.nom as 'categorie',
+				formateurs.id_categorie,
+				formateurs.email,
+				formateurs.tel
 			FROM formateurs, categories
-			WHERE formateurs.specialiteId = categories.id_categorie 
+			WHERE formateurs.id_categorie = categories.id_categorie 
 			AND formateurs.id_formateur = :id
 		");
 
@@ -393,7 +393,7 @@ class Formateur
 	// checking code of formateur is already used
 	public function isValideCode($code)
 	{
-		$request = $this->connect->prepare("SELECT code_formateur FROM formateurs WHERE code_formateur=:code");
+		$request = $this->connect->prepare("SELECT code FROM formateurs WHERE code=:code");
 		$request->bindParam(":code", $code);
 		$request->execute();
 		$response = $request->fetch();
@@ -416,7 +416,7 @@ class Formateur
 
 		$query = $this->connect->prepare("
 			UPDATE formateurs 
-			SET code_formateur = :code
+			SET code = :code
 			WHERE id_formateur = :id_formateur
 		");
 
