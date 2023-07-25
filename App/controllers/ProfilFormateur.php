@@ -22,9 +22,9 @@ class ProfilFormateur extends Controller
         $numFormations = $this->fomateurModel->getnumFormationsFormateurById($id);
         $numAcht = $this->fomateurModel->getNumFormationAchtByIdFormateur($id);
         $themeData = $this->stockedModel->getThemeData();
-        $themeData["logo"] = URLROOT . "/Public/" . $themeData->logo;
+        $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
         foreach ($formations as $formation) {
-            $formation->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($formation->IdFormteur, $formation->IdFormation);
+            $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
             $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
             $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
         }
@@ -33,7 +33,7 @@ class ProfilFormateur extends Controller
             'formations' => $formations,
             'numFormations' => $numFormations,
             'numAcht' => $numAcht,
-            'theme' => $themeData
+            'theme' => $theme
         ];
 
         $this->view("pages/profilFormateur", $data);

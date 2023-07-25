@@ -22,7 +22,7 @@
     <link href="<?= URLROOT ?>/public/css/custom.css" rel="stylesheet">
     <style>
     #hero_in.general:before {
-        background: url(<?= $data['infoFormateur']['img'] ?>) center center no-repeat;
+        background: url(<?= $data['formateur']->img ?>) center center no-repeat;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -116,7 +116,7 @@
                 <div class="wrapper">
                     <div class="container">
                         <h1 class="fadeInUp">
-                            <span></span><?= $data['infoFormateur']['prenomFormateur'] . ' ' . $data['infoFormateur']['nomFormateur'] ?>
+                            <span></span><?= $data['formateur']->prenom . ' ' . $data['formateur']->nomFormateur ?>
                         </h1>
                     </div>
                 </div>
@@ -126,19 +126,19 @@
                 <div class="row">
                     <aside class="col-lg-3" id="sidebar">
                         <div class="profile">
-                            <figure><img id="avatar-formateur" src="<?= $data['infoFormateur']['img'] ?>"
+                            <figure><img id="avatar-formateur" src="<?= $data['formateur']->img ?>"
                                     alt="Formateur image" class="rounded-circle"></figure>
                             <ul>
                                 <li>Name <span
-                                        class="float-right"><?= $data['infoFormateur']['prenomFormateur'] . ' ' . $data['infoFormateur']['nomFormateur'] ?></span>
+                                        class="float-right"><?= $data['formateur']->prenom . ' ' . $data['formateur']->nomFormateur ?></span>
                                 </li>
-                                <li>Etudiants <span class="float-right"><?= $data['numAcht']['numAcht'] ?></span></li>
+                                <li>Etudiants <span class="float-right"><?= $data['numAcht'] ?></span></li>
                                 <li>Courses <span
-                                        class="float-right"><?= $data['numFormations']['numFormations']; ?></span></li>
+                                        class="float-right"><?= $data['numFormations'] ?></span></li>
                                 <li>Email <span class="float-right"><a class="text-muted"
-                                            href="mailto:<?= $data['infoFormateur']['email'] ?>">
-                                            <?= $data['infoFormateur']['email'] ?></a></span></li>
-                                <li>Telephone <span class="float-right"><?= $data['infoFormateur']['tel']; ?></span>
+                                            href="mailto:<?= $data['formateur']->email ?>">
+                                            <?= $data['formateur']->email ?></a></span></li>
+                                <li>Telephone <span class="float-right"><?= $data['formateur']->tel ?></span>
                                 </li>
                             </ul>
                         </div>
@@ -150,11 +150,11 @@
                             <div class="indent_title_in">
                                 <i class="fa-solid fa-user"></i>
                                 <h3>Biographie</h3>
-                                <p><?= $data['infoFormateur']['categorie'] ?></p>
+                                <p><?= $data['formateur']->nomCategorie ?></p>
                             </div>
                             <div class="wrapper_indent">
 
-                                <p><?= $data['infoFormateur']['biography']; ?></p>
+                                <p><?= $data['formateur']->biography ?></p>
                             </div>
                             <!--wrapper_indent -->
                             <hr class="styled_2">
@@ -168,19 +168,19 @@
                                     <table class="table table-striped add_bottom_30">
                                         <thead>
                                             <tr>
+                                                <th>Formation</th>
                                                 <th>Categorie</th>
-                                                <th>Nom de formation</th>
                                                 <th>Prix</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($data['courses'] as $info) : ?>
+                                            <?php foreach ($data['formations'] as $formation) : ?>
                                             <tr>
-                                                <td><?= $info->categorie ?></td>
                                                 <td><a
-                                                        href="<?= URLROOT . "/pageFormations/coursDetails/" . $info->IdFormation ?>"><?= $info->nomFormation; ?></a>
+                                                        href="<?= URLROOT . "/pageFormations/coursDetails/" . $formation->id_formation ?>"><?= $formation->nomFormation ?></a>
                                                 </td>
-                                                <td>$<?= $info->prix ?></td>
+                                                <td><?= $formation->nomCategorie ?></td>
+                                                <td>$<?= $formation->prix ?></td>
                                             </tr>
                                             <?php endforeach ?>
                                         </tbody>

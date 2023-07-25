@@ -290,17 +290,17 @@ class Formateur
 		$query = $this->connect->prepare("
 			SELECT 
 				id_formateur,
-				nom,
+				f.nom AS nomFormateur,
 				prenom,
 				img,
 				biography,
-				categories.nom AS nomCategorie,
-				id_categorie,
+				c.nom AS nomCategorie,
+				c.id_categorie,
 				email,
 				tel
-			FROM formateurs, categories
-			WHERE formateurs.id_categorie = categories.id_categorie 
-			AND formateurs.id_formateur = :id
+			FROM formateurs f, categories c
+			WHERE f.id_categorie = c.id_categorie 
+			AND f.id_formateur = :id
 		");
 
 		$query->bindParam(':id', $id);
