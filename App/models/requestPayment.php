@@ -19,16 +19,16 @@ class requestPayment
             SELECT 
                 id_payment,
                 id_formateur,
-                request_prix,
-                date_request,
-                etat_request,
-                nom_formateur,
-                prenom_formateur,
+                prix_demande,
+                date_de_demande,
+                etat,
+                nom,
+                prenom,
                 paypalMail,
-                img_formateur
-            FROM request_payment
+                img
+            FROM demande_paiements
             JOIN formateurs USING (id_formateur)
-            WHERE etat_request = :etat_request
+            WHERE etat = :etat_request
         ");
         $query->bindParam(':etat_request', $etat);
         $query->execute();
@@ -42,8 +42,8 @@ class requestPayment
     public function setState($etat_request, $id_payment)
     {
         $query = $this->connect->prepare("
-            UPDATE request_payment 
-            SET etat_request = :etat_request
+            UPDATE demande_paiements 
+            SET etat = :etat_request
             WHERE id_payment = :id_payment
         ");
 
@@ -61,7 +61,7 @@ class requestPayment
     public function insertRequestPayment($id_formateur, $request_prix)
     {
         $query = $this->connect->prepare("
-            INSERT INTO request_payment(id_formateur, request_prix)	VALUES (:id_formateur, :request_prix)
+            INSERT INTO demande_paiements(id_formateur, prix_demande)	VALUES (:id_formateur, :request_prix)
         ");
 
         $query->bindParam(':id_formateur', $id_formateur);
@@ -78,7 +78,7 @@ class requestPayment
     {
         $query = $this->connect->prepare("
             SELECT *
-            FROM request_payment
+            FROM demande_paiements
             WHERE id_formateur = :id_formateur
         ");
 
@@ -94,7 +94,7 @@ class requestPayment
     public function deleteRequest($id_req)
     {
         $query = $this->connect->prepare("
-            DELETE FROM request_payment 
+            DELETE FROM demande_paiements 
             WHERE id_payment = :id_req
         ");
 
