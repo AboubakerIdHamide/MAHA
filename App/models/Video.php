@@ -16,7 +16,7 @@ class Video
 	public function insertVideo($dataVideo)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO videos(id_formation, nom_video, url_video, duree_video, description_video) VALUES (:formation, :nom, :url, SEC_TO_TIME(:duree), :description)
+			INSERT INTO videos(id_formation, nom, url, duree, description) VALUES (:formation, :nom, :url, SEC_TO_TIME(:duree), :description)
 		");
 
 		$query->bindParam(':formation', $dataVideo['Idformation']);
@@ -57,7 +57,7 @@ class Video
 	{
 		$query = $this->connect->prepare("
 			SELECT 
-				SEC_TO_TIME(SUM(TIME_TO_SEC(duree_video))) AS mass_horaire  
+				SEC_TO_TIME(SUM(TIME_TO_SEC(duree))) AS mass_horaire  
 			FROM videos
 			WHERE id_formation = :id_formation
 			GROUP BY id_formation
@@ -78,7 +78,7 @@ class Video
 		foreach ($data as $value) {
 			$query = $this->connect->prepare("
 				UPDATE videos
-				SET order_video = :order_video
+				SET ordre = :order_video
 				WHERE id_video = :id_video
 			");
 			$query->bindParam(':order_video', $value->order);
@@ -93,20 +93,20 @@ class Video
 			SELECT 
 				v.id_video,
 				f.id_formation,
-				nom_video,
-				url_video,
-				duree_video,
-				description_video,
-				date_creation_formation,
-				nom_formation,
+				v.nom,
+				url,
+				duree,
+				v.description,
+				date_creation,
+				f.nom,
 				mass_horaire,
 				p.id_formation AS preview,
-				order_video
+				ordre
 			FROM videos v
-			LEFT JOIN previews p ON v.id_video = p.id_video
+			LEFT JOIN apercus a ON v.id_video = a.id_video
 			JOIN formations f ON v.id_formation = f.id_formation
 			WHERE f.id_formation = :id_formation
-			ORDER BY order_video
+			ORDER BY ordre
 		");
 
 		$query->bindParam(':id_formation', $idFormation);
@@ -124,8 +124,8 @@ class Video
 		if (isset($dataVideo['description']) && isset($dataVideo['titre'])) {
 			$query = $this->connect->prepare("
 				UPDATE videos
-				SET description_video = :description,
-					nom_video = :titre
+				SET description = :description,
+					nom = :titre
 				WHERE id_formation = :id_formation AND id_video = :id_video
 			");
 			$query->bindParam(':description', $dataVideo['description']);
@@ -134,14 +134,14 @@ class Video
 			if (isset($dataVideo['description'])) {
 				$query = $this->connect->prepare("
 					UPDATE videos
-					SET description_video = :description
+					SET description = :description
 					WHERE id_formation = :id_formation AND id_video = :id_video
 				");
 				$query->bindParam(':description', $dataVideo['description']);
 			} else {
 				$query = $this->connect->prepare("
 					UPDATE videos
-					SET nom_video = :titre
+					SET nom = :titre
 					WHERE id_formation = :id_formation AND id_video = :id_video
 				");
 				$query->bindParam(':titre', $dataVideo['titre']);
@@ -180,14 +180,14 @@ class Video
 		if ($watched) {
 			// watch
 			$query = $this->connect->prepare("
-				DELETE FROM watched 
+				DELETE FROM vus 
 				WHERE id_etudiant=:eId 
 				AND id_video=:vId
 			");
 		} else {
 			// unwatch
 			$query = $this->connect->prepare("
-				INSERT INTO watched(id_etudiant, id_video) VALUES (:eId,:vId)
+				INSERT INTO vus(id_etudiant, id_video) VALUES (:eId,:vId)
 			");
 		}
 		$query->bindParam(':eId', $etudiant_id);
@@ -203,7 +203,7 @@ class Video
 	{
 		$query = $this->connect->prepare("
 			SELECT * 
-			FROM watched 
+			FROM vus 
 			WHERE id_etudiant=:eId 
 			AND id_video=:vId
 		");
@@ -222,10 +222,10 @@ class Video
 	{
 		$query = $this->connect->prepare("
 			SELECT * 
-			FROM watched w
+			FROM vus v
 			JOIN videos USING(id_video) 
 			JOIN formations USING (id_formation)
-			WHERE w.id_etudiant=:id_etudiant
+			WHERE v.id_etudiant=:id_etudiant
 		");
 
 		$query->bindParam(':id_etudiant', $etudiant_id);
@@ -326,8 +326,8 @@ class Video
 		if (isset($dataVideo['description']) && isset($dataVideo['titre'])) {
 			$query = $this->connect->prepare("
 				UPDATE videos
-				SET description_video = :description,
-					nom_video = :titre
+				SET description = :description,
+					nom = :titre
 				WHERE id_video = :id_video
 			");
 			$query->bindParam(':description', $dataVideo['description']);
@@ -336,14 +336,14 @@ class Video
 			if (isset($dataVideo['description'])) {
 				$query = $this->connect->prepare("
 					UPDATE videos
-					SET description_video = :description
+					SET description = :description
 					WHERE id_video = :id_video
 				");
 				$query->bindParam(':description', $dataVideo['description']);
 			} else {
 				$query = $this->connect->prepare("
 					UPDATE videos
-					SET nom_video = :titre
+					SET nom = :titre
 					WHERE id_video = :id_video
 				");
 				$query->bindParam(':titre', $dataVideo['titre']);
@@ -363,8 +363,8 @@ class Video
 		$query = $this->connect->prepare("
 			SELECT 
 				videos.id_video AS IdVideo,
-				videos.nom_video AS NomVideo,
-				videos.duree_video AS DureeVideo
+				videos.nom AS NomVideo,
+				videos.duree AS DureeVideo
 			FROM videos
 			JOIN formations USING (id_formation)
 			WHERE id_formation = :id_formation
