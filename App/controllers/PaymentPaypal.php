@@ -109,10 +109,10 @@ class PaymentPaypal extends Controller
 			"transactions" => [
 				[
 					"amount" => [
-						"total" => "{$formation['prix']}",
+						"total" => "{$formation->prix}",
 						"currency" => "USD",
 						"details" => [
-							"subtotal" => "{$formation['prix']}",
+							"subtotal" => "{$formation->prix}",
 							"tax" => "0.00",
 							"shipping" => "0.00",
 							"handling_fee" => "0.00",
@@ -120,7 +120,7 @@ class PaymentPaypal extends Controller
 							"insurance" => "0.00"
 						]
 					],
-					"description" => "{$formation['nomFormation']}",
+					"description" => "{$formation->nomFormation}",
 					"payment_options" => [
 						"allowed_payment_method" => "INSTANT_FUNDING_SOURCE"
 					],
@@ -128,10 +128,10 @@ class PaymentPaypal extends Controller
 						"items" =>
 						[
 							[
-								"name" => "{$formation['nomFormation']}",
+								"name" => "{$formation->nomFormation}",
 								"description" => "Online Course",
 								"quantity" => "1",
-								"price" => "{$formation['prix']}",
+								"price" => "{$formation->prix}",
 								"tax" => "0.00",
 								"sku" => "1",
 								"currency" => "USD"
@@ -165,10 +165,10 @@ class PaymentPaypal extends Controller
 		$approvalURL = $paypalData->links[1]->href;
 
 		$inscriptionData = [
-			"id_formation" => $formation['IdFormation'],
+			"id_formation" => $formation->id_formation,
 			"id_etudiant" => $_SESSION['id_etudiant'],
-			"id_formateur" => $formation['IdFormteur'],
-			"prix" => $formation['prix'],
+			"id_formateur" => $formation->id_formateur,
+			"prix" => $formation->prix,
 			"transaction_info" => json_encode($paypalData),
 			"payment_id" => $paymentID,
 			"payment_state" => $paymentState,
