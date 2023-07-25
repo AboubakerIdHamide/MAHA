@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
-    <title>MAHA | Notifications</title>
+    <title><?= SITENAME ?> | Notifications</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- Bootstrap -->
@@ -21,8 +21,8 @@
     <!-- Header -->
     <header>
         <span id="overlay"></span>
-        <div class="logo" data-user-name="<?= $_SESSION['user']['prenom'] ?>">
-            <img src="<?= $_SESSION['user']['avatar'] ?>" alt="avatar">
+        <div class="logo" data-user-name="<?= $_SESSION['user']->prenom ?>">
+            <img src="<?= $_SESSION['user']->img ?>" alt="avatar">
         </div>
         <nav>
             <div class="menu-i">

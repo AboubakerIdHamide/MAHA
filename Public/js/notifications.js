@@ -23,21 +23,21 @@ $(document).ready(function() {
         }
         for (let notification of notifications) {
             $(".notifications").html($(".notifications").html() + `
-          <a href="http://localhost/maha/${controller}/coursVideos/${notification.id_user}/${notification.id_formation}" class="row mb-3 bg-white rounded py-3 notification ${notification.etat_notification == 0 ? "seen" : ""}" data-id-notification="${notification.id_notification}">
+          <a href="http://localhost/maha/${controller}/coursVideos/${notification.id_user}/${notification.id_formation}" class="row mb-3 bg-white rounded py-3 notification ${notification.etat == 0 ? "seen" : ""}" data-id-notification="${notification.id_notification}">
             <div class="col-1 text-center align-self-center">
-                <i class="fa-solid fa-comment fs-1 ${removeRedColorToOldNotification(notification.etat_notification)}"></i>
-                <span class="${notification.etat_notification == 1 ? "position-relative" : ""}">
+                <i class="fa-solid fa-comment fs-1 ${removeRedColorToOldNotification(notification.etat)}"></i>
+                <span class="${notification.etat == 1 ? "position-relative" : ""}">
                     <span class="position-absolute top-0 start-0 translate-middle p-2 bg-danger border border-light rounded-circle"></span>
                 </span>
             </div>
             <div class="col-10">
-                <p class="message text-truncate mb-1 ${removeRedColorToOldNotification(notification.etat_notification)}">${notification.commentaire}</p>
+                <p class="message text-truncate mb-1 ${removeRedColorToOldNotification(notification.etat)}">${notification.commentaire}</p>
                 <div class="d-flex align-items-center">
-                    <span class="me-2 date-notification ${removeRedColorToOldNotification(notification.etat_notification)}">${notification.created_at}</span>
+                    <span class="me-2 date-notification ${removeRedColorToOldNotification(notification.etat)}">${notification.created_at}</span>
                     ·
-                    <span class="nom-etudiant ms-2 me-2 ${removeRedColorToOldNotification(notification.etat_notification)}">${notification.nom.toUpperCase()} ${notification.prenom}</span>
+                    <span class="nom-etudiant ms-2 me-2 ${removeRedColorToOldNotification(notification.etat)}">${notification.nom.toUpperCase()} ${notification.prenom}</span>
                     ·
-                    <span class="ms-2 badge bg-light ${removeRedColorToOldNotification(notification.etat_notification)} formation">${notification.nom_formation} ==> ${notification.nom_video}</span>
+                    <span class="ms-2 badge bg-light ${removeRedColorToOldNotification(notification.etat)} formation">${notification.nom_formation} ==> ${notification.nom_video}</span>
                 </div>
             </div>
           </a>
