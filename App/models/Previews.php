@@ -16,7 +16,7 @@ class Previews
     public function insertPreviewVideo($id_video, $id_formation)
     {
         $query = $this->connect->prepare("
-			INSERT INTO previews VALUES (:id_formation, :id_video)
+			INSERT INTO apercus VALUES (:id_formation, :id_video)
 		");
 
         $query->bindParam(':id_video', $id_video);
@@ -34,7 +34,7 @@ class Previews
     {
         $query = $this->connect->prepare("
             SELECT * 
-            FROM previews 
+            FROM apercus 
             WHERE id_formation = :id_formation
         ");
         $query->bindParam(':id_formation', $id_formation);
@@ -50,10 +50,10 @@ class Previews
     {
         $query = $this->connect->prepare("
             SELECT  
-                url_video
-            FROM previews p
+                url
+            FROM apercus a
             JOIN videos USING (id_video)
-            WHERE p.id_formation = :id_formation
+            WHERE a.id_formation = :id_formation
         ");
         $query->bindParam(':id_formation', $id_formation);
         $query->execute();
@@ -67,7 +67,7 @@ class Previews
     public function updatePreview($id_video, $id_formation)
     {
         $query = $this->connect->prepare("
-			UPDATE previews
+			UPDATE apercus
             SET id_video = :id_video
             WHERE id_formation = :id_formation
 		");
