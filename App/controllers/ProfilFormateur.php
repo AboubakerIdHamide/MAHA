@@ -16,21 +16,21 @@ class ProfilFormateur extends Controller
     }
     public function index($id)
     {
-        $infoFormateur = $this->fomateurModel->getFormateurById($id);
-        $infoFormateur['img'] = URLROOT . "/Public/" . $infoFormateur['img'];
-        $courses = $this->formationModel->getFormationsFormateurById($id);
+        $formateur = $this->fomateurModel->getFormateurById($id);
+        $formateur->img = URLROOT . "/Public/" . $formateur->img;
+        $formations = $this->formationModel->getFormationsFormateurById($id);
         $numFormations = $this->fomateurModel->getnumFormationsFormateurById($id);
         $numAcht = $this->fomateurModel->getNumFormationAchtByIdFormateur($id);
         $themeData = $this->stockedModel->getThemeData();
-        $themeData["logo"] = URLROOT . "/Public/" . $themeData["logo"];
-        foreach ($courses as $row) {
-            $row->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($row->IdFormteur, $row->IdFormation)['total_apprenants'];
-            $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
-            $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
+        $themeData["logo"] = URLROOT . "/Public/" . $themeData->logo;
+        foreach ($formations as $formation) {
+            $formation->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($formation->IdFormteur, $formation->IdFormation);
+            $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
+            $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
         }
         $data = [
-            'infoFormateur' => $infoFormateur,
-            'courses' => $courses,
+            'formateur' => $formateur,
+            'formations' => $formations,
             'numFormations' => $numFormations,
             'numAcht' => $numAcht,
             'theme' => $themeData
