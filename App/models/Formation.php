@@ -226,7 +226,7 @@ class Formation
         return false;
     }
 
-    public function getPopularCourses($offset)
+    public function getPopularCourses($offset = 0)
     {
         $query = $this->connect->prepare("
             SELECT 
