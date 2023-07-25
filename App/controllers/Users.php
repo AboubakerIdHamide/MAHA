@@ -66,8 +66,8 @@ class Users extends Controller
             if (empty($user)) {
                 $user = $this->fomateurModel->getFormateurByEmail($data["email"]);
                 if (!empty($user)) {
-                    if (password_verify($data["password"], $user["mot_de_passe"])) {
-                        $user["type"] = "formateur";
+                    if (password_verify($data["password"], $user->mot_de_passe)) {
+                        $user->type = "formateur";
                         $this->createUserSessios($user);
                     } else {
                         $data["password_err"] = "Mot de passe incorrect";
@@ -76,8 +76,8 @@ class Users extends Controller
                     $data["email_err"] = "Aucun utilisateur avec cet email";
                 }
             } else {
-                if (password_verify($data["password"], $user["mot_de_passe"])) {
-                    $user["type"] = "etudiant";
+                if (password_verify($data["password"], $user->mot_de_passe)) {
+                    $user->type = "etudiant";
                     $this->createUserSessios($user);
                 } else {
                     $data["password_err"] = "Mot de passe incorrect";
@@ -385,7 +385,7 @@ class Users extends Controller
 
     public function createUserSessios($user)
     {
-        if ($user['type'] == 'formateur') {
+        if ($user->type === 'formateur') {
             $_SESSION['id_formateur'] = $user->id_formateur;
             $_SESSION['user'] = $user;
             // setting up the image link

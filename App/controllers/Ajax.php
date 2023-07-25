@@ -196,7 +196,7 @@ class Ajax extends Controller
                 if (empty($user)) {
                     $user = $this->fomateurModel->getFormateurByEmail($email);
                     if (!empty($user)) {
-                        $user["type"] = "formateur";
+                        $user->type = "formateur";
                         $url = $this->createUserSessions($user);
                         echo json_encode([
                             "authorized" => true,
@@ -210,7 +210,7 @@ class Ajax extends Controller
                         ]);
                     }
                 } else {
-                    $user["type"] = "etudiant";
+                    $user->type = "etudiant";
                     $url = $this->createUserSessions($user);
                     echo json_encode([
                         "authorized" => true,
@@ -248,7 +248,7 @@ class Ajax extends Controller
             if (empty($user)) {
                 $user = $this->fomateurModel->getFormateurByEmail($email);
                 if (!empty($user)) {
-                    $user["type"] = "formateur";
+                    $user->type = "formateur";
                     $url = $this->createUserSessions($user);
                     echo json_encode([
                         "authorized" => true,
@@ -262,7 +262,7 @@ class Ajax extends Controller
                     ]);
                 }
             } else {
-                $user["type"] = "etudiant";
+                $user->type = "etudiant";
                 $url = $this->createUserSessions($user);
                 echo json_encode([
                     "authorized" => true,
@@ -280,17 +280,17 @@ class Ajax extends Controller
 
     public function createUserSessions($user)
     {
-        if ($user['type'] == 'formateur') {
-            $_SESSION['id_formateur'] = $user['id_formateur'];
+        if ($user->type === 'formateur') {
+            $_SESSION['id_formateur'] = $user->id_formateur;
             $_SESSION['user'] = $user;
             // setting up the image link
-            $_SESSION['user']['avatar'] = URLROOT . "/Public/" . $_SESSION['user']['avatar'];
+            $_SESSION['user']->img = URLROOT . "/Public/" . $_SESSION['user']->img;
             return URLROOT . '/formateurs/dashboard';
         } else {
-            $_SESSION['id_etudiant'] = $user['id_etudiant'];
+            $_SESSION['id_etudiant'] = $user->id_etudiant;
             $_SESSION['user'] = $user;
             // setting up the image link
-            $_SESSION['user']['avatar'] = URLROOT . "/Public/" . $_SESSION['user']['avatar'];
+            $_SESSION['user']->img = URLROOT . "/Public/" . $_SESSION['user']->img;
             return URLROOT . '/etudiants/dashboard';
         }
     }
