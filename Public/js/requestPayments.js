@@ -52,7 +52,7 @@ $(document).ready(function() {
                         },
                         type: "POST",
                         success: function(response) {
-                            showFlashMessage(response, "success");
+                            showFlashMessage(JSON.parse(response), "success");
                         },
                     });
                     insertHistoryIntoDOM();
@@ -102,12 +102,12 @@ $(document).ready(function() {
                 <div class="col">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <span>${request.date_request}</span>
-                            ${showCloseBtn(request.etat_request, request.id_payment)}
+                            <span>${request.date_de_demande}</span>
+                            ${showCloseBtn(request.etat, request.id_payment)}
                         </div>
                         <div class="d-flex justify-content-between align-items-center card-body">
-                            <span class="card-title">Montant <strong class="badge bg-${getBadgeColor(request.etat_request)} text-dark" style="font-size: 14px;">${request.request_prix} $</strong></span>
-                            <span class="badge bg-${getBadgeColor(request.etat_request)} text-dark" style="font-size: 14px;">${request.etat_request}</span>
+                            <span class="card-title">Montant <strong class="badge bg-${getBadgeColor(request.etat)} text-dark" style="font-size: 14px;">${request.prix_demande} $</strong></span>
+                            <span class="badge bg-${getBadgeColor(request.etat)} text-dark" style="font-size: 14px;">${request.etat}</span>
                         </div>
                     </div>
                 </div>
@@ -122,7 +122,7 @@ $(document).ready(function() {
                     $.ajax({
                         url: "http://localhost/maha/formateurs/deleteRequest/" + idReq,
                         success: function(response) {
-                            showFlashMessage(response, "success");
+                            showFlashMessage(JSON.parse(response), "success");
                         },
                     });
                     insertHistoryIntoDOM();

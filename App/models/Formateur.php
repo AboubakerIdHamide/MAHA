@@ -381,7 +381,7 @@ class Formateur
 		if ($query->rowCount() > 0) {
 			return $formateur->balance;
 		}
-		return false;
+		return 0;
 	}
 
 	// checking code of formateur is already used

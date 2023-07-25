@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
-    <title>MAHA | Demande de Payment</title>
+    <title><?= SITENAME ?> | Demande de Payment</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- Bootstrap -->
@@ -21,8 +21,8 @@
     <!-- Header -->
     <header>
         <span id="overlay"></span>
-        <div class="logo" data-user-name="<?= $_SESSION['user']['prenom'] ?>">
-            <img src="<?= $_SESSION['user']['avatar'] ?>" alt="avatar">
+        <div class="logo" data-user-name="<?= $_SESSION['user']->prenom ?>">
+            <img src="<?= $_SESSION['user']->avatar ?>" alt="avatar">
         </div>
         <nav>
             <div class="menu-i">
@@ -57,7 +57,7 @@
         <div class="row">
             <div class="col">
                 <div class="form-floating mb-3">
-                    <input value="<?= $_SESSION['user']['paypalMail'] ?>" type="email" class="form-control" id="paypal-email" placeholder="name@example.com" disabled>
+                    <input value="<?= $_SESSION['user']->paypalMail ?>" type="email" class="form-control" id="paypal-email" placeholder="name@example.com" disabled>
                     <label for="paypal-email">Paypal email</label>
                 </div>
             </div>
