@@ -193,7 +193,7 @@ class Users extends Controller
     {
         // redirect if there isn't a verification code
         if (!isset($_SESSION["vcode"])) {
-            redirect("pages/index");
+            redirect("pages");
         }
 
         // preparing data
@@ -317,7 +317,7 @@ class Users extends Controller
     {
         // redirect if there isn't a data
         if (!isset($_SESSION["changePasswordData"])) {
-            redirect("pages/index");
+            redirect("pages");
         }
 
         // prepare data
@@ -386,16 +386,16 @@ class Users extends Controller
     public function createUserSessios($user)
     {
         if ($user['type'] == 'formateur') {
-            $_SESSION['id_formateur'] = $user['id_formateur'];
+            $_SESSION['id_formateur'] = $user->id_formateur;
             $_SESSION['user'] = $user;
             // setting up the image link
-            $_SESSION['user']['avatar'] = URLROOT . "/Public/" . $_SESSION['user']['avatar'];
+            $_SESSION['user']->img = URLROOT . "/Public/" . $_SESSION['user']->img;
             redirect('formateurs/dashboard');
         } else {
-            $_SESSION['id_etudiant'] = $user['id_etudiant'];
+            $_SESSION['id_etudiant'] = $user->id_etudiant;
             $_SESSION['user'] = $user;
             // setting up the image link
-            $_SESSION['user']['avatar'] = URLROOT . "/Public/" . $_SESSION['user']['avatar'];
+            $_SESSION['user']->img = URLROOT . "/Public/" . $_SESSION['user']->img;
             redirect('etudiants/dashboard');
         }
     }
@@ -463,7 +463,7 @@ class Users extends Controller
             extract($_POST);
             $username = $this->model("Smtp")->getSmtp()->username;
             $this->sendEmail($username, $email, $name, $subject, $message, 'MAHA', null, null);
-            echo "Votre Message a été envoyé avec succès !";
+            echo json_encode("Votre Message a été envoyé avec succès !");
         }
     }
 
