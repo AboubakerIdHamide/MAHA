@@ -149,7 +149,7 @@
                                                 <div class="lesson d-flex justify-content-between">
                                                     <span class="lesson-titre"><i class="fa-solid fa-lock me-2"></i>
                                                         <?= $i++; ?>.
-                                                        <?= $video->nomVideo ?>
+                                                        <?= $video->nom ?>
                                                     </span>
                                                     <span class="lesson-time"><?= $video->duree ?></span>
                                                 </div>
