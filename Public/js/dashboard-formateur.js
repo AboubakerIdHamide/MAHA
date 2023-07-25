@@ -86,7 +86,7 @@ $(document).ready(function () {
       url: "http://localhost/maha/ajax/deleteFormation",
       method: "POST",
       data: {
-        id: coursesSelected,
+        formations: coursesSelected,
       },
       success: function (response) {
         location.reload();

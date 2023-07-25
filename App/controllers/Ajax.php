@@ -71,18 +71,20 @@ class Ajax extends Controller
 
     public function deleteFormation()
     {
-        if (isset($_POST['id'])) {
-            foreach ($_POST['id'] as $key => $id_formation) {
-                $videos = $this->videoModel->getVideosOfFormation($id_formation);
-                $this->formationModel->deleteFormation($id_formation);
-                if (!empty($videos)) {
-                    foreach ($videos as $video) {
-                        $this->videoModel->deteleVideo($video->id_formation, $video->id_video);
-                        unlink($video->url_video);
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            if (isset($_POST['formations'])) {
+                foreach ($_POST['formations'] as $id_formation) {
+                    $videos = $this->videoModel->getVideosOfFormation($id_formation);
+                    $this->formationModel->deleteFormation($id_formation);
+                    if (!empty($videos)) {
+                        foreach ($videos as $video) {
+                            $this->videoModel->deteleVideo($video->id_formation, $video->id_video);
+                            unlink($video->url);
+                        }
                     }
                 }
+                echo json_encode('Formation supprimé avec succès !!!');
             }
-            echo json_encode('Formation supprimé avec succès !!!');
         }
     }
 

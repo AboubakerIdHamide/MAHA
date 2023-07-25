@@ -95,7 +95,6 @@ class Formation
 
     function deleteFormation($id)
     {
-        // You Can Add ON DELETE CASCADE
         $query = $this->connect->prepare("
             DELETE FROM formations 
             WHERE id_formation=:id;
