@@ -46,7 +46,7 @@ class Video
 		$query->bindParam(':id_video', $idVideo);
 		$query->execute();
 
-		$video = $query->fetch();
+		$video = $query->fetch(PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $video;
 		}
@@ -211,7 +211,7 @@ class Video
 		$query->bindParam(':eId', $etudiant_id);
 		$query->bindParam(':vId', $video_id);
 		$query->execute();
-		$watched = $query->fetch();
+		
 		if ($query->rowCount() > 0) {
 			return true;
 		}
@@ -276,7 +276,7 @@ class Video
 		$query->bindParam(':eId', $etudiant_id);
 		$query->bindParam(':vId', $video_id);
 		$query->execute();
-		$bookmarks = $query->fetch();
+		
 		if ($query->rowCount() > 0) {
 			return true;
 		}
@@ -393,7 +393,7 @@ class Video
 		$query->bindParam(':id_formation', $id);
 		$query->execute();
 
-		$videos = $query->fetch();
+		$videos = $query->fetch(PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $videos;
 		}

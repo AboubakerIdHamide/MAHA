@@ -26,7 +26,7 @@ class Etudiant
 		if ($query->rowCount() > 0) {
 			return $response->total_etudiants;
 		}
-		return false;
+		return 0;
 	}
 
 	public function getAllEtudiant($q = '')
@@ -115,8 +115,7 @@ class Etudiant
 		$query->bindParam(':email', $email);
 		$query->execute();
 
-		// PDO::FETCH_OBJ
-		$etudiant = $query->fetch();
+		$etudiant = $query->fetch(PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $etudiant;
 		}
@@ -151,11 +150,11 @@ class Etudiant
 			WHERE id_etudiant = :id
 		");
 
-		$query->bindParam(':nom', $dataEtudiant['nom']);
-		$query->bindParam(':prenom', $dataEtudiant['prenom']);
-		$query->bindParam(':tel', $dataEtudiant['tel']);
-		$query->bindParam(':mdp', $dataEtudiant['n_mdp']);
-		$query->bindParam(':id', $dataEtudiant['id']);
+		$query->bindParam(':nom', $dataEtudiant->nom);
+		$query->bindParam(':prenom', $dataEtudiant->prenom);
+		$query->bindParam(':tel', $dataEtudiant->tel);
+		$query->bindParam(':mdp', $dataEtudiant->n_mdp);
+		$query->bindParam(':id', $dataEtudiant->id);
 
 		$query->execute();
 		if ($query->rowCount() > 0) {
@@ -194,8 +193,7 @@ class Etudiant
 		$query->bindParam(':id', $id);
 		$query->execute();
 
-		// PDO::FETCH_OBJ
-		$password = $query->fetch();
+		$password = $query->fetch(PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $password;
 		}
@@ -219,8 +217,7 @@ class Etudiant
 		$query->bindParam(':id', $id);
 		$query->execute();
 
-		// PDO::FETCH_OBJ
-		$etudiant = $query->fetch();
+		$etudiant = $query->fetch(PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $etudiant;
 		}

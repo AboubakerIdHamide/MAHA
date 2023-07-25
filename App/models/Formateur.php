@@ -27,7 +27,7 @@ class Formateur
 		if ($query->rowCount() > 0) {
 			return $response->total_formateurs;
 		}
-		return false;
+		return 0;
 	}
 
 	public function getAllFormateur($q = '')
@@ -112,8 +112,7 @@ class Formateur
 		$query->bindParam(':email', $email);
 		$query->execute();
 
-		// PDO::FETCH_OBJ
-		$formateur = $query->fetch();
+		$formateur = $query->fetch(PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $formateur;
 		}
@@ -142,8 +141,7 @@ class Formateur
 		$query->bindParam(':pmail', $email);
 		$query->execute();
 
-		// PDO::FETCH_OBJ
-		$formateur = $query->fetch();
+		$formateur = $query->fetch(PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $formateur;
 		}
@@ -200,15 +198,14 @@ class Formateur
 	{
 		$query = $this->connect->prepare("
 			SELECT 
-				mot_de_passe as mdp
+				mot_de_passe AS mdp
 			FROM formateurs
 			WHERE id_formateur = :id
 		");
 
 		$query->bindParam(':id', $id);
 		$query->execute();
-		// PDO::FETCH_OBJ
-		$password = $query->fetch();
+		$password = $query->fetch(PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $password;
 		}
@@ -292,15 +289,15 @@ class Formateur
 	{
 		$query = $this->connect->prepare("
 			SELECT 
-				formateurs.id_formateur,
-				formateurs.nom,
-				formateurs.prenom,
-				formateurs.img,
-				formateurs.biography,
-				categories.nom as 'categorie',
-				formateurs.id_categorie,
-				formateurs.email,
-				formateurs.tel
+				id_formateur,
+				nom,
+				prenom,
+				img,
+				biography,
+				categories.nom AS nomCategorie,
+				id_categorie,
+				email,
+				tel
 			FROM formateurs, categories
 			WHERE formateurs.id_categorie = categories.id_categorie 
 			AND formateurs.id_formateur = :id
@@ -309,8 +306,7 @@ class Formateur
 		$query->bindParam(':id', $id);
 		$query->execute();
 
-		// PDO::FETCH_OBJ
-		$formateur = $query->fetch();
+		$formateur = $query->fetch(PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $formateur;
 		}
@@ -328,18 +324,17 @@ class Formateur
 		$query->bindParam(':id', $id);
 		$query->execute();
 
-		// PDO::FETCH_OBJ
-		$formateur = $query->fetch();
+		$numFormations = $query->fetch(PDO::FETCH_OBJ)->numFormations;
 		if ($query->rowCount() > 0) {
-			return $formateur;
+			return $numFormations;
 		}
-		return false;
+		return 0;
 	}
 	public function getNumFormationAchtByIdFormateur($id)
 	{
 		$query = $this->connect->prepare("
 			SELECT 
-				COUNT(inscriptions.id_formation) as numAcht
+				COUNT(inscriptions.id_formation) AS numAcht
 			FROM inscriptions
 			WHERE inscriptions.id_formateur = :id
 		");
@@ -347,12 +342,11 @@ class Formateur
 		$query->bindParam(':id', $id);
 		$query->execute();
 
-		// PDO::FETCH_OBJ
-		$formations = $query->fetch();
+		$numAcht = $query->fetch(PDO::FETCH_OBJ)->numAcht;
 		if ($query->rowCount() > 0) {
-			return $formations;
+			return $numAcht;
 		}
-		return false;
+		return 0;
 	}
 
 	public function updateFormateurBalance($IdFormateur, $balance)
@@ -396,7 +390,7 @@ class Formateur
 		$request = $this->connect->prepare("SELECT code FROM formateurs WHERE code=:code");
 		$request->bindParam(":code", $code);
 		$request->execute();
-		$response = $request->fetch();
+		$response = $request->fetch(PDO::FETCH_OBJ);
 		if (!empty($response)) {
 			return false;
 		}

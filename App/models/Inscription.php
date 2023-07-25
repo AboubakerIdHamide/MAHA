@@ -52,8 +52,7 @@ class Inscription
         $query->bindParam(':id_etudiant', $id_formation);
         $query->bindParam(':id_formateur', $id_formation);
         $query->execute();
-        // PDO::FETCH_OBJ
-        $inscription = $query->fetch();
+        $inscription = $query->fetch(PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $inscription;
         }
@@ -72,12 +71,11 @@ class Inscription
         $query->bindParam(":id_formateur", $id_formateur);
         $query->bindParam(":id_formation", $id_formation);
         $query->execute();
-        // PDO::FETCH_OBJ
-        $total_apprenants = $query->fetch();
+        $total_apprenants = $query->fetch(PDO::FETCH_OBJ)->total_apprenants;
         if ($query->rowCount() > 0) {
             return $total_apprenants;
         }
-        return false;
+        return 0;
     }
 
     public function deteleInscription($id_inscription)
@@ -119,11 +117,18 @@ class Inscription
     public function getInscriptionOfOneFormation($id_formation, $id_etudiant, $id_formateur)
     {
         $query = $this->connect->prepare("
-            SELECT * 
+            SELECT 
+                f.img AS imgFormateur,
+                e.img AS imgEtudiant,
+                image,
+                f.id_categorie AS formateurCategorie,
+                fo.id_categorie AS formationCategorie,
+                id_langue AS langue,
+                id_niveau AS niveau
             FROM inscriptions i
-            JOIN etudiants  USING(id_etudiant)
-            JOIN formateurs USING(id_formateur)
-            JOIN formations USING(id_formation)
+            JOIN etudiants e USING(id_etudiant)
+            JOIN formateurs f USING(id_formateur)
+            JOIN formations fo USING(id_formation)
             WHERE i.id_formation = :id_formation 
             AND i.id_etudiant = :id_etudiant 
             AND i.id_formateur = :id_formateur

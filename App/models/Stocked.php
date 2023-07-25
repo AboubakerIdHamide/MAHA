@@ -38,7 +38,7 @@ class Stocked
 
 		$query->bindParam(':id', $id);
 		$query->execute();
-		$categorie = $query->fetch();
+		$categorie = $query->fetch(PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $categorie;
 		}
@@ -55,7 +55,7 @@ class Stocked
 
 		$query->bindParam(':id', $id);
 		$query->execute();
-		$langue = $query->fetch();
+		$langue = $query->fetch(PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $langue;
 		}
@@ -72,7 +72,7 @@ class Stocked
 
 		$query->bindParam(':id', $id);
 		$query->execute();
-		$level = $query->fetch();
+		$level = $query->fetch(PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $level;
 		}
@@ -186,7 +186,7 @@ class Stocked
 		");
 
 		$query->execute();
-		$theme = $query->fetch();
+		$theme = $query->fetch(PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $theme;
 		}

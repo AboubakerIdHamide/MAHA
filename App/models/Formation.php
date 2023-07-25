@@ -26,7 +26,7 @@ class Formation
         if ($query->rowCount() > 0) {
             return $response->total_formations;
         }
-        return false;
+        return 0;
     }
 
     public function insertFormation($dataFormation)
@@ -123,8 +123,7 @@ class Formation
         $query->bindParam(":id_formation", $id_formation);
         $query->bindParam(":id_formateur", $id_formateur);
         $query->execute();
-        // PDO::FETCH_OBJ
-        $formation = $query->fetch();
+        $formation = $query->fetch(PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formation;
         }
@@ -223,8 +222,6 @@ class Formation
         $query->bindParam(':fId', $formation_id);
         $query->execute();
 
-        // PDO::FETCH_OBJ (variable $likes for what ?)
-        $likes = $query->fetch();
         if ($query->rowCount() > 0) {
             return true;
         }
@@ -445,8 +442,7 @@ class Formation
         $query->bindParam(":id", $id);
         $query->execute();
 
-        // PDO::FETCH_OBJ
-        $formation = $query->fetch();
+        $formation = $query->fetch(PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formation;
         }
@@ -464,14 +460,14 @@ class Formation
         ");
 
         $query->execute();
-        $numbFormations = $query->fetch();
+        $numbFormations = $query->fetch(PDO::FETCH_OBJ)->numbFormations;
         if ($query->rowCount() > 0) {
             return $numbFormations;
         }
-        return false;
+        return 0;
     }
 
-    public function getPlusPopilairesFormations($offset)
+    public function getPopularFormations($offset)
     {
         $query = $this->connect->prepare("
             SELECT 
@@ -521,7 +517,7 @@ class Formation
         $query->bindParam(":categorie", $cat);
         $query->execute();
 
-        $numbFormations = $query->fetch();
+        $numbFormations = $query->fetch(PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $numbFormations;
         }
@@ -586,12 +582,11 @@ class Formation
         ");
 
         $query->execute();
-        // PDO::FETCH_OBJ
-        $numbFormations = $query->fetch();
+        $numbFormations = $query->fetch(PDO::FETCH_OBJ)->numbFormations;
         if ($query->rowCount() > 0) {
             return $numbFormations;
         }
-        return false;
+        return 0;
     }
 
     public function getFormationsByValRech($val, $offset)
@@ -665,7 +660,7 @@ class Formation
         return [];
     }
 
-    public function getPlusFormationsAchter($offset)
+    public function getPlusFormationsAcheter($offset)
     {
         $query = $this->connect->prepare("
             SELECT 
@@ -709,15 +704,14 @@ class Formation
         $query->bindParam(":langage", $lang);
         $query->execute();
 
-        // PDO::FETCH_OBJ
-        $numbFormations = $query->fetch();
+        $numbFormations = $query->fetch(PDO::FETCH_OBJ)->numbFormations;
         if ($query->rowCount() > 0) {
             return $numbFormations;
         }
-        return false;
+        return 0;
     }
 
-    public function getFormationsByLangage($lang, $offset)
+    public function getFormationsByLanguage($lang, $offset)
     {
         $query = $this->connect->prepare("
             SELECT 
@@ -769,15 +763,14 @@ class Formation
         $query->bindParam(":nivau", $niv);
         $query->execute();
 
-        // PDO::FETCH_OBJ
-        $numbFormations = $query->fetch();
+        $numbFormations = $query->fetch(PDO::FETCH_OBJ)->numbFormations;
         if ($query->rowCount() > 0) {
             return $numbFormations;
         }
-        return false;
+        return 0;
     }
 
-    public function getFormationsByNivau($niv, $offset)
+    public function getFormationsByNiveau($niv, $offset)
     {
         $query = $this->connect->prepare("
             SELECT 
@@ -832,12 +825,11 @@ class Formation
         $query->bindParam(":fin", $fin);
         $query->execute();
 
-        // PDO::FETCH_OBJ
-        $numbFormations = $query->fetch();
+        $numbFormations = $query->fetch(PDO::FETCH_OBJ)->numbFormations;
         if ($query->rowCount() > 0) {
             return $numbFormations;
         }
-        return false;
+        return 0;
     }
 
     public function updateFichierAttache($data)
