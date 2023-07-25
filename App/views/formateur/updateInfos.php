@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
-    <title>MAHA | Paramètre</title>
+    <title><?= SITENAME ?> | Paramètre</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- Bootstrap -->
@@ -21,8 +21,8 @@
     <!-- Header -->
     <header>
         <span id="overlay"></span>
-        <div class="logo" data-user-name="<?= $_SESSION['user']['prenom'] ?>">
-            <img src="<?= $_SESSION['user']['avatar'] ?>" alt="avatar">
+        <div class="logo" data-user-name="<?= $_SESSION['user']->prenom ?>">
+            <img src="<?= $_SESSION['user']->img ?>" alt="avatar">
         </div>
         <nav>
             <div class="menu-i">
@@ -154,11 +154,11 @@
                                 <label for="speciality" class="form-label">Spécialité</label>
                                 <select id="spec" class="form-select" aria-label="Default select example">
                                     <?php
-                                    foreach ($data["categories"] as $cat) {
-                                        if ($cat->id_categorie == $data['specId']) {
-                                            echo '<option selected value="' . $cat->id_categorie . '">' . $cat->nom_categorie . '</option>';
+                                    foreach ($data["categories"] as $categorie) {
+                                        if ($categorie->id_categorie == $data['specId']) {
+                                            echo '<option selected value="' . $categorie->id_categorie . '">' . $categorie->nom . '</option>';
                                         } else {
-                                            echo '<option value="' . $cat->id_categorie . '">' . $cat->nom_categorie . '</option>';
+                                            echo '<option value="' . $categorie->id_categorie . '">' . $categorie->nom . '</option>';
                                         }
                                     } ?>
                                 </select>

@@ -163,7 +163,7 @@ class Formateurs extends Controller
 				$formateur->img = URLROOT . "/Public/" . $formateur->img;
 
 				$data = [
-					"nom" => $formateur->nom,
+					"nom" => $formateur->nomFormateur,
 					"prenom" => $formateur->prenom,
 					"email" => $formateur->email,
 					"tel" => $formateur->tel,
@@ -185,7 +185,7 @@ class Formateurs extends Controller
 			}
 		} else {
 			$data = [
-				"nom" => $formateur->nom,
+				"nom" => $formateur->nomFormateur,
 				"prenom" => $formateur->prenom,
 				"email" => $formateur->email,
 				"tel" => $formateur->tel,
