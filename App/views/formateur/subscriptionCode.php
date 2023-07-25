@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
-    <title>MAHA | Demande de Payment</title>
+    <title><?= SITENAME ?> | Code D'abonnement</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- Bootstrap -->
@@ -21,8 +21,8 @@
     <!-- Header -->
     <header>
         <span id="overlay"></span>
-        <div class="logo" data-user-name="<?= $_SESSION['user']['prenom'] ?>">
-            <img src="<?= $_SESSION['user']['avatar'] ?>" alt="avatar">
+        <div class="logo" data-user-name="<?= $_SESSION['user']->prenom ?>">
+            <img src="<?= $_SESSION['user']->img ?>" alt="avatar">
         </div>
         <nav>
             <div class="menu-i">
@@ -58,7 +58,7 @@
             <div class="form-group">
                 <label for="code-formateur">Changer le code d'abonnement</label>
                 <div class="d-flex gap-3 mt-1">
-                    <input type="text" id="code-formateur" value="<?= isset($data['code_formateur']) ? $data['code_formateur'] : $_SESSION['user']['code_formateur'] ?>" disabled class="form-control">
+                    <input type="text" id="code-formateur" value="<?= isset($data['code_formateur']) ? $data['code_formateur'] : $_SESSION['user']->code ?>" disabled class="form-control">
                     <button type="button" class="btn btn-primary" id="copy-btn">
                         <i class="fa-solid fa-copy"></i>
                     </button>
