@@ -37,15 +37,14 @@ class Etudiants extends Controller
 	{
 		// preparing data
 		$data["inscriptions"] = $this->inscriptionModel->getInscriptionByEtudiant($_SESSION['id_etudiant']);
-		foreach ($data["inscriptions"] as $inscr) {
-			$inscr->img_formateur = URLROOT . "/Public/" . $inscr->img_formateur;
-			$inscr->image_formation = URLROOT . "/Public/" . $inscr->image_formation;
-			$inscr->categorie = $this->stockedModel->getCategorieById($inscr->categorie)["nom_categorie"];
-			$inscr->apprenants = $this->inscriptionModel->countApprenantsOfFormation($inscr->id_formateur, $inscr->id_formation)["total_apprenants"];
-			$inscr->liked = $this->formationModel->likedBefore($inscr->id_etudiant, $inscr->id_formation);
+		foreach ($data["inscriptions"] as $inscription) {
+			$inscription->img = URLROOT . "/Public/" . $inscription->img;
+			$inscription->image = URLROOT . "/Public/" . $inscription->image;
+			$inscription->id_categorie = $this->stockedModel->getCategorieById($inscription->id_categorie)->nom;
+			$inscription->apprenants = $this->inscriptionModel->countApprenantsOfFormation($inscription->id_formateur, $inscription->id_formation);
+			$inscription->liked = $this->formationModel->likedBefore($inscription->id_etudiant, $inscription->id_formation);
 		}
-		$nbrNotifications = $this->_getNotifications();
-		$data['nbrNotifications'] = $nbrNotifications;
+		$data['nbrNotifications'] = $this->_getNotifications();
 		// loading the view
 		$this->view("etudiant/index", $data);
 	}
@@ -57,26 +56,26 @@ class Etudiants extends Controller
 		}
 		// preparing data
 		$data = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, $_SESSION['id_etudiant'], $idFormateur);
-		$data->img_formateur = URLROOT . "/Public/" . $data->img_formateur;
-		$data->image_formation = URLROOT . "/Public/" . $data->image_formation;
-		$data->img_etudiant = URLROOT . "/Public/" . $data->img_etudiant;
-		$data->categorie = $this->stockedModel->getCategorieById($data->categorie)["nom_categorie"];
-		$data->specialiteId = $this->stockedModel->getCategorieById($data->specialiteId)["nom_categorie"];
-		$data->id_langue = $this->stockedModel->getLangueById($data->id_langue)["nom_langue"];
-		$data->niveau = $this->stockedModel->getLevelById($data->niveau_formation)["nom_niveau"];
-		$data->apprenants = $this->inscriptionModel->countApprenantsOfFormation($data->id_formateur, $data->id_formation)["total_apprenants"];
+		$data->imgFormateur = URLROOT . "/Public/" . $data->imgFormateur;
+		$data->image = URLROOT . "/Public/" . $data->image;
+		$data->imgEtudiant = URLROOT . "/Public/" . $data->imgEtudiant;
+		$data->formationCategorie = $this->stockedModel->getCategorieById($data->formationCategorie)->nom;
+		$data->formateurCategorie = $this->stockedModel->getCategorieById($data->formateurCategorie)->nom;
+		$data->langue = $this->stockedModel->getLangueById($data->langue)->nom;
+		$data->niveau = $this->stockedModel->getLevelById($data->niveau)->nom;
+		$data->apprenants = $this->inscriptionModel->countApprenantsOfFormation($data->id_formateur, $data->id_formation);
 		$data->videos = $this->videoModel->getVideosOfFormation($idFormation);
 		$data->liked = $this->formationModel->likedBefore($data->id_etudiant, $data->id_formation);
 
 		foreach ($data->videos as $video) {
 			// settingUp Video Link
-			$video->url_video = URLROOT . "/Public/" . $video->url_video;
+			$video->url = URLROOT . "/Public/" . $video->url;
 			$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video, $idFormateur, $_SESSION['id_etudiant']);
 			$video->watched = $this->videoModel->watchedBefore($data->id_etudiant, $video->id_video);
 			$video->bookmarked = $this->videoModel->bookmarked($data->id_etudiant, $video->id_video);
 			// settingUp User image Link for comment
 			foreach ($video->comments as $comment) {
-				$comment->image = URLROOT . "/Public/" . $comment->image;
+				$comment->img = URLROOT . "/Public/" . $comment->img;
 			}
 		}
 
@@ -90,11 +89,10 @@ class Etudiants extends Controller
 		$data["videos"] = $this->videoModel->getWatchedVideos($_SESSION['id_etudiant']);
 		foreach ($data["videos"] as $video) {
 			// settingUp Video Link
-			$video->url_video = URLROOT . "/Public/" . $video->url_video;
+			$video->url = URLROOT . "/Public/" . $video->url;
 		}
 
-		$nbrNotifications = $this->_getNotifications();
-		$data["nbrNotifications"] = $nbrNotifications;
+		$data["nbrNotifications"] = $this->_getNotifications();
 
 		// loading the view
 		$this->view("etudiant/videoCards", $data);
@@ -106,11 +104,10 @@ class Etudiants extends Controller
 		$data["videos"] = $this->videoModel->getBookmarkedVideos($_SESSION['id_etudiant']);
 		foreach ($data["videos"] as $video) {
 			// settingUp Video Link
-			$video->url_video = URLROOT . "/Public/" . $video->url_video;
+			$video->url = URLROOT . "/Public/" . $video->url;
 		}
 
-		$nbrNotifications = $this->_getNotifications();
-		$data["nbrNotifications"] = $nbrNotifications;
+		$data["nbrNotifications"] = $this->_getNotifications();
 
 		// loading the view
 		$this->view("etudiant/videoCards", $data);
@@ -121,8 +118,8 @@ class Etudiants extends Controller
 	public function updateInfos()
 	{
 		$idEtudiant = $this->id;
-		$info = $this->etudiantModel->getEtudiantById($idEtudiant);
-		$info['img'] = URLROOT . "/Public/" . $info['img'];
+		$etudiant = $this->etudiantModel->getEtudiantById($idEtudiant);
+		$etudiant->img = URLROOT . "/Public/" . $etudiant->img;
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			// Prepare Data
@@ -157,14 +154,14 @@ class Etudiants extends Controller
 
 				$_SESSION["user_data"] = $data;
 
-				$info = $this->etudiantModel->getEtudiantById($idEtudiant);
-				$info['img'] = URLROOT . "/Public/" . $info['img'];
+				$etudiant = $this->etudiantModel->getEtudiantById($idEtudiant);
+				$etudiant->img = URLROOT . "/Public/" . $etudiant->img;
 				$data = [
-					"nom" => $info['nomEtudiant'],
-					"prenom" => $info['prenomEtudiant'],
-					"email" => $info['email'],
-					"tel" => $info['tel'],
-					"img" => $info['img'],
+					"nom" => $etudiant->nom,
+					"prenom" => $etudiant->prenom,
+					"email" => $etudiant->email,
+					"tel" => $etudiant->tel,
+					"img" => $etudiant->img,
 					"nom_err" => "",
 					"prenom_err" => "",
 					"img_err" => "",
@@ -176,11 +173,11 @@ class Etudiants extends Controller
 			}
 		} else {
 			$data = [
-				"nom" => $info['nomEtudiant'],
-				"prenom" => $info['prenomEtudiant'],
-				"email" => $info['email'],
-				"tel" => $info['tel'],
-				"img" => $info['img'],
+				"nom" => $etudiant->nom,
+				"prenom" => $etudiant->prenom,
+				"email" => $etudiant->email,
+				"tel" => $etudiant->tel,
+				"img" => $etudiant->img,
 				"nom_err" => "",
 				"prenom_err" => "",
 				"img_err" => "",
@@ -189,8 +186,7 @@ class Etudiants extends Controller
 				"n_mdp_err" => "",
 			];
 
-			$nbrNotifications = $this->_getNotifications();
-			$data["nbrNotifications"] = $nbrNotifications;
+			$data["nbrNotifications"] = $this->_getNotifications();
 
 			$this->view("etudiant/updateInfos", $data);
 		}
@@ -251,7 +247,7 @@ class Etudiants extends Controller
 
 	public function validateMDP($data)
 	{
-		$data['mdpDb'] = $this->etudiantModel->getMDPEtudiantById($data['id'])['mdp'];
+		$data['mdpDb'] = $this->etudiantModel->getMDPEtudiantById($data['id'])->mdp;
 
 		if (!(password_verify($data["c_mdp"], $data['mdpDb']))) {
 			$data["thereIsError"] = true;
@@ -263,16 +259,16 @@ class Etudiants extends Controller
 	public function changeImg()
 	{
 		$idEtudiant = $this->id;
-		$info = $this->etudiantModel->getEtudiantById($idEtudiant);
-		$info['img'] = URLROOT . "/Public/" . $info['img'];
+		$etudiant = $this->etudiantModel->getEtudiantById($idEtudiant);
+		$etudiant->img = URLROOT . "/Public/" . $etudiant->img;
 
-
+		$data = [];
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$data['img'] = $_FILES["img"];
 			$data['img_err'] = "";
 			$data['thereIsError'] = false;
 
-			$data['email'] = $info['email'];
+			$data['email'] = $etudiant->email;
 
 			// Upload The Image In Our Server
 			$data = $this->uploadImage($data);
@@ -283,27 +279,26 @@ class Etudiants extends Controller
 			} else {
 				// Delete The Old Image
 				if ($data["img"] != "images/default.jpg") {
-					unlink($info['img']);
+					unlink($etudiant->img);
 				}
 
 				$this->etudiantModel->changeImg($data["img"], $idEtudiant);
 
 				$_SESSION["user_data"] = $data;
 
-				$infos = $this->etudiantModel->getEtudiantById($idEtudiant);
-				$info['img'] = URLROOT . "/Public/" . $info['img'];
+				$etudiant->img = URLROOT . "/Public/" . $data["img"];
 				$data = [
-					"img" => $infos['img'],
+					"img" => $etudiant->img,
 				];
 				echo json_encode($data);
 			}
 		} else {
 			$data = [
-				"nom" => $info->nomEtudiant,
-				"prenom" => $info->prenomEtudiant,
-				"email" => $info->email,
-				"tel" => $info->tel,
-				"img" => $info->img,
+				"nom" => $etudiant->nom,
+				"prenom" => $etudiant->prenom,
+				"email" => $etudiant->email,
+				"tel" => $etudiant->tel,
+				"img" => $etudiant->img,
 				"nom_err" => "",
 				"prenom_err" => "",
 				"email_err" => "",
@@ -361,20 +356,19 @@ class Etudiants extends Controller
 
 	public function notifications()
 	{
-		$nbrNotifications = $this->_getNotifications();
-		$data = ['nbrNotifications' => $nbrNotifications];
+		$data = ['nbrNotifications' => $this->_getNotifications()];
 		$this->view('etudiant/notifications', $data);
 	}
 
 	public function setStateToSeen($id_notification)
 	{
 		$this->notificationModel->setStateToSeen($id_notification);
-		echo 'Terminée !!';
+		echo json_encode('Terminée !!');
 	}
 
 	public function deleteSeenNotifications()
 	{
 		$this->notificationModel->deleteSeenNotifications();
-		echo 'Terminée !!';
+		echo json_encode('Terminée !!');
 	}
 }
