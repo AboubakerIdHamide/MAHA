@@ -59,11 +59,11 @@ class Ajax extends Controller
 
     public function getMyFormations($words = '')
     {
-        $data = $this->formationModel->getAllFormationsOfFormateur($_SESSION['id_formateur'], $words);
+        $formations = $this->formationModel->getAllFormationsOfFormateur($_SESSION['id_formateur'], $words);
 
         // don't forget to add Zipfile (Ressourses)
-        foreach ($data as $key => $course) {
-            $course->apprenants = $this->inscriptionModel->countApprenantsOfFormation($_SESSION['id_formateur'], $course->id)[0];
+        foreach ($formations as $formation) {
+            $formation->apprenants = $this->inscriptionModel->countApprenantsOfFormation($_SESSION['id_formateur'], $formation->id);
         }
 
         echo json_encode($data);
@@ -82,7 +82,7 @@ class Ajax extends Controller
                     }
                 }
             }
-            echo 'Formation supprimé avec succès !!!';
+            echo json_encode('Formation supprimé avec succès !!!');
         }
     }
 
@@ -91,8 +91,8 @@ class Ajax extends Controller
         $id_etudiant = $_POST["idEtudiant"];
         $id_formation = $_POST["idFormation"];
         $res = $this->formationModel->setLike($id_etudiant, $id_formation);
-        $likes = $this->formationModel->getLikesOfFormation($id_formation)->likes;
-        $data = ["success" => $res, "likes" => $likes];
+        $jaimes = $this->formationModel->getLikesOfFormation($id_formation)->jaimes;
+        $data = ["success" => $res, "jaimes" => $jaimes];
         echo json_encode($data);
     }
 
@@ -137,7 +137,7 @@ class Ajax extends Controller
         if ($res) {
             $comments = $this->commentaireModel->getCommentaireByVideoId($data["idVideo"], $data["to_user"], $data["from_user"]);
             foreach ($comments as $comment) {
-                $comment->image =  URLROOT . "/Public/" . $comment->image;
+                $comment->img =  URLROOT . "/Public/" . $comment->img;
             }
             echo json_encode(["success" => $res, "comments" => $comments]);
         }
@@ -304,16 +304,16 @@ class Ajax extends Controller
                 exit;
             }
 
-            $courses = $this->formationModel->joinCourse($code);
-            if ($courses) {
-                foreach ($courses as $course) {
-                    $inscription = $this->inscriptionModel->checkIfAlready($_SESSION['id_etudiant'], $course->id_formation);
+            $formations = $this->formationModel->joinCourse($code);
+            if ($formations) {
+                foreach ($formations as $formation) {
+                    $inscription = $this->inscriptionModel->checkIfAlready($_SESSION['id_etudiant'], $formation->id_formation);
                     if (empty($inscription)) {
                         $inscriptionData = [
-                            "id_formation" => $course->id_formation,
+                            "id_formation" => $formation->id_formation,
                             "id_etudiant" => $_SESSION['id_etudiant'],
-                            "id_formateur" => $course->id_formateur,
-                            "prix" => $course->prix_formation,
+                            "id_formateur" => $formation->id_formateur,
+                            "prix" => $formation->prix,
                             "transaction_info" => 0,
                             "payment_id" => 0,
                             "payment_state" => 'approved',
@@ -326,7 +326,7 @@ class Ajax extends Controller
                     }
                 }
 
-                flash("joined", "Vous avez rejoindre toutes les formations de formateur <strong>{$courses[0]->nom_formateur} {$courses[0]->prenom_formateur}</strong>.");
+                flash("joined", "Vous avez rejoindre toutes les formations de formateur <strong>{$formations[0]->nom} {$formations[0]->prenom}</strong>.");
             } else {
                 echo json_encode("ce code est invalid.");
                 http_response_code(404);
