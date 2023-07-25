@@ -135,13 +135,13 @@ class Admin extends Controller
         $this->view('admin/index', $data);
     }
 
-    public function getAllRequestsPayments($filter)
+    public function getAllRequestsPayments($etat)
     {
         $this->checkSession();
 
-        $arrayFilter = array(["pending", "accepted", "declined"]);
-        if (!in_array($filter, $arrayFilter)) {
-            $requestsPayment = $this->requestPaymentModel->getRequestsPaymentsByState($filter);
+        $arrayStates = array(["pending", "accepted", "declined"]);
+        if (!in_array($etat, $arrayStates)) {
+            $requestsPayment = $this->requestPaymentModel->getRequestsPaymentsByState($etat);
             echo json_encode($requestsPayment);
         }
     }
@@ -152,7 +152,7 @@ class Admin extends Controller
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $this->requestPaymentModel->setState($_POST['etat_request'], $_POST['id_payment']);
-            echo 'Demande de paiement modifiée !!!';
+            echo json_encode('Demande de paiement modifiée !!!');
         }
     }
 
@@ -169,7 +169,7 @@ class Admin extends Controller
         $data['specialite'] = $this->stockedModel->getAllCategories();
         // get link of image formateur
         foreach ($data['formateurs'] as $formateur) {
-            $formateur->img_formateur = URLROOT . "/Public/" . $formateur->img_formateur;
+            $formateur->img = URLROOT . "/Public/" . $formateur->img;
         }
         $this->view("admin/formateurs", $data);
     }
@@ -179,7 +179,7 @@ class Admin extends Controller
         $this->checkSession();
 
         $this->fomateurModel->deteleFormateur($id_formateur);
-        echo "Formateur supprimé avec succès !!!";
+        echo json_encode("Formateur supprimé avec succès !!!");
     }
 
     public function editFormateur()
@@ -190,7 +190,7 @@ class Admin extends Controller
             // don't forget validate data
             $data = (array) json_decode($_POST['formateur']);
             $this->fomateurModel->editFormateur($data);
-            echo "Formateur modifié avec succès !!!";
+            echo json_encode("Formateur modifié avec succès !!!");
         }
     }
 
@@ -205,7 +205,7 @@ class Admin extends Controller
         }
         // get link of image etudiant
         foreach ($data as $etudiant) {
-            $etudiant->img_etudiant = URLROOT . "/Public/" . $etudiant->img_etudiant;
+            $etudiant->img = URLROOT . "/Public/" . $etudiant->img;
             $etudiant->total_inscription = $this->etudiantModel->countTotalInscriById($etudiant->id_etudiant);
         }
         $this->view("admin/etudiants", $data);
@@ -216,7 +216,7 @@ class Admin extends Controller
         $this->checkSession();
 
         $this->etudiantModel->deteleEtudiant($id_etudiant);
-        echo "Etudiant supprimé avec succès !!!";
+        echo json_encode("Etudiant supprimé avec succès !!!");
     }
 
     public function editEtudiant()
@@ -227,7 +227,7 @@ class Admin extends Controller
             // don't forget validate data
             $data = (array) json_decode($_POST['etudiant']);
             $this->etudiantModel->editEtudiant($data);
-            echo "Etudiant modifiè avec succès !!!";
+            echo json_encode("Etudiant modifiè avec succès !!!");
         }
     }
 
@@ -253,8 +253,8 @@ class Admin extends Controller
         }
         // get link of image formateur
         foreach ($data['formations'] as $formation) {
-            $formation->img_formateur = URLROOT . "/Public/" . $formation->img_formateur;
-            $formation->image_formation = URLROOT . "/Public/" . $formation->image_formation;
+            $formation->img = URLROOT . "/Public/" . $formation->img;
+            $formation->image = URLROOT . "/Public/" . $formation->image;
         }
 
         $data['categories'] = $this->stockedModel->getAllCategories();
@@ -269,7 +269,7 @@ class Admin extends Controller
         $this->checkSession();
 
         $this->formationModel->deleteFormation($idFormation);
-        echo "Formation supprimé avec succès !!!";
+        echo json_encode("Formation supprimé avec succès !!!");
     }
 
     public function editFormation()
@@ -280,7 +280,7 @@ class Admin extends Controller
             // don't forget validate data
             $data = (array) json_decode($_POST['formation']);
             $this->formationModel->updateFormation($data);
-            echo "Formation modifiè avec succès !!!";
+            echo json_encode("Formation modifiè avec succès !!!");
         }
     }
 
@@ -291,7 +291,7 @@ class Admin extends Controller
         $data = $this->videoModel->getVideosOfFormation($id_formation);
         if (!empty($data)) {
             foreach ($data as $video) {
-                $video->url_video = URLROOT . "/Public/" . $video->url_video;
+                $video->url = URLROOT . "/Public/" . $video->url;
             }
             echo json_encode($data);
         } else {
@@ -304,7 +304,7 @@ class Admin extends Controller
         $this->checkSession();
 
         $this->videoModel->deteleVideoId($id_video);
-        echo "Video supprimé avec succès !!!";
+        echo json_encode("Video supprimé avec succès !!!");
     }
 
     private function validVideo($data)
@@ -351,7 +351,7 @@ class Admin extends Controller
                 // update Video
                 $data = $_POST;
                 $this->videoModel->updateVideoId($data);
-                echo 'modification affectée avec succès !!!';
+                echo json_encode('modification affectée avec succès !!!');
             }
         }
     }
@@ -362,7 +362,7 @@ class Admin extends Controller
 
         $data = $this->inscriptionModel->getFormationsOfStudent($id_etudiant);
         foreach ($data as $inscription) {
-            $inscription->img_formateur = URLROOT . "/Public/" . $inscription->img_formateur;
+            $inscription->imgFormateur = URLROOT . "/Public/" . $inscription->imgFormateur;
         }
         echo json_encode($data);
     }
@@ -372,7 +372,7 @@ class Admin extends Controller
         $this->checkSession();
 
         $this->inscriptionModel->deteleInscription($id_inscription);
-        echo "Inscription supprimé avec succès !!!";
+        echo json_encode("Inscription supprimé avec succès !!!");
     }
 
     public function ajaxData($periode = null)
@@ -414,8 +414,8 @@ class Admin extends Controller
     public function getAllFormateurs()
     {
         $this->checkSession();
-        $f = $this->fomateurModel->getAllFormateur();
-        echo json_encode($f);
+        $formateurs = $this->fomateurModel->getAllFormateur();
+        echo json_encode($formateurs);
     }
 
     public function requestPayment()
@@ -440,14 +440,14 @@ class Admin extends Controller
         } else {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $this->stockedModel->insertCategorie($_POST);
-                echo 'Categorie ' . $_POST['nom_categorie'] . ' ajouté avec succès !';
+                echo json_encode('Categorie ' . $_POST['nom_categorie'] . ' ajouté avec succès !');
             } else {
                 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
                     $this->stockedModel->deleteCategorie(file_get_contents("php://input"));
-                    echo 'Categorie supprimé avec succès !';
+                    echo json_encode('Categorie supprimé avec succès !');
                 } else {
                     $this->stockedModel->editCategorie(json_decode(file_get_contents("php://input")));
-                    echo 'Categorie  modifiè avec succès !';
+                    echo json_encode('Categorie  modifiè avec succès !');
                 }
             }
         }
@@ -462,12 +462,12 @@ class Admin extends Controller
         } else {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $this->stockedModel->insertLangue($_POST['nom_langue']);
-                echo 'Langue ' . $_POST['nom_langue'] . ' ajouté avec succès !';
+                echo json_encode('Langue ' . $_POST['nom_langue'] . ' ajouté avec succès !');
             } else {
                 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
                     if (!is_null($langueID)) {
                         $this->stockedModel->deleteLangue($langueID);
-                        echo 'Langue supprimé avec succès !';
+                        echo json_encode('Langue supprimé avec succès !');
                     }
                 }
             }
@@ -507,7 +507,7 @@ class Admin extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->smtpModel->replaceSmtp($_POST);
-            echo "SMTP modifié avec succès !";
+            echo json_encode("SMTP modifié avec succès !");
         } else {
             $smtp = $this->smtpModel->getSmtp();
             $this->view('admin/smtp', $smtp);
@@ -547,7 +547,7 @@ class Admin extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->adminModel->replaceSettings($_POST);
-            echo "Paramètre modifié avec succès !";
+            echo json_encode("Paramètre modifié avec succès !");
         } else {
             $settings = $this->adminModel->getProfitAndPaypalToken();
             $this->view('admin/settings', $settings);
