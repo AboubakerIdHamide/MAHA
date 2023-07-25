@@ -62,16 +62,16 @@ class PageFormations extends Controller
         $this->view("pages/pageFormations", $data);
     }
 
-    public function coursDetails($id = null)
+    public function coursDetails($id_formation = null)
     {
-        if (is_null($id)) {
+        if (is_null($id_formation)) {
             redirect('pageFormations');
             exit;
         }
 
-        $formation = $this->formationModel->getFormationById($id);
-        $videos = $this->videoModel->getInfoVideosFormationById($id);
-        $numVideos = $this->videoModel->countVideosFormationById($id);
+        $formation = $this->formationModel->getFormationById($id_formation);
+        $videos = $this->videoModel->getVideosOfFormationPublic($id_formation);
+        $numVideos = $this->videoModel->countVideosOfFormation($id_formation);
         $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
         $formation->niveau = $this->stockedModel->getLevelById($formation->niveau)->nom;
         $formation->langue = $this->stockedModel->getLangueById($formation->langue)->nom;

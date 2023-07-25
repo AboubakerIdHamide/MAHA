@@ -413,10 +413,14 @@ class Formation
                 formateurs.img AS imgFormateur,
                 date(formations.date_creation) AS date_creation,
                 formations.id_niveau AS niveau,
-                formations.id_langue AS langue
-            FROM formations, formateurs, categories
+                formations.id_langue AS langue,
+                langues.nom AS nomLangue,
+                niveaux.nom AS nomNiveau
+            FROM formations, formateurs, categories, langues, niveaux
             WHERE formations.id_formateur = formateurs.id_formateur
             AND categories.id_categorie = formations.id_categorie
+            AND formations.id_langue = langues.id_langue
+            AND formations.id_niveau = niveaux.id_niveau
             AND formations.id_formation = :id
         ");
 

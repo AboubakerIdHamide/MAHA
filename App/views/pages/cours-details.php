@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="MAHA a modern educational platform">
-    <title>MAHA | <?= $data['info']['nomFormation'] ?></title>
+    <title>MAHA | <?= $data['formation']->nomFormation ?></title>
     <!-- Favicons-->
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
     <!-- GOOGLE WEB FONT -->
@@ -20,7 +20,7 @@
     <link href="<?= URLROOT ?>/public/css/custom.css" rel="stylesheet">
     <style>
         #hero_in.courses:before {
-            background: url(<?= $data['info']['imgFormation'] ?>) center center no-repeat;
+            background: url(<?= $data['formation']->imgFormation ?>) center center no-repeat;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
@@ -39,7 +39,7 @@
                 <div data-loader="circle-side"></div>
             </div><!-- /Preload -->
             <div id="logo">
-                <a href="<?= URLROOT ?>"><img class="logo" src="<?= $data['theme']['logo'] ?>" width="149" height="42" alt="logo Maha"></a>
+                <a href="<?= URLROOT ?>"><img class="logo" src="<?= $data['theme']["logo"] ?>" width="149" height="42" alt="logo Maha"></a>
             </div>
             <ul id="top_menu">
                 <li class="search-overlay-menu-btn"><i class="fa-solid fa-magnifying-glass"></i></li>
@@ -106,7 +106,7 @@
             <section id="hero_in" class="courses">
                 <div class="wrapper">
                     <div class="container">
-                        <h1 class="fadeInUp"><span></span><?= $data['info']['nomFormation'] ?></h1>
+                        <h1 class="fadeInUp"><span></span><?= $data['formation']->nomFormation ?></h1>
                     </div>
                 </div>
             </section>
@@ -127,7 +127,7 @@
 
                             <section id="description">
                                 <h2>Description</h2>
-                                <p><?= $data['info']['description'] ?></p>
+                                <p><?= $data['formation']->description ?></p>
                             </section>
                             <!-- /section -->
 
@@ -135,8 +135,8 @@
                                 <div class="intro_title">
                                     <h2>Lessons</h2>
                                     <ul>
-                                        <li><?= $data['numbVIdeo']['NumbVideo'] ?> lessons</li>
-                                        <li><?= $data['info']['duree'] ?></li>
+                                        <li><?= $data['numbVIdeo'] ?> lessons</li>
+                                        <li><?= $data['formation']->mass_horaire ?></li>
                                     </ul>
                                 </div>
 
@@ -149,9 +149,9 @@
                                                 <div class="lesson d-flex justify-content-between">
                                                     <span class="lesson-titre"><i class="fa-solid fa-lock me-2"></i>
                                                         <?= $i++; ?>.
-                                                        <?= $video->NomVideo; ?>
+                                                        <?= $video->nomVideo ?>
                                                     </span>
-                                                    <span class="lesson-time"><?= $video->DureeVideo; ?></span>
+                                                    <span class="lesson-time"><?= $video->duree ?></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -168,7 +168,7 @@
                                         <div class="col-12 col-md-6">
                                             <div class="statistics">
                                                 <div>
-                                                    <strong><?= $data['info']['numbAcht'] ?> <i class="fa-solid fa-graduation-cap"></i></strong>
+                                                    <strong><?= $data['formation']->inscriptions ?> <i class="fa-solid fa-graduation-cap"></i></strong>
                                                 </div>
                                                 <span>Apprenants</span>
                                             </div>
@@ -176,7 +176,7 @@
                                         <div class="col-12 col-md-6">
                                             <div class="statistics">
                                                 <div>
-                                                    <strong><?= $data['info']['likes']; ?> <i class="fa-solid fa-heart"></i></strong>
+                                                    <strong><?= $data['formation']->jaimes ?> <i class="fa-solid fa-heart"></i></strong>
                                                 </div>
                                                 <span>J'aime</span>
                                             </div>
@@ -191,25 +191,25 @@
                         <aside class="col-lg-4" id="sidebar">
                             <div class="box_detail">
                                 <figure class="rounded-corner">
-                                    <a href="<?= $data['previewVideo'] ?>" class="video"><i style="color:#FFC107;" class="fa-solid fa-play fs-2"></i><img src="<?= $data['info']['imgFormation'] ?>" alt="course image" class="img-fluid rounded-corner"><span>Voir l'aperçu du cours</span></a>
+                                    <a href="<?= $data['previewVideo'] ?>" class="video"><i style="color:#FFC107;" class="fa-solid fa-play fs-2"></i><img src="<?= $data['formation']->imgFormation ?>" alt="course image" class="img-fluid rounded-corner"><span>Voir l'aperçu du cours</span></a>
                                 </figure>
                                 <div class="price">
-                                    $<?= $data['info']['prix'] ?>
+                                    $<?= $data['formation']->prix ?>
                                 </div>
-                                <a href="<?= URLROOT ?>/PaymentPaypal/makePayment/<?= $data['info']['IdFormation'] ?>" class="btn_1 full-width">Acheter</a>
+                                <a href="<?= URLROOT ?>/PaymentPaypal/makePayment/<?= $data['formation']->id_formation ?>" class="btn_1 full-width">Acheter</a>
                                 <div id="list_feat">
                                     <h3>Informations du cours</h3>
                                     <ul>
                                         <li><i class="fa-solid fa-person-chalkboard"></i>
-                                            <a href="<?= URLROOT . "/profilFormateur/" . $data['info']['IdFormteur'] ?>">
-                                                <?= $data['info']['prenomFormateur'] . ' ' . $data['info']['nomFormateur'] ?>
+                                            <a href="<?= URLROOT . "/profilFormateur/" . $data['formation']->id_formateur ?>">
+                                                <?= $data['formation']->prenom . ' ' . $data['formation']->nomFormateur ?>
                                             </a>
                                         </li>
-                                        <li><i class="fa-solid fa-list"></i> <?= $data['info']['categorie'] ?></li>
+                                        <li><i class="fa-solid fa-list"></i> <?= $data['formation']->nomCategorie ?></li>
                                         <li><i class="fa-solid fa-language"></i>
-                                            <?= $data['info']['langageFormation'] ?></li>
+                                            <?= $data['formation']->nomLangue ?></li>
                                         <li>
-                                            <?php if ($data['info']['niveauFormation'] == 'Débutant') : ?>
+                                            <?php if ($data['formation']->nomNiveau == 'Débutant') : ?>
                                                 <svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path fill="#E5E5E5" d="M9 4h6v2H9zM23 4h6v2h-6z"></path>
                                                     <circle cx="5" cy="5" r="5" fill="#555555"></circle>
@@ -217,7 +217,7 @@
                                                     <circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle>
                                                 </svg>
                                             <?php endif ?>
-                                            <?php if ($data['info']['niveauFormation'] == 'Intermédiaire') : ?>
+                                            <?php if ($data['formation']->nomNiveau == 'Intermédiaire') : ?>
                                                 <svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M9 4h6v2H9z" fill="#555555"></path>
                                                     <path d="M23 4h6v2h-6z" fill="#E5E5E5"></path>
@@ -226,7 +226,7 @@
                                                     <circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle>
                                                 </svg>
                                             <?php endif ?>
-                                            <?php if ($data['info']['niveauFormation'] == 'Avancé') : ?>
+                                            <?php if ($data['formation']->nomNiveau == 'Avancé') : ?>
                                                 <svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path fill="#555555" d="M9 4h6v2H9zM23 4h6v2h-6z"></path>
                                                     <circle cx="5" cy="5" r="5" fill="#555555"></circle>
@@ -234,9 +234,9 @@
                                                     <circle fill="#555555" cx="33" cy="5" r="5"></circle>
                                                 </svg>
                                             <?php endif ?>
-                                            <?= $data['info']['niveauFormation']; ?>
+                                            <?= $data['formation']->nomNiveau ?>
                                         <li><i class="fa-solid fa-calendar-days"></i>
-                                            <?= $data['info']['dateCreationFormation'] ?></li>
+                                            <?= $data['formation']->date_creation ?></li>
                                         </li>
                                     </ul>
                                 </div>
@@ -255,7 +255,7 @@
             <div class="container p-4">
                 <div class="row justify-content-between">
                     <div class="col-lg-5 col-md-12">
-                        <p><img src="<?= $data['theme']['logo'] ?>" width="149" height="42" alt="maha logo"></p>
+                        <p><img src="<?= $data['theme']["logo"] ?>" width="149" height="42" alt="maha logo"></p>
                         <p>
                             MAHA Est Un Site Internet De Formation En Ligne Qui Contient Des Cours Et Des Vidéos
                             d'apprentissage
@@ -275,14 +275,15 @@
                     <div class="col-lg-3 col-md-6">
                         <h5>En contact avec nous</h5>
                         <ul class="contacts">
-                            <li><a href="tel://0524345057"><i class="fa-solid fa-mobile"></i> (+212) 524 34 50 57</a>
+                            <li>
+                                <a href="tel://0524345057"><i class="fa-solid fa-mobile"></i> (+212) 524 34 50 57</a>
                             </li>
-                            <li><a href="mailto:mahateamisgi@gmail.com"><i class="fa-solid fa-envelope"></i>
-                                    mahateamisgi@gmail.com</a></li>
-                            <li><a href="mailto:mahateamisgi@gmail.com"><i class="fa-solid fa-location-dot"></i>
-                                    Boulevard
-                                    de
-                                    Mohammedia, QI Azli 40150</a></li>
+                            <li>
+                                <a href="mailto:mahateamisgi@gmail.com"><i class="fa-solid fa-envelope"></i>mahateamisgi@gmail.com</a>
+                            </li>
+                            <li>
+                                <a href="mailto:mahateamisgi@gmail.com"><i class="fa-solid fa-location-dot"></i> Boulevard de Mohammedia, QI Azli 40150</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

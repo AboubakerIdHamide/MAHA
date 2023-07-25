@@ -358,7 +358,7 @@ class Video
 		return false;
 	}
 
-	public function getInfoVideosFormationById($id)
+	public function getVideosOfFormationPublic($id_formation)
 	{
 		$query = $this->connect->prepare("
 			SELECT 
@@ -370,7 +370,7 @@ class Video
 			WHERE id_formation = :id_formation
 		");
 
-		$query->bindParam(':id_formation', $id);
+		$query->bindParam(':id_formation', $id_formation);
 		$query->execute();
 
 		$videos = $query->fetchAll(PDO::FETCH_OBJ);
@@ -380,7 +380,7 @@ class Video
 		return [];
 	}
 
-	public function countVideosFormationById($id)
+	public function countVideosOfFormation($id_formation)
 	{
 		$query = $this->connect->prepare("
 			SELECT 
@@ -390,14 +390,14 @@ class Video
 			WHERE id_formation = :id_formation
 		");
 
-		$query->bindParam(':id_formation', $id);
+		$query->bindParam(':id_formation', $id_formation);
 		$query->execute();
 
-		$videos = $query->fetch(PDO::FETCH_OBJ);
+		$numberVideos = $query->fetch(PDO::FETCH_OBJ)->NumbVideo;
 		if ($query->rowCount() > 0) {
-			return $videos;
+			return $numberVideos;
 		}
-		return false;
+		return 0;
 	}
 
 	public function getFormateurOfVideo($videoId)
