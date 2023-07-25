@@ -35,7 +35,7 @@
                             <ul>
                                 <?php foreach ($data['categories'] as $categorie) : ?>
                                     <li>
-                                        <a class="nav-link" href="<?= URLROOT . '/pageFormations/filter/' . $categorie->nom_categorie ?>"><?= $categorie->nom_categorie ?></a>
+                                        <a class="nav-link" href="<?= URLROOT . '/pageFormations/filter/' . $categorie->nom ?>"><?= $categorie->nom ?></a>
                                     </li>
                                 <?php endforeach ?>
                             </ul>
@@ -43,9 +43,9 @@
                         <div class="filter_type">
                             <h6><strong>Langues</strong></h6>
                             <ul>
-                                <?php foreach ($data['langages'] as $lang) : ?>
+                                <?php foreach ($data['langues'] as $langue) : ?>
                                     <li>
-                                        <a class="nav-link" href="<?= URLROOT . '/pageFormations/formationsByLangage/' . $lang->id_langue ?>"><?= $lang->nom_langue ?></a>
+                                        <a class="nav-link" href="<?= URLROOT . '/pageFormations/formationsByLangage/' . $langue->id_langue ?>"><?= $langue->nom ?></a>
                                     </li>
                                 <?php endforeach ?>
                             </ul>
@@ -53,9 +53,9 @@
                         <div class="filter_type">
                             <h6><strong>Niveaux</strong></h6>
                             <ul>
-                                <?php foreach ($data['nivaux'] as $niv) : ?>
+                                <?php foreach ($data['niveaux'] as $niveau) : ?>
                                     <li>
-                                        <a class="nav-link" href="<?= URLROOT . '/pageFormations/formationsByNivau/' . $niv->id_niveau ?>"><?= $niv->nom_niveau ?></a>
+                                        <a class="nav-link" href="<?= URLROOT . '/pageFormations/formationsByNivau/' . $niveau->id_niveau ?>"><?= $niveau->nom ?></a>
                                     </li>
                                 <?php endforeach ?>
                             </ul>
@@ -82,33 +82,33 @@
                 <!--/filters col-->
             </aside>
             <!-- /aside -->
-            <?php if (!is_array($data['info'])) : ?>
+            <?php if (!is_array($data['formations'])) : ?>
                 <div class="col-lg-9">
                     <h2 style="color: #662d91; padding-top: 180px" class='aucunF d-flex justify-content-center'>
-                        <?= $data['info'] ?></h2>
+                        <?= $data['formations'] ?></h2>
                 </div>
             <?php else : ?>
                 <div class="col-lg-9">
                     <div class="row">
-                        <?php foreach ($data['info'] as $info) : ?>
+                        <?php foreach ($data['formations'] as $formation) : ?>
                             <div class="col-md-6">
                                 <div class="box_grid wow">
                                     <figure class="block-reveal">
                                         <div class="block-horizzontal"></div>
-                                        <a href='<?= URLROOT . "/pageFormations/coursDetails/" . $info->IdFormation ?>'><img src="<?= $info->imgFormation; ?>" class="img-fluid" alt="Photo"></a>
-                                        <div class="price">$<?= $info->prix; ?></div>
+                                        <a href='<?= URLROOT . "/pageFormations/coursDetails/" . $formation->id_formation ?>'><img src="<?= $formation->imgFormation ?>" class="img-fluid" alt="Photo"></a>
+                                        <div class="price">$<?= $formation->prix ?></div>
                                         <div class="preview"><span>Plus Details</span></div>
                                     </figure>
                                     <div class="wrapper">
-                                        <small><?= $info->categorie; ?></small>
-                                        <h3><?= $info->nomFormation; ?></h3>
-                                        <p class='description'><?= $info->description; ?></p>
+                                        <small><?= $formation->nomCategorie ?></small>
+                                        <h3><?= $formation->nomFormation ?></h3>
+                                        <p class='description'><?= $formation->description ?></p>
                                     </div>
                                     <ul>
-                                        <li><i class="fa-solid fa-clock"></i> <?= $info->duree; ?></li>
-                                        <li><i class="fa-solid fa-user"></i> <?= $info->numbAcht; ?></li>
-                                        <li><i class="fa-solid fa-heart"></i> <?= $info->likes; ?></li>
-                                        <li><a href='<?= URLROOT . "/pageFormations/coursDetails/" . $info->IdFormation ?>'>Plus</a>
+                                        <li><i class="fa-solid fa-clock"></i> <?= $formation->mass_horaire ?></li>
+                                        <li><i class="fa-solid fa-user"></i> <?= $formation->inscriptions ?></li>
+                                        <li><i class="fa-solid fa-heart"></i> <?= $formation->jaimes ?></li>
+                                        <li><a href='<?= URLROOT . "/pageFormations/coursDetails/" . $formation->id_formation ?>'>Plus</a>
                                         </li>
                                     </ul>
                                 </div>

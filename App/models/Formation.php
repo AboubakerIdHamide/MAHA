@@ -130,25 +130,25 @@ class Formation
         return false;
     }
 
-    function getAllFormations()
-    {
-        $query = $this->connect->prepare("
-            SELECT *
-            FROM formations f
-            JOIN langues USING (id_langue)
-            JOIN niveaux USING (id_niveau)
-            JOIN formateurs USING (id_formateur)
-            JOIN categories USING (id_categorie)
-            ORDER BY id_formation
-        ");
+    // function getAllFormations()
+    // {
+    //     $query = $this->connect->prepare("
+    //         SELECT *
+    //         FROM formations f
+    //         JOIN langues USING (id_langue)
+    //         JOIN niveaux USING (id_niveau)
+    //         JOIN formateurs USING (id_formateur)
+    //         JOIN categories USING (id_categorie)
+    //         ORDER BY id_formation
+    //     ");
 
-        $query->execute();
-        $formations = $query->fetchAll(PDO::FETCH_OBJ);
-        if ($query->rowCount() > 0) {
-            return $formations;
-        }
-        return [];
-    }
+    //     $query->execute();
+    //     $formations = $query->fetchAll(PDO::FETCH_OBJ);
+    //     if ($query->rowCount() > 0) {
+    //         return $formations;
+    //     }
+    //     return [];
+    // }
 
     public function getAllFormationsOfFormateur($id_formateur, $words = '')
     {
@@ -468,7 +468,7 @@ class Formation
         return 0;
     }
 
-    public function getPopularFormations($offset)
+    public function getAllFormations($offset)
     {
         $query = $this->connect->prepare("
             SELECT 

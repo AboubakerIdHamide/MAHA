@@ -20,8 +20,8 @@ class PageFormations extends Controller
     }
     public function index()
     {
-        $langages = $this->stockedModel->getAllLangues();
-        $nivaux = $this->stockedModel->getAllLevels();
+        $langues = $this->stockedModel->getAllLangues();
+        $niveaux = $this->stockedModel->getAllLevels();
         $categories = $this->categorieModel->getAllCategories();
         $totalFormations = $this->formationModel->countAllFormations();
         $themeData = $this->stockedModel->getThemeData();
@@ -34,29 +34,29 @@ class PageFormations extends Controller
 
         $this->formationModel->insertIntoTableFilter($type = 'all', $totalFormations, $arg1 = '', $arg2 = '');
 
-        $formations = $this->formationModel->getPopularFormations($offset);
+        $formations = $this->formationModel->getAllFormations($offset);
 	
         if ($formations) {
             foreach ($formations as $formation) {
-                $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->IdFormteur, $formation->IdFormation);
+                $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
                 $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
                 $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
             }
         } else {
-            $formation = "Aucun Formations";
+            $formations = "Aucun Formations";
         }
 
-        $themeData["logo"] = URLROOT . "/Public/" . $themeData->logo;
-        $themeData["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
+        $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
+        $theme["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
         $data = [
-            'nivaux' => $nivaux,
-            'langages' => $langages,
+            'niveaux' => $niveaux,
+            'langues' => $langues,
             'categories' => $categories,
             'totalFormations' => $totalFormations,
-            'formation' => $formation,
+            'formations' => $formations,
             'pageno' => $pageno,
             'totalPages' => $totalPages,
-            'theme' => $themeData,
+            'theme' => $theme,
         ];
 	
         $this->view("pages/pageFormations", $data);
