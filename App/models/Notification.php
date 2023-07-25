@@ -20,18 +20,18 @@ class Notification
                 id_notification, 
                 commentaire,
                 created_at,
-                nom_etudiant AS nom,
-                prenom_etudiant AS prenom,
-                nom_video,
-                nom_formation,
-                etat_notification,
+                e.nom,
+                prenom,
+                v.nom,
+                f.nom,
+                etat,
                 id_formation,
                 id_etudiant AS id_user
             FROM notifications n
             JOIN commentaires c USING (id_commentaire)
             JOIN etudiants e ON c.from_user = e.id_etudiant 
-            JOIN videos USING (id_video)
-            JOIN formations USING (id_formation)
+            JOIN videos v USING (id_video)
+            JOIN formations f USING (id_formation)
             WHERE c.to_user = :id_formateur
         ");
 
@@ -51,18 +51,18 @@ class Notification
                 id_notification, 
                 commentaire,
                 created_at,
-                nom_formateur AS nom,
-                prenom_formateur AS prenom,
-                nom_video,
-                nom_formation,
-                etat_notification,
+                f.nom,
+                prenom,
+                v.nom,
+                fo.nom,
+                etat,
                 id_formation,
                 f.id_formateur AS id_user
             FROM notifications n
             JOIN commentaires c USING (id_commentaire)
             JOIN formateurs f ON c.from_user = f.id_formateur 
-            JOIN videos USING (id_video)
-            JOIN formations USING (id_formation)
+            JOIN videos v USING (id_video)
+            JOIN formations fo USING (id_formation)
             WHERE c.to_user = :id_etudiant
         ");
 
@@ -83,7 +83,7 @@ class Notification
             FROM notifications n
             JOIN commentaires c USING (id_commentaire)
             JOIN formateurs e ON c.from_user = e.id_formateur 
-            WHERE c.to_user = :id_etudiant AND etat_notification = 1
+            WHERE c.to_user = :id_etudiant AND etat = 1
         ");
 
         $query->bindParam(':id_etudiant', $id_etudiant);
@@ -100,7 +100,7 @@ class Notification
             FROM notifications n
             JOIN commentaires c USING (id_commentaire)
             JOIN etudiants e ON c.from_user = e.id_etudiant 
-            WHERE c.to_user = :id_formateur AND etat_notification = 1
+            WHERE c.to_user = :id_formateur AND etat = 1
         ");
 
         $query->bindParam(':id_formateur', $id_formateur);
@@ -116,7 +116,7 @@ class Notification
     {
         $query = $this->connect->prepare("
             UPDATE notifications
-            SET etat_notification = 0
+            SET etat = 0
             WHERE id_notification = :id_notification
         ");
 
@@ -133,7 +133,7 @@ class Notification
     {
         $query = $this->connect->prepare("
             DELETE FROM notifications
-            WHERE etat_notification = 0
+            WHERE etat = 0
         ");
 
         $query->execute();
