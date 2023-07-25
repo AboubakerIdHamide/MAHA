@@ -15,9 +15,9 @@
             <ul class="clearfix">
                 <li>
                     <div class="switch-field">
-                        <a class="dropdown-item" id='plusPopilaires' ckecked href="<?= URLROOT . "/pageFormations/plusPopilairesFormations" ?>">Les Plus Populaires</a>
+                        <a class="dropdown-item" id='plusPopilaires' ckecked href="<?= URLROOT . "/pageFormations/getPopularCourses" ?>">Les Plus Populaires</a>
                         <a class="dropdown-item" id='plusAmais' href="<?= URLROOT . "/pageFormations/plusFormationsAmais" ?>">Les Plus Amais</a>
-                        <a class="dropdown-item" id='plusAchter' href="<?= URLROOT . "/pageFormations/plusFormationsAchter" ?>">Les Plus Achter</a>
+                        <a class="dropdown-item" id='plusAchter' href="<?= URLROOT . "/pageFormations/plusFormationsAcheter" ?>">Les Plus Achter</a>
                     </div>
                 </li>
             </ul>
@@ -45,7 +45,7 @@
                             <ul>
                                 <?php foreach ($data['langues'] as $langue) : ?>
                                     <li>
-                                        <a class="nav-link" href="<?= URLROOT . '/pageFormations/formationsByLangage/' . $langue->id_langue ?>"><?= $langue->nom ?></a>
+                                        <a class="nav-link" href="<?= URLROOT . '/pageFormations/formationsByLangue/' . $langue->id_langue ?>"><?= $langue->nom ?></a>
                                     </li>
                                 <?php endforeach ?>
                             </ul>
@@ -55,7 +55,7 @@
                             <ul>
                                 <?php foreach ($data['niveaux'] as $niveau) : ?>
                                     <li>
-                                        <a class="nav-link" href="<?= URLROOT . '/pageFormations/formationsByNivau/' . $niveau->id_niveau ?>"><?= $niveau->nom ?></a>
+                                        <a class="nav-link" href="<?= URLROOT . '/pageFormations/formationsByNiveau/' . $niveau->id_niveau ?>"><?= $niveau->nom ?></a>
                                     </li>
                                 <?php endforeach ?>
                             </ul>

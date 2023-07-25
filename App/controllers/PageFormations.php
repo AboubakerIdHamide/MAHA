@@ -82,27 +82,27 @@ class PageFormations extends Controller
         $previewVideo = $previewVideo ? URLROOT . "/Public/" . $previewVideo->url : null;
 
         $themeData = $this->stockedModel->getThemeData();
-        $themeData["logo"] = URLROOT . "/Public/" . $themeData->logo;
-        $themeData["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
+        $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
+        $theme["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
 
         $data = [
             'formation' => $formation,
             'videos' => $videos,
             'numbVIdeo' => $numVideos,
             'previewVideo' => $previewVideo,
-            'theme' => $themeData
+            'theme' => $theme
         ];
         $this->view("pages/cours-details", $data);
     }
 
     public function rechercheFormations($valRech = '')
     {
-        $langages = $this->stockedModel->getAllLangues();
-        $nivaux = $this->stockedModel->getAllLevels();
+        $langues = $this->stockedModel->getAllLangues();
+        $niveaux = $this->stockedModel->getAllLevels();
         $categories = $this->categorieModel->getAllCategories();
         $themeData = $this->stockedModel->getThemeData();
-        $themeData["logo"] = URLROOT . "/Public/" . $themeData->logo;
-        $themeData["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
+        $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
+        $theme["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
 
         $errs = false;
         // ================  Valide Valeur de Recherche  ================
@@ -130,32 +130,32 @@ class PageFormations extends Controller
             if ($numbFormations == 0) {
                 $this->formationModel->deleteFromTableFilter();
                 $data = [
-                    'nivaux' => $nivaux,
-                    'langages' => $langages,
+                    'niveaux' => $niveaux,
+                    'langues' => $langues,
                     'categories' => $categories,
                     'numbFormations' => 0,
-                    'info' => 'Aucun Formations',
-                    'theme' => $themeData
+                    'formations' => 'Aucun Formations',
+                    'theme' => $theme
                 ];
 
                 $this->view("pages/pageFormations", $data);
             } else {
                 $this->formationModel->insertIntoTableFilter($type = 'rech', $numbFormations['numbFormations'], $valRecherche, $arg2 = '');
                 $formations = $this->formationModel->getFormationsByValRech($valRecherche, $offset);
-                foreach ($formations as $row) {
-                    $row->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($row->id_formateur, $row->id_formati)['total_apprenants'];
-                    $row->imgFormateur = URLROOT . "/Public/" . $row->imgFormateur;
-                    $row->imgFormation = URLROOT . "/Public/" . $row->imgFormation;
+                foreach ($formations as $formation) {
+                    $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
+                    $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
+                    $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
                 }
                 $data = [
-                    'nivaux' => $nivaux,
-                    'langages' => $langages,
+                    'niveaux' => $niveaux,
+                    'langues' => $langues,
                     'categories' => $categories,
                     'numbFormations' => $numbFormations['numbFormations'],
-                    'info' => $formations,
+                    'formations' => $formations,
                     'pageno' => $pageno,
                     'totalPages' => $totalPages,
-                    'theme' => $themeData
+                    'theme' => $theme
                 ];
 
                 $this->view("pages/pageFormations", $data);
@@ -164,12 +164,12 @@ class PageFormations extends Controller
             $this->formationModel->deleteFromTableFilter();
 
             $data = [
-                'nivaux' => $nivaux,
-                'langages' => $langages,
+                'niveaux' => $niveaux,
+                'langues' => $langues,
                 'categories' => $categories,
                 'numbFormations' => 0,
-                'info' => 'Aucun Formations',
-                'theme' => $themeData
+                'formations' => 'Aucun Formations',
+                'theme' => $theme
             ];
 
             $this->view("pages/pageFormations", $data);
@@ -178,15 +178,15 @@ class PageFormations extends Controller
 
     public function filter($cat = '', $choi = '')
     {
-        $langages = $this->stockedModel->getAllLangues();
-        $nivaux = $this->stockedModel->getAllLevels();
+        $langues = $this->stockedModel->getAllLangues();
+        $niveaux = $this->stockedModel->getAllLevels();
         $categories = $this->categorieModel->getAllCategories();
 
         $numbFormations = $this->formationModel->countFormationsFilter($cat, $choi);
 
         $themeData = $this->stockedModel->getThemeData();
-        $themeData["logo"] = URLROOT . "/Public/" . $themeData->logo;
-        $themeData["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
+        $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
+        $theme["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
 
         $dataPages = $this->pagenition($numbFormations);
 
@@ -198,12 +198,12 @@ class PageFormations extends Controller
             $this->formationModel->deleteFromTableFilter();
 
             $data = [
-                'nivaux' => $nivaux,
-                'langages' => $langages,
+                'niveaux' => $niveaux,
+                'langues' => $langues,
                 'categories' => $categories,
                 'numbFormations' => 0,
-                'info' => 'Aucun Formations',
-                'theme' => $themeData
+                'formations' => 'Aucun Formations',
+                'theme' => $theme
             ];
 
             $this->view("pages/pageFormations", $data);
@@ -212,19 +212,19 @@ class PageFormations extends Controller
 
             $formations = $this->formationModel->getFormationsByFilter($cat, $choi, $offset);
             foreach ($formations as $formation) {
-                $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formati);
+                $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
                 $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
                 $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
             }
             $data = [
-                'nivaux' => $nivaux,
-                'langages' => $langages,
+                'niveaux' => $niveaux,
+                'langues' => $langues,
                 'categories' => $categories,
                 'numbFormations' => $numbFormations,
                 'formations' => $formations,
                 'pageno' => $pageno,
                 'totalPages' => $totalPages,
-                'theme' => $themeData
+                'theme' => $theme
             ];
             $this->view("pages/pageFormations", $data);
         }
@@ -232,14 +232,14 @@ class PageFormations extends Controller
 
     public function getPopularCourses()
     {
-        $langages = $this->stockedModel->getAllLangues();
-        $nivaux = $this->stockedModel->getAllLevels();
+        $langues = $this->stockedModel->getAllLangues();
+        $niveaux = $this->stockedModel->getAllLevels();
         $categories = $this->categorieModel->getAllCategories();
         $numbFormations = $this->formationModel->countAllFormations();
 
         $themeData = $this->stockedModel->getThemeData();
-        $themeData["logo"] = URLROOT . "/Public/" . $themeData->logo;
-        $themeData["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
+        $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
+        $theme["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
 
         $dataPages = $this->pagenition($numbFormations);
 
@@ -251,32 +251,32 @@ class PageFormations extends Controller
             $this->formationModel->deleteFromTableFilter();
 
             $data = [
-                'nivaux' => $nivaux,
-                'langages' => $langages,
+                'niveaux' => $niveaux,
+                'langues' => $langues,
                 'categories' => $categories,
                 'numbFormations' => 0,
-                'info' => 'Aucun Formations',
-                'theme' => $themeData
+                'formations' => 'Aucun Formations',
+                'theme' => $theme
             ];
 
             $this->view("pages/pageFormations", $data);
         } else {
             $this->formationModel->insertIntoTableFilter($type = 'all', $numbFormations, $arg1 = '', $arg2 = '');
-            $formations = $this->formationModel->getPopularFormations($offset);
+            $formations = $this->formationModel->getPopularCourses($offset);
             foreach ($formations as $formation) {
-                $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formati);
+                $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
                 $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
                 $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
             }
             $data = [
-                'nivaux' => $nivaux,
-                'langages' => $langages,
+                'niveaux' => $niveaux,
+                'langues' => $langues,
                 'categories' => $categories,
                 'numbFormations' => $numbFormations,
                 'formations' => $formations,
                 'pageno' => $pageno,
                 'totalPages' => $totalPages,
-                'theme' => $themeData
+                'theme' => $theme
             ];
             $this->view("pages/pageFormations", $data);
         }
@@ -388,12 +388,12 @@ class PageFormations extends Controller
         }
     }
 
-    public function formationsByLanguage($id_langue = 1)
+    public function formationsByLangue($id_langue = 1)
     {
         $langues = $this->stockedModel->getAllLangues();
         $niveaux = $this->stockedModel->getAllLevels();
         $categories = $this->categorieModel->getAllCategories();
-        $numbFormations = $this->formationModel->countFormationsByLangage($id_langue);
+        $numbFormations = $this->formationModel->countFormationsByLangue($id_langue);
 
         $themeData = $this->stockedModel->getThemeData();
         $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
@@ -417,7 +417,7 @@ class PageFormations extends Controller
 
             $this->view("pages/pageFormations", $data);
         } else {
-            $formations = $this->formationModel->getFormationsByLanguage($id_langue, $offset);
+            $formations = $this->formationModel->getFormationsByLangue($id_langue, $offset);
             foreach ($formations as $formation) {
                 $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
                 $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
