@@ -38,13 +38,13 @@ class Formateurs extends Controller
 		if (isset($_SESSION['id_formation'])) unset($_SESSION['id_formation']);
 		$categories = $this->stockedModel->getAllCategories();
 		$langues = $this->stockedModel->getAllLangues();
-		$levels = $this->stockedModel->getAllLevels();
-		$balance = $this->fomateurModel->getFormateurByEmail($_SESSION['user']['email'])->balance;
+		$niveaux = $this->stockedModel->getAllLevels();
+		$balance = $this->fomateurModel->getFormateurByEmail($_SESSION['user']->email)->balance;
 		$data = [
 			'balance' => $balance,
 			'categories' => $categories,
 			'langues' => $langues,
-			'levels' => $levels,
+			'niveaux' => $niveaux,
 			'nbrNotifications' => $this->_getNotifications()
 		];
 
@@ -67,9 +67,9 @@ class Formateurs extends Controller
 
 	private function checkBalance($requestInfo)
 	{
-		if ($requestInfo->paypalEmail == $_SESSION['user']['paypalMail']) {
+		if ($requestInfo->paypalEmail == $_SESSION['user']->paypalMail) {
 			if ($requestInfo->montant >= 10) {
-				$formateur_balance = $this->fomateurModel->getFormateurByEmail($_SESSION['user']['email'])->balance;
+				$formateur_balance = $this->fomateurModel->getFormateurByEmail($_SESSION['user']->email)->balance;
 				if ($requestInfo->montant <= $formateur_balance)
 					return true;
 				return false;
@@ -202,7 +202,7 @@ class Formateurs extends Controller
 				"c_mdp_err" => "",
 				"n_mdp_err" => "",
 				"categories" => $categories,
-				"nbrNotifications" => $this->_getNotifications();
+				"nbrNotifications" => $this->_getNotifications()
 			];
 			$this->view("formateur/updateInfos", $data);
 		}
@@ -419,7 +419,7 @@ class Formateurs extends Controller
 
 		// refresh code
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-			$data['code_formateur'] = $this->fomateurModel->refreshCode($_SESSION['user']['id_formateur']);
+			$data['code_formateur'] = $this->fomateurModel->refreshCode($_SESSION['id_formateur']);
 		}
 
 		$this->view("formateur/subscriptionCode", $data);

@@ -63,10 +63,10 @@ class Ajax extends Controller
 
         // don't forget to add Zipfile (Ressourses)
         foreach ($formations as $formation) {
-            $formation->apprenants = $this->inscriptionModel->countApprenantsOfFormation($_SESSION['id_formateur'], $formation->id);
+            $formation->apprenants = $this->inscriptionModel->countApprenantsOfFormation($_SESSION['id_formateur'], $formation->id_formation);
         }
 
-        echo json_encode($data);
+        echo json_encode($formations);
     }
 
     public function deleteFormation()

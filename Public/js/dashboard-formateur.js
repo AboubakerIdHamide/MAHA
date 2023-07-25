@@ -9,6 +9,7 @@ $(document).ready(function () {
         async: false,
       }).responseText
     );
+    
     const $tbody = $("tbody");
     $tbody.html("");
 
@@ -18,25 +19,25 @@ $(document).ready(function () {
       let tr = `
 			<tr>
 				<td class="text-center"><input value=${
-          course.id
+          course.id_formation
         } type="checkbox" class="form-check-input fs-5 select"></td>
-				<td><p class="titre">${course.titre}</p></td>
-				<td class="text-center" style="font-weight: 600;">${course.likes}</td>
+				<td><p class="titre">${course.nom}</p></td>
+				<td class="text-center" style="font-weight: 600;">${course.jaimes}</td>
 				<td><p class="desc">${course.description}</p></td>
 				<td class="text-center" style="font-weight: 600;">${course.apprenants}</td>
 				<td class="text-center">${
-          course.file === null
+          course.fichier_attache === null
             ? "Aucun Fichier"
-            : `<a href='http://localhost/maha/public/${course.file}' class="btn btn-success btn-sm" download><i class="fa-solid fa-download"></i> Telecharger</a>`
+            : `<a href='http://localhost/maha/public/${course.fichier_attache}' class="btn btn-success btn-sm" download><i class="fa-solid fa-download"></i> Telecharger</a>`
         }</td>
-				<td class="text-center">${course.dateUploaded}</td>
+				<td class="text-center">${course.date_creation}</td>
 				<td class="text-center"><a href="http://localhost/maha/formations/videos/${
-          course.id
+          course.id_formation
         }" class="btn btn-warning btn-sm">Leçons</a></td>
 				<td class="text-center"><strong>${course.prix} $</strong></td>
 			</tr>
 			`;
-      cptLikes += Number(course.likes);
+      cptLikes += Number(course.jaimes);
       cptApprenants += Number(course.apprenants);
       $tbody.html($tbody.html() + tr);
     }
@@ -78,7 +79,7 @@ $(document).ready(function () {
   const $deleteBtn = $("button#deleteCours");
   $deleteBtn.click(function (event) {
     courses = courses.filter((course) => {
-      if (!coursesSelected.includes(course.id)) return course;
+      if (!coursesSelected.includes(course.id_formation)) return course;
     });
 
     $.ajax({
@@ -123,25 +124,25 @@ $(document).ready(function () {
     const $visibility = $("#visibility");
 
     const currentCours = courses.filter(
-      (cours) => cours.id == coursesSelected[0]
+      (cours) => cours.id_formation == coursesSelected[0]
     )[0];
 
-    $modalTitle.val(currentCours.titre);
+    $modalTitle.val(currentCours.nom);
     $modalDescription.val(currentCours.description);
     $modalMiniature.attr(
       "src",
-      "http://localhost/maha/public/" + currentCours.miniature
+      "http://localhost/maha/public/" + currentCours.image
     );
     $modalPrix.val(currentCours.prix);
-    $modalSpec.val(currentCours.categorie);
-    $modalNiveau.val(currentCours.niveauFormation);
-    $modalLangue.val(currentCours.langue);
-    $modalIdFormation.val(currentCours.id);
-    $ressource.attr("data-id-formation", currentCours.id);
-    $miniatureUploader.attr("data-id-formation", currentCours.id);
+    $modalSpec.val(currentCours.id_categorie);
+    $modalNiveau.val(currentCours.id_niveau);
+    $modalLangue.val(currentCours.id_langue);
+    $modalIdFormation.val(currentCours.id_formation);
+    $ressource.attr("data-id-formation", currentCours.id_formation);
+    $miniatureUploader.attr("data-id-formation", currentCours.id_formation);
     $visibility.html(`
-      <option value="public" ${currentCours.etat_formation=='public'?'selected':''}>Public</option>
-      <option value="private"  ${currentCours.etat_formation=='private'?'selected':''}>Privé</option>
+      <option value="public" ${currentCours.etat== 'public' ? 'selected' : ''}>Public</option>
+      <option value="private"  ${currentCours.etat== 'private' ? 'selected' : ''}>Privé</option>
     `);
   });
 
@@ -157,7 +158,7 @@ $(document).ready(function () {
 
   // Validation inputs
   function ValidationInputs({ title, description, prix }) {
-    const cours = courses.filter((cours) => cours.id == coursesSelected[0])[0];
+    const cours = courses.filter((cours) => cours.id_formation == coursesSelected[0])[0];
     const titre = removeTags(title.val());
     const desc = removeTags(description.val());
     const price = prix.val();

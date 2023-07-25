@@ -135,21 +135,21 @@ class Formation
         $query = $this->connect->prepare("
             SELECT 
                 id_formation,
-                nom,
+                formations.nom,
                 image,
-                DATE(date_creation) AS date_creation,
+                DATE(formations.date_creation) AS date_creation,
                 prix,
                 description,
                 jaimes,
                 id_langue,
                 id_niveau,
-                id_categorie,
+                formations.id_categorie,
                 fichier_attache,
                 etat
-            FROM formations f
+            FROM formations
             JOIN formateurs USING (id_formateur)
             WHERE id_formateur = :id
-            AND nom LIKE CONCAT('%', :words, '%');
+            AND formations.nom LIKE CONCAT('%', :words, '%')
         ");
         $query->bindParam(":id", $id_formateur);
         $query->bindParam(":words", $words);

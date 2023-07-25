@@ -21,8 +21,8 @@
     <!-- Header -->
     <header>
         <span id="overlay"></span>
-        <div class="logo" data-user-name="<?= $_SESSION['user']['prenom'] ?>">
-            <img src="<?= $_SESSION['user']['avatar'] ?>" alt="avatar">
+        <div class="logo" data-user-name="<?= $_SESSION['user']->prenom ?>">
+            <img src="<?= $_SESSION['user']->img ?>" alt="avatar">
         </div>
         <nav>
             <div class="menu-i">
@@ -149,7 +149,7 @@
                                 id="count-label" style="display: none"> COURS SÉLECTIONNÉS</small>
                         </div>
                         <div class="buttons">
-                            <button class="btn btn-primary ms-2 btn-sm" id="copy-code-btn" data-code-formateur="<?= $_SESSION['user']['code_formateur'] ?>">
+                            <button class="btn btn-primary ms-2 btn-sm" id="copy-code-btn" data-code-formateur="<?= $_SESSION['user']->code ?>">
                                 Code privé <i class="fa-solid fa-copy"></i>
                             </button>
                             <button id="edit" class="btn btn-info btn-sm" disabled data-bs-toggle="modal"
@@ -245,7 +245,7 @@
                                 <label for="categorie" class="form-label" style="font-weight: 600;">Categories</label>
                                 <select class="form-select" name="categorie" id="categorie">
                                     <?php foreach ($data['categories'] as $categorie) : ?>
-                                    <option value="<?= $categorie->id_categorie ?>"><?= $categorie->nom_categorie ?>
+                                    <option value="<?= $categorie->id_categorie ?>"><?= $categorie->nom ?>
                                     </option>
                                     <?php endforeach; ?>
                                 </select>
@@ -255,8 +255,8 @@
                                 <label for="niveau" class="form-label" style="font-weight: 600;">Niveau
                                     Formation</label>
                                 <select class="form-select" name="niveauFormation" id="niveau">
-                                    <?php foreach ($data['levels'] as $level) : ?>
-                                    <option value="<?= $level->id_niveau ?>"><?= $level->nom_niveau ?></option>
+                                    <?php foreach ($data['niveaux'] as $niveau) : ?>
+                                    <option value="<?= $niveau->id_niveau ?>"><?= $niveau->nom ?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <small class="error-niveau text-danger"></small>
@@ -265,7 +265,7 @@
                                 <label for="langue" class="form-label" style="font-weight: 600;">Langue</label>
                                 <select class="form-select" name="langue" id="langue">
                                     <?php foreach ($data['langues'] as $langue) : ?>
-                                    <option value="<?= $langue->id_langue ?>"><?= $langue->nom_langue ?></option>
+                                    <option value="<?= $langue->id_langue ?>"><?= $langue->nom ?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <small class="error-niveau text-danger"></small>
