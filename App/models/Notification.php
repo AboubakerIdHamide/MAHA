@@ -20,11 +20,11 @@ class Notification
                 id_notification, 
                 commentaire,
                 created_at,
-                e.nom,
+                e.nom AS nomEtudiant,
                 prenom,
-                v.nom,
-                f.nom,
-                etat,
+                v.nom AS nomVideo,
+                f.nom AS nomFormation,
+                n.etat,
                 id_formation,
                 id_etudiant AS id_user
             FROM notifications n
@@ -51,11 +51,11 @@ class Notification
                 id_notification, 
                 commentaire,
                 created_at,
-                f.nom,
+                f.nom AS nomFormateur,
                 prenom,
-                v.nom,
-                fo.nom,
-                etat,
+                v.nom AS nomVideo,
+                fo.nom AS nomFormation,
+                n.etat,
                 id_formation,
                 f.id_formateur AS id_user
             FROM notifications n

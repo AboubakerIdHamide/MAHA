@@ -112,7 +112,7 @@ class Stocked
 	public function insertCategorie($data)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO categories VALUES (DEFAULT, :nom_categorie, :icon)
+			INSERT INTO categories VALUES (DEFAULT, :nom, :icon)
 		");
 		$query->execute(['icon' => $data['icon'], 'nom_categorie' => $data['nom_categorie']]);
 		$lastInsertId = $this->connect->lastInsertId();
@@ -154,7 +154,7 @@ class Stocked
 	public function insertLangue($langue)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO langues VALUES (DEFAULT, :nom_langue)
+			INSERT INTO langues VALUES (DEFAULT, :nom)
 		");
 		$query->execute(['nom_langue' => $langue]);
 		$lastInsertId = $this->connect->lastInsertId();
@@ -182,7 +182,7 @@ class Stocked
 		$query = $this->connect->prepare("
 			SELECT * 
 			FROM theme 
-			WHERE id = 1
+			WHERE id_theme = 1
 		");
 
 		$query->execute();
@@ -199,7 +199,7 @@ class Stocked
 			UPDATE theme 
 			SET logo=:logo, 
 				landingImg=:landingImg 
-			WHERE id=1
+			WHERE id_theme=1
 		");
 
 		$query->execute([

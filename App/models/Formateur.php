@@ -101,7 +101,7 @@ class Formateur
 				balance,
 				code,
 				id_categorie,
-				img as avatar, 
+				img, 
 				email, 
 				prenom,
 				mot_de_passe,
@@ -292,9 +292,9 @@ class Formateur
 	{
 		$query = $this->connect->prepare("
 			SELECT 
-				formateurs.id_formateur as 'IdFormateur',
-				formateurs.nom as 'nomFormateur',
-				formateurs.prenom as 'prenomFormateur',
+				formateurs.id_formateur,
+				formateurs.nom,
+				formateurs.prenom,
 				formateurs.img,
 				formateurs.biography,
 				categories.nom as 'categorie',

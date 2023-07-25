@@ -104,7 +104,7 @@ class Etudiant
 				nom,
 				tel,
 				date_creation,
-				img as avatar, 
+				img, 
 				email, 
 				prenom,
 				mot_de_passe
@@ -206,9 +206,9 @@ class Etudiant
 	{
 		$query = $this->connect->prepare("
 			SELECT 
-				id_etudiant as IdEtudiant,
-				nom as nomEtudiant,
-				prenom as prenomEtudiant,
+				id_etudiant,
+				nom,
+				prenom,
 				img,
 				email,
 				tel

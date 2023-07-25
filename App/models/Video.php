@@ -93,12 +93,12 @@ class Video
 			SELECT 
 				v.id_video,
 				f.id_formation,
-				v.nom,
+				v.nom AS nomVideo,
 				url,
 				duree,
 				v.description,
 				date_creation,
-				f.nom,
+				f.nom AS nomFormation,
 				mass_horaire,
 				p.id_formation AS preview,
 				ordre
@@ -362,9 +362,9 @@ class Video
 	{
 		$query = $this->connect->prepare("
 			SELECT 
-				videos.id_video AS IdVideo,
-				videos.nom AS NomVideo,
-				videos.duree AS DureeVideo
+				videos.id_video,
+				videos.nom,
+				videos.duree
 			FROM videos
 			JOIN formations USING (id_formation)
 			WHERE id_formation = :id_formation

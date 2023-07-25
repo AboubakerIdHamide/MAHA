@@ -155,18 +155,18 @@ class Formation
     {
         $query = $this->connect->prepare("
             SELECT 
-                id_formation AS id,
-                nom AS titre,
-                image AS miniature,
-                DATE(date_creation) AS dateUploaded,
+                id_formation,
+                nom,
+                image,
+                DATE(date_creation) AS date_creation,
                 prix,
                 description,
-                jaimes AS likes,
-                id_langue AS langue,
-                id_niveau AS niveauFormation,
-                id_categorie AS categorie,
-                fichier_attache AS file,
-                etat AS etat_formation
+                jaimes,
+                id_langue,
+                id_niveau,
+                id_categorie,
+                fichier_attache,
+                etat
             FROM formations f
             JOIN formateurs USING (id_formateur)
             WHERE id_formateur = :id
@@ -253,17 +253,17 @@ class Formation
     {
         $query = $this->connect->prepare("
             SELECT 
-                DISTINCT formations.id_formation AS IdFormation,
+                DISTINCT formations.id_formation,
                 formations.image AS imgFormation,
-                formations.mass_horaire AS duree,
-                categories.nom AS categorie,
+                formations.mass_horaire,
+                categories.nom AS nomCategorie,
                 formations.nom AS nomFormation,
                 formations.prix,
                 formations.description,
-                formations.jaimes AS likes,
-                formateurs.id_formateur AS IdFormteur,
+                formations.jaimes,
+                formateurs.id_formateur,
                 formateurs.nom AS nomFormateur,
-                formateurs.prenom AS prenomFormateur,
+                formateurs.prenom,
                 formateurs.img AS imgFormateur
             FROM formations, formateurs, categories, inscriptions
             WHERE formations.id_formateur = formateurs.id_formateur
@@ -287,17 +287,17 @@ class Formation
     {
         $query = $this->connect->prepare("
             SELECT 
-                formations.id_formation AS IdFormation,
+                formations.id_formation,
                 formations.image AS imgFormation,
-                formations.mass_horaire AS duree,
-                categories.nom AS categorie,
+                formations.mass_horaire,
+                categories.nom AS nomCategorie,
                 formations.nom AS nomFormation,
                 formations.prix,
                 formations.description,
-                formations.jaimes AS likes,
-                formateurs.id_formateur AS IdFormteur,
+                formations.jaimes,
+                formateurs.id_formateur,
                 formateurs.nom AS nomFormateur,
-                formateurs.prenom AS prenomFormateur,
+                formateurs.prenom,
                 formateurs.img AS imgFormateur
             FROM formations, formateurs, categories
             WHERE formations.id_formateur = formateurs.id_formateur AND formations.id_formateur = :id
@@ -420,22 +420,22 @@ class Formation
     {
         $query = $this->connect->prepare("
             SELECT 
-                formations.id_formation AS IdFormation,
+                formations.id_formation,
                 formations.image AS imgFormation,
-                formations.mass_horaire AS duree,
-                categories.nom AS categorie,
+                formations.mass_horaire,
+                categories.nom AS nomCategorie,
                 formations.nom AS nomFormation,
                 formations.prix,
                 formations.description,
-                formations.jaimes AS likes,
-                formateurs.id_formateur AS IdFormteur,
+                formations.jaimes,
+                formateurs.id_formateur,
                 formateurs.nom AS nomFormateur,
-                formateurs.prenom AS prenomFormateur,
-                formateurs.id_categorie AS specialiteId,
+                formateurs.prenom,
+                formateurs.id_categorie AS categorie,
                 formateurs.img AS imgFormateur,
-                date(formations.date_creation) AS dateCreationFormation,
-                formations.id_niveau AS IdNiv,
-                formations.id_langue AS IdLang
+                date(formations.date_creation) AS date_creation,
+                formations.id_niveau AS niveau,
+                formations.id_langue AS langue
             FROM formations, formateurs, categories
             WHERE formations.id_formateur = formateurs.id_formateur
             AND categories.id_categorie = formations.id_categorie
@@ -475,17 +475,17 @@ class Formation
     {
         $query = $this->connect->prepare("
             SELECT 
-                formations.id_formation AS IdFormation,
+                formations.id_formation,
                 formations.image AS imgFormation,
-                formations.mass_horaire AS duree,
-                categories.nom AS categorie,
+                formations.mass_horaire,
+                categories.nom AS nomCategorie,
                 formations.nom AS nomFormation,
                 formations.prix,
                 formations.description,
-                formations.jaimes AS likes,
-                formateurs.id_formateur AS IdFormteur,
+                formations.jaimes,
+                formateurs.id_formateur,
                 formateurs.nom AS nomFormateur,
-                formateurs.prenom AS prenomFormateur,
+                formateurs.prenom,
                 formateurs.img AS imgFormateur
             FROM formations, formateurs, categories
             WHERE formations.id_formateur = formateurs.id_formateur
@@ -532,17 +532,17 @@ class Formation
     {
         $query = $this->connect->prepare("
             SELECT 
-                formations.id_formation AS IdFormation,
+                formations.id_formation,
                 formations.image AS imgFormation,
-                formations.mass_horaire AS duree,
-                categories.nom_categorie AS categorie,
+                formations.mass_horaire,
+                categories.nom_categorie AS nomCategorie,
                 formations.nom AS nomFormation,
                 formations.prix,
                 formations.description,
-                formations.jaimes AS likes,
-                formateurs.id_formateur AS IdFormteur,
+                formations.jaimes,
+                formateurs.id_formateur,
                 formateurs.nom AS nomFormateur,
-                formateurs.prenom AS prenomFormateur,
+                formateurs.prenom,
                 formateurs.img AS imgFormateur
             FROM formations, formateurs, categories
             WHERE formations.id_formateur = formateurs.id_formateur
@@ -597,19 +597,19 @@ class Formation
     public function getFormationsByValRech($val, $offset)
     {
         $query = $this->connect->prepare("
-            SELECT formations.id_formation AS 'IdFormation',
-                formations.image AS 'imgFormation',
-                formations.mass_horaire AS 'duree',
-                categories.nom AS 'categorie',
-                formations.nom AS 'nomFormation',
+            SELECT formations.id_formation,
+                formations.image AS imgFormation,
+                formations.mass_horaire,
+                categories.nom AS nomCategorie,
+                formations.nom AS nomFormation,
                 formations.prix,
                 formations.description,
-                formations.jaimes AS 'likes',
-                formateurs.id_formateur AS 'IdFormteur',
-                formateurs.nom AS 'nomFormateur',
-                formateurs.prenom AS 'prenomFormateur',
-                formateurs.img AS 'imgFormateur'
-            FROM formations, formateurs,categories
+                formations.jaimes,
+                formateurs.id_formateur,
+                formateurs.nom AS nomFormateur,
+                formateurs.prenom,
+                formateurs.img AS imgFormateur
+            FROM formations, formateurs, categories
             WHERE formations.id_formateur = formateurs.id_formateur
             AND categories.id_categorie = formations.id_categorie
             AND formations.etat_formation = 'public'
@@ -637,19 +637,19 @@ class Formation
     {
         $query = $this->connect->prepare("
             SELECT 
-                formations.id_formation AS IdFormation,
+                formations.id_formation,
                 formations.image AS imgFormation,
-                formations.mass_horaire AS duree,
-                categories.nom AS categorie,
+                formations.mass_horaire,
+                categories.nom AS nomCategorie,
                 formations.nom AS nomFormation,
                 formations.prix,
                 formations.description,
-                formations.jaimes AS likes,
-                formateurs.id_formateur AS IdFormteur,
+                formations.jaimes,
+                formateurs.id_formateur,
                 formateurs.nom AS nomFormateur,
-                formateurs.prenom AS prenomFormateur,
+                formateurs.prenom,
                 formateurs.img AS imgFormateur
-            FROM formations, formateurs,categories
+            FROM formations, formateurs, categories
             WHERE formations.id_formateur = formateurs.id_formateur
             AND categories.id_categorie = formations.id_categorie
             AND formations.etat = 'public'
@@ -669,17 +669,17 @@ class Formation
     {
         $query = $this->connect->prepare("
             SELECT 
-                formations.id_formation AS IdFormation,
+                formations.id_formation,
                 formations.image AS imgFormation,
-                formations.mass_horaire AS duree,
-                categories.nom AS categorie,
+                formations.mass_horaire,
+                categories.nom AS nomCategorie,
                 formations.nom AS nomFormation,
                 formations.prix,
                 formations.description,
-                formations.jaimes AS likes,
-                formateurs.id_formateur AS IdFormteur,
+                formations.jaimes,
+                formateurs.id_formateur,
                 formateurs.nom AS nomFormateur,
-                formateurs.prenom AS prenomFormateur,
+                formateurs.prenom,
                 formateurs.img AS imgFormateur
             FROM formations, formateurs, categories
             WHERE formations.id_formateur = formateurs.id_formateur

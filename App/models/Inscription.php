@@ -146,13 +146,13 @@ class Inscription
         $query = $this->connect->prepare("
             SELECT
                 id_inscription, 
-                f.nom,
-                f.prenom,
-                f.img,
-                formations.nom,
+                f.nom AS nomFormateur,
+                f.prenom AS prenomFormateur,
+                f.img AS imgFormateur,
+                formations.nom AS nomFormation,
                 date_inscription,
-                e.nom,
-                e.prenom,
+                e.nom AS nomEtudiant,
+                e.prenom AS prenomEtudiant,
                 id_formation
             FROM inscriptions i
             JOIN formations USING (id_formation)
@@ -234,7 +234,7 @@ class Inscription
     {
         $query = $this->connect->prepare("
             SELECT 
-                DATE(date_inscription) AS dateInscription,
+                DATE(date_inscription) AS date_inscription,
                 COUNT(*) AS inscriptions,
                 SUM(prix) AS totalRevenue
             FROM inscriptions 
