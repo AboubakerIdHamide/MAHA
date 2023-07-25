@@ -13,13 +13,13 @@
     <!-- Custom Styles -->
     <link rel="stylesheet" href="<?= URLROOT . "/Public/css/addVideo.css" ?>">
     <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/dashBoardNav.css">
-    <title>MAHA | Ajouter Videos</title>
+    <title><?= SITENAME ?> | Ajouter Videos</title>
 </head>
 <!-- Header -->
 <header>
     <span id="overlay"></span>
-    <div class="logo" data-user-name="<?= $_SESSION['user']['prenom'] ?>">
-        <img src="<?= $_SESSION['user']['avatar'] ?>" alt="avatar">
+    <div class="logo" data-user-name="<?= $_SESSION['user']->prenom ?>">
+        <img src="<?= $_SESSION['user']->img ?>" alt="avatar">
     </div>
     <nav>
         <div class="menu-i">
@@ -49,7 +49,7 @@
 </header>
 <!-- end Header -->
 <div class="container">
-    <form action="" enctype="multipart/form-data" method="post" id="form">
+    <form enctype="multipart/form-data" method="post" id="form">
         <input type="hidden" name="JsonVideos" id="jsonVideos">
         <div class="prog" id="prog_bar"></div>
         <div class="main-form-heading">

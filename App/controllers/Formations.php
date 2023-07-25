@@ -180,7 +180,7 @@ class Formations extends Controller
 				];
 				$this->videoModel->insertVideo($videoData);
 			}
-			redirect("formateurs/index");
+			redirect("formateurs");
 			flash("videoAdded", "Vos vidéos ajoutées avec succès !", "alert alert-info mt-1");
 		} else {
 			$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
