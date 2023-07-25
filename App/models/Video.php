@@ -100,7 +100,7 @@ class Video
 				date_creation,
 				f.nom AS nomFormation,
 				mass_horaire,
-				f.id_formation AS preview,
+				IF(a.id_video = v.id_video, 1, 0) AS is_preview,
 				ordre
 			FROM videos v
 			LEFT JOIN apercus a ON v.id_video = a.id_video

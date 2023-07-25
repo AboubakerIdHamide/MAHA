@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
-    <title>MAHA | <?= $data["videos"][0]->nom_formation ?></title>
+    <title>MAHA | <?= $data["videos"][0]->nomFormation ?></title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- Bootstrap -->
@@ -21,8 +21,8 @@
     <!-- Header -->
     <header>
         <span id="overlay"></span>
-        <div class="logo" data-user-name="<?= $_SESSION['user']['prenom'] ?>">
-            <img src="<?= $_SESSION['user']['avatar'] ?>" alt="avatar">
+        <div class="logo" data-user-name="<?= $_SESSION['user']->prenom ?>">
+            <img src="<?= $_SESSION['user']->img ?>" alt="avatar">
         </div>
         <nav>
             <div class="menu-i">
@@ -57,8 +57,8 @@
                 <a href="<?= URLROOT ?>/formateurs/dashboard"><i class="fas fa-chevron-left go-back rounded"></i></a>
             </div>
             <div class="col-6 col-md-7 col-lg-9">
-                <h1><?= $data["videos"][0]->nom_formation ?></h1>
-                <p><?= $data["videos"][0]->date_creation_formation ?></p>
+                <h1><?= $data["videos"][0]->nomFormation ?></h1>
+                <p><?= $data["videos"][0]->date_creation ?></p>
                 <span>Total videos (<?= count($data["videos"]) ?> videos) · <span class="badge bg-primary"><i class="fas fa-clock"></i> <?= $data["videos"][0]->masse_horaire ?></span></span>
             </div>
             <div class="col">
@@ -80,16 +80,16 @@
             <div class="row mb-3 p-2 video rounded">
                 <div class="col-12 col-md-6">
                     <input style="width: 55px;text-align: center;" maxlength="3" type="text" class="order-video form-control d-inline-block" placeholder="<?= $order ?>" />
-                    <span class="video-name text-white"><?= $video->nom_video ?></span>
-                    <span class="badge bg-secondary"><i class="fas fa-clock"></i> <?= $video->duree_video ?></span>
+                    <span class="video-name text-white"><?= $video->nomVideo ?></span>
+                    <span class="badge bg-secondary"><i class="fas fa-clock"></i> <?= $video->duree ?></span>
                 </div>
-                <input id="description-video" type="hidden" value="<?= $video->description_video ?>">
-                <input id="link-video" type="hidden" value="<?= $video->url_video ?>">
+                <input id="description-video" type="hidden" value="<?= $video->description ?>">
+                <input id="link-video" type="hidden" value="<?= $video->url ?>">
                 <div class="col-12 col-md-6">
                     <div class="d-flex gap-1 justify-content-end">
-                        <a data-bs-custom-class="custom-tooltip" data-bs-title="Télécharger" data-bs-toggle="tooltip" data-bs-placement="top" href="<?= $video->url_video ?>" class="btn btn-warning btn-sm" download><i class="fa-solid fa-download"></i></a>
+                        <a data-bs-custom-class="custom-tooltip" data-bs-title="Télécharger" data-bs-toggle="tooltip" data-bs-placement="top" href="<?= $video->url ?>" class="btn btn-warning btn-sm" download><i class="fa-solid fa-download"></i></a>
                         <button id="<?= $video->id_video ?>" class="btn btn-info btn-sm edit" data-bs-toggle="modal" data-bs-target="#modifier"> <i class="fa-solid fa-pen-to-square" data-bs-custom-class="custom-tooltip" data-bs-title="Modifier" data-bs-toggle="tooltip" data-bs-placement="top"></i></button>
-                        <button id="<?= $video->id_video ?>" class="btn btn-primary btn-sm preview" <?php if ($video->preview == 1) echo 'disabled' ?>> <i class="fa-solid fa-video" data-bs-custom-class="custom-tooltip" data-bs-title="Apercu Video" data-bs-toggle="tooltip" data-bs-placement="top"></i></button>
+                        <button id="<?= $video->id_video ?>" class="btn btn-primary btn-sm preview" <?php if ($video->is_preview == 1) echo 'disabled' ?>> <i class="fa-solid fa-video" data-bs-custom-class="custom-tooltip" data-bs-title="Apercu Video" data-bs-toggle="tooltip" data-bs-placement="top"></i></button>
                         <button id="<?= $video->id_video ?>" class="btn btn-danger btn-sm delete" data-bs-toggle="modal" data-bs-target="#supprimer"> <i class="fa-solid fa-trash" data-bs-custom-class="custom-tooltip" data-bs-title="Supprimer" data-bs-toggle="tooltip" data-bs-placement="top"></i></button>
                     </div>
                 </div>
