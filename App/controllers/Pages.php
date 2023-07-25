@@ -32,15 +32,15 @@ class Pages extends Controller
 			$formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
 			$formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
 		}
-		$themeData["logo"] = URLROOT . "/Public/" . $themeData->logo;
-		$themeData["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
+		$theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
+		$theme["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
 		$data = [
 			'formations' => $formations,
 			'categories' => $categories,
 			'totalEtudiants' => $totalEtudiants,
 			'totalFormations' => $totalFormations,
 			'totalFormateurs' => $totalFormateurs,
-			'theme' => $themeData
+			'theme' => $theme
 		];
 
 		$this->view("pages/index", $data);
