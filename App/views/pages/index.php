@@ -44,24 +44,24 @@
             <h2>Les Plus Populaires Formations</h2>
         </div>
         <div id="reccomended" class="owl-carousel owl-theme">
-            <?php foreach ($data['courses'] as $course) : ?>
+            <?php foreach ($data['formations'] as $formation) : ?>
             <div class="item">
                 <div class="box_grid">
                     <figure>
-                        <a href='<?= URLROOT . "/pageFormations/coursDetails/" . $course->IdFormation ?>'><img
-                                src="<?= $course->imgFormation; ?>" class="img-fluid" alt="Photo"></a>
-                        <div class="price">$<?= $course->prix; ?></div>
+                        <a href='<?= URLROOT . "/pageFormations/coursDetails/" . $formation->id_formation ?>'><img
+                                src="<?= $formation->imgFormation ?>" class="img-fluid" alt="Photo"></a>
+                        <div class="price">$<?= $formation->prix ?></div>
                     </figure>
                     <div class="wrapper">
-                        <small><?= $course->categorie; ?></small>
-                        <h3><?= $course->nomFormation; ?></h3>
-                        <p class='description'><?= $course->description; ?></p>
+                        <small><?= $formation->nomCategorie ?></small>
+                        <h3><?= $formation->nomFormation ?></h3>
+                        <p class='description'><?= $formation->description ?></p>
                     </div>
                     <ul>
-                        <li><i class="fa-solid fa-clock"></i> <?= $course->duree; ?></li>
-                        <li><i class="fa-solid fa-user"></i> <?= $course->numbAcht; ?></li>
-                        <li><i class="fa-solid fa-heart"></i> <?= $course->likes; ?></li>
-                        <li><a href='<?= URLROOT . "/pageFormations/coursDetails/" . $course->IdFormation ?>'>Plus</a>
+                        <li><i class="fa-solid fa-clock"></i> <?= $formation->mass_horaire ?></li>
+                        <li><i class="fa-solid fa-user"></i> <?= $formation->numbAcht ?></li>
+                        <li><i class="fa-solid fa-heart"></i> <?= $formation->jaimes ?></li>
+                        <li><a href='<?= URLROOT . "/pageFormations/coursDetails/" . $formation->id_formation ?>'>Plus</a>
                         </li>
                     </ul>
                 </div>
@@ -71,11 +71,12 @@
         </div>
         <!-- /carousel -->
         <div class="container">
-            <p class="btn_home_align"><a href="<?= URLROOT . "/pageFormations/" ?>" class="btn_1 rounded">Plus
-                    Formations</a></p>
+            <p class="btn_home_align">
+                <a href="<?= URLROOT . "/pageFormations/" ?>" class="btn_1 rounded">Plus Formations</a>
+            </p>
         </div>
         <!-- /container -->
-        <hr>
+        <hr />
     </div>
     <!-- /container -->
 
@@ -88,8 +89,8 @@
             <?php foreach ($data['categories'] as $categorie) : ?>
             <div class="col-md-3 categories p-3 fs-6 rounded">
                 <a class="d-block"
-                    href="<?= URLROOT . '/pageFormations/filter/' . $categorie->nom_categorie ?>"><?= $categorie->icon ?>
-                    <?= $categorie->nom_categorie ?></a>
+                    href="<?= URLROOT . '/pageFormations/filter/' . $categorie->nom ?>"><?= $categorie->icon ?>
+                    <?= $categorie->nom ?></a>
             </div>
             <?php endforeach ?>
         </div>

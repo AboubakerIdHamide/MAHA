@@ -261,7 +261,8 @@ class Formation
                 formateurs.id_formateur,
                 formateurs.nom AS nomFormateur,
                 formateurs.prenom,
-                formateurs.img AS imgFormateur
+                formateurs.img AS imgFormateur,
+                categories.nom AS nomCategorie
             FROM formations, formateurs, categories, inscriptions
             WHERE formations.id_formateur = formateurs.id_formateur
             AND formations.etat = 'public'

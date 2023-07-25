@@ -28,7 +28,7 @@ class Pages extends Controller
 		$themeData = $this->stockedModel->getThemeData();
 
 		foreach ($formations as $formation) {
-			$formation->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($formation->IdFormteur, $formation->IdFormation);
+			$formation->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
 			$formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
 			$formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
 		}
