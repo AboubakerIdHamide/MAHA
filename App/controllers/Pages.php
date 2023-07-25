@@ -20,22 +20,22 @@ class Pages extends Controller
 	}
 	public function index()
 	{
-		$courses = $this->formationModel->getPopularCourses();
+		$formations = $this->formationModel->getPopularCourses();
 		$categories = $this->categorieModel->getAllCategories();
 		$totalEtudiants = $this->etudiantModel->countEtudiant();
 		$totalFormations = $this->formationModel->countFormations();
 		$totalFormateurs = $this->formateurModel->countFormateurs();
 		$themeData = $this->stockedModel->getThemeData();
 
-		foreach ($courses as $course) {
-			$course->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($course->IdFormteur, $course->IdFormation)['total_apprenants'];
-			$course->imgFormation = URLROOT . "/Public/" . $course->imgFormation;
-			$course->imgFormateur = URLROOT . "/Public/" . $course->imgFormateur;
+		foreach ($formations as $formation) {
+			$formation->numbAcht = $this->inscriptionModel->countApprenantsOfFormation($formation->IdFormteur, $formation->IdFormation);
+			$formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
+			$formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
 		}
-		$themeData["logo"] = URLROOT . "/Public/" . $themeData["logo"];
-		$themeData["landingImg"] = URLROOT . "/Public/" . $themeData["landingImg"];
+		$themeData["logo"] = URLROOT . "/Public/" . $themeData->logo;
+		$themeData["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
 		$data = [
-			'courses' => $courses,
+			'formations' => $formations,
 			'categories' => $categories,
 			'totalEtudiants' => $totalEtudiants,
 			'totalFormations' => $totalFormations,
