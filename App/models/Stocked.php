@@ -112,7 +112,7 @@ class Stocked
 	public function insertCategorie($data)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO categories VALUES (DEFAULT, :icon, :nom_categorie)
+			INSERT INTO categories VALUES (DEFAULT, :nom_categorie, :icon)
 		");
 		$query->execute(['icon' => $data['icon'], 'nom_categorie' => $data['nom_categorie']]);
 		$lastInsertId = $this->connect->lastInsertId();
@@ -141,7 +141,7 @@ class Stocked
 	{
 		$query = $this->connect->prepare("
 			UPDATE categories 
-			SET nom_categorie = :nom_categorie
+			SET nom = :nom_categorie
 			WHERE id_categorie = :id_categorie
 		");
 		$query->execute(['id_categorie' => $data->categorieID, 'nom_categorie' => $data->NouveauNom]);
