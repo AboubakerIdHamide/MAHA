@@ -14,9 +14,9 @@ class ProfilSettingsFormateur extends Controller
     }
     public function index($id)
     {
-        $info = $this->fomateurModel->getFormateurById($id);
+        $formateur = $this->fomateurModel->getFormateurById($id);
         $data = [
-            'info' => $info
+            'formateur' => $formateur
         ];
         $this->view("formateur/profilSettingsFormateur", $data);
     }
