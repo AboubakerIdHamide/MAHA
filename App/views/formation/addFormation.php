@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- Style -->
     <link rel="stylesheet" href="<?= URLROOT . "/Public/css/addFormation.css" ?>">
-    <title><?= SITENAME ?></title>
+    <title><?= SITENAME ?> | Ajouter Formation</title>
 </head>
 
 <body>
@@ -43,9 +43,9 @@
                                 <label for="niveau">Niveau De Formation :</label>
                                 <select name="niveau" id="niveau">
                                     <option value="">Aucun</option>
-                                    <?php foreach ($data["levels"] as $level) {
-                                        echo '<option value="' . $level->id_niveau . '">' . $level->nom_niveau . '</option>';
-                                    } ?>
+                                    <?php foreach ($data["niveaux"] as $niveau) : ?>
+                                        <option value="<?= $niveau->id_niveau ?>"><?= $niveau->nom ?></option>
+                                    <?php endforeach ?>
                                 </select>
                                 <span class="error" id="error_niveau"><?php $data["error"] ?></span>
                             </div>
@@ -53,9 +53,9 @@
                                 <label for="categorie">Catégorie De Formation :</label>
                                 <select name="categorie" id="categorie">
                                     <option value="">Aucun</option>
-                                    <?php foreach ($data["allcategories"] as $cat) {
-                                        echo '<option value="' . $cat->id_categorie . '">' . $cat->nom_categorie . '</option>';
-                                    } ?>
+                                    <?php foreach ($data["categories"] as $categorie) : ?>
+                                        <option value="<?= $categorie->id_categorie ?>"><?= $categorie->nom ?></option>
+                                    <?php endforeach ?>
                                 </select>
                                 <span class="error" id="error_categorie"><?php $data["error"] ?></span>
                             </div>
@@ -64,9 +64,9 @@
                             <div class="input-field">
                                 <label for="language">Langue De Formation :</label>
                                 <select name="language" id="language">
-                                    <?php foreach ($data["languages"] as $lang) {
-                                        echo '<option value="' . $lang->id_langue . '">' . $lang->nom_langue . '</option>';
-                                    } ?>
+                                    <?php foreach ($data["langues"] as $langue) : ?>
+                                        <option value="<?= $langue->id_langue ?>"><?= $langue->nom ?></option>
+                                    <?php endforeach ?>
                                 </select>
                                 <span class="error" id="error_language"><?php $data["error"] ?></span>
                             </div>

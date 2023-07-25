@@ -108,9 +108,9 @@ class Formations extends Controller
 				"error"				=> ''
 			];
 			// some data for view
-			$data["allcategories"] = $this->stockedModel->getAllCategories();
-			$data["levels"] = $this->stockedModel->getAllLevels();
-			$data["languages"] = $this->stockedModel->getAllLangues();
+			$data["categories"] = $this->stockedModel->getAllCategories();
+			$data["niveaux"] = $this->stockedModel->getAllLevels();
+			$data["langues"] = $this->stockedModel->getAllLangues();
 
 			// validate data
 			$data['error'] = $this->validateInsertedData($data);
@@ -146,9 +146,9 @@ class Formations extends Controller
 				"description"		=> "",
 				"error"				=> ""
 			];
-			$data["allcategories"] = $this->stockedModel->getAllCategories();
-			$data["levels"] = $this->stockedModel->getAllLevels();
-			$data["languages"] = $this->stockedModel->getAllLangues();
+			$data["categories"] = $this->stockedModel->getAllCategories();
+			$data["niveaux"] = $this->stockedModel->getAllLevels();
+			$data["langues"] = $this->stockedModel->getAllLangues();
 			$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
 			$data["logo"] = URLROOT . "/Public/" . $this->stockedModel->getThemeData()->logo;
 			$this->view("formation/addFormation", $data);
