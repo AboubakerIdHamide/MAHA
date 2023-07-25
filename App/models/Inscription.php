@@ -146,17 +146,17 @@ class Inscription
         $query = $this->connect->prepare("
             SELECT
                 id_inscription, 
-                nom_formateur,
-                prenom_formateur,
-                img_formateur,
-                nom_formation,
+                f.nom,
+                f.prenom,
+                f.img,
+                formations.nom,
                 date_inscription,
-                nom_etudiant,
-                prenom_etudiant,
+                e.nom,
+                e.prenom,
                 id_formation
             FROM inscriptions i
             JOIN formations USING (id_formation)
-            JOIN etudiants USING (id_etudiant)
+            JOIN etudiants e USING (id_etudiant)
             JOIN formateurs f ON i.id_formateur = f.id_formateur
             WHERE id_etudiant = :id_etudiant
             AND payment_state != 'created'
@@ -268,7 +268,7 @@ class Inscription
 
         $query = $this->connect->prepare("
             SELECT 
-                CONCAT(f.nom_formateur, ' ', f.prenom_formateur) AS nomComplet,
+                CONCAT(f.nom, ' ', f.prenom) AS nomComplet,
                 SUM(i.prix) AS montantTotal,
                 COUNT(i.id_formation) AS nbrFormation
             FROM inscriptions i
@@ -291,7 +291,7 @@ class Inscription
     {
         $query = $this->connect->prepare("
             SELECT 
-                CONCAT(f.nom_formateur, ' ', f.prenom_formateur) AS nomComplet,
+                CONCAT(f.nom, ' ', f.prenom) AS nomComplet,
                 SUM(i.prix) AS montantTotal,
                 COUNT(i.id_formation) AS nbrFormation
             FROM inscriptions i
@@ -314,7 +314,7 @@ class Inscription
     {
         $query = $this->connect->prepare("
             SELECT 
-                CONCAT(f.nom_formateur, ' ', f.prenom_formateur) AS nomComplet,
+                CONCAT(f.nom, ' ', f.prenom) AS nomComplet,
                 SUM(i.prix) AS montantTotal,
                 COUNT(i.id_formation) AS nbrFormation
             FROM inscriptions i
@@ -337,7 +337,7 @@ class Inscription
     {
         $query = $this->connect->prepare("
             SELECT 
-                CONCAT(f.nom_formateur, ' ', f.prenom_formateur) AS nomComplet,
+                CONCAT(f.nom, ' ', f.prenom) AS nomComplet,
                 SUM(i.prix) AS montantTotal,
                 COUNT(i.id_formation) AS nbrFormation
             FROM inscriptions i
@@ -359,7 +359,7 @@ class Inscription
     {
         $query = $this->connect->prepare("
             SELECT 
-                CONCAT(f.nom_formateur, ' ', f.prenom_formateur) AS nomComplet,
+                CONCAT(f.nom, ' ', f.prenom) AS nomComplet,
                 SUM(i.prix) AS montantTotal,
                 COUNT(i.id_formation) AS nbrFormation
             FROM inscriptions i
@@ -382,7 +382,7 @@ class Inscription
     {
         $query = $this->connect->prepare("
             SELECT 
-                CONCAT(f.nom_formateur, ' ', f.prenom_formateur) AS nomComplet,
+                CONCAT(f.nom, ' ', f.prenom) AS nomComplet,
                 SUM(i.prix) AS montantTotal,
                 COUNT(i.id_formation) AS nbrFormation
             FROM inscriptions i
