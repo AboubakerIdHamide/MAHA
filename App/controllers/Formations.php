@@ -92,7 +92,7 @@ class Formations extends Controller
 
 	public function addFormation()
 	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$data = [
 				"id_formateur"		=> $_SESSION['id_formateur'],
 				"nom_formation"		=> $_POST["nom"],
@@ -103,12 +103,12 @@ class Formations extends Controller
 				"description"		=> $_POST["description"],
 				"etat_formation"	=> $_POST["visibility"],
 				"id_langue"			=> $_POST["language"],
-				"videosCollcetion"	=> json_decode($_POST["JsonVideos"]),
+				"videosCollection"	=> json_decode($_POST["JsonVideos"]),
 				"masse_horaire"		=> 0,
 				"error"				=> ''
 			];
 			// some data for view
-			$data["allcategories"] = $this->stockedModel->getAllCategories($_SESSION['user']['email']);
+			$data["allcategories"] = $this->stockedModel->getAllCategories();
 			$data["levels"] = $this->stockedModel->getAllLevels();
 			$data["languages"] = $this->stockedModel->getAllLangues();
 
@@ -122,7 +122,7 @@ class Formations extends Controller
 			if ($data["error"] == false) {
 				$formationId = $this->formationModel->insertFormation($data);
 				if ($formationId) {
-					foreach ($data["videosCollcetion"] as $video) {
+					foreach ($data["videosCollection"] as $video) {
 						$videoData = [
 							"Idformation" => $formationId,
 							"nomVideo" => $video->name,
@@ -146,12 +146,11 @@ class Formations extends Controller
 				"description"		=> "",
 				"error"				=> ""
 			];
-			$data["allcategories"] = $this->stockedModel->getAllCategories($_SESSION['user']['email']);
+			$data["allcategories"] = $this->stockedModel->getAllCategories();
 			$data["levels"] = $this->stockedModel->getAllLevels();
 			$data["languages"] = $this->stockedModel->getAllLangues();
 			$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
-			$themeData = $this->stockedModel->getThemeData();
-			$data["logo"] = URLROOT . "/Public/" . $themeData["logo"];
+			$data["logo"] = URLROOT . "/Public/" . $this->stockedModel->getThemeData()->logo;
 			$this->view("formation/addFormation", $data);
 		}
 	}
@@ -161,20 +160,19 @@ class Formations extends Controller
 		// check the Id if exists
 		$formationData = $this->formationModel->getFormation($idFormation, $_SESSION['id_formateur']);
 		if (empty($idFormation) || empty($formationData)) {
-			redirect("formateurs/index");
+			redirect("formateurs");
 		}
 
 		// handling request
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$data = [
-				"videosCollcetion"	=> json_decode($_POST["JsonVideos"]),
+				"videosCollection"	=> json_decode($_POST["JsonVideos"]),
 			];
 
 			// insert data
-			$formationId = $idFormation;
-			foreach ($data["videosCollcetion"] as $video) {
+			foreach ($data["videosCollection"] as $video) {
 				$videoData = [
-					"Idformation" => $formationId,
+					"Idformation" => $idFormation,
 					"nomVideo" => $video->name,
 					"duree" => $video->duree,
 					"url" => $video->videoPath,
@@ -186,8 +184,7 @@ class Formations extends Controller
 			flash("videoAdded", "Vos vidéos ajoutées avec succès !", "alert alert-info mt-1");
 		} else {
 			$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
-			$themeData = $this->stockedModel->getThemeData();
-			$data["logo"]= URLROOT . "/Public/" . $themeData["logo"];
+			$data["logo"]= URLROOT . "/Public/" . $this->stockedModel->getThemeData()->logo;
 			$this->view("formateur/addVideo", $data);
 		}
 	}
@@ -195,14 +192,13 @@ class Formations extends Controller
 	public function deleteVideo()
 	{
 		if (isset($_POST['id_video'])) {
-			$videoDataToDelete = $this->videoModel->getVideo($_SESSION['id_formation'], $_POST['id_video']);
 			$res = $this->videoModel->deteleVideo($_SESSION['id_formation'], $_POST['id_video']);
 			if ($res) {
-				unlink($videoDataToDelete["url_video"]);
-				echo 'Video supprimé avec succès !!!';
+				unlink($this->videoModel->getVideo($_SESSION['id_formation'], $_POST['id_video'])->url);
+				echo json_encode('Video supprimé avec succès !!!');
 				flash('deteleVideo', 'Video supprimé avec succès !!!');
 			} else {
-				echo "Une erreur s'est produite lors de la suppression !!!";
+				echo json_encode("Une erreur s'est produite lors de la suppression !!!");
 				flash('deteleVideo', "Une erreur s'est produite lors de la suppression !!!");
 			}
 		}
@@ -286,10 +282,10 @@ class Formations extends Controller
 			$data['id'] = $id;
 			if (explode('/', $path)[2] === 'files') {
 				$this->formationModel->updateFichierAttache($data);
-				echo "Pièce jointe ajouté avec succès";
+				echo json_encode("Pièce jointe ajouté avec succès");
 			} else {
 				$this->formationModel->updateImgFormation($data);
-				echo "La vignette de formation ajouté avec succès";
+				echo json_encode("La vignette de formation ajouté avec succès");
 			}
 		} else {
 			echo json_encode(["error" => $errors]);
@@ -338,13 +334,13 @@ class Formations extends Controller
 		if (!empty($hasFormation)) {
 			$data["videos"] = $this->videoModel->getVideosOfFormation($id_formation);
 			if (!empty($data['videos'])) {
-				$data["videos"][0]->date_creation_formation = $this->formatDate($data["videos"][0]->date_creation_formation);
+				$data["videos"][0]->date_creation = $this->formatDate($data["videos"][0]->date_creation);
 				// to access to that formation in deleteVideo method
 				// I unset this variable when i go back to the dashboard 
 				$_SESSION['id_formation'] = $data["videos"][0]->id_formation;
 				$data["videos"][0]->masse_horaire = $this->videoModel->countMassHorraire($data["videos"][0]->id_formation);
 				foreach ($data["videos"] as $key => $value) {
-					$data["videos"][$key]->url_video = URLROOT . "/Public/" . $data["videos"][$key]->url_video;
+					$data["videos"][$key]->url = URLROOT . "/Public/" . $data["videos"][$key]->url;
 				}
 				$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
 
@@ -355,7 +351,7 @@ class Formations extends Controller
 			}
 		} else {
 			flash("formationNotExists", "Cette formation n`existe pas", "alert alert-info");
-			redirect("formateurs/index");
+			redirect("formateurs");
 		}
 	}
 
@@ -404,7 +400,7 @@ class Formations extends Controller
 				$data['id_formation'] = $_SESSION['id_formation'];
 				$this->videoModel->updateVideo($data);
 				flash('updateVideo', 'Modification affecté avec succès !!!');
-				echo 'Modification affecté avec succès !!!';
+				echo json_encode('Modification affecté avec succès !!!');
 			}
 		}
 	}
@@ -448,7 +444,7 @@ class Formations extends Controller
 				// Don't Forget Validation Back-end Order
 				$this->videoModel->setOrderVideos(json_decode($_POST['videosWithOrder']));
 				flash("orderApplied", "Demande appliqueé avec succès !!!");
-				echo "Terminée !!!";
+				echo json_encode("Terminée !!!");
 			}
 		}
 	}
@@ -456,14 +452,14 @@ class Formations extends Controller
 	public function updatePreviewVideo($id_video)
 	{
 		$this->previewsModel->updatePreview($id_video, $_SESSION['id_formation']);
-		echo 'Updated Well !!!';
+		echo json_encode('Updated Well !!!');
 	}
 
 	public function insertPreviewVideo($id_video)
 	{
 		if (empty($this->previewsModel->getPreviewByFormation($_SESSION['id_formation']))) {
 			$this->previewsModel->insertPreviewVideo($id_video, $_SESSION['id_formation']);
-			echo 'Bien inseré !!!';
+			echo json_encode('Bien inseré !!!');
 		} else {
 			$this->updatePreviewVideo($id_video);
 		}
