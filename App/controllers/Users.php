@@ -108,7 +108,7 @@ class Users extends Controller
         $categories = $this->stockedModel->getAllCategories();
 
         // Checking If The User Submit
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Prepare Data
             $data = [
                 "nom" => trim($_POST["nom"]),
@@ -193,7 +193,7 @@ class Users extends Controller
     {
         // redirect if there isn't a verification code
         if (!isset($_SESSION["vcode"])) {
-            redirect("pages");
+            redirect("users/login");
         }
 
         // preparing data
@@ -247,7 +247,7 @@ class Users extends Controller
 
     public function forgotPassword()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
                 "email" => trim($_POST["email"]),
                 "mdp" => $_POST["mdp"],

@@ -15,7 +15,7 @@
 
 <body>
     <div class="container">
-        <form action="" method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data">
             <div class="register-type">
                 <h3>S'inscrire <sup>Avec</sup></h3>
                 <button type="button" id="maha-register" class="maha"><i class="fa fa-user-plus"></i>MAHA</button>
@@ -121,10 +121,9 @@
                                     <label spec="bio">Spécialité :</label>
                                     <select name="specialite" id="spec">
                                         <option value="aucun">Aucun</option>
-                                        <?php
-                                        foreach ($data[1] as $cat) {
-                                            echo '<option value="' . $cat->id_categorie . '">' . $cat->nom_categorie . '</option>';
-                                        } ?>
+                                        <?php foreach ($data[1] as $cat) : ?>
+                                        <option value="<?= $cat->id_categorie ?>"><?= $cat->nom ?></option>
+                                        <?php endforeach ?>
                                     </select>
                                     <span class="error" id="error-spec"><?= $data[0]["spec_err"] ?></span>
                                 </div>

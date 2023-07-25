@@ -46,7 +46,7 @@ class Smtp
 		$query = $this->connect->prepare("
 			SELECT * 
 			FROM smtp 
-			WHERE id = 1
+			WHERE id_smtp = 1
 		");
 
 		$query->execute();
