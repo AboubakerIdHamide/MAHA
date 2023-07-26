@@ -218,11 +218,11 @@ class Formation
         $query->bindParam(':formationId', $formationId);
         $query->execute();
 
-        $likes = $query->fetch(PDO::FETCH_OBJ);
+        $jaimes = $query->fetch(PDO::FETCH_OBJ)->jaimes;
         if ($query->rowCount() > 0) {
-            return $likes;
+            return $jaimes;
         }
-        return false;
+        return 0;
     }
 
     public function getPopularCourses($offset = 0)

@@ -48,7 +48,7 @@ function likeToIt(idEtudiant, idFormation, wrapper) {
     },
     function (res, status, xhr) {
       res = JSON.parse(res);
-      wrapper.text(res.likes);
+      wrapper.text(res.jaimes);
     }
   );
 }

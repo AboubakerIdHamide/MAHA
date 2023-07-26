@@ -93,7 +93,7 @@ class Ajax extends Controller
         $id_etudiant = $_POST["idEtudiant"];
         $id_formation = $_POST["idFormation"];
         $res = $this->formationModel->setLike($id_etudiant, $id_formation);
-        $jaimes = $this->formationModel->getLikesOfFormation($id_formation)->jaimes;
+        $jaimes = $this->formationModel->getLikesOfFormation($id_formation);
         $data = ["success" => $res, "jaimes" => $jaimes];
         echo json_encode($data);
     }

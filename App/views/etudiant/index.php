@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
-    <title>MAHA | Formations</title>
+    <title><?= SITENAME ?> | Dashboard</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- BootStrap -->
@@ -31,41 +31,41 @@
                 <div class="alert alert-danger mt-3">vous êtes inscrit a aucune formation !</div>
             <?php endif ?>
             <div class="formations">
-                <?php foreach ($data["inscriptions"] as $item) : ?>
-                    <a class="card_coures" href="<?= URLROOT . "/etudiants/coursVideos/" . $item->id_formateur . "/" . $item->id_formation ?>">
+                <?php foreach ($data["inscriptions"] as $formation) : ?>
+                    <a class="card_coures" href="<?= URLROOT . "/etudiants/coursVideos/" . $formation->id_formateur . "/" . $formation->id_formation ?>">
                         <!-- img formation -->
                         <div class="img">
-                            <img src="<?= $item->image_formation ?>" alt="photo">
+                            <img src="<?= $formation->image ?>" alt="photo">
                             <div class="duree">
                                 <i class="fa-solid fa-clock" aria-hidden="true"></i>
-                                <div class="time"><?= $item->mass_horaire ?></div>
+                                <div class="time"><?= $formation->mass_horaire ?></div>
                             </div>
                         </div>
                         <!-- informations formation -->
                         <div class="info_formation">
-                            <div class="categorie"><?= $item->categorie ?></div>
-                            <div class="prix"><?= $item->prix_formation ?></div>
+                            <div class="categorie"><?= $formation->nomCategorie ?></div>
+                            <div class="prix"><?= $formation->prix ?></div>
                         </div>
                         <!-- name formation -->
-                        <h1><?= $item->nom_formation ?></h1>
+                        <h1><?= $formation->nomFormation ?></h1>
                         <!-- description -->
                         <div class="description">
-                            <p><?= strlen($item->description) > 120 ? substr($item->description, 0, 120) . "..." : $item->description ?>
+                            <p><?= strlen($formation->description) > 120 ? substr($formation->description, 0, 120) . "..." : $formation->description ?>
                             </p>
                         </div>
                         <div class="footer">
                             <!-- infotrmation formateur -->
                             <div class="formateur">
                                 <div class="img_formateur">
-                                    <img src="<?= $item->img_formateur ?>" alt="photo">
+                                    <img src="<?= $formation->imgFormateur ?>" alt="photo">
                                 </div>
-                                <h2><?= $item->nom_formateur ?> <?= $item->prenom_formateur ?></h2>
+                                <h2><?= $formation->nomFormateur ?> <?= $formation->prenomFormateur ?></h2>
                             </div>
                             <!-- informations -->
                             <div class="info">
-                                <div class="etd formation-likes"><?= $item->likes ?></div>
-                                <i class="<?= $item->liked ? "fa-solid" : "fa-regular" ?> fa-heart" aria-hidden="true" data-formation-id="<?= $item->id_formation ?>" data-etudiant-id="<?= $item->id_etudiant ?>"></i>
-                                <div class="likes"><?= $item->apprenants ?></div>
+                                <div class="etd formation-likes"><?= $formation->jaimes ?></div>
+                                <i class="<?= $formation->liked ? "fa-solid" : "fa-regular" ?> fa-heart" aria-hidden="true" data-formation-id="<?= $formation->id_formation ?>" data-etudiant-id="<?= $formation->id_etudiant ?>"></i>
+                                <div class="likes"><?= $formation->apprenants ?></div>
                                 <i class="fa fa-users" aria-hidden="true"></i>
                             </div>
                         </div>

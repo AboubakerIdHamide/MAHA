@@ -97,12 +97,26 @@ class Inscription
     public function getInscriptionByEtudiant($idEtudiant)
     {
         $query = $this->connect->prepare("
-            SELECT * 
-            FROM inscriptions
-            JOIN etudiants e USING(id_etudiant)
-            JOIN formateurs USING(id_formateur)
-            JOIN formations USING(id_formation)
-            WHERE e.id_etudiant=:id_etudiant and payment_state != 'created'
+            SELECT 
+                i.id_formation,
+                i.id_formateur,
+                i.id_etudiant,
+                mass_horaire,
+                image,
+                c.nom AS nomCategorie,
+                fore.prix,
+                fore.nom AS nomFormation,
+                description,
+                f.img AS imgFormateur,
+                f.nom AS nomFormateur,
+                f.prenom AS prenomFormateur,
+                jaimes
+            FROM inscriptions i
+            JOIN etudiants e ON i.id_etudiant = e.id_etudiant
+            JOIN formateurs f ON i.id_formateur = f.id_formateur
+            JOIN formations fore ON i.id_formation = fore.id_formation
+            JOIN categories c ON fore.id_categorie = c.id_categorie
+            WHERE e.id_etudiant=:id_etudiant AND payment_state = 'approved'
         ");
 
         $query->bindParam(":id_etudiant", $idEtudiant);

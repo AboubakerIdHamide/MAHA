@@ -38,9 +38,8 @@ class Etudiants extends Controller
 		// preparing data
 		$data["inscriptions"] = $this->inscriptionModel->getInscriptionByEtudiant($_SESSION['id_etudiant']);
 		foreach ($data["inscriptions"] as $inscription) {
-			$inscription->img = URLROOT . "/Public/" . $inscription->img;
+			$inscription->imgFormateur = URLROOT . "/Public/" . $inscription->imgFormateur;
 			$inscription->image = URLROOT . "/Public/" . $inscription->image;
-			$inscription->id_categorie = $this->stockedModel->getCategorieById($inscription->id_categorie)->nom;
 			$inscription->apprenants = $this->inscriptionModel->countApprenantsOfFormation($inscription->id_formateur, $inscription->id_formation);
 			$inscription->liked = $this->formationModel->likedBefore($inscription->id_etudiant, $inscription->id_formation);
 		}
