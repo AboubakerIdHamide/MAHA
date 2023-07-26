@@ -65,14 +65,14 @@ $(document).ready(function () {
             <div class="card position-relative">
                 <span class="position-absolute top-0 start-0 translate-middle p-2 bg-danger border border-light rounded-circle"></span>
                 <div class="card-header">
-                    Request #${request.id_payment} · ${request.date_request}
+                    Request #${request.id_payment} · ${request.date_de_demande}
                 </div>
                 <div class="card-body">
                     <div class="card-text d-flex justify-content-between">
                         <div class="d-flex align-items-center">
                             <img style="width: 55px;border: 2px solid #0d6efd" class="img-fluid rounded-circle me-2" src="http://localhost/maha/Public/images/default.jpg" alt="formateur avatar" />
                             <div class="d-flex flex-column">
-                                <span style="font-weight: 700;"><span style="text-transform: uppercase;">${request.nom_formateur}</span> ${request.prenom_formateur}</span>
+                                <span style="font-weight: 700;"><span style="text-transform: uppercase;">${request.nom}</span> ${request.prenom}</span>
                                 <span class="d-flex align-items-center gap-1">
                                     <i class="fa-brands fa-paypal"></i>
                                     <span class="badge rounded-pill text-bg-dark">${request.paypalMail}</span>
@@ -80,7 +80,7 @@ $(document).ready(function () {
                             </div>
                         </div>
                         <div class="d-flex flex-column bg-warning p-2 rounded">
-                            <span class="text-center mb-1"><strong>${request.request_prix} $</strong></span>
+                            <span class="text-center mb-1"><strong>${request.prix_demande} $</strong></span>
                             <div>
                                 <button id="${request.id_payment}" class="btn btn-success btn-sm accepter">Accepter <i class="fa-solid fa-check"></i></button>
                                 <button id="${request.id_payment}" class="btn btn-danger btn-sm refuser">Refuser <i class="fa-sharp fa-solid fa-circle-xmark"></i></button>
@@ -109,7 +109,7 @@ $(document).ready(function () {
           <div class="col">
             <div class="card">
                 <div class="card-header">
-                    Request #${request.id_payment} · ${request.date_request}
+                    Request #${request.id_payment} · ${request.date_de_demande}
                 </div>
                 <div class="card-body">
                     <div class="card-text d-flex justify-content-between">
@@ -117,8 +117,8 @@ $(document).ready(function () {
                             <img style="width: 55px;border: 2px solid #0d6efd" class="img-fluid rounded-circle me-2" src="http://localhost/maha/Public/images/default.jpg" alt="formateur avatar" />
                             <div class="d-flex flex-column">
                                 <span style="font-weight: 700;"><span style="text-transform: uppercase;">${
-                                  request.nom_formateur
-                                }</span> ${request.prenom_formateur}</span>
+                                  request.nom
+                                }</span> ${request.prenom}</span>
                                 <span class="d-flex align-items-center gap-1">
                                     <i class="fa-brands fa-paypal"></i>
                                     <span class="badge rounded-pill text-bg-dark">${
@@ -129,7 +129,7 @@ $(document).ready(function () {
                         </div>
                         <div class="d-flex flex-column bg-warning p-2 rounded">
                             <span class="text-center mb-1"><strong>${
-                              request.request_prix
+                              request.prix_demande
                             } $</strong></span>
                             <div>
                               <span class="badge bg-${
@@ -189,7 +189,7 @@ $(document).ready(function () {
   $chercher.on("keypress keyup", function (event) {
     if ($selectFilter.val() === "pending") {
       const filtredRequests = getAllRequestsPayments().filter((req) =>
-        req.nom_formateur.toLowerCase().includes($(this).val().toLowerCase())
+        req.nom.toLowerCase().includes($(this).val().toLowerCase())
       );
       renderPending(filtredRequests);
     } else {
