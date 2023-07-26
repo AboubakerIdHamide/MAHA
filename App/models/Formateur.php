@@ -35,7 +35,7 @@ class Formateur
 		$query = $this->connect->prepare("
 			SELECT  
 				id_formateur,
-				nom,
+				f.nom AS nomFormateur,
 				prenom,
 				email,
 				tel,
@@ -43,7 +43,7 @@ class Formateur
 				img,
 				paypalMail, 
 				biography,
-				c.nom,
+				c.nom AS nomCategorie,
 				balance,
 				c.id_categorie
 			FROM formateurs f

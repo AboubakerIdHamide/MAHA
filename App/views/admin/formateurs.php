@@ -29,18 +29,18 @@
                                 <input type="hidden" value="<?= $formateur->biography ?>" class="biographie-formateur">
                                 <td><?= $formateur->id_formateur ?></td>
                                 <td class="d-flex gap-1" style="font-weight: 500;">
-                                    <img class="img-fluid rounded-circle avatar-formateur me-1" src="<?= $formateur->img_formateur ?>" alt="formateur avatar">
+                                    <img class="img-fluid rounded-circle avatar-formateur me-1" src="<?= $formateur->img ?>" alt="formateur avatar">
                                     <div class="d-flex flex-column me-3">
-                                        <span class="nom-formateur"><?= $formateur->nom_formateur ?></span>
-                                        <span class="prenom-formateur"><?= $formateur->prenom_formateur ?></span>
+                                        <span class="nom-formateur"><?= $formateur->nomFormateur ?></span>
+                                        <span class="prenom-formateur"><?= $formateur->prenom ?></span>
                                     </div>
                                 </td>
-                                <td class="email-formateur"><?= $formateur->email_formateur ?></td>
-                                <td class="tele-formateur"><?= $formateur->tel_formateur ?></td>
-                                <td><?= $formateur->date_creation_formateur ?></td>
+                                <td class="email-formateur"><?= $formateur->email ?></td>
+                                <td class="tele-formateur"><?= $formateur->tel ?></td>
+                                <td><?= $formateur->date_creation ?></td>
                                 <td class="paypal-formateur"><?= $formateur->paypalMail ?></td>
                                 <td class="specialite-formateur" id="<?= $formateur->id_categorie ?>">
-                                    <?= $formateur->nom_categorie ?></td>
+                                    <?= $formateur->nomCategorie ?></td>
                                 <td class="text-center"><strong><span style="font-size: 15px;" class="badge bg-dark"><?= $formateur->balance ?> $</span></strong></td>
                                 <td class="text-center">
                                     <input id="<?= $formateur->id_formateur ?>" class="btn btn-danger btn-sm delete" type="button" value="Supprimer" data-bs-toggle="modal" data-bs-target="#deleteModal">
@@ -101,7 +101,7 @@
                     <label for="categorie" class="form-label" style="font-weight: 600;">Spécialité</label>
                     <select class="form-select" id="specialite">
                         <?php foreach ($data['specialite'] as $specialite) : ?>
-                            <option value="<?= $specialite->id_categorie ?>"><?= $specialite->nom_categorie ?></option>
+                            <option value="<?= $specialite->id_categorie ?>"><?= $specialite->nom ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
