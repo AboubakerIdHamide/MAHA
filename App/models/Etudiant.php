@@ -150,11 +150,11 @@ class Etudiant
 			WHERE id_etudiant = :id
 		");
 
-		$query->bindParam(':nom', $dataEtudiant->nom);
-		$query->bindParam(':prenom', $dataEtudiant->prenom);
-		$query->bindParam(':tel', $dataEtudiant->tel);
-		$query->bindParam(':mdp', $dataEtudiant->n_mdp);
-		$query->bindParam(':id', $dataEtudiant->id);
+		$query->bindParam(':nom', $dataEtudiant['nom']);
+		$query->bindParam(':prenom', $dataEtudiant['prenom']);
+		$query->bindParam(':tel', $dataEtudiant['tel']);
+		$query->bindParam(':mdp', $dataEtudiant['n_mdp']);
+		$query->bindParam(':id', $dataEtudiant['id']);
 
 		$query->execute();
 		if ($query->rowCount() > 0) {
