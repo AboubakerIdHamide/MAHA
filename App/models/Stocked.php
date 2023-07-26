@@ -114,7 +114,7 @@ class Stocked
 		$query = $this->connect->prepare("
 			INSERT INTO categories VALUES (DEFAULT, :nom, :icon)
 		");
-		$query->execute(['icon' => $data['icon'], 'nom_categorie' => $data['nom_categorie']]);
+		$query->execute(['icon' => $data['icon'], 'nom' => $data['nom_categorie']]);
 		$lastInsertId = $this->connect->lastInsertId();
 		if ($lastInsertId > 0) {
 			return $lastInsertId;

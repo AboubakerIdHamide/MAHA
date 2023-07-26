@@ -24,9 +24,9 @@
         <div class="col-12">
             <?php foreach ($data['categories'] as $categorie) : ?>
                 <li class="categorie border border-dark mb-1 p-2 rounded d-flex justify-content-between align-items-center">
-                    <span><?= $categorie->nom_categorie ?></span>
+                    <span><?= $categorie->nom ?></span>
                     <div class="buttons">
-                        <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-info btn-sm mx-2 edit" data-id-categorie="<?= $categorie->id_categorie ?>" data-nom-categorie="<?= $categorie->nom_categorie ?>">Edit</button>
+                        <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-info btn-sm mx-2 edit" data-id-categorie="<?= $categorie->id_categorie ?>" data-nom-categorie="<?= $categorie->nom ?>">Edit</button>
                         <button id="<?= $categorie->id_categorie ?>" class="btn btn-danger btn-sm delete">Supprimer</button>
                     </div>
                 </li>
