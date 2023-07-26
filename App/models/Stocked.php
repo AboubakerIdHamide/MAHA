@@ -156,7 +156,7 @@ class Stocked
 		$query = $this->connect->prepare("
 			INSERT INTO langues VALUES (DEFAULT, :nom)
 		");
-		$query->execute(['nom_langue' => $langue]);
+		$query->execute(['nom' => $langue]);
 		$lastInsertId = $this->connect->lastInsertId();
 		if ($lastInsertId > 0) {
 			return $lastInsertId;

@@ -21,7 +21,7 @@
             <ul class="list-group" id="langues">
                 <?php foreach ($data['langues'] as $langue) : ?>
                 <li class="list-group-item langue d-flex justify-content-between align-items-center">
-                    <span><?= $langue->nom_langue ?></span>
+                    <span><?= $langue->nom ?></span>
                     <button data-id-langue="<?= $langue->id_langue ?>" class="btn btn-danger btn-sm delete"><i
                             class="fa-solid fa-trash"></i></button>
                 </li>

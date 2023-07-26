@@ -35,7 +35,6 @@ $(document).ready(function () {
       success: function (response) {
         showFlashMessage(response, "success");
         $("#langue").val("");
-        location.reload();
       },
     });
   });
@@ -47,7 +46,6 @@ $(document).ready(function () {
       type: "DELETE",
       success: function (response) {
         rowLangue.remove();
-        console.log(response);
       },
     });
   });
