@@ -392,8 +392,10 @@ class Formateurs extends Controller
 			$data->imgEtudiant = URLROOT . "/Public/" . $data->imgEtudiant;
 			$data->formationCategorie = $this->stockedModel->getCategorieById($data->formationCategorie)->nom;
 			$data->formateurCategorie = $this->stockedModel->getCategorieById($data->formateurCategorie)->nom;
-			$data->langue = $this->stockedModel->getLangueById($data->id_langue)->nom;
-			$data->niveau = $this->stockedModel->getLevelById($data->niveau)->nom;
+			$data->langue = $this->stockedModel->getLangueById($data->langue)->nom;
+			$niveau = $this->stockedModel->getLevelById($data->niveau);
+			$data->niveau = $niveau->nom;
+			$data->niveauIcon = $niveau->icon;
 			$data->apprenants = $this->inscriptionModel->countApprenantsOfFormation($data->id_formateur, $data->id_formation);
 			$data->videos = $this->videoModel->getVideosOfFormation($idFormation);
 			$data->liked = $this->formationModel->likedBefore($data->id_etudiant, $data->id_formation);

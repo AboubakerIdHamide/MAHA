@@ -235,8 +235,8 @@
         },
     };
 
-    // const element = document.getElementById("playerContainer");
-    // const player = IndigoPlayer.init(element, config);
+    const element = document.getElementById("playerContainer");
+    const player = IndigoPlayer.init(element, config);
     </script>
     <script src="<?= URLROOT . "/Public/jQuery/jquery-3.6.0.min.js" ?>"></script>
     <script src="<?= URLROOT . "/Public/js/cours-details-paid.js" ?>"></script>
