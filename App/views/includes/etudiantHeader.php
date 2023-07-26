@@ -24,7 +24,7 @@
             </li>
             <li id="dashboard"><a href="<?= URLROOT . '/etudiants/dashboard' ?>"><i class="fa-solid fa-graduation-cap"></i><span>Formations</span></a></li>
             <li id="paiment"><a href="<?= URLROOT . '/etudiants/watchedVideos' ?>"><i class="fa-solid fa-check"></i><span>regardé</span></a></li>
-            <li id="paiment"><a href="<?= URLROOT . '/etudiants/bockMarckedVideos' ?>"><i class="far fas fa-bookmark"></i><span>Signets</span></a></li>
+            <li id="paiment"><a href="<?= URLROOT . '/etudiants/bookmarkedVideos' ?>"><i class="far fas fa-bookmark"></i><span>Signets</span></a></li>
             <li id="statistics"><a href="<?= URLROOT . '/etudiants/updateInfos' ?>"><i class="fas fa-user-gear"></i><span>Paramètre</span></a></li>
             <li id="disconnect"><a href="<?= URLROOT . '/users/logout' ?>"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
         </ul>

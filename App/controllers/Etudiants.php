@@ -99,7 +99,7 @@ class Etudiants extends Controller
 		$this->view("etudiant/videoCards", $data);
 	}
 
-	public function bockMarckedVideos()
+	public function bookmarkedVideos()
 	{
 		// Preparing Data
 		$data["videos"] = $this->videoModel->getBookmarkedVideos($_SESSION['id_etudiant']);

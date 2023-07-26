@@ -293,10 +293,17 @@ class Video
 	public function getBookmarkedVideos($etudiant_id)
 	{
 		$query = $this->connect->prepare("
-			SELECT * 
+			SELECT 
+				f.id_formation,
+				f.nom AS nomFormation,
+				f.id_formateur,
+				v.id_video,
+				v.nom AS nomVideo,
+				url,
+				v.description 
 			FROM bookmarks b
-			JOIN videos USING(id_video) 
-			JOIN formations USING (id_formation)
+			JOIN videos v ON b.id_video = v.id_video 
+			JOIN formations f ON v.id_formation = f.id_formation
 			WHERE b.id_etudiant=:id_etudiant
 		");
 
