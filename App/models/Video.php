@@ -221,10 +221,17 @@ class Video
 	public function getWatchedVideos($etudiant_id)
 	{
 		$query = $this->connect->prepare("
-			SELECT * 
+			SELECT 
+				f.id_formation,
+				f.nom AS nomFormation,
+				f.id_formateur,
+				vi.id_video,
+				vi.nom AS nomVideo,
+				url,
+				vi.description
 			FROM vus v
-			JOIN videos USING(id_video) 
-			JOIN formations USING (id_formation)
+			JOIN videos vi ON v.id_video = vi.id_video 
+			JOIN formations f ON vi.id_formation = f.id_formation
 			WHERE v.id_etudiant=:id_etudiant
 		");
 

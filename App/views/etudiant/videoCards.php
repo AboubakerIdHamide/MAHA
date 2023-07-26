@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
-    <title>MAHA | Mes Videos</title>
+    <title><?= SITENAME ?> | Mes vus videos</title>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- BootStrap -->
@@ -27,13 +27,13 @@
             <li class="cards_item">
                 <div class="card">
                     <div class="card_image">
-                        <video controls src="<?= $video->url_video ?>"></video>
+                        <video controls src="<?= $video->url ?>"></video>
                     </div>
                     <div class="card_content">
-                        <h2 class="card_title"><?= $video->nom_video ?></h2>
-                        <p class="card_text"><?= $video->description_video ?></p>
+                        <h2 class="card_title"><?= $video->nomVideo ?></h2>
+                        <p class="card_text"><?= $video->description ?></p>
                         <a href="<?= URLROOT . "/etudiants/coursVideos/" . $video->id_formateur . "/" . $video->id_formation ?>"
-                            class="btn card_btn"><?= $video->nom_formation ?></a>
+                            class="btn card_btn"><?= $video->nomFormation ?></a>
                     </div>
                 </div>
             </li>
