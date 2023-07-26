@@ -113,7 +113,7 @@ class Admin extends Controller
     {
         $_SESSION['admin_id'] = $admin->id_admin;
         $_SESSION['admin'] = $admin;
-        $admin->img_admin = URLROOT . "/Public/" . $admin->img_admin;
+        $admin->img = URLROOT . "/Public/" . $admin->img;
         redirect('admin/dashboard');
     }
 
@@ -131,7 +131,7 @@ class Admin extends Controller
         $data['countFormations'] = $this->formationModel->countFormations();
         $data['countFormateurs'] = $this->fomateurModel->countFormateurs();
         $data['countEtudiant'] = $this->etudiantModel->countEtudiant();
-        $data['balance'] = $this->adminModel->getAdminByEmail($_SESSION['admin']->email_admin)->balance;
+        $data['balance'] = $this->adminModel->getAdminByEmail($_SESSION['admin']->email)->balance;
         $this->view('admin/index', $data);
     }
 
@@ -150,7 +150,7 @@ class Admin extends Controller
     {
         $this->checkSession();
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->requestPaymentModel->setState($_POST['etat_request'], $_POST['id_payment']);
             echo json_encode('Demande de paiement modifiée !!!');
         }
