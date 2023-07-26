@@ -77,25 +77,26 @@ $(document).ready(function () {
     $(".main-video-duration").text(videoDuration);
     $("p.desc").text(videoDesc);
 
-    // const config = {
-    //   sources: [
-    //     {
-    //       type: "mp4",
-    //       src: videoUrl,
-    //     },
-    //   ],
-    //   ui: {
-    //     pip: true, // by default, pip is not enabled in the UI.
-    //   },
-    // };
+    const config = {
+      sources: [
+        {
+          type: "mp4",
+          src: videoUrl,
+        },
+      ],
+      ui: {
+        pip: true, // by default, pip is not enabled in the UI.
+      },
+    };
 
-    // const element = document.getElementById("playerContainer");
-    // element.innerHTML = "";
-    // const player = IndigoPlayer.init(element, config);
+    const element = document.getElementById("playerContainer");
+    element.innerHTML = "";
+    const player = IndigoPlayer.init(element, config);
 
     // comments
     let commentsText = "";
     videoComments.forEach((comment) => {
+      console.log(comment);
       commentsText += `
 				<div class="d-flex gap-2 mb-2 ${
           comment.type_user === "formateur" && "flex-row-reverse"
