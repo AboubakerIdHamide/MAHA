@@ -54,24 +54,26 @@ class Etudiants extends Controller
 			redirect("etudiants");
 		}
 		// preparing data
-		$data = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, $_SESSION['id_etudiant'], $idFormateur);
-		$data->imgFormateur = URLROOT . "/Public/" . $data->imgFormateur;
-		$data->image = URLROOT . "/Public/" . $data->image;
-		$data->imgEtudiant = URLROOT . "/Public/" . $data->imgEtudiant;
-		$data->formationCategorie = $this->stockedModel->getCategorieById($data->formationCategorie)->nom;
-		$data->formateurCategorie = $this->stockedModel->getCategorieById($data->formateurCategorie)->nom;
-		$data->langue = $this->stockedModel->getLangueById($data->langue)->nom;
-		$data->niveau = $this->stockedModel->getLevelById($data->niveau)->nom;
-		$data->apprenants = $this->inscriptionModel->countApprenantsOfFormation($data->id_formateur, $data->id_formation);
-		$data->videos = $this->videoModel->getVideosOfFormation($idFormation);
-		$data->liked = $this->formationModel->likedBefore($data->id_etudiant, $data->id_formation);
+		$formation = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, $_SESSION['id_etudiant'], $idFormateur);
+		$formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
+		$formation->image = URLROOT . "/Public/" . $formation->image;
+		$formation->imgEtudiant = URLROOT . "/Public/" . $formation->imgEtudiant;
+		$formation->formationCategorie = $this->stockedModel->getCategorieById($formation->formationCategorie)->nom;
+		$formation->formateurCategorie = $this->stockedModel->getCategorieById($formation->formateurCategorie)->nom;
+		$formation->langue = $this->stockedModel->getLangueById($formation->langue)->nom;
+		$niveau = $this->stockedModel->getLevelById($formation->niveau);
+		$formation->niveau = $niveau->nom;
+		$formation->niveauIcon = $niveau->icon;
+		$formation->apprenants = $this->inscriptionModel->countApprenantsOfFormation($idFormateur, $idFormation);
+		$formation->videos = $this->videoModel->getVideosOfFormation($idFormation);
+		$formation->liked = $this->formationModel->likedBefore($_SESSION['id_etudiant'], $idFormation);
 
-		foreach ($data->videos as $video) {
+		foreach ($formation->videos as $video) {
 			// settingUp Video Link
 			$video->url = URLROOT . "/Public/" . $video->url;
 			$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video, $idFormateur, $_SESSION['id_etudiant']);
-			$video->watched = $this->videoModel->watchedBefore($data->id_etudiant, $video->id_video);
-			$video->bookmarked = $this->videoModel->bookmarked($data->id_etudiant, $video->id_video);
+			$video->watched = $this->videoModel->watchedBefore($_SESSION['id_etudiant'], $video->id_video);
+			$video->bookmarked = $this->videoModel->bookmarked($_SESSION['id_etudiant'], $video->id_video);
 			// settingUp User image Link for comment
 			foreach ($video->comments as $comment) {
 				$comment->img = URLROOT . "/Public/" . $comment->img;
@@ -79,7 +81,7 @@ class Etudiants extends Controller
 		}
 
 		// loading the view
-		$this->view("etudiant/coursVideos", $data);
+		$this->view("etudiant/coursVideos", $formation);
 	}
 
 	public function watchedVideos()

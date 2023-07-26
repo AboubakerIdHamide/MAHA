@@ -77,33 +77,32 @@ $(document).ready(function () {
     $(".main-video-duration").text(videoDuration);
     $("p.desc").text(videoDesc);
 
-    const config = {
-      sources: [
-        {
-          type: "mp4",
-          src: videoUrl,
-        },
-      ],
-      ui: {
-        pip: true, // by default, pip is not enabled in the UI.
-      },
-    };
+    // const config = {
+    //   sources: [
+    //     {
+    //       type: "mp4",
+    //       src: videoUrl,
+    //     },
+    //   ],
+    //   ui: {
+    //     pip: true, // by default, pip is not enabled in the UI.
+    //   },
+    // };
 
-    const element = document.getElementById("playerContainer");
-    element.innerHTML = "";
-    const player = IndigoPlayer.init(element, config);
+    // const element = document.getElementById("playerContainer");
+    // element.innerHTML = "";
+    // const player = IndigoPlayer.init(element, config);
 
     // comments
     let commentsText = "";
     videoComments.forEach((comment) => {
-      console.log(comment);
       commentsText += `
 				<div class="d-flex gap-2 mb-2 ${
           comment.type_user === "formateur" && "flex-row-reverse"
         }" data-video-id="${comment.id_video}" data-etudiant-id="${
         comment.id_etudiant
       }">
-					  <img class="align-self-start" src="${comment.image}" alt="my-photo">
+					  <img class="align-self-start" src="${comment.img}" alt="my-photo">
 					  <div class="d-flex flex-column ${
               comment.type_user === "formateur"
                 ? "formateur-comment"
@@ -257,7 +256,7 @@ function likeToIt(idEtudiant, idFormation) {
     },
     function (res, status, xhr) {
       res = JSON.parse(res);
-      $(".formation-likes").text(res.likes);
+      $(".formation-likes").text(res.jaimes);
     }
   );
 }
@@ -272,7 +271,6 @@ function addComment(from_user, to_user, idVideo, commentaire) {
       to_user: to_user,
     },
     function (res, status, xhr) {
-      console.log(res);
       res = JSON.parse(res);
       $(`#video-${videoId}`).attr(
         "data-video-comments",

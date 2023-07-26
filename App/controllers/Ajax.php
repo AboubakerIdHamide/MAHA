@@ -130,7 +130,7 @@ class Ajax extends Controller
         $data = [
             "idVideo" => $_POST["videoId"],
             "commentaire" => $_POST["comment"],
-            "type_user" => $_SESSION['user']['type'],
+            "type_user" => $_SESSION['user']->type,
             "from_user" => $_POST["from_user"],
             "to_user" => $_POST["to_user"]
         ];

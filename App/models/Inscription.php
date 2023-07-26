@@ -131,12 +131,23 @@ class Inscription
     public function getInscriptionOfOneFormation($id_formation, $id_etudiant, $id_formateur)
     {
         $query = $this->connect->prepare("
-            SELECT 
+            SELECT
+                f.id_formateur,
+                f.nom AS nomFormateur,
+                f.prenom AS prenomFormateur,
                 f.img AS imgFormateur,
-                e.img AS imgEtudiant,
-                image,
                 f.id_categorie AS formateurCategorie,
+                fo.id_formation,
+                fo.nom AS nomFormation, 
                 fo.id_categorie AS formationCategorie,
+                mass_horaire,
+                image,
+                fichier_attache,
+                jaimes,
+                e.id_etudiant,
+                e.nom AS nomEtudiant,
+                e.prenom AS prenomEtudiant,
+                e.img AS imgEtudiant,
                 id_langue AS langue,
                 id_niveau AS niveau
             FROM inscriptions i
