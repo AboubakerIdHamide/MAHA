@@ -34,26 +34,26 @@
                     </div>
                     <div class="d-flex gap-2 justify-content-center align-items-center">
                         <img class="img-fluid rounded-circle border border-info avatar-formateur"
-                            src="<?= $formation->img_formateur ?>" alt="avatar formateur">
+                            src="<?= $formation->imgFormateur ?>" alt="avatar formateur">
                         <div class="d-flex flex-column align-items-start">
-                            <span style="font-weight: 600;font-size: 13px;"><?= $formation->nom_formateur ?>
-                                <?= $formation->prenom_formateur ?></span>
+                            <span style="font-weight: 600;font-size: 13px;"><?= $formation->nomFormateur ?>
+                                <?= $formation->prenom ?></span>
                             <small style="max-width: 200px;"
                                 class="badge bg-info d-inline-block text-truncate categorie"
                                 id="<?= $formation->id_categorie ?>"
-                                title="<?= $formation->nom_categorie ?>"><?= $formation->nom_categorie ?></small>
+                                title="<?= $formation->nomCategorie ?>"><?= $formation->nomCategorie ?></small>
                         </div>
                     </div>
                     <hr>
-                    <span class="d-block"><?= $formation->date_creation_formation ?></span>
+                    <span class="d-block"><?= $formation->date_creation ?></span>
                     <span class="badge bg-warning langue"
-                        id="<?= $formation->id_langue ?>"><?= $formation->nom_langue ?></span>
+                        id="<?= $formation->id_langue ?>"><?= $formation->nomLangue ?></span>
                 </div>
                 <div class="card-body">
-                    <img class="img-fluid rounded miniature" src="<?= $formation->image_formation ?>"
+                    <img class="img-fluid rounded miniature" src="<?= $formation->imgFormation ?>"
                         alt="formation image">
-                    <h6 style="font-weight: 800;" title="<?= $formation->nom_formation ?>"
-                        class="card-title mt-2 mb-1 text-truncate title"><?= $formation->nom_formation ?></h6>
+                    <h6 style="font-weight: 800;" title="<?= $formation->nomFormation ?>"
+                        class="card-title mt-2 mb-1 text-truncate title"><?= $formation->nomFormation ?></h6>
                     <span class="badge bg-secondary mb-2"><i class="fas fa-clock"></i>
                         <?= $formation->mass_horaire ?></span>
                     <p class="card-text text-truncate description" title="<?= $formation->description ?>">
@@ -62,12 +62,12 @@
                 </div>
                 <div class="card-footer text-muted d-flex justify-content-between align-items-center">
                     <div class="d-flex flex-column gap-2">
-                        <span class="badge bg-black"><?= $formation->likes ?> <i class="fa fa-heart"></i></span>
+                        <span class="badge bg-black"><?= $formation->jaimes ?> <i class="fa fa-heart"></i></span>
                         <span class="badge bg-black niveau"
-                            id="<?= $formation->id_niveau ?>"><?= $formation->nom_niveau ?></span>
+                            id="<?= $formation->id_niveau ?>"><?= $formation->nomNiveau ?></span>
                     </div>
                     <p class="m-0 h4"><span class="badge bg-info"><span
-                                class="prix"><?= $formation->prix_formation ?></span> $</span></p>
+                                class="prix"><?= $formation->prix ?></span> $</span></p>
                 </div>
             </div>
         </div>
@@ -126,7 +126,7 @@
                     <label for="categorie" class="form-label" style="font-weight: 600;">Categories</label>
                     <select class="form-select" name="categorie" id="categorie">
                         <?php foreach ($data['categories'] as $categorie) : ?>
-                        <option value="<?= $categorie->id_categorie ?>"><?= $categorie->nom_categorie ?></option>
+                        <option value="<?= $categorie->id_categorie ?>"><?= $categorie->nom ?></option>
                         <?php endforeach; ?>
                     </select>
                     <small class="error-spec text-danger"></small>
@@ -134,8 +134,8 @@
                 <div class="mb-3">
                     <label for="niveau" class="form-label" style="font-weight: 600;">Niveau de formation</label>
                     <select class="form-select" name="niveauFormation" id="niveau">
-                        <?php foreach ($data['levels'] as $level) : ?>
-                        <option value="<?= $level->id_niveau ?>"><?= $level->nom_niveau ?></option>
+                        <?php foreach ($data['niveaux'] as $niveau) : ?>
+                        <option value="<?= $niveau->id_niveau ?>"><?= $niveau->nom ?></option>
                         <?php endforeach; ?>
                     </select>
                     <small class="error-niveau text-danger"></small>
@@ -144,7 +144,7 @@
                     <label for="langue" class="form-label" style="font-weight: 600;">Langue</label>
                     <select class="form-select" name="langue" id="langue">
                         <?php foreach ($data['langues'] as $langue) : ?>
-                        <option value="<?= $langue->id_langue ?>"><?= $langue->nom_langue ?></option>
+                        <option value="<?= $langue->id_langue ?>"><?= $langue->nom ?></option>
                         <?php endforeach; ?>
                     </select>
                     <small class="error-niveau text-danger"></small>
@@ -199,9 +199,9 @@
 </div>
 <!-- toast end -->
 <script src="<?= URLROOT ?>/public/js/bootstrap.bundle.min.js"></script>
-<script src="<?php echo URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
-<script src="<?php echo URLROOT; ?>/public/js/dashBoardNav.js"></script>
-<script src="<?php echo URLROOT; ?>/public/js/adminFormations.js"></script>
+<script src="<?= URLROOT ?>/public/jQuery/jquery-3.6.0.min.js"></script>
+<script src="<?= URLROOT ?>/public/js/dashBoardNav.js"></script>
+<script src="<?= URLROOT ?>/public/js/adminFormations.js"></script>
 </body>
 
 </html>

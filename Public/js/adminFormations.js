@@ -256,7 +256,7 @@ $(document).ready(function () {
       .find(".modal-title")
       .html(
         "Videos - <span class='text-muted'>" +
-          videos[0].nom_formation +
+          videos[0].nomFormation +
           "</span>"
       );
     for (let video of videos) {
@@ -266,7 +266,7 @@ $(document).ready(function () {
           <div class="accordion-item">
             <h2 class="accordion-header" id="flush-heading-${video.id_video}">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-${video.id_video}" aria-expanded="false" aria-controls="flush-collapse-${video.id_video}" id="${video.id_video}">
-                  ${video.nom_video} <span class="badge bg-secondary ms-2">${video.duree_video}</span>
+                  ${video.nomVideo} <span class="badge bg-secondary ms-2">${video.duree}</span>
                 </button>
             </h2>
             <div id="flush-collapse-${video.id_video}" class="accordion-collapse collapse" aria-labelledby="flush-heading-${video.id_video}" data-bs-parent="#accordionFlushExample">
@@ -287,16 +287,16 @@ $(document).ready(function () {
       <div class="accordion-body">
         <div>
           <label class="form-label" for="mp4-video" style="font-weight: 600;">Aperçu</label>
-          <video class="ratio ratio-16x9 rounded" src="${video.url_video}" controls></video>
+          <video class="ratio ratio-16x9 rounded" src="${video.url}" controls></video>
         </div>
         <div class="my-3">
           <label for="title" class="form-label" style="font-weight: 600;">Titre</label>
-          <input type="text" class="form-control" id="title" value="${video.nom_video}">
+          <input type="text" class="form-control" id="title" value="${video.nomVideo}">
           <small class="error-title text-danger"></small>
         </div>
         <div>
           <label for="description" class="form-label" style="font-weight: 600;">Description</label>
-          <textarea class="form-control" id="description" rows="3">${video.description_video}</textarea>
+          <textarea class="form-control" id="description" rows="3">${video.description}</textarea>
           <small class="error-desc text-danger"></small>
         </div>
         <div class="container mt-3">
@@ -312,8 +312,8 @@ $(document).ready(function () {
       </div>
       `);
       // get Desc and Title To Compare them before Ajax Call
-      const videoTitle = video.nom_video;
-      const videoDescription = video.description_video;
+      const videoTitle = video.nomVideo;
+      const videoDescription = video.description;
       // remove event handler
       $(".delete-video").off();
       $(".edit-video").off();

@@ -253,13 +253,13 @@ class Admin extends Controller
         }
         // get link of image formateur
         foreach ($data['formations'] as $formation) {
-            $formation->img = URLROOT . "/Public/" . $formation->img;
-            $formation->image = URLROOT . "/Public/" . $formation->image;
+            $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
+            $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
         }
 
         $data['categories'] = $this->stockedModel->getAllCategories();
         $data['langues'] = $this->stockedModel->getAllLangues();
-        $data['levels'] = $this->stockedModel->getAllLevels();
+        $data['niveaux'] = $this->stockedModel->getAllLevels();
 
         $this->view("admin/formations", $data);
     }

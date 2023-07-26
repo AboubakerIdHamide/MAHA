@@ -294,14 +294,33 @@ class Formation
     public function getFormationByNomFormateur($q)
     {
         $query = $this->connect->prepare("
-            SELECT *
-            FROM formations f
-            JOIN langues USING (id_langue)
-            JOIN niveaux n USING (id_niveau)
-            JOIN formateurs USING (id_formateur)
-            JOIN categories c USING (id_categorie)
-            WHERE nom LIKE CONCAT('%', :q, '%')
-            ORDER BY id_formation
+            SELECT
+                fore.id_formation,
+                image AS imgFormation,
+                mass_horaire,
+                fore.nom AS nomFormation,
+                fore.date_creation,
+                prix,
+                description,
+                jaimes,
+                description,
+                f.id_formateur,
+                f.nom AS nomFormateur,
+                f.prenom,
+                f.img AS imgFormateur,
+                c.id_categorie,
+                c.nom AS nomCategorie,
+                l.id_langue,
+                l.nom AS nomLangue,
+                n.id_niveau,
+                n.nom AS nomNiveau
+            FROM formations fore
+            JOIN formateurs f ON fore.id_formateur = f.id_formateur
+            JOIN categories c ON fore.id_categorie = c.id_categorie
+            JOIN langues l ON fore.id_langue = l.id_langue
+            JOIN niveaux n ON fore.id_niveau = n.id_niveau
+            WHERE fore.etat = 'public'
+            AND f.nom LIKE CONCAT('%', :q, '%')
         ");
 
         $q = htmlspecialchars($q);
@@ -318,14 +337,33 @@ class Formation
     public function getFormationByNomFormation($q)
     {
         $query = $this->connect->prepare("
-            SELECT *
-            FROM formations f
-            JOIN langues USING (id_langue)
-            JOIN niveaux n USING (id_niveau)
-            JOIN formateurs USING (id_formateur)
-            JOIN categories USING (id_categorie)
-            WHERE f.nom LIKE CONCAT('%', :q, '%')
-            ORDER BY id_formation
+            SELECT
+                fore.id_formation,
+                image AS imgFormation,
+                mass_horaire,
+                fore.nom AS nomFormation,
+                fore.date_creation,
+                prix,
+                description,
+                jaimes,
+                description,
+                f.id_formateur,
+                f.nom AS nomFormateur,
+                f.prenom,
+                f.img AS imgFormateur,
+                c.id_categorie,
+                c.nom AS nomCategorie,
+                l.id_langue,
+                l.nom AS nomLangue,
+                n.id_niveau,
+                n.nom AS nomNiveau
+            FROM formations fore
+            JOIN formateurs f ON fore.id_formateur = f.id_formateur
+            JOIN categories c ON fore.id_categorie = c.id_categorie
+            JOIN langues l ON fore.id_langue = l.id_langue
+            JOIN niveaux n ON fore.id_niveau = n.id_niveau
+            WHERE fore.etat = 'public'
+            AND fore.nom LIKE CONCAT('%', :q, '%')
         ");
 
         $q = htmlspecialchars($q);
@@ -451,27 +489,36 @@ class Formation
         return 0;
     }
 
-    public function getAllFormations($offset)
+    public function getAllFormations($offset = 0)
     {
         $query = $this->connect->prepare("
-            SELECT 
-                formations.id_formation,
-                formations.image AS imgFormation,
-                formations.mass_horaire,
-                categories.nom AS nomCategorie,
-                formations.nom AS nomFormation,
-                formations.prix,
-                formations.description,
-                formations.jaimes,
-                formateurs.id_formateur,
-                formateurs.nom AS nomFormateur,
-                formateurs.prenom,
-                formateurs.img AS imgFormateur
-            FROM formations, formateurs, categories
-            WHERE formations.id_formateur = formateurs.id_formateur
-            AND formations.etat = 'public'
-            AND categories.id_categorie = formations.id_categorie
-            ORDER BY formations.jaimes DESC
+            SELECT
+                fore.id_formation,
+                image AS imgFormation,
+                mass_horaire,
+                fore.nom AS nomFormation,
+                fore.date_creation,
+                prix,
+                description,
+                jaimes,
+                description,
+                f.id_formateur,
+                f.nom AS nomFormateur,
+                f.prenom,
+                f.img AS imgFormateur,
+                c.id_categorie,
+                c.nom AS nomCategorie,
+                l.id_langue,
+                l.nom AS nomLangue,
+                n.id_niveau,
+                n.nom AS nomNiveau
+            FROM formations fore
+            JOIN formateurs f ON fore.id_formateur = f.id_formateur
+            JOIN categories c ON fore.id_categorie = c.id_categorie
+            JOIN langues l ON fore.id_langue = l.id_langue
+            JOIN niveaux n ON fore.id_niveau = n.id_niveau
+            WHERE fore.etat = 'public'
+            ORDER BY fore.jaimes DESC
             LIMIT {$offset}, 10
         ");
 
