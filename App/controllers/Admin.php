@@ -476,18 +476,18 @@ class Admin extends Controller
 
     public function changeTheme()
     {
-        $data = $this->stockedModel->getThemeData();
+        $theme = $this->stockedModel->getThemeData();
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $logo = $this->uploadImage($_FILES["logo"]);
             $landingImg = $this->uploadImage($_FILES["landingImg"]);
-
-            if ($logo == false) {
-                $logo = $data["logo"];
+        
+            if (empty($logo)) {
+                $logo = $theme->logo;
             }
 
-            if ($landingImg == false) {
-                $landingImg = $data["landingImg"];
+            if (empty($landingImg)) {
+                $landingImg = $theme->landingImg;
             }
 
             $this->stockedModel->setThemeData([
@@ -495,10 +495,10 @@ class Admin extends Controller
                 "landingImg" => $landingImg
             ]);
 
-            redirect("admin/");
+            redirect("admin/changeTheme");
         } else {
-            $data["logo"] = URLROOT . "/Public/" . $data["logo"];
-            $data["landingImg"] = URLROOT . "/Public/" . $data["landingImg"];
+            $data["logo"] = URLROOT . "/Public/" . $theme->logo;
+            $data["landingImg"] = URLROOT . "/Public/" . $theme->landingImg;
             $this->view('admin/theme', $data);
         }
     }
