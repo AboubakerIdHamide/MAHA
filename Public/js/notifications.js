@@ -16,7 +16,7 @@ $(document).ready(function() {
     function renderNotification() {
         $(".notifications").html("");
         const notifications = getAllNotifications();
-        
+        console.log(notifications)
         if (notifications.length === 0) {
             $("#clear-seen").remove();
             $(".notifications").html("<div class='alert alert-info'>Votre Boite de notifications est vide !</div>");
@@ -35,9 +35,9 @@ $(document).ready(function() {
                 <div class="d-flex align-items-center">
                     <span class="me-2 date-notification ${removeRedColorToOldNotification(notification.etat)}">${notification.created_at}</span>
                     ·
-                    <span class="nom-etudiant ms-2 me-2 ${removeRedColorToOldNotification(notification.etat)}">${notification.nom.toUpperCase()} ${notification.prenom}</span>
+                    <span class="nom-etudiant ms-2 me-2 ${removeRedColorToOldNotification(notification.etat)}">${notification.nomEtudiant.toUpperCase()} ${notification.prenom}</span>
                     ·
-                    <span class="ms-2 badge bg-light ${removeRedColorToOldNotification(notification.etat)} formation">${notification.nom_formation} ==> ${notification.nom_video}</span>
+                    <span class="ms-2 badge bg-light ${removeRedColorToOldNotification(notification.etat)} formation">${notification.nomFormation} ==> ${notification.nomVideo}</span>
                 </div>
             </div>
           </a>

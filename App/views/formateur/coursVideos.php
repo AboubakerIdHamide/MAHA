@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
-    <title>MAHA | <?= $data->nom_formation ?></title>
+    <title><?= SITENAME ?> | <?= $data->nomFormation ?></title>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- Bootstrap -->
@@ -21,19 +21,19 @@
             <div class="row">
                 <div class="col-xl-3">
                     <a href="<?= URLROOT ?>/<?= isset($_SESSION['id_formateur']) ? 'formateurs' : 'etudiants' ?>">
-                        <img class="img-fluid" src="<?= $data->image_formation ?>" alt="formation image">
+                        <img class="img-fluid" src="<?= $data->image ?>" alt="formation image">
                     </a>
                 </div>
                 <div class="col-xl-7">
                     <div class="group d-flex flex-column justify-content-center">
-                        <h3 class="title"><?= $data->nom_formation ?></h3>
-                        <p>Formation catégorie <span><?= $data->categorie ?></span></p>
+                        <h3 class="title"><?= $data->nomFormation ?></h3>
+                        <p>Formation catégorie <span><?= $data->nomCategorie ?></span></p>
                         <div class="instructor d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center gap-2">
-                                <img src="<?= $data->img_formateur ?>" alt="" class="formateur-img">
+                                <img src="<?= $data->imgFormateur ?>" alt="" class="formateur-img">
                                 <div class="instructor-info">
-                                    <h5><?= $data->nom_formateur ?> <?= $data->prenom_formateur ?></h5>
-                                    <p class="specialite mb-0"><?= $data->specialiteId ?></p>
+                                    <h5><?= $data->nomFormateur ?> <?= $data->prenom ?></h5>
+                                    <p class="specialite mb-0"><?= $data->nomCategorie ?></p>
                                 </div>
                             </div>
                         </div>
