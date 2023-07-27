@@ -35,7 +35,7 @@ $(document).ready(function () {
       type: "POST",
       data: $(this).serialize(),
       success: function (response) {
-        showFlashMessage(response, "success");
+        showFlashMessage(JSON.parse(response), "success");
       },
     });
   });
@@ -48,7 +48,7 @@ $(document).ready(function () {
       type: "DELETE",
       data: categorieID,
       success: function (response) {
-        console.log(response);
+        
       },
     });
   });
@@ -67,7 +67,7 @@ $(document).ready(function () {
         data: JSON.stringify({ categorieID, NouveauNom }),
         success: function (response) {
           $("#fermer").click();
-          showFlashMessage(response, "success");
+          showFlashMessage(JSON.parse(response), "success");
         },
       });
     });

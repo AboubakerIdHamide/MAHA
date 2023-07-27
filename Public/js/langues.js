@@ -33,7 +33,7 @@ $(document).ready(function () {
       type: "POST",
       data: $(this).serialize(),
       success: function (response) {
-        showFlashMessage(response, "success");
+        showFlashMessage(JSON.parse(response), "success");
         $("#langue").val("");
       },
     });

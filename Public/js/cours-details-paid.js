@@ -96,7 +96,6 @@ $(document).ready(function () {
     // comments
     let commentsText = "";
     videoComments.forEach((comment) => {
-      console.log(comment);
       commentsText += `
 				<div class="d-flex gap-2 mb-2 ${
           comment.type_user === "formateur" && "flex-row-reverse"

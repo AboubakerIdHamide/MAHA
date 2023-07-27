@@ -286,7 +286,7 @@ const handleRessourse = (files) => {
     processData: false,
     data: formData,
     success: function (response) {
-      showFlashMessage(response, "success");
+      showFlashMessage(JSON.parse(response), "success");
       $("#verifier").click();
     },
   });
@@ -316,7 +316,7 @@ const handleMiniature = (files) => {
     processData: false,
     data: formData,
     success: function (response) {
-      showFlashMessage(response, "success");
+      showFlashMessage(JSON.parse(response), "success");
       $("#verifier").click();
     },
   });

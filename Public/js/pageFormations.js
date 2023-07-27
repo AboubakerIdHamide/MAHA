@@ -5,19 +5,16 @@ const plusAchter = $('#plusAchter');
 const currentURL = window.location.href;
 
 if(currentURL.includes('plusPopilairesFormations')){
-    console.log('yes');
     plusPopilaires.css('background-color', '#662d91');
     plusPopilaires.css('color', '#fff');
 }
 
 if(currentURL.includes('plusFormationsAmais')){
-    console.log('yes');
     plusAmais.css('background-color', '#662d91');
     plusAmais.css('color', '#fff');
 }
 
 if(currentURL.includes('plusFormationsAchter')){
-    console.log('yes');
     plusAchter.css('background-color', '#662d91');
     plusAchter.css('color', '#fff');
 }

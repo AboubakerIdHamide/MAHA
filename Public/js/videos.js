@@ -37,7 +37,7 @@ $(document).ready(function () {
           id_video: $idVideo,
         },
         success: function (response) {
-          // console.log(response);
+
         },
       });
       refreshPage();
@@ -130,7 +130,7 @@ $(document).ready(function () {
                 titre: title.inputValue,
               },
               success: function (response) {
-                // console.log(response);
+               
               },
             });
             refreshPage();
@@ -146,7 +146,7 @@ $(document).ready(function () {
                   description: desc.inputValue,
                 },
                 success: function (response) {
-                  // console.log(response);
+                  
                 },
               });
               refreshPage();
@@ -161,7 +161,7 @@ $(document).ready(function () {
                   titre: title.inputValue,
                 },
                 success: function (response) {
-                  // console.log(response);
+                  
                 },
               });
               refreshPage();
@@ -206,7 +206,7 @@ $(document).ready(function () {
           videosWithOrder: JSON.stringify(videosWithOrder),
         },
         success: function (response) {
-          // console.log(response);
+          
         },
       });
       refreshPage();
@@ -221,7 +221,7 @@ $(document).ready(function () {
     $.ajax({
       url: "http://localhost/maha/formations/insertPreviewVideo/" + idVideo,
       success: function (response) {
-        // console.log(response);
+        
       },
     });
   });

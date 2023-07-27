@@ -29,7 +29,7 @@ $(document).ready(function () {
           etat_request: "accepted",
         },
         success: function (response) {
-          console.log(response);
+          
         },
       });
     });
@@ -47,7 +47,7 @@ $(document).ready(function () {
           etat_request: "declined",
         },
         success: function (response) {
-          console.log(response);
+         
         },
       });
     });

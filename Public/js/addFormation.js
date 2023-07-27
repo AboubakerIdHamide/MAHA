@@ -317,10 +317,9 @@ function uploadVideos(file) {
             });
 
             videosHiddenInp.value = JSON.stringify(videoJsObjects);
-            console.log(videoJsObjects);
           })
           .catch(function (error) {
-            console.error("Error de la video:", error);
+
           });
       } else {
         alert("Upload Server Error!");

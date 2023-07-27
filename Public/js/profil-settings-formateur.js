@@ -43,8 +43,6 @@ $(document).ready(function() {
         if (!allowedExt.includes(fileType))
             return;
 
-        // console.log('Ajax Call');
-
         var fd = new FormData();
         var files = event.target.files[0];
         fd.append('img', files);
@@ -55,11 +53,10 @@ $(document).ready(function() {
             contentType: false,
             processData: false,
             success: function(response) {
-                console.log(response);
                 if (response == false) {
-                    $("#avatar-profil").attr("src", response.img);
+                    $("#avatar-profil").attr("src", JSON.parse(response).img);
                 } else {
-                    $('#error-img-avatar').textContent = response.img_err;
+                    $('#error-img-avatar').textContent = JSON.parse(response).img_err;
                 }
             },
         });
@@ -281,7 +278,6 @@ $(document).ready(function() {
                 n_mdp: $('#mdp').val(),
             };
 
-            // console.log('Ajax Call', updateFormateurInfo);
             xhr = getxhr();
             xhr.open("POST", "http://localhost/maha/Formateurs/updateInfos/", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -291,9 +287,7 @@ $(document).ready(function() {
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
-                        console.log(xhr.responseText);
                         let response = JSON.parse(xhr.responseText);
-                        console.log(response);
                         if (response.thereIsError == true) {
                             Errors.push({
                                 id: "error-nom",

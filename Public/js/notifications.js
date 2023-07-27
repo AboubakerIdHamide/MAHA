@@ -61,7 +61,7 @@ $(document).ready(function() {
             $.ajax({
                 url: "http://localhost/maha/" + controller + "/setStateToSeen/" + idNotification,
                 success: function(response) {
-                    console.log(response);
+                   
                 },
             });
             const nbrNotifications = Number($(".nbr-notifications").text());
@@ -81,7 +81,7 @@ $(document).ready(function() {
         $.ajax({
             url: "http://localhost/maha/" + controller + "/deleteSeenNotifications",
             success: function(response) {
-                console.log(response);
+                
             },
         });
     });

@@ -37,7 +37,7 @@ $(document).ready(function () {
       $.ajax({
         url: "http://localhost/maha/admin/removeEtudiant/" + idEtudiant,
         success: function (response) {
-          showFlashMessage(response, "success");
+          showFlashMessage(JSON.parse(response), "success");
         },
       });
       // remove From UI
@@ -158,7 +158,7 @@ $(document).ready(function () {
               etudiant: JSON.stringify(etudiant),
             },
             success: function (response) {
-              showFlashMessage(response, "success");
+              showFlashMessage(JSON.parse(response), "success");
             },
           });
 
@@ -237,8 +237,7 @@ $(document).ready(function () {
         $.ajax({
           url: "http://localhost/maha/admin/removeInscription/" + idInscription,
           success: function (response) {
-            // showFlashMessage(response, "success");
-            console.log(response);
+            showFlashMessage(JSON.parse(response), "success");
           },
         });
         // remove From UI

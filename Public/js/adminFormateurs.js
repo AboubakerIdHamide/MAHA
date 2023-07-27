@@ -38,7 +38,7 @@ $(document).ready(function() {
             $.ajax({
                 url: "http://localhost/maha/admin/removeFormateur/" + idFormateur,
                 success: function(response) {
-                    showFlashMessage(response, "success");
+                    showFlashMessage(JSON.parse(response), "success");
                 },
             });
             // remove From UI
@@ -201,7 +201,7 @@ $(document).ready(function() {
                                 formateur: JSON.stringify(formateur),
                             },
                             success: function(response) {
-                                showFlashMessage(response, "success");
+                                showFlashMessage(JSON.parse(response), "success");
                             },
                         });
 

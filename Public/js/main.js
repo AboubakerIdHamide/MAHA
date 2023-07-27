@@ -22,7 +22,7 @@ contactUsForm.submit(function (event) {
     type: "POST",
     data: $(this).serialize(),
     success: function (response) {
-      $(".toast-body").text(response);
+      $(".toast-body").text(JSON.parse(response));
       $("#is-send").click();
     },
   });

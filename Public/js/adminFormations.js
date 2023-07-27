@@ -35,7 +35,7 @@ $(document).ready(function () {
     $.ajax({
       url: "http://localhost/maha/admin/removeFormation/" + idFormation,
       success: function (response) {
-        showFlashMessage(response, "success");
+        showFlashMessage(JSON.parse(response), "success");
       },
     });
 
@@ -217,7 +217,7 @@ $(document).ready(function () {
           formation: JSON.stringify(formationValues),
         },
         success: function (response) {
-          showFlashMessage(response, "success");
+          showFlashMessage(JSON.parse(response), "success");
         },
       });
 
@@ -329,7 +329,7 @@ $(document).ready(function () {
         $.ajax({
           url: "http://localhost/maha/admin/removeVideo/" + $(this).attr("id"),
           success: function (response) {
-            showFlashMessage(response, "success");
+            showFlashMessage(JSON.parse(response), "success");
           },
         });
       });
@@ -391,7 +391,7 @@ $(document).ready(function () {
                     titre: title.inputValue,
                   },
                   success: function (response) {
-                    showFlashMessage(response, "success");
+                    showFlashMessage(JSON.parse(response), "success");
                   },
                 });
               }
@@ -405,7 +405,7 @@ $(document).ready(function () {
                     titre: title.inputValue,
                   },
                   success: function (response) {
-                    showFlashMessage(response, "success");
+                    showFlashMessage(JSON.parse(response), "success");
                   },
                 });
               }
@@ -420,7 +420,7 @@ $(document).ready(function () {
                   description: desc.inputValue,
                 },
                 success: function (response) {
-                  showFlashMessage(response, "success");
+                  showFlashMessage(JSON.parse(response), "success");
                 },
               });
             }
