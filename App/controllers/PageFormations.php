@@ -128,7 +128,6 @@ class PageFormations extends Controller
             $totalPages = $dataPages['total_pages'];
 
             if ($numbFormations == 0) {
-                $this->formationModel->deleteFromTableFilter();
                 $data = [
                     'niveaux' => $niveaux,
                     'langues' => $langues,
@@ -161,8 +160,6 @@ class PageFormations extends Controller
                 $this->view("pages/pageFormations", $data);
             }
         } else {
-            $this->formationModel->deleteFromTableFilter();
-
             $data = [
                 'niveaux' => $niveaux,
                 'langues' => $langues,
@@ -195,8 +192,6 @@ class PageFormations extends Controller
         $totalPages = $dataPages['total_pages'];
 
         if ($numbFormations == 0) {
-            $this->formationModel->deleteFromTableFilter();
-
             $data = [
                 'niveaux' => $niveaux,
                 'langues' => $langues,
@@ -248,8 +243,6 @@ class PageFormations extends Controller
         $totalPages = $dataPages['total_pages'];
 
         if ($numbFormations == 0) {
-            $this->formationModel->deleteFromTableFilter();
-
             $data = [
                 'niveaux' => $niveaux,
                 'langues' => $langues,
@@ -300,8 +293,6 @@ class PageFormations extends Controller
         $totalPages = $dataPages['total_pages'];
 
         if ($numbFormations == 0) {
-            $this->formationModel->deleteFromTableFilter();
-
             $data = [
                 'niveaux' => $niveaux,
                 'langues' => $langues,
@@ -353,8 +344,6 @@ class PageFormations extends Controller
         $totalPages = $dataPages['total_pages'];
 
         if ($numbFormations == 0) {
-            $this->formationModel->deleteFromTableFilter();
-
             $data = [
                 'niveaux' => $niveaux,
                 'langues' => $langues,
