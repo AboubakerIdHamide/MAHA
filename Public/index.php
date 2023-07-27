@@ -1,6 +1,7 @@
 <?php
 
 use App\Libraries\Response;
+use App\Models\Stocked;
 
 session_start();
 
@@ -26,7 +27,7 @@ require_once '../App/helpers/print_r2.php';
 
 class Router
 {
-    protected $currentController = "AuthController";
+    protected $currentController = "PageController";
     protected $currentMethod = "index";
     protected $currentParams = [];
 
@@ -58,8 +59,23 @@ class Router
             // initialize a contoller object
             $this->currentController = new $this->currentController;
             if (isset($url[1])) {
-                $this->isMethodExist($url[1]);
-                unset($url[1]);
+                if(!$this->isMethodExist($url[1])){
+                    if(!$this->isMethodExist('index')){
+                        if ($this->getUrl()[0] !== "api") {
+                            $stocked = new Stocked;
+                            $themeData = $stocked->getThemeData();
+                            $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
+                            $theme["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
+                            $data['theme'] = $theme;
+                            require_once "../app/Views/errors/page_404.php";
+                        } else {
+                            Response::json(null, 404, "404 Route Not Found");
+                        }
+                        exit;
+                    }
+                }else{
+                    unset($url[1]);
+                }
             }
 
             // to keep only params
@@ -78,7 +94,12 @@ class Router
             $this->currentController = ucwords($controllerName) . 'Controller';
             return true;
         }
-        require_once "../app/Views/errors/404.php";
+        $stocked = new Stocked;
+        $themeData = $stocked->getThemeData();
+        $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
+        $theme["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
+        $data['theme'] = $theme;
+        require_once "../app/Views/errors/page_404.php";
         exit;
     }
 
@@ -99,13 +120,7 @@ class Router
             $this->currentMethod = $methodName;
             return true;
         }
-
-        if ($this->getUrl()[0] !== "api") {
-            require_once "../app/Views/errors/404.php";
-        } else {
-            Response::json(null, 404, "404 Route Not Found");
-        }
-        exit;
+        return false;
     }
 
     public function getUrl()

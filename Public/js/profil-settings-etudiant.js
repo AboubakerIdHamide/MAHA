@@ -46,7 +46,7 @@ $(document).ready(function() {
         var files = event.target.files[0];
         fd.append('img', files);
         $.ajax({
-            url: 'http://localhost/maha/Etudiants/changeImg/',
+            url: 'http://localhost/maha/Etudiant/changeImg/',
             type: 'post',
             data: fd,
             contentType: false,
@@ -246,7 +246,7 @@ $(document).ready(function() {
             };
 
             xhr = getxhr();
-            xhr.open("POST", "http://localhost/maha/Etudiants/updateInfos/", true);
+            xhr.open("POST", "http://localhost/maha/Etudiant/updateInfos/", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             // for protection
             xhr.send(`nom=${updateFormateurInfo.nom}&prenom=${updateFormateurInfo.prenom}&tel=${updateFormateurInfo.tel}&c_mdp=${updateFormateurInfo.c_mdp}&n_mdp=${updateFormateurInfo.n_mdp}`);

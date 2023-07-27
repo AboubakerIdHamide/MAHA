@@ -41,10 +41,10 @@
     </div>
 </div>
 <!-- toast end -->
-<script src="<?= URLROOT ?>/public/js/bootstrap.bundle.min.js"></script>
-<script src="<?= URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
-<script src="<?= URLROOT; ?>/public/js/dashBoardNav.js"></script>
-<script src="<?= URLROOT; ?>/public/js/langues.js"></script>
+<script src="<?= JSROOT ?>/bootstrap.bundle.min.js"></script>
+<script src="<?= URLROOT ?>/public/jQuery/jquery-3.6.0.min.js"></script>
+<script src="<?= JSROOT ?>/dashBoardNav.js"></script>
+<script src="<?= JSROOT ?>/langues.js"></script>
 </body>
 
 </html>

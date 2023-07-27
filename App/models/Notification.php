@@ -4,13 +4,17 @@
  *  Model Notifications
  */
 
+namespace App\Models;
+
+use App\Libraries\Database;
+
 class Notification
 {
     private $connect;
 
-    public function __construct($database)
+    public function __construct()
     {
-        $this->connect = $database;
+        $this->connect = Database::getConnection();
     }
 
     public function getNotificationsOfFormateur($id_formateur)
@@ -37,7 +41,7 @@ class Notification
 
         $query->bindParam(':id_formateur', $id_formateur);
         $query->execute();
-        $notifications = $query->fetchAll(PDO::FETCH_OBJ);
+        $notifications = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $notifications;
         }
@@ -68,7 +72,7 @@ class Notification
 
         $query->bindParam(':id_etudiant', $id_etudiant);
         $query->execute();
-        $notifications = $query->fetchAll(PDO::FETCH_OBJ);
+        $notifications = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $notifications;
         }
@@ -88,7 +92,7 @@ class Notification
 
         $query->bindParam(':id_etudiant', $id_etudiant);
         $query->execute();
-        $totalNew = $query->fetch(PDO::FETCH_OBJ);
+        $totalNew = $query->fetch(\PDO::FETCH_OBJ);
         return $totalNew;
     }
 
@@ -105,7 +109,7 @@ class Notification
 
         $query->bindParam(':id_formateur', $id_formateur);
         $query->execute();
-        $totalNew = $query->fetch(PDO::FETCH_OBJ);
+        $totalNew = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $totalNew;
         }

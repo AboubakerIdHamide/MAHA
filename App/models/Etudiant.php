@@ -4,13 +4,17 @@
  * Model Etudiant
  */
 
+namespace App\Models;
+
+use App\Libraries\Database;
+
 class Etudiant
 {
 	private $connect;
 
-	public function __construct($database)
+	public function __construct()
 	{
-		$this->connect = $database;
+		$this->connect = Database::getConnection();
 	}
 
 	public function countEtudiant()
@@ -22,7 +26,7 @@ class Etudiant
 		");
 
 		$query->execute();
-		$response = $query->fetch(PDO::FETCH_OBJ);
+		$response = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $response->total_etudiants;
 		}
@@ -49,7 +53,7 @@ class Etudiant
 		$query->bindParam(':q', $q);
 		$query->execute();
 
-		$etudiants = $query->fetchAll(PDO::FETCH_OBJ);
+		$etudiants = $query->fetchAll(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $etudiants;
 		}
@@ -68,7 +72,7 @@ class Etudiant
 		$query->bindParam(':id_etudiant', $id_etudiant);
 		$query->execute();
 
-		$response = $query->fetch(PDO::FETCH_OBJ);
+		$response = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $response->total_inscription;
 		}
@@ -115,7 +119,7 @@ class Etudiant
 		$query->bindParam(':email', $email);
 		$query->execute();
 
-		$etudiant = $query->fetch(PDO::FETCH_OBJ);
+		$etudiant = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $etudiant;
 		}
@@ -193,7 +197,7 @@ class Etudiant
 		$query->bindParam(':id', $id);
 		$query->execute();
 
-		$password = $query->fetch(PDO::FETCH_OBJ);
+		$password = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $password;
 		}
@@ -217,7 +221,7 @@ class Etudiant
 		$query->bindParam(':id', $id);
 		$query->execute();
 
-		$etudiant = $query->fetch(PDO::FETCH_OBJ);
+		$etudiant = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $etudiant;
 		}

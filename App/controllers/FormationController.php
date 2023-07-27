@@ -1,9 +1,15 @@
 <?php
 
-class Formations extends Controller
+use App\Models\Formation;
+use App\Models\Preview;
+use App\Models\Video;
+use App\Models\Stocked;
+use App\Models\Notification;
+
+class FormationController
 {
-	private $previewsModel;
 	private $formationModel;
+	private $previewsModel;
 	private $videoModel;
 	private $stockedModel;
 	private $notificationModel;
@@ -11,20 +17,20 @@ class Formations extends Controller
 	public function __construct()
 	{
 		if (!isset($_SESSION['id_formateur'])) {
-			redirect('users/login');
+			redirect('user/login');
 			return;
 		}
 
-		$this->formationModel = $this->model("Formation");
-		$this->videoModel = $this->model("Video");
-		$this->stockedModel = $this->model("Stocked");
-		$this->previewsModel = $this->model("Previews");
-		$this->notificationModel = $this->model("Notification");
+		$this->formationModel = new Formation;
+		$this->previewsModel = new Preview;
+		$this->videoModel = new Video;
+		$this->stockedModel = new Stocked;
+		$this->notificationModel = new Notification;
 	}
 
 	public function index()
 	{
-		redirect('formateurs/dashboard');
+		redirect('formateur/dashboard');
 	}
 
 	private function validFormation($data)
@@ -133,7 +139,7 @@ class Formations extends Controller
 						$this->videoModel->insertVideo($videoData);
 					}
 				}
-				redirect("formateurs/dashboard");
+				redirect("formateur/dashboard");
 				flash("formationAdded", "Vos détails de cours sont insérés avec succès, vous devez donner une description à vos vidéos", "alert alert-info mt-1");
 			} else {
 				$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
@@ -160,7 +166,7 @@ class Formations extends Controller
 		// check the Id if exists
 		$formationData = $this->formationModel->getFormation($idFormation, $_SESSION['id_formateur']);
 		if (empty($idFormation) || empty($formationData)) {
-			redirect("formateurs");
+			redirect("formateur");
 		}
 
 		// handling request
@@ -180,7 +186,7 @@ class Formations extends Controller
 				];
 				$this->videoModel->insertVideo($videoData);
 			}
-			redirect("formateurs");
+			redirect("formateur");
 			flash("videoAdded", "Vos vidéos ajoutées avec succès !", "alert alert-info mt-1");
 		} else {
 			$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
@@ -309,10 +315,10 @@ class Formations extends Controller
 					// update formation
 					$this->formationModel->updateFormation($_POST);
 					flash('updateFormation', 'Modification affecté avec succès !!!');
-					redirect('formateurs/dashboard');
+					redirect('formateur/dashboard');
 				}
 				flash('updateFormation', $error);
-				redirect('formateurs/dashboard');
+				redirect('formateur/dashboard');
 			}
 		}
 	}
@@ -347,11 +353,11 @@ class Formations extends Controller
 				return view('formateur/videos', $data);
 			} else {
 				flash("formationVide", "Votre cours ne contient aucune vidéo, veuillez ajoutez des vidéos", "alert alert-info");
-				redirect("formations/addVideo/" . $id_formation);
+				redirect("formation/addVideo/" . $id_formation);
 			}
 		} else {
 			flash("formationNotExists", "Cette formation n`existe pas", "alert alert-info");
-			redirect("formateurs");
+			redirect("formateur");
 		}
 	}
 

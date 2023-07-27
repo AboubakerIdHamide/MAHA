@@ -4,13 +4,17 @@
  * Model Preview
  */
 
-class Previews
+namespace App\Models;
+
+use App\Libraries\Database;
+
+class Preview
 {
     private $connect;
 
-    public function __construct($database)
+    public function __construct()
     {
-        $this->connect = $database;
+        $this->connect = Database::getConnection();
     }
 
     public function insertPreviewVideo($id_video, $id_formation)
@@ -39,7 +43,7 @@ class Previews
         ");
         $query->bindParam(':id_formation', $id_formation);
         $query->execute();
-        $preview = $query->fetch(PDO::FETCH_OBJ);
+        $preview = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $preview;
         }
@@ -57,7 +61,7 @@ class Previews
         ");
         $query->bindParam(':id_formation', $id_formation);
         $query->execute();
-        $previewVideo = $query->fetch(PDO::FETCH_OBJ);
+        $previewVideo = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $previewVideo;
         }

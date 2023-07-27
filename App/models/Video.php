@@ -4,13 +4,17 @@
  * Model Video
  */
 
+namespace App\Models;
+
+use App\Libraries\Database;
+
 class Video
 {
 	private $connect;
 
-	public function __construct($database)
+	public function __construct()
 	{
-		$this->connect = $database;
+		$this->connect = Database::getConnection();
 	}
 
 	public function insertVideo($dataVideo)
@@ -46,7 +50,7 @@ class Video
 		$query->bindParam(':id_video', $idVideo);
 		$query->execute();
 
-		$video = $query->fetch(PDO::FETCH_OBJ);
+		$video = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $video;
 		}
@@ -66,7 +70,7 @@ class Video
 		$query->bindParam(':id_formation', $id_formation);
 		$query->execute();
 
-		$time = $query->fetch(PDO::FETCH_OBJ);
+		$time = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $time->mass_horaire;
 		}
@@ -112,7 +116,7 @@ class Video
 		$query->bindParam(':id_formation', $idFormation);
 		$query->execute();
 
-		$videos = $query->fetchAll(PDO::FETCH_OBJ);
+		$videos = $query->fetchAll(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $videos;
 		}
@@ -238,7 +242,7 @@ class Video
 		$query->bindParam(':id_etudiant', $etudiant_id);
 		$query->execute();
 
-		$videos = $query->fetchAll(PDO::FETCH_OBJ);
+		$videos = $query->fetchAll(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $videos;
 		}
@@ -310,7 +314,7 @@ class Video
 		$query->bindParam(':id_etudiant', $etudiant_id);
 		$query->execute();
 
-		$videos = $query->fetchAll(PDO::FETCH_OBJ);
+		$videos = $query->fetchAll(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $videos;
 		}
@@ -387,7 +391,7 @@ class Video
 		$query->bindParam(':id_formation', $id_formation);
 		$query->execute();
 
-		$videos = $query->fetchAll(PDO::FETCH_OBJ);
+		$videos = $query->fetchAll(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $videos;
 		}
@@ -407,7 +411,7 @@ class Video
 		$query->bindParam(':id_formation', $id_formation);
 		$query->execute();
 
-		$numberVideos = $query->fetch(PDO::FETCH_OBJ)->NumbVideo;
+		$numberVideos = $query->fetch(\PDO::FETCH_OBJ)->NumbVideo;
 		if ($query->rowCount() > 0) {
 			return $numberVideos;
 		}
@@ -428,7 +432,7 @@ class Video
 		$query->bindParam(':id_video', $videoId);
 		$query->execute();
 
-		$formateur = $query->fetch(PDO::FETCH_OBJ);
+		$formateur = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $formateur;
 		}

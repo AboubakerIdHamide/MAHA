@@ -4,13 +4,17 @@
  * Model requestPayment
  */
 
+namespace App\Models;
+
+use App\Libraries\Database;
+
 class requestPayment
 {
     private $connect;
 
-    public function __construct($database)
+    public function __construct()
     {
-        $this->connect = $database;
+        $this->connect = Database::getConnection();
     }
 
     public function getRequestsPaymentsByState($etat)
@@ -32,7 +36,7 @@ class requestPayment
         ");
         $query->bindParam(':etat_request', $etat);
         $query->execute();
-        $queryPayments = $query->fetchAll(PDO::FETCH_OBJ);
+        $queryPayments = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $queryPayments;
         }
@@ -84,7 +88,7 @@ class requestPayment
 
         $query->bindParam(':id_formateur', $id_formateur);
         $query->execute();
-        $queryPayments = $query->fetchAll(PDO::FETCH_OBJ);
+        $queryPayments = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $queryPayments;
         }

@@ -4,13 +4,17 @@
  *  Model Inscription
  */
 
+namespace App\Models;
+
+use App\Libraries\Database;
+
 class Inscription
 {
     private $connect;
 
-    public function __construct($database)
+    public function __construct()
     {
-        $this->connect = $database;
+        $this->connect = Database::getConnection();
     }
 
     public function insertInscription($dataInscription)
@@ -52,7 +56,7 @@ class Inscription
         $query->bindParam(':id_etudiant', $id_formation);
         $query->bindParam(':id_formateur', $id_formation);
         $query->execute();
-        $inscription = $query->fetch(PDO::FETCH_OBJ);
+        $inscription = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $inscription;
         }
@@ -71,7 +75,7 @@ class Inscription
         $query->bindParam(":id_formateur", $id_formateur);
         $query->bindParam(":id_formation", $id_formation);
         $query->execute();
-        $total_apprenants = $query->fetch(PDO::FETCH_OBJ)->total_apprenants;
+        $total_apprenants = $query->fetch(\PDO::FETCH_OBJ)->total_apprenants;
         if ($query->rowCount() > 0) {
             return $total_apprenants;
         }
@@ -121,7 +125,7 @@ class Inscription
 
         $query->bindParam(":id_etudiant", $idEtudiant);
         $query->execute();
-        $inscriptions = $query->fetchAll(PDO::FETCH_OBJ);
+        $inscriptions = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $inscriptions;
         }
@@ -164,7 +168,7 @@ class Inscription
         $query->bindParam(':id_formateur', $id_formateur);
         $query->execute();
 
-        $inscription = $query->fetch(PDO::FETCH_OBJ);
+        $inscription = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $inscription;
         }
@@ -195,7 +199,7 @@ class Inscription
         $query->bindParam(":id_etudiant", $id_etudiant);
         $query->execute();
 
-        $inscriptions = $query->fetchAll(PDO::FETCH_OBJ);
+        $inscriptions = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $inscriptions;
         }
@@ -217,7 +221,7 @@ class Inscription
         $query->bindParam(':id_formation', $idFormation);
         $query->execute();
 
-        $inscriptions = $query->fetch(PDO::FETCH_OBJ);
+        $inscriptions = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $inscriptions;
         }
@@ -235,7 +239,7 @@ class Inscription
         $query->bindParam(":payment_id", $paymentID);
         $query->execute();
 
-        $inscription = $query->fetch(PDO::FETCH_OBJ);
+        $inscription = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $inscription;
         }
@@ -275,7 +279,7 @@ class Inscription
         $query->bindParam(":id_formateur", $idFormateur);
         $query->execute();
 
-        $inscriptions = $query->fetchAll(PDO::FETCH_OBJ);
+        $inscriptions = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $inscriptions;
         }
@@ -310,7 +314,7 @@ class Inscription
         ");
 
         $query->execute(['periode' => $periode]);
-        $formateurs = $query->fetchAll(PDO::FETCH_OBJ);
+        $formateurs = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formateurs;
         }
@@ -333,7 +337,7 @@ class Inscription
         ");
 
         $query->execute();
-        $formateurs = $query->fetchAll(PDO::FETCH_OBJ);
+        $formateurs = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formateurs;
         }
@@ -356,7 +360,7 @@ class Inscription
         ");
 
         $query->execute();
-        $formateurs = $query->fetchAll(PDO::FETCH_OBJ);
+        $formateurs = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formateurs;
         }
@@ -379,7 +383,7 @@ class Inscription
         ");
 
         $query->execute();
-        $formateurs = $query->fetchAll(PDO::FETCH_OBJ);
+        $formateurs = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formateurs;
         }
@@ -401,7 +405,7 @@ class Inscription
         ");
 
         $query->execute();
-        $formateurs = $query->fetchAll(PDO::FETCH_OBJ);
+        $formateurs = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formateurs;
         }
@@ -424,7 +428,7 @@ class Inscription
         ");
 
         $query->execute(['debut' => $debut, 'fin' => $fin]);
-        $formateurs = $query->fetchAll(PDO::FETCH_OBJ);
+        $formateurs = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formateurs;
         }

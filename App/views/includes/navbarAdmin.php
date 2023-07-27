@@ -3,20 +3,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <title><?= SITENAME ?> | Dashboard</title>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/dashBoardNav.css">
-    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/dashboard-formateur.css" />
-    <link rel="stylesheet" href="<?= URLROOT ?>/public/css/videos.css" />
-    <link rel="stylesheet" href="<?= URLROOT ?>/public/css/dashboard-admin.css" />
-    <link rel="stylesheet" href="<?= URLROOT ?>/public/css/theme.css" />
-    <link rel="stylesheet" href="<?= URLROOT ?>/public/css/fixNavBar.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/dashBoardNav.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/dashboard-formateur.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/videos.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/dashboard-admin.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/theme.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/fixNavBar.css" />
 </head>
 
 <body>

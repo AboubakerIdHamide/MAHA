@@ -43,7 +43,7 @@ $(document).ready(function() {
                     }
                     
                     $.ajax({
-                        url: "http://localhost/maha/formateurs/requestPayment",
+                        url: "http://localhost/maha/formateur/requestPayment",
                         data: {
                             data: JSON.stringify({
                                 montant: Number(montant),
@@ -67,7 +67,7 @@ $(document).ready(function() {
 
     function getHistory() {
         const paymentHistory = $.parseJSON($.ajax({
-            url: "http://localhost/maha/formateurs/getPaymentsHistory",
+            url: "http://localhost/maha/formateur/getPaymentsHistory",
             dataType: "json",
             async: false,
         }).responseText);
@@ -120,7 +120,7 @@ $(document).ready(function() {
                 btnRemoveReq.click(function() {
                     const idReq = $(this).attr("id");
                     $.ajax({
-                        url: "http://localhost/maha/formateurs/deleteRequest/" + idReq,
+                        url: "http://localhost/maha/formateur/deleteRequest/" + idReq,
                         success: function(response) {
                             showFlashMessage(JSON.parse(response), "success");
                         },

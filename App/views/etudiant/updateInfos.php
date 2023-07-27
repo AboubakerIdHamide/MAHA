@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <title><?= SITENAME ?> | Paramètre</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <!-- BootStrap -->
-    <link rel="stylesheet" href="<?= URLROOT . "/Public/css/bootstrap.quartz.min.css" ?>">
-    <link rel="stylesheet" href="<?= URLROOT . "/Public/css/dashBoardNav.css" ?>">
+    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.quartz.min.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/dashBoardNav.css" />
     <style>
     body,
     label {
@@ -145,10 +145,10 @@
             </div>
         </div>
     </section>
-    <script src="<?= URLROOT ?>/public/js/bootstrap.bundle.min.js"></script>
-    <script src="<?= URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
-    <script src="<?= URLROOT; ?>/public/js/dashBoardNav.js"></script>
-    <script src="<?= URLROOT; ?>/public/js/profil-settings-etudiant.js"></script>
+    <script src="<?= JSROOT ?>/bootstrap.bundle.min.js"></script>
+    <script src="<?= URLROOT ?>/public/jQuery/jquery-3.6.0.min.js"></script>
+    <script src="<?= JSROOT ?>/dashBoardNav.js"></script>
+    <script src="<?= JSROOT ?>/profil-settings-etudiant.js"></script>
 </body>
 
 </html>

@@ -15,9 +15,9 @@
             <ul class="clearfix">
                 <li>
                     <div class="switch-field">
-                        <a class="dropdown-item" id='plusPopular' ckecked href="<?= URLROOT . "/pageFormations/getPopularCourses" ?>">Les Plus Populaires</a>
-                        <a class="dropdown-item" id='plusAmais' href="<?= URLROOT . "/pageFormations/plusFormationsAmais" ?>">Les Plus Amais</a>
-                        <a class="dropdown-item" id='plusAcheter' href="<?= URLROOT . "/pageFormations/plusFormationsAcheter" ?>">Les Plus Achter</a>
+                        <a class="dropdown-item" id='plusPopular' ckecked href="<?= URLROOT . "/pageFormation/getPopularCourses" ?>">Les Plus Populaires</a>
+                        <a class="dropdown-item" id='plusAmais' href="<?= URLROOT . "/pageFormation/plusFormationsAmais" ?>">Les Plus Amais</a>
+                        <a class="dropdown-item" id='plusAcheter' href="<?= URLROOT . "/pageFormation/plusFormationsAcheter" ?>">Les Plus Achter</a>
                     </div>
                 </li>
             </ul>
@@ -35,7 +35,7 @@
                             <ul>
                                 <?php foreach ($data['categories'] as $categorie) : ?>
                                     <li>
-                                        <a class="nav-link" href="<?= URLROOT . '/pageFormations/filter/' . $categorie->nom ?>"><?= $categorie->nom ?></a>
+                                        <a class="nav-link" href="<?= URLROOT . '/pageFormation/filter/' . $categorie->nom ?>"><?= $categorie->nom ?></a>
                                     </li>
                                 <?php endforeach ?>
                             </ul>
@@ -45,7 +45,7 @@
                             <ul>
                                 <?php foreach ($data['langues'] as $langue) : ?>
                                     <li>
-                                        <a class="nav-link" href="<?= URLROOT . '/pageFormations/formationsByLangue/' . $langue->id_langue ?>"><?= $langue->nom ?></a>
+                                        <a class="nav-link" href="<?= URLROOT . '/pageFormation/formationsByLangue/' . $langue->id_langue ?>"><?= $langue->nom ?></a>
                                     </li>
                                 <?php endforeach ?>
                             </ul>
@@ -55,14 +55,14 @@
                             <ul>
                                 <?php foreach ($data['niveaux'] as $niveau) : ?>
                                     <li>
-                                        <a class="nav-link" href="<?= URLROOT . '/pageFormations/formationsByNiveau/' . $niveau->id_niveau ?>"><?= $niveau->nom ?></a>
+                                        <a class="nav-link" href="<?= URLROOT . '/pageFormation/formationsByNiveau/' . $niveau->id_niveau ?>"><?= $niveau->nom ?></a>
                                     </li>
                                 <?php endforeach ?>
                             </ul>
                         </div>
                         <div class="filter_type">
                             <h6><strong>Durée :</strong></h6>
-                            <form action="<?= URLROOT . "/pageFormations/formationsByDuree/" ?>" method="GET">
+                            <form action="<?= URLROOT . "/pageFormation/formationsByDuree/" ?>" method="GET">
                                 <div class="m-2">
                                     <label class="form-label" for="minH">Min heure :</label>
                                     <input type="number" name="minH" class="form-control">
@@ -95,7 +95,7 @@
                                 <div class="box_grid wow">
                                     <figure class="block-reveal">
                                         <div class="block-horizzontal"></div>
-                                        <a href='<?= URLROOT . "/pageFormations/coursDetails/" . $formation->id_formation ?>'><img src="<?= $formation->imgFormation ?>" class="img-fluid" alt="Photo"></a>
+                                        <a href='<?= URLROOT . "/pageFormation/coursDetails/" . $formation->id_formation ?>'><img src="<?= $formation->imgFormation ?>" class="img-fluid" alt="Photo"></a>
                                         <div class="price">$<?= $formation->prix ?></div>
                                         <div class="preview"><span>Plus Details</span></div>
                                     </figure>
@@ -108,7 +108,7 @@
                                         <li><i class="fa-solid fa-clock"></i> <?= $formation->mass_horaire ?></li>
                                         <li><i class="fa-solid fa-user"></i> <?= $formation->inscriptions ?></li>
                                         <li><i class="fa-solid fa-heart"></i> <?= $formation->jaimes ?></li>
-                                        <li><a href='<?= URLROOT . "/pageFormations/coursDetails/" . $formation->id_formation ?>'>Plus</a>
+                                        <li><a href='<?= URLROOT . "/pageFormation/coursDetails/" . $formation->id_formation ?>'>Plus</a>
                                         </li>
                                     </ul>
                                 </div>

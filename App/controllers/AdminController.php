@@ -1,6 +1,16 @@
 <?php
 
-class Admin extends Controller
+use App\Models\Formateur;
+use App\Models\Etudiant;
+use App\Models\Formation;
+use App\Models\Video;
+use App\Models\Inscription;
+use App\Models\Admin;
+use App\Models\requestPayment;
+use App\Models\Stocked;
+use App\Models\Smtp;
+
+class AdminController
 {
     private $fomateurModel;
     private $etudiantModel;
@@ -14,15 +24,15 @@ class Admin extends Controller
 
     public function __construct()
     {
-        $this->fomateurModel = $this->model("Formateur");
-        $this->etudiantModel = $this->model("Etudiant");
-        $this->formationModel = $this->model("Formation");
-        $this->inscriptionModel = $this->model("Inscription");
-        $this->adminModel = $this->model("Administrateur");
-        $this->requestPaymentModel = $this->model("requestPayment");
-        $this->stockedModel = $this->model("Stocked");
-        $this->videoModel = $this->model("Video");
-        $this->smtpModel = $this->model('Smtp');
+        $this->fomateurModel = new Formateur;
+        $this->etudiantModel = new Etudiant;
+        $this->formationModel = new Formation;
+        $this->videoModel = new Video;
+        $this->inscriptionModel = new Inscription;
+        $this->adminModel = new Admin;
+        $this->requestPaymentModel = new requestPayment;
+        $this->stockedModel = new Stocked;
+        $this->smtpModel = new Smtp;
     }
 
     private function checkSession()
@@ -421,7 +431,7 @@ class Admin extends Controller
     public function requestPayment()
     {
         $this->checkSession();
-        return return view('admin/requestPayment');
+        return view('admin/requestPayment');
     }
 
     public function getTop10BestSellers()
@@ -509,7 +519,7 @@ class Admin extends Controller
             $this->smtpModel->replaceSmtp($_POST);
             echo json_encode("SMTP modifié avec succès !");
         } else {
-            $smtp = $this->smtpModel->getSmtp();
+            $smtp['data'] = $this->smtpModel->getSmtp();
             return view('admin/smtp', $smtp);
         }
     }
@@ -549,7 +559,7 @@ class Admin extends Controller
             $this->adminModel->replaceSettings($_POST);
             echo json_encode("Paramètre modifié avec succès !");
         } else {
-            $settings = $this->adminModel->getProfitAndPaypalToken();
+            $settings['data'] = $this->adminModel->getProfitAndPaypalToken();
             return view('admin/settings', $settings);
         }
     }

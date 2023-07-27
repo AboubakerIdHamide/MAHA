@@ -31,7 +31,7 @@ $(document).ready(function () {
             : `<a href='http://localhost/maha/public/${course.fichier_attache}' class="btn btn-success btn-sm" download><i class="fa-solid fa-download"></i> Telecharger</a>`
         }</td>
 				<td class="text-center">${course.date_creation}</td>
-				<td class="text-center"><a href="http://localhost/maha/formations/videos/${
+				<td class="text-center"><a href="http://localhost/maha/formation/videos/${
           course.id_formation
         }" class="btn btn-warning btn-sm">Leçons</a></td>
 				<td class="text-center"><strong>${course.prix} $</strong></td>
@@ -279,7 +279,7 @@ const handleRessourse = (files) => {
   formData.append("file", fileData);
   $.ajax({
     url:
-      "http://localhost/maha/formations/updateFormation/" +
+      "http://localhost/maha/formation/updateFormation/" +
       event.target.dataset.idFormation,
     type: "POST",
     contentType: false,
@@ -309,7 +309,7 @@ const handleMiniature = (files) => {
   formData.append("file", fileData);
   $.ajax({
     url:
-      "http://localhost/maha/formations/updateFormation/" +
+      "http://localhost/maha/formation/updateFormation/" +
       event.target.dataset.idFormation,
     type: "POST",
     contentType: false,

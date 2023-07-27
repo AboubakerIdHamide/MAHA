@@ -4,13 +4,17 @@
  * Model Commentaire
  */
 
+namespace App\Models;
+
+use App\Libraries\Database;
+
 class Commentaire
 {
 	private $connect;
 
-	public function __construct($database)
+	public function __construct()
 	{
-		$this->connect = $database;
+		$this->connect = Database::getConnection();
 	}
 
 	public function insertCommentaire($dataCommentaire)
@@ -73,7 +77,7 @@ class Commentaire
 		$query->execute();
 
 
-		$commentaires = $query->fetchAll(PDO::FETCH_OBJ);
+		$commentaires = $query->fetchAll(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $commentaires;
 		}

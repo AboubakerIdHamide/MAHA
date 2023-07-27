@@ -3,11 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <title><?= SITENAME ?> | Paiement annulé</title>
     <!-- Bootstrap Vapor -->
-    <link href="<?= URLROOT . '/public/css/' ?>vapor.min.css" rel="stylesheet">
+    <link href="<?= CSSROOT ?>/vapor.min.css" rel="stylesheet" />
     <style>
     body {
         height: 100vh;
@@ -34,19 +34,19 @@
         <h6 class="text-center text-white">Nous sommes désolé d'apprendre que votre achat a été annulé.
         </h6>
         <div class="text-center">
-            <a href="<?= URLROOT . '/pageFormations/coursDetails/' . $data['idFormation'] ?>"
+            <a href="<?= URLROOT . '/pageFormation/coursDetails/' . $data['idFormation'] ?>"
                 class="btn btn-primary mt-3">Retour
                 au Cours</a>
         </div>
     </div>
-    <script src="<?= URLROOT ?>/public/js/lottie.min.js"></script>
+    <script src="<?= JSROOT ?>/lottie.min.js"></script>
     <script>
     var animation = bodymovin.loadAnimation({
         container: document.getElementById('animContainer'),
         renderer: 'svg',
         loop: false,
         autoplay: true,
-        path: '<?= URLROOT ?>/public/images/payment-failed.json' // lottie file path
+        path: '<?= IMAGEROOT ?>/payment-failed.json' // lottie file path
     })
     </script>
 </body>

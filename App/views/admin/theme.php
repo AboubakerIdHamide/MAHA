@@ -47,11 +47,11 @@
         <button class="appliquer" id="subBtn">Modifier</button>
     </form>
 </div>
-<script src="<?= URLROOT ?>/public/js/bootstrap.bundle.min.js"></script>
-<script src="<?= URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
-<script src="<?= URLROOT; ?>/public/js/dashBoardNav.js"></script>
-<script src="<?= URLROOT; ?>/public/js/adminFormateurs.js"></script>
-<script src="<?= URLROOT; ?>/public/js/theme.js"></script>
+<script src="<?= JSROOT ?>/bootstrap.bundle.min.js"></script>
+<script src="<?= URLROOT ?>/public/jQuery/jquery-3.6.0.min.js"></script>
+<script src="<?= JSROOT ?>/dashBoardNav.js"></script>
+<script src="<?= JSROOT ?>/adminFormateurs.js"></script>
+<script src="<?= JSROOT ?>/theme.js"></script>
 </body>
 
 </html>

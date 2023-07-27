@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <title><?= SITENAME ?> | mot de passe oublié</title>
-    <link rel="stylesheet" href="<?= URLROOT . "/Public/css/register.css" ?>">
+    <link rel="stylesheet" href="<?= CSSROOT ?>/register.css" />
     <!-- Font Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
 </head>
 
 <body>
@@ -18,8 +18,8 @@
             <div class="maha-fields">
                 <div class="main-form-heading">
                     <h1 class="logo">
-                        <a href="<?= URLROOT . "/pages/index"; ?>">
-                            <img src="<?= URLROOT . '/Public/images/MAHA.png' ?>" alt="">
+                        <a href="<?= URLROOT ?>/page">
+                            <img src="<?= IMAGEROOT ?>/MAHA.png" alt="logo platform">
                         </a>
                     </h1>
                 </div>
@@ -51,7 +51,7 @@
             </div>
         </form>
     </div>
-    <script src="<?= URLROOT . "/Public/js/forgotpassword.js" ?>"></script>
+    <script src="<?= JSROOT ?>/forgotpassword.js"></script>
 </body>
 
 </html>

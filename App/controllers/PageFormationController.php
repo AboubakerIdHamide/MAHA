@@ -1,28 +1,32 @@
 <?php
 
-class PageFormations extends Controller
+use App\Models\Stocked;
+use App\Models\Preview;
+use App\Models\Formation;
+use App\Models\Video;
+use App\Models\Inscription;
+
+class PageFormationController
 {
     private $stockedModel;
     private $previewsModel;
     private $formationModel;
     private $videoModel;
     private $inscriptionModel;
-    private $categorieModel;
 
     public function __construct()
     {
-        $this->formationModel = $this->model("Formation");
-        $this->inscriptionModel = $this->model("Inscription");
-        $this->stockedModel = $this->model("Stocked");
-        $this->videoModel = $this->model("Video");
-        $this->previewsModel = $this->model("Previews");
-        $this->categorieModel = $this->model("Stocked");
+        $this->stockedModel = new Stocked;
+        $this->previewsModel = new Preview;
+        $this->formationModel = new Formation;
+        $this->videoModel = new Video;
+        $this->inscriptionModel = new Inscription;
     }
     public function index()
     {
         $langues = $this->stockedModel->getAllLangues();
         $niveaux = $this->stockedModel->getAllLevels();
-        $categories = $this->categorieModel->getAllCategories();
+        $categories = $this->stockedModel->getAllCategories();
         $totalFormations = $this->formationModel->countAllFormations();
         $themeData = $this->stockedModel->getThemeData();
 
@@ -63,7 +67,7 @@ class PageFormations extends Controller
     public function coursDetails($id_formation = null)
     {
         if (is_null($id_formation)) {
-            redirect('pageFormations');
+            redirect('pageFormation');
             exit;
         }
 
@@ -71,9 +75,6 @@ class PageFormations extends Controller
         $videos = $this->videoModel->getVideosOfFormationPublic($id_formation);
         $numVideos = $this->videoModel->countVideosOfFormation($id_formation);
         $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
-        $formation->niveau = $this->stockedModel->getLevelById($formation->niveau)->nom;
-        $formation->langue = $this->stockedModel->getLangueById($formation->langue)->nom;
-        $formation->categorie = $this->stockedModel->getCategorieById($formation->categorie)->nom;
         $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
         $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
         $previewVideo = $this->previewsModel->getPreviewVideo($formation->id_formation);
@@ -97,7 +98,7 @@ class PageFormations extends Controller
     {
         $langues = $this->stockedModel->getAllLangues();
         $niveaux = $this->stockedModel->getAllLevels();
-        $categories = $this->categorieModel->getAllCategories();
+        $categories = $this->stockedModel->getAllCategories();
         $themeData = $this->stockedModel->getThemeData();
         $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
         $theme["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
@@ -174,7 +175,7 @@ class PageFormations extends Controller
     {
         $langues = $this->stockedModel->getAllLangues();
         $niveaux = $this->stockedModel->getAllLevels();
-        $categories = $this->categorieModel->getAllCategories();
+        $categories = $this->stockedModel->getAllCategories();
 
         $numbFormations = $this->formationModel->countFormationsFilter($cat, $choi);
 
@@ -224,7 +225,7 @@ class PageFormations extends Controller
     {
         $langues = $this->stockedModel->getAllLangues();
         $niveaux = $this->stockedModel->getAllLevels();
-        $categories = $this->categorieModel->getAllCategories();
+        $categories = $this->stockedModel->getAllCategories();
         $numbFormations = $this->formationModel->countAllFormations();
 
         $themeData = $this->stockedModel->getThemeData();
@@ -273,7 +274,7 @@ class PageFormations extends Controller
     {
         $langues = $this->stockedModel->getAllLangues();
         $niveaux = $this->stockedModel->getAllLevels();
-        $categories = $this->categorieModel->getAllCategories();
+        $categories = $this->stockedModel->getAllCategories();
         $numbFormations = $this->formationModel->countAllFormations();
 
         $themeData = $this->stockedModel->getThemeData();
@@ -322,7 +323,7 @@ class PageFormations extends Controller
     {
         $langues = $this->stockedModel->getAllLangues();
         $niveaux = $this->stockedModel->getAllLevels();
-        $categories = $this->categorieModel->getAllCategories();
+        $categories = $this->stockedModel->getAllCategories();
         $numbFormations = $this->formationModel->countAllFormations();
 
         $themeData = $this->stockedModel->getThemeData();
@@ -372,7 +373,7 @@ class PageFormations extends Controller
     {
         $langues = $this->stockedModel->getAllLangues();
         $niveaux = $this->stockedModel->getAllLevels();
-        $categories = $this->categorieModel->getAllCategories();
+        $categories = $this->stockedModel->getAllCategories();
         $numbFormations = $this->formationModel->countFormationsByLangue($id_langue);
 
         $themeData = $this->stockedModel->getThemeData();
@@ -421,7 +422,7 @@ class PageFormations extends Controller
     {
         $langues = $this->stockedModel->getAllLangues();
         $niveaux = $this->stockedModel->getAllLevels();
-        $categories = $this->categorieModel->getAllCategories();
+        $categories = $this->stockedModel->getAllCategories();
         $numbFormations = $this->formationModel->countFormationsByNiveau($id_niveau);
 
         $themeData = $this->stockedModel->getThemeData();
@@ -503,7 +504,7 @@ class PageFormations extends Controller
 
         $langues = $this->stockedModel->getAllLangues();
         $niveaux = $this->stockedModel->getAllLevels();
-        $categories = $this->categorieModel->getAllCategories();
+        $categories = $this->stockedModel->getAllCategories();
         $numbFormations = $this->formationModel->countFormationsByDuree($minH, $maxH);
 
         $themeData = $this->stockedModel->getThemeData();

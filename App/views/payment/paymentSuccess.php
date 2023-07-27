@@ -3,11 +3,11 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
 	<title><?= SITENAME ?> | Congratulation</title>
 	<!-- Bootstrap Vapor -->
-	<link href="<?= URLROOT . '/public/css/' ?>vapor.min.css" rel="stylesheet">
+	<link href="<?= CSSROOT ?>/vapor.min.css" rel="stylesheet" />
 	<style>
 		body {
 			height: 100vh;
@@ -36,18 +36,18 @@
 			vos besoins
 			et améliorera votre productivité et votre efficacité.</h6>
 		<div class="text-center">
-			<a href="<?= URLROOT . '/etudiants/dashboard' ?>" class="btn btn-success mt-3">Mes
+			<a href="<?= URLROOT . '/etudiant/dashboard' ?>" class="btn btn-success mt-3">Mes
 				Cours</a>
 		</div>
 	</div>
-	<script src="<?= URLROOT ?>/public/js/lottie.min.js"></script>
+	<script src="<?= JSROOT ?>/lottie.min.js"></script>
 	<script>
 		var animation = bodymovin.loadAnimation({
 			container: document.getElementById('animContainer'),
 			renderer: 'svg',
 			loop: false,
 			autoplay: true,
-			path: '<?= URLROOT ?>/public/images/payment-successful.json' // lottie file path
+			path: '<?= IMAGEROOT ?>/payment-successful.json' // lottie file path
 		})
 	</script>
 </body>

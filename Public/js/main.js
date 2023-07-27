@@ -18,7 +18,7 @@ const contactUsForm = $("#contact-us");
 contactUsForm.submit(function (event) {
   event.preventDefault();
   $.ajax({
-    url: "http://localhost/maha/users/contactUs",
+    url: "http://localhost/maha/user/contactUs",
     type: "POST",
     data: $(this).serialize(),
     success: function (response) {
@@ -55,6 +55,6 @@ if (searchForm) {
 // Search Bar
 function searchCoursesSubmit(val) {
   if (!(val.length < 1 && val.length > 200)) {
-    window.location.href = `http://localhost/MAHA/pageFormations/rechercheFormations/${val}`;
+    window.location.href = `http://localhost/MAHA/pageFormation/rechercheFormations/${val}`;
   }
 }

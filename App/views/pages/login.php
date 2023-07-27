@@ -5,16 +5,16 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <title><?= SITENAME ?> | Login</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
     <!-- Font Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <!-- Style -->
-    <link rel="stylesheet" href="<?= URLROOT . "/Public/css/mahaAlert.css"; ?>" />
-    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/login.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/mahaAlert.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/login.css" />
 
 </head>
 
@@ -33,8 +33,8 @@
             <div class="maha-fields hide">
                 <div class="main-form-heading">
                     <h1 class="logo">
-                        <a href="<?= URLROOT . "/pages/index"; ?>">
-                            <img src="<?= URLROOT . '/Public/images/MAHA.png' ?>" alt="">
+                        <a href="<?= URLROOT ?>/page">
+                            <img src="<?= IMAGEROOT ?>/MAHA.png" alt="">
                         </a>
                     </h1>
                 </div>
@@ -63,7 +63,7 @@
                                 <input type="checkbox" id="logCheck" name="rememberMe" <?= isset($_COOKIE["useremail"]) ? "checked" : ""; ?> />
                                 <label for="logCheck">se souvenir de moi</label>
                             </div>
-                            <a href="<?= URLROOT ?>/users/forgotPassword" class="text">Mot de passe oublié ?</a>
+                            <a href="<?= URLROOT ?>/user/forgotPassword" class="text">Mot de passe oublié ?</a>
                         </div>
 
                         <div class="input-field button">
@@ -74,14 +74,14 @@
                 <div class="login-signup">
                     <span class="text">
                         Pas un membre?
-                        <a href="<?= URLROOT; ?>/users/register" class="text signup-text">S'inscrire</a>
+                        <a href="<?= URLROOT; ?>/user/register" class="text signup-text">S'inscrire</a>
                     </span>
                 </div>
             </div>
         </div>
     </div>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="<?= URLROOT; ?>/public/js/login.js"></script>
+    <script src="<?= JSROOT ?>/login.js"></script>
 </body>
 
 </html>

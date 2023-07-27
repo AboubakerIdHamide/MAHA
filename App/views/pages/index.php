@@ -48,7 +48,7 @@
             <div class="item">
                 <div class="box_grid">
                     <figure>
-                        <a href='<?= URLROOT . "/pageFormations/coursDetails/" . $formation->id_formation ?>'><img
+                        <a href='<?= URLROOT . "/pageFormation/coursDetails/" . $formation->id_formation ?>'><img
                                 src="<?= $formation->imgFormation ?>" class="img-fluid" alt="Photo"></a>
                         <div class="price">$<?= $formation->prix ?></div>
                     </figure>
@@ -61,7 +61,7 @@
                         <li><i class="fa-solid fa-clock"></i> <?= $formation->mass_horaire ?></li>
                         <li><i class="fa-solid fa-user"></i> <?= $formation->numbAcht ?></li>
                         <li><i class="fa-solid fa-heart"></i> <?= $formation->jaimes ?></li>
-                        <li><a href='<?= URLROOT . "/pageFormations/coursDetails/" . $formation->id_formation ?>'>Plus</a>
+                        <li><a href='<?= URLROOT . "/pageFormation/coursDetails/" . $formation->id_formation ?>'>Plus</a>
                         </li>
                     </ul>
                 </div>
@@ -72,7 +72,7 @@
         <!-- /carousel -->
         <div class="container">
             <p class="btn_home_align">
-                <a href="<?= URLROOT . "/pageFormations/" ?>" class="btn_1 rounded">Plus Formations</a>
+                <a href="<?= URLROOT . "/pageFormation/" ?>" class="btn_1 rounded">Plus Formations</a>
             </p>
         </div>
         <!-- /container -->
@@ -89,7 +89,7 @@
             <?php foreach ($data['categories'] as $categorie) : ?>
             <div class="col-md-3 categories p-3 fs-6 rounded">
                 <a class="d-block"
-                    href="<?= URLROOT . '/pageFormations/filter/' . $categorie->nom ?>"><?= $categorie->icon ?>
+                    href="<?= URLROOT . '/pageFormation/filter/' . $categorie->nom ?>"><?= $categorie->icon ?>
                     <?= $categorie->nom ?></a>
             </div>
             <?php endforeach ?>

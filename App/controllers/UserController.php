@@ -1,22 +1,27 @@
 <?php
-// PHP Mailler Classes Autolader
-require_once './../vendor/autoload.php';
 
 // PHP Mailler Classes
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-class Users extends Controller
+use App\Models\Formateur;
+use App\Models\Etudiant;
+use App\Models\Stocked;
+use App\Models\Smtp;
+
+class UserController
 {
-    private $stockedModel;
-    private $etudiantModel;
     private $fomateurModel;
+    private $etudiantModel;
+    private $stockedModel;
+    private $smtpModel;
 
     public function __construct()
     {
-        $this->fomateurModel = $this->model("Formateur");
-        $this->etudiantModel = $this->model("Etudiant");
-        $this->stockedModel = $this->model("Stocked");
+        $this->fomateurModel = new Formateur;
+        $this->etudiantModel = new Etudiant;
+        $this->stockedModel = new Stocked;
+        $this->smtpModel = new Smtp;
     }
 
     public function index()
@@ -28,9 +33,9 @@ class Users extends Controller
     {
         if ($this->isLoggedIn()) {
             if ($this->isLoggedIn() == 'formateur') {
-                redirect('formateurs/dashboard');
+                redirect('formateur/dashboard');
             } else {
-                redirect('etudiants/dashboard');
+                redirect('etudiant/dashboard');
             }
         }
 
@@ -159,7 +164,7 @@ class Users extends Controller
 
                 // To Email Verification
                 $_SESSION["user_data"] = $data;
-                redirect("users/verifyEmail");
+                redirect("user/verifyEmail");
             }
         } else {
             $data = [
@@ -193,7 +198,7 @@ class Users extends Controller
     {
         // redirect if there isn't a verification code
         if (!isset($_SESSION["vcode"])) {
-            redirect("users/login");
+            redirect("user/login");
         }
 
         // preparing data
@@ -201,7 +206,7 @@ class Users extends Controller
 
          // send Email Verification
         if (isset($_SESSION["vcode"]) == true && $_SESSION["resend"] == true) {
-            $email = $this->model("Smtp")->getSmtp()->username;
+            $email = $this->smtpModel->getSmtp()->username;
             $this->sendEmail($data[0]["email"], $email, 'MAHA', 'Email verification', null, $data[0]["prenom"], $_SESSION["vcode"], URLROOT . "/pages/verifyEmail");
             $_SESSION["resend"] = false;
         }
@@ -229,7 +234,7 @@ class Users extends Controller
                 unset($_SESSION["resend"]);
                 unset($_SESSION["user_data"]);
                 flash("signupMsg", "Félicitations, votre compte a été créé avec succès.", "alert alert-primary");
-                redirect("users/login");
+                redirect("user/login");
             } else {
                 $data[1]["code"] = $_POST["code"];
                 $data[1]["code_err"] = "Code invalide";
@@ -286,7 +291,7 @@ class Users extends Controller
                     if (empty($data["mdp_err"]) && empty($data["vmdp_err"])) {
                         $_SESSION["changePasswordData"] = $data;
                         $_SESSION["type"] = "formateur";
-                        redirect("users/changePassword");
+                        redirect("user/changePassword");
                     }
                 } else {
                     $data["email_err"] = "Aucun utilisateur avec cet e-mail";
@@ -295,7 +300,7 @@ class Users extends Controller
                 if (empty($data["mdp_err"]) && empty($data["vmdp_err"])) {
                     $_SESSION["changePasswordData"] = $data;
                     $_SESSION["type"] = "etudiant";
-                    redirect("users/changePassword");
+                    redirect("user/changePassword");
                 }
             }
 
@@ -319,7 +324,7 @@ class Users extends Controller
     {
         // redirect if there isn't a data
         if (!isset($_SESSION["changePasswordData"])) {
-            redirect("pages");
+            redirect("page");
         }
 
         // prepare data
@@ -352,7 +357,7 @@ class Users extends Controller
                 unset($_SESSION["resend"]);
                 unset($_SESSION["changePasswordData"]);
                 flash("changePassMsg", "votre mot de passe a été changé avec succès.", "alert alert-primary");
-                redirect("users/login");
+                redirect("user/login");
             } else {
                 $data[1]["code"] = $_POST["code"];
                 $data[1]["code_err"] = "Code invalide";
@@ -369,7 +374,7 @@ class Users extends Controller
 
         // send Email Change Password
         if (isset($_SESSION["vcode"]) == true && $_SESSION["resend"] == true) {
-            $email = $this->model("Smtp")->getSmtp()->username;
+            $email = $this->smtpModel->getSmtp()->username;
             $this->sendEmail($data[0]["email"], $email, 'MAHA', 'Email vérification', null, '', $_SESSION["vcode"], URLROOT . "/pages/changePassword");
             $_SESSION["resend"] = false;
         }
@@ -392,13 +397,13 @@ class Users extends Controller
             $_SESSION['user'] = $user;
             // setting up the image link
             $_SESSION['user']->img = URLROOT . "/Public/" . $_SESSION['user']->img;
-            redirect('formateurs/dashboard');
+            redirect('formateur/dashboard');
         } else {
             $_SESSION['id_etudiant'] = $user->id_etudiant;
             $_SESSION['user'] = $user;
             // setting up the image link
             $_SESSION['user']->img = URLROOT . "/Public/" . $_SESSION['user']->img;
-            redirect('etudiants/dashboard');
+            redirect('etudiant/dashboard');
         }
     }
 
@@ -406,7 +411,7 @@ class Users extends Controller
     {
         //Instantiation and passing `true` enables exceptions
         $mail = new PHPMailer(true);
-        $smtp = $this->model("Smtp")->getSmtp();
+        $smtp = $this->smtpModel->getSmtp();
         try {
             //Enable verbose debug output
             $mail->SMTPDebug = 0; //SMTP::DEBUG_SERVER;
@@ -463,7 +468,7 @@ class Users extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             extract($_POST);
-            $username = $this->model("Smtp")->getSmtp()->username;
+            $username = $this->smtpModel->getSmtp()->username;
             $this->sendEmail($username, $email, $name, $subject, $message, 'MAHA', null, null);
             echo json_encode("Votre Message a été envoyé avec succès !");
         }
@@ -472,7 +477,7 @@ class Users extends Controller
     public function logout()
     {
         session_destroy();
-        redirect('users/login');
+        redirect('user/login');
     }
 
     private function validateData($data)

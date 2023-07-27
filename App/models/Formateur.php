@@ -4,13 +4,17 @@
  * Model Formateur
  */
 
+namespace App\Models;
+
+use App\Libraries\Database;
+
 class Formateur
 {
 	private $connect;
 
-	public function __construct($database)
+	public function __construct()
 	{
-		$this->connect = $database;
+		$this->connect = Database::getConnection();
 	}
 
 	public function countFormateurs()
@@ -22,7 +26,7 @@ class Formateur
 		");
 
 		$query->execute();
-		$response = $query->fetch(PDO::FETCH_OBJ);
+		$response = $query->fetch(\PDO::FETCH_OBJ);
 
 		if ($query->rowCount() > 0) {
 			return $response->total_formateurs;
@@ -56,7 +60,7 @@ class Formateur
 		$query->bindParam(':q', $q);
 		$query->execute();
 
-		$formateurs = $query->fetchAll(PDO::FETCH_OBJ);
+		$formateurs = $query->fetchAll(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $formateurs;
 		}
@@ -112,7 +116,7 @@ class Formateur
 		$query->bindParam(':email', $email);
 		$query->execute();
 
-		$formateur = $query->fetch(PDO::FETCH_OBJ);
+		$formateur = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $formateur;
 		}
@@ -141,7 +145,7 @@ class Formateur
 		$query->bindParam(':pmail', $email);
 		$query->execute();
 
-		$formateur = $query->fetch(PDO::FETCH_OBJ);
+		$formateur = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $formateur;
 		}
@@ -205,7 +209,7 @@ class Formateur
 
 		$query->bindParam(':id', $id);
 		$query->execute();
-		$password = $query->fetch(PDO::FETCH_OBJ);
+		$password = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $password;
 		}
@@ -306,7 +310,7 @@ class Formateur
 		$query->bindParam(':id', $id);
 		$query->execute();
 
-		$formateur = $query->fetch(PDO::FETCH_OBJ);
+		$formateur = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $formateur;
 		}
@@ -324,7 +328,7 @@ class Formateur
 		$query->bindParam(':id', $id);
 		$query->execute();
 
-		$numFormations = $query->fetch(PDO::FETCH_OBJ)->numFormations;
+		$numFormations = $query->fetch(\PDO::FETCH_OBJ)->numFormations;
 		if ($query->rowCount() > 0) {
 			return $numFormations;
 		}
@@ -342,7 +346,7 @@ class Formateur
 		$query->bindParam(':id', $id);
 		$query->execute();
 
-		$numAcht = $query->fetch(PDO::FETCH_OBJ)->numAcht;
+		$numAcht = $query->fetch(\PDO::FETCH_OBJ)->numAcht;
 		if ($query->rowCount() > 0) {
 			return $numAcht;
 		}
@@ -377,7 +381,7 @@ class Formateur
 		");
 		$query->bindParam(':id', $formateurID);
 		$query->execute();
-		$formateur = $query->fetch(PDO::FETCH_OBJ);
+		$formateur = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $formateur->balance;
 		}
@@ -390,7 +394,7 @@ class Formateur
 		$request = $this->connect->prepare("SELECT code FROM formateurs WHERE code=:code");
 		$request->bindParam(":code", $code);
 		$request->execute();
-		$response = $request->fetch(PDO::FETCH_OBJ);
+		$response = $request->fetch(\PDO::FETCH_OBJ);
 		if (!empty($response)) {
 			return false;
 		}

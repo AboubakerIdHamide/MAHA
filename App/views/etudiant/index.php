@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <title><?= SITENAME ?> | Dashboard</title>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <!-- BootStrap -->
-    <link rel="stylesheet" href="<?= URLROOT . "/Public/css/bootstrap.quartz.min.css" ?>">
+    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.quartz.min.css" />
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="<?= URLROOT . "/Public/css/dashBoardNav.css" ?>">
-    <link rel="stylesheet" href="<?= URLROOT . "/Public/css/etudiantFormation.css" ?>">
+    <link rel="stylesheet" href="<?= CSSROOT ?>/dashBoardNav.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/etudiantFormation.css" />
 
 </head>
 
@@ -32,7 +32,7 @@
             <?php endif ?>
             <div class="formations">
                 <?php foreach ($data["inscriptions"] as $formation) : ?>
-                    <a class="card_coures" href="<?= URLROOT . "/etudiants/coursVideos/" . $formation->id_formateur . "/" . $formation->id_formation ?>">
+                    <a class="card_coures" href="<?= URLROOT . "/etudiant/coursVideos/" . $formation->id_formateur . "/" . $formation->id_formation ?>">
                         <!-- img formation -->
                         <div class="img">
                             <img src="<?= $formation->image ?>" alt="photo">
@@ -96,9 +96,9 @@
         const urlRoot = "<?= URLROOT ?>";
     </script>
     <script src="<?= URLROOT . "/Public/jQuery/jquery-3.6.0.min.js" ?>"></script>
-    <script src="<?= URLROOT . "/Public/js/dashBoardNav.js" ?>"></script>
-    <script src="<?= URLROOT . "/Public/js/etudiantFormations.js" ?>"></script>
-    <script src="<?= URLROOT ?>/public/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= JSROOT ?>/dashBoardNav.js"></script>
+    <script src="<?= JSROOT ?>/etudiantFormations.js"></script>
+    <script src="<?= JSROOT ?>/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

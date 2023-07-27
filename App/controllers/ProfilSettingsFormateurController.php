@@ -1,16 +1,18 @@
 <?php
 
-class ProfilSettingsFormateur extends Controller
+use App\Models\Formateur;
+
+class ProfilSettingsFormateurController
 {
     private $fomateurModel;
 
     public function __construct()
     {
         if (!isset($_SESSION['id_formateur'])) {
-            redirect('users/login');
+            redirect('user/login');
             return;
         }
-        $this->fomateurModel = $this->model("Formateur");
+        $this->fomateurModel = new Formateur;
     }
     public function index($id)
     {

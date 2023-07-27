@@ -47,7 +47,7 @@ $(document).ready(function() {
         var files = event.target.files[0];
         fd.append('img', files);
         $.ajax({
-            url: 'http://localhost/maha/Formateurs/changeImg/',
+            url: 'http://localhost/maha/Formateur/changeImg/',
             type: 'post',
             data: fd,
             contentType: false,
@@ -279,7 +279,7 @@ $(document).ready(function() {
             };
 
             xhr = getxhr();
-            xhr.open("POST", "http://localhost/maha/Formateurs/updateInfos/", true);
+            xhr.open("POST", "http://localhost/maha/Formateur/updateInfos/", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             // for protection
             xhr.send(`nom=${updateFormateurInfo.nom}&prenom=${updateFormateurInfo.prenom}&tel=${updateFormateurInfo.tel}&specialite=${updateFormateurInfo.specialite}&biographie=${updateFormateurInfo.biographie}&c_mdp=${updateFormateurInfo.c_mdp}&n_mdp=${updateFormateurInfo.n_mdp}`);

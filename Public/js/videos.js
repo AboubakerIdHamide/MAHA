@@ -31,7 +31,7 @@ $(document).ready(function () {
     const $idVideo = $(this).attr("id");
     $("#delete-video").click(function () {
       $.ajax({
-        url: "http://localhost/maha/formations/deleteVideo",
+        url: "http://localhost/maha/formation/deleteVideo",
         method: "POST",
         data: {
           id_video: $idVideo,
@@ -122,7 +122,7 @@ $(document).ready(function () {
         ) {
           if (isInputValid(desc) && isInputValid(title)) {
             $.ajax({
-              url: "http://localhost/maha/formations/updateVideo",
+              url: "http://localhost/maha/formation/updateVideo",
               method: "POST",
               data: {
                 id_video: idVideo,
@@ -139,7 +139,7 @@ $(document).ready(function () {
           if (videoDescription !== desc.inputValue) {
             if (isInputValid(desc)) {
               $.ajax({
-                url: "http://localhost/maha/formations/updateVideo",
+                url: "http://localhost/maha/formation/updateVideo",
                 method: "POST",
                 data: {
                   id_video: idVideo,
@@ -154,7 +154,7 @@ $(document).ready(function () {
           } else {
             if (isInputValid(title)) {
               $.ajax({
-                url: "http://localhost/maha/formations/updateVideo",
+                url: "http://localhost/maha/formation/updateVideo",
                 method: "POST",
                 data: {
                   id_video: idVideo,
@@ -200,7 +200,7 @@ $(document).ready(function () {
 
     if (videosWithOrder.length !== 0) {
       $.ajax({
-        url: "http://localhost/maha/formations/setOrdreVideos",
+        url: "http://localhost/maha/formation/setOrdreVideos",
         method: "POST",
         data: {
           videosWithOrder: JSON.stringify(videosWithOrder),
@@ -219,7 +219,7 @@ $(document).ready(function () {
     $(this).attr("disabled", true);
     const idVideo = $(this).attr("id");
     $.ajax({
-      url: "http://localhost/maha/formations/insertPreviewVideo/" + idVideo,
+      url: "http://localhost/maha/formation/insertPreviewVideo/" + idVideo,
       success: function (response) {
         
       },

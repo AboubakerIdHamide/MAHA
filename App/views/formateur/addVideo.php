@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
     <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="<?= URLROOT . "/Public/css/addVideo.css" ?>">
-    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/dashBoardNav.css">
+    <link rel="stylesheet" href="<?= CSSROOT ?>/addVideo.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/dashBoardNav.css" />
     <title><?= SITENAME ?> | Ajouter Videos</title>
 </head>
 <!-- Header -->
@@ -30,7 +30,7 @@
 
         <ul class="hide-menu">
             <li id="notifications" class="justify-content-center">
-                <a href="<?= URLROOT . '/formateurs/notifications' ?>">
+                <a href="<?= URLROOT . '/formateur/notifications' ?>">
                     <i style="font-size:25px;" class="fa-solid fa-bell position-relative">
                         <?php if ($data['nbrNotifications']->totalNew != 0) : ?>
                             <span style="font-size: 9px;" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger nbr-notifications">
@@ -40,10 +40,10 @@
                     </i>
                 </a>
             </li>
-            <li id="addnews"><a href="<?= URLROOT . '/formateurs/dashboard' ?>"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a></li>
-            <li id="paiment"><a href="<?= URLROOT . '/formateurs/requestPayment' ?>"><i class=" far fa-credit-card"></i><span>Paiement</span></a></li>
-            <li id="statistics"><a href="<?= URLROOT . '/formateurs/updateInfos' ?>"><i class="fas fa-user-gear"></i><span>Paramètre</span></a></li>
-            <li id="disconnect"><a href="<?= URLROOT . '/users/logout' ?>"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
+            <li id="addnews"><a href="<?= URLROOT . '/formateur/dashboard' ?>"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a></li>
+            <li id="paiment"><a href="<?= URLROOT . '/formateur/requestPayment' ?>"><i class=" far fa-credit-card"></i><span>Paiement</span></a></li>
+            <li id="statistics"><a href="<?= URLROOT . '/formateur/updateInfos' ?>"><i class="fas fa-user-gear"></i><span>Paramètre</span></a></li>
+            <li id="disconnect"><a href="<?= URLROOT . '/user/logout' ?>"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
         </ul>
     </nav>
 </header>
@@ -54,7 +54,7 @@
         <div class="prog" id="prog_bar"></div>
         <div class="main-form-heading">
             <h1 class="logo">
-                <a href="<?= URLROOT . "/pages/index"; ?>">
+                <a href="<?= URLROOT . "/page"; ?>">
                     <img src="<?= $data['logo'] ?>" alt="">
                 </a>
             </h1>
@@ -88,8 +88,8 @@
         </div>
     </form>
 </div>
-<script src="<?= URLROOT . "/Public/js/addVideo.js" ?>"></script>
-<script src="<?= URLROOT; ?>/public/js/dashBoardNav.js"></script>
+<script src="<?= JSROOT ?>/addVideo.js"></script>
+<script src="<?= JSROOT ?>/dashBoardNav.js"></script>
 </body>
 
 </html>

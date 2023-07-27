@@ -74,7 +74,7 @@
                     <label for="avatar-etudiant" class="form-label" style="font-weight: 600;">Photo de profil</label>
                     <div class="text-center">
                         <!-- avatar -->
-                        <img class="img-fluid rounded" src="<?= URLROOT; ?>/public/images/membre.jpg"
+                        <img class="img-fluid rounded" src="<?= IMAGEROOT ?>/membre.jpg"
                             alt="etudiant avatar" id="avatar-etudiant" style="object-fit: cover;width:50%">
                     </div>
                 </div>
@@ -158,10 +158,10 @@
 </div>
 <!-- toast end -->
 
-<script src="<?= URLROOT ?>/public/js/bootstrap.bundle.min.js"></script>
+<script src="<?= JSROOT ?>/bootstrap.bundle.min.js"></script>
 <script src="<?= URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
-<script src="<?= URLROOT; ?>/public/js/dashBoardNav.js"></script>
-<script src="<?= URLROOT; ?>/public/js/adminEtudiants.js"></script>
+<script src="<?= JSROOT ?>/dashBoardNav.js"></script>
+<script src="<?= JSROOT ?>/adminEtudiants.js"></script>
 </body>
 
 </html>

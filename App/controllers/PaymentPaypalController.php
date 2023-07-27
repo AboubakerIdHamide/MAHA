@@ -1,9 +1,11 @@
 <?php
 
-// for Guzzel Library
-require_once './../vendor/autoload.php';
+use App\Models\Admin;
+use App\Models\Formation;
+use App\Models\Inscription;
+use App\Models\Formateur;
 
-class PaymentPaypal extends Controller
+class PaymentPaypalController
 {
 	private $access_token;
 	private $username;
@@ -15,14 +17,14 @@ class PaymentPaypal extends Controller
 	public function __construct()
 	{
 		if (!isset($_SESSION['id_etudiant'])) {
-			redirect('users/login');
+			redirect('user/login');
 			exit;
 		}
 
-		$this->formationModel = $this->model("Formation");
-		$this->inscriptionModel = $this->model("Inscription");
-		$this->adminModel = $this->model("Administrateur");
-		$settings = $this->model("Administrateur")->getProfitAndPaypalToken();
+		$this->formationModel = new Formation;
+		$this->inscriptionModel = new Inscription;
+		$this->adminModel = new Admin;
+		$settings = $this->adminModel->getProfitAndPaypalToken();
 		$this->username = $settings->username_paypal;
 		$this->password = $settings->password_paypal;
 		$this->access_token = $this->getAccessToken();
@@ -61,7 +63,7 @@ class PaymentPaypal extends Controller
 	public function makePayment($idFormation = null)
 	{
 		if ($idFormation === null || !is_numeric($idFormation)) {
-			redirect('pageFormations/coursDetails/' . $idFormation);
+			redirect('pageFormation/coursDetails/' . $idFormation);
 			exit;
 		}
 
@@ -80,7 +82,7 @@ class PaymentPaypal extends Controller
 		if (!empty($inscription)) {
 			if ($inscription->payment_state == "approved") {
 				// vous etes deja inscrit dans cette formation
-				redirect('etudiants/dashboard');
+				redirect('etudiant/dashboard');
 				exit;
 			} else {
 				// redirect to paypal page to make payment, because the order already created
@@ -186,7 +188,7 @@ class PaymentPaypal extends Controller
 	public function success($idFormation)
 	{
 		if (!isset($_GET['paymentId'], $_GET['token'], $_GET['PayerID'])) {
-			redirect('pageFormations/coursDetails/' . $idFormation);
+			redirect('pageFormation/coursDetails/' . $idFormation);
 			exit;
 		}
 
@@ -195,7 +197,7 @@ class PaymentPaypal extends Controller
 
 		if (empty($inscription)) {
 			// payment ID n'existe pas
-			redirect('pageFormations/coursDetails/' . $idFormation);
+			redirect('pageFormation/coursDetails/' . $idFormation);
 			exit;
 		}
 
@@ -216,24 +218,24 @@ class PaymentPaypal extends Controller
 		);
 
 		if ($response->getStatusCode() != 200) {
-			redirect('pageFormations/coursDetails/' . $idFormation);
+			redirect('pageFormation/coursDetails/' . $idFormation);
 			exit;
 		}
 
 		$paymentState = json_decode($response->getBody())->state;
 		$this->inscriptionModel->updateInscriptionByPaymentID($_GET['paymentId'], $paymentState);
-		$formateurModel = $this->model('Formateur');
+		$formateurModel = new Formateur;
 		$formateurProfit = (100 - $this->adminModel->getProfitAndPaypalToken()->platform_pourcentage) / 100;
 		$formateurModel->updateFormateurBalance($inscription->id_formateur, $inscription->prix * $formateurProfit);
-		return return view('payment/paymentSuccess');
+		return view('payment/paymentSuccess');
 	}
 
 	public function cancel($idFormation)
 	{
 		if (isset($_GET['token'])) {
-			return return view('payment/paymentCancel', ['idFormation' => $idFormation]);
+			return view('payment/paymentCancel', ['idFormation' => $idFormation]);
 		} else {
-			redirect('pageFormations/coursDetails/' . $idFormation);
+			redirect('pageFormation/coursDetails/' . $idFormation);
 			exit;
 		}
 	}

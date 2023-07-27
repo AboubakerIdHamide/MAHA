@@ -316,7 +316,7 @@
   searchForm.onsubmit = (e) => {
     let valRech = inputSearch.value;
     if (!(valRech.length < 1 && valRech.length > 200)) {
-      window.location.href = `http://localhost/MAHA/pageFormations/rechercheFormations/${valRech}`;
+      window.location.href = `http://localhost/MAHA/pageFormation/rechercheFormations/${valRech}`;
     }
     e.preventDefault();
   };

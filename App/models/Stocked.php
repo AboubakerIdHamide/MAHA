@@ -3,14 +3,17 @@
 /**
  * Model Stocked
  */
+namespace App\Models;
+
+use App\Libraries\Database;
 
 class Stocked
 {
 	private $connect;
 
-	public function __construct($database)
+	public function __construct()
 	{
-		$this->connect = $database;
+		$this->connect = Database::getConnection();
 	}
 
 	public function getAllCategories()
@@ -21,7 +24,7 @@ class Stocked
 		");
 
 		$query->execute();
-		$categories = $query->fetchAll(PDO::FETCH_OBJ);
+		$categories = $query->fetchAll(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $categories;
 		}
@@ -38,7 +41,7 @@ class Stocked
 
 		$query->bindParam(':id', $id);
 		$query->execute();
-		$categorie = $query->fetch(PDO::FETCH_OBJ);
+		$categorie = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $categorie;
 		}
@@ -55,7 +58,7 @@ class Stocked
 
 		$query->bindParam(':id', $id);
 		$query->execute();
-		$langue = $query->fetch(PDO::FETCH_OBJ);
+		$langue = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $langue;
 		}
@@ -72,7 +75,7 @@ class Stocked
 
 		$query->bindParam(':id', $id);
 		$query->execute();
-		$level = $query->fetch(PDO::FETCH_OBJ);
+		$level = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $level;
 		}
@@ -87,7 +90,7 @@ class Stocked
 		");
 
 		$query->execute();
-		$langues = $query->fetchAll(PDO::FETCH_OBJ);
+		$langues = $query->fetchAll(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $langues;
 		}
@@ -102,7 +105,7 @@ class Stocked
 		");
 
 		$query->execute();
-		$levels = $query->fetchAll(PDO::FETCH_OBJ);
+		$levels = $query->fetchAll(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $levels;
 		}
@@ -186,7 +189,7 @@ class Stocked
 		");
 
 		$query->execute();
-		$theme = $query->fetch(PDO::FETCH_OBJ);
+		$theme = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $theme;
 		}

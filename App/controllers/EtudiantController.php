@@ -1,6 +1,14 @@
 <?php
 
-class Etudiants extends Controller
+use App\Models\Etudiant;
+use App\Models\Formation;
+use App\Models\Video;
+use App\Models\Inscription;
+use App\Models\Stocked;
+use App\Models\Commentaire;
+use App\Models\Notification;
+
+class EtudiantController
 {
 	private $etudiantModel;
 	private $formationModel;
@@ -15,16 +23,16 @@ class Etudiants extends Controller
 	public function __construct()
 	{
 		if (!isset($_SESSION['id_etudiant'])) {
-			redirect('users/login');
+			redirect('user/login');
 			return;
 		}
-		$this->inscriptionModel = $this->model("Inscription");
-		$this->stockedModel = $this->model("Stocked");
-		$this->videoModel = $this->model("Video");
-		$this->formationModel = $this->model("Formation");
-		$this->commentModel = $this->model("Commentaire");
-		$this->etudiantModel = $this->model("Etudiant");
-		$this->notificationModel = $this->model("Notification");
+		$this->etudiantModel = new Etudiant;
+		$this->formationModel = new Formation;
+		$this->videoModel = new Video;
+		$this->inscriptionModel = new Inscription;
+		$this->stockedModel = new Stocked;
+		$this->commentModel = new Commentaire;
+		$this->notificationModel = new Notification;
 		$this->id = $_SESSION['id_etudiant'];
 	}
 
@@ -51,7 +59,7 @@ class Etudiants extends Controller
 	public function coursVideos($idFormateur = "", $idFormation = "")
 	{
 		if (empty($idFormateur) || empty($idFormation)) {
-			redirect("etudiants");
+			redirect("etudiant");
 		}
 		// preparing data
 		$formation = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, $_SESSION['id_etudiant'], $idFormateur);

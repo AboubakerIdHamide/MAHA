@@ -1,6 +1,13 @@
 <?php
 
-class Ajax extends Controller
+use App\Models\Formateur;
+use App\Models\Etudiant;
+use App\Models\Formation;
+use App\Models\Video;
+use App\Models\Inscription;
+use App\Models\Commentaire;
+
+class AjaxController
 {
     private $fomateurModel;
     private $etudiantModel;
@@ -11,12 +18,12 @@ class Ajax extends Controller
 
     public function __construct()
     {
-        $this->fomateurModel = $this->model("Formateur");
-        $this->etudiantModel = $this->model("Etudiant");
-        $this->formationModel = $this->model("Formation");
-        $this->videoModel = $this->model("Video");
-        $this->inscriptionModel = $this->model("Inscription");
-        $this->commentaireModel = $this->model("Commentaire");
+        $this->fomateurModel = new Formateur;
+        $this->etudiantModel = new Etudiant;
+        $this->formationModel = new Formation;
+        $this->videoModel = new Video;
+        $this->inscriptionModel = new Inscription;
+        $this->commentaireModel = new Commentaire;    
     }
 
     public function checkEmail()
@@ -334,7 +341,7 @@ class Ajax extends Controller
                 http_response_code(404);
             }
         } else {
-            redirect('');
+            redirect();
             exit;
         }
     }

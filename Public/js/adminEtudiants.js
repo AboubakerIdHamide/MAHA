@@ -195,7 +195,7 @@ $(document).ready(function () {
                 </div>
                 <div>
                   <button id="${formation.id_inscription}" data-prenom-etudiant="${formation.prenomEtudiant}" data-nom-etudiant="${formation.nomEtudiant}" data-nom-formation="${formation.nomFormation}" type="button" class="btn btn-danger deleteInscription" data-bs-toggle="modal" data-bs-target="#deleteModal">supprimer inscription</button>
-                  <a href="http://localhost/maha/pageFormations/coursDetails/${formation.id_formation}" class="btn btn-dark">Voir Formation</a>
+                  <a href="http://localhost/maha/pageFormation/coursDetails/${formation.id_formation}" class="btn btn-dark">Voir Formation</a>
                 </div> 
             </div>
         </div>

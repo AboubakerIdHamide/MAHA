@@ -4,13 +4,17 @@
  * Model Smtp
  */
 
+namespace App\Models;
+
+use App\Libraries\Database;
+
 class Smtp
 {
 	private $connect;
 
-	public function __construct($database)
+	public function __construct()
 	{
-		$this->connect = $database;
+		$this->connect = Database::getConnection();
 	}
 
 	public function replaceSmtp($smtpData)
@@ -50,7 +54,7 @@ class Smtp
 		");
 
 		$query->execute();
-		$smtp = $query->fetch(PDO::FETCH_OBJ);
+		$smtp = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $smtp;
 		}

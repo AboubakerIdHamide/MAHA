@@ -3,23 +3,22 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="MAHA a modern educational platform">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="MAHA a modern educational platform" />
     <title><?= SITENAME ?> | Formateur</title>
     <!-- Favicons-->
-    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <!-- GOOGLE WEB FONT -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <!-- BASE CSS -->
-    <link href="<?= URLROOT ?>/public/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?= URLROOT ?>/public/css/style.css" rel="stylesheet">
-    <link href="<?= URLROOT ?>/public/css/vendors.css" rel="stylesheet">
+    <link href="<?= CSSROOT ?>/bootstrap.min.css" rel="stylesheet" />
+    <link href="<?= CSSROOT ?>/style.css" rel="stylesheet" />
+    <link href="<?= CSSROOT ?>/vendors.css" rel="stylesheet" />
     <!-- font awesome -->
     <!-- Font Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"  />
     <!-- YOUR CUSTOM CSS -->
-    <link href="<?= URLROOT ?>/public/css/custom.css" rel="stylesheet">
+    <link href="<?= CSSROOT ?>/custom.css" rel="stylesheet" />
     <style>
     #hero_in.general:before {
         background: url(<?= $data['formateur']->img ?>) center center no-repeat;
@@ -52,16 +51,16 @@
             <ul id="top_menu">
                 <li class="search-overlay-menu-btn"><i class="fa-solid fa-magnifying-glass"></i></li>
                 <?php if (!isset($_SESSION['user'])) : ?>
-                <li class="hidden_tablet"><a href="<?= URLROOT . "/users/login" ?>" class="btn_1 rounded">Se
+                <li class="hidden_tablet"><a href="<?= URLROOT . "/user/login" ?>" class="btn_1 rounded">Se
                         Connecter</a></li>
                 <?php endif ?>
                 <?php if (isset($_SESSION['id_formateur'])) : ?>
-                <li class="hidden_tablet"><a href="<?= URLROOT . "/formateurs/dashboard" ?>"
+                <li class="hidden_tablet"><a href="<?= URLROOT . "/formateur/dashboard" ?>"
                         class="btn_1 rounded">Dashboard</a>
                 </li>
                 <?php endif ?>
                 <?php if (isset($_SESSION['id_etudiant'])) : ?>
-                <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiants/dashboard" ?>" class="btn_1 rounded">Mes
+                <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiant/dashboard" ?>" class="btn_1 rounded">Mes
                         Cours</a>
                 </li>
                 <?php endif ?>
@@ -78,22 +77,22 @@
             <nav id="menu" class="main-menu">
                 <ul>
                     <li><span><a href="<?= URLROOT ?>">Accueil</a></span></li>
-                    <li><span><a href="<?= URLROOT ?>/pageFormations/">Courses</a></span></li>
+                    <li><span><a href="<?= URLROOT ?>/pageFormation">Courses</a></span></li>
                     <li><span><a href="<?= URLROOT ?>/#catalogue">Categories</a></span></li>
                     <li><span><a href="<?= URLROOT ?>/#contact">Contactez-nous</a></span></li>
                     <?php if (!isset($_SESSION['user'])) : ?>
-                    <li><span><a href="<?= URLROOT ?>/users/register">S'inscrire</a></span></li>
+                    <li><span><a href="<?= URLROOT ?>/user/register">S'inscrire</a></span></li>
                     <?php endif ?>
                     <?php if (!isset($_SESSION['user'])) : ?>
-                    <li class="d-lg-none"><a href="<?= URLROOT . "/users/login" ?>">Se
+                    <li class="d-lg-none"><a href="<?= URLROOT . "/user/login" ?>">Se
                             Connecter</a></li>
                     <?php endif ?>
                     <?php if (isset($_SESSION['id_formateur'])) : ?>
-                    <li class="d-lg-none"><a href="<?= URLROOT . "/formateurs/dashboard" ?>">Dashboard</a>
+                    <li class="d-lg-none"><a href="<?= URLROOT . "/formateur/dashboard" ?>">Dashboard</a>
                     </li>
                     <?php endif ?>
                     <?php if (isset($_SESSION['id_etudiant'])) : ?>
-                    <li class="d-lg-none"><a href="<?= URLROOT . "/etudiants/dashboard" ?>">Mes
+                    <li class="d-lg-none"><a href="<?= URLROOT . "/etudiant/dashboard" ?>">Mes
                             Cours</a>
                     </li>
                     <?php endif ?>
@@ -177,7 +176,7 @@
                                             <?php foreach ($data['formations'] as $formation) : ?>
                                             <tr>
                                                 <td><a
-                                                        href="<?= URLROOT . "/pageFormations/coursDetails/" . $formation->id_formation ?>"><?= $formation->nomFormation ?></a>
+                                                        href="<?= URLROOT . "/pageFormation/coursDetails/" . $formation->id_formation ?>"><?= $formation->nomFormation ?></a>
                                                 </td>
                                                 <td><?= $formation->nomCategorie ?></td>
                                                 <td>$<?= $formation->prix ?></td>
@@ -214,7 +213,7 @@
                         <h5>Liens utiles</h5>
                         <ul class="links">
                             <li><a href="<?= URLROOT ?>">Home</a></li>
-                            <li><a href="<?= URLROOT . "/pageFormations/" ?>">Formations</a></li>
+                            <li><a href="<?= URLROOT ?>/pageFormation">Formations</a></li>
                             <li><a href="<?= URLROOT ?>/#catalogue">Catalogue</a></li>
                             <li><a href="<?= URLROOT ?>/#popular">Les Plus Populaires</a></li>
                             <li><a href="<?= URLROOT ?>/#contact">Contactez-Nous</a></li>
@@ -248,8 +247,8 @@
 
     <!-- SCRIPTS -->
     <script src="<?= URLROOT ?>/public/jQuery/jquery-3.6.0.min.js"></script>
-    <script src="<?= URLROOT ?>/public/js/common_scripts.js"></script>
-    <script src="<?= URLROOT ?>/public/js/cours-details.js"></script>
+    <script src="<?= JSROOT ?>/common_scripts.js"></script>
+    <script src="<?= JSROOT ?>/cours-details.js"></script>
 
 </body>
 

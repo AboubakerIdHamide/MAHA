@@ -78,10 +78,10 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script src="<?= URLROOT; ?>/public/jQuery/jquery-3.6.0.min.js"></script>
-    <script src="<?= URLROOT; ?>/public/js/dashBoardNav.js"></script>
-    <script src="<?= URLROOT; ?>/public/js/adminDashboard.js"></script>
-    <script src="<?= URLROOT ?>/public/js/chart.js"></script>
+    <script src="<?= URLROOT ?>/public/jQuery/jquery-3.6.0.min.js"></script>
+    <script src="<?= JSROOT ?>/dashBoardNav.js"></script>
+    <script src="<?= JSROOT ?>/adminDashboard.js"></script>
+    <script src="<?= JSROOT ?>/chart.js"></script>
     </body>
 
     </html>

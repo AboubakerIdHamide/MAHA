@@ -310,7 +310,7 @@ CREATE TABLE IF NOT EXISTS `smtp` (
 DELETE FROM `smtp`;
 /*!40000 ALTER TABLE `smtp` DISABLE KEYS */;
 INSERT INTO `smtp` (`id_smtp`, `host`, `username`, `password`, `port`) VALUES
-  (1, 'smtp.gmail.com', 'mahateamisgi@gmail.com', 'nlazavosyxsxztqf', '465');
+  (1, 'smtp.gmail.com', 'mahateamisgi@gmail.com', 'fcpfxrepelndwpqr', '465');
 /*!40000 ALTER TABLE `smtp` ENABLE KEYS */;
 
 -- Dumping structure for table maha.theme

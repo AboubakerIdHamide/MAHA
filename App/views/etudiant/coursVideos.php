@@ -3,15 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <title><?= SITENAME ?> | <?= $data->nomFormation ?></title>
     <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="<?= URLROOT . "/Public/css/cours-details-paid.css" ?>">
+    <link rel="stylesheet" href="<?= CSSROOT ?>/cours-details-paid.css" />
 
 </head>
 
@@ -21,7 +21,7 @@
         <div class="container mt-3">
             <div class="row">
                 <div class="col-xl-3">
-                    <a href="<?= URLROOT . "/etudiants" ?>">
+                    <a href="<?= URLROOT . "/etudiant" ?>">
                         <img class="img-fluid" src="<?= $data->image ?>" alt="formation image">
                     </a>
                 </div>
@@ -238,8 +238,8 @@
     const element = document.getElementById("playerContainer");
     const player = IndigoPlayer.init(element, config);
     </script>
-    <script src="<?= URLROOT . "/Public/jQuery/jquery-3.6.0.min.js" ?>"></script>
-    <script src="<?= URLROOT . "/Public/js/cours-details-paid.js" ?>"></script>
+    <script src="<?= URLROOT ?>/Public/jQuery/jquery-3.6.0.min.js"></script>
+    <script src="<?= JSROOT ?>/cours-details-paid.js"></script>
 
 </body>
 

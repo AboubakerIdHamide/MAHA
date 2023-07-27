@@ -1,6 +1,15 @@
 <?php
 
-class Formateurs extends Controller
+use App\Models\Formateur;
+use App\Models\Formation;
+use App\Models\Video;
+use App\Models\Inscription;
+use App\Models\Stocked;
+use App\Models\Commentaire;
+use App\Models\Notification;
+use App\Models\requestPayment;
+
+class FormateurController
 {
 	private $fomateurModel;
 	private $formationModel;
@@ -14,18 +23,18 @@ class Formateurs extends Controller
 	public function __construct()
 	{
 		if (!isset($_SESSION['id_formateur'])) {
-			redirect('users/login');
+			redirect('user/login');
 			return;
 		}
 
-		$this->stockedModel = $this->model("Stocked");
-		$this->fomateurModel = $this->model("Formateur");
-		$this->requestPaymentModel = $this->model("requestPayment");
-		$this->notificationModel = $this->model("Notification");
-		$this->inscriptionModel = $this->model("Inscription");
-		$this->videoModel = $this->model("Video");
-		$this->formationModel = $this->model("Formation");
-		$this->commentModel = $this->model("Commentaire");
+		$this->fomateurModel = new Formateur;
+		$this->formationModel = new Formation;
+		$this->videoModel = new Video;
+		$this->inscriptionModel = new Inscription;
+		$this->stockedModel = new Stocked;
+		$this->commentModel = new Commentaire;
+		$this->notificationModel = new Notification;
+		$this->requestPaymentModel = new requestPayment;
 	}
 
 	public function index()

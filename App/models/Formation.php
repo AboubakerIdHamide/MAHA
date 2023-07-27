@@ -4,13 +4,17 @@
  *  Model Formation
  */
 
+namespace App\Models;
+
+use App\Libraries\Database;
+
 class Formation
 {
     private $connect;
 
-    public function __construct($database)
+    public function __construct()
     {
-        $this->connect = $database;
+        $this->connect = Database::getConnection();
     }
 
     public function countFormations()
@@ -22,7 +26,7 @@ class Formation
         ");
 
         $query->execute();
-        $response = $query->fetch(PDO::FETCH_OBJ);
+        $response = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $response->total_formations;
         }
@@ -122,7 +126,7 @@ class Formation
         $query->bindParam(":id_formation", $id_formation);
         $query->bindParam(":id_formateur", $id_formateur);
         $query->execute();
-        $formation = $query->fetch(PDO::FETCH_OBJ);
+        $formation = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formation;
         }
@@ -154,7 +158,7 @@ class Formation
         $query->bindParam(":words", $words);
         $query->execute();
 
-        $formations = $query->fetchAll(PDO::FETCH_OBJ);
+        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formations;
         }
@@ -218,7 +222,7 @@ class Formation
         $query->bindParam(':formationId', $formationId);
         $query->execute();
 
-        $jaimes = $query->fetch(PDO::FETCH_OBJ)->jaimes;
+        $jaimes = $query->fetch(\PDO::FETCH_OBJ)->jaimes;
         if ($query->rowCount() > 0) {
             return $jaimes;
         }
@@ -252,7 +256,7 @@ class Formation
         ");
 
         $query->execute();
-        $formations = $query->fetchAll(PDO::FETCH_OBJ);
+        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
 
         if ($query->rowCount() > 0) {
             return $formations;
@@ -284,7 +288,7 @@ class Formation
 
         $query->bindParam(":id", $id);
         $query->execute();
-        $formations = $query->fetchAll(PDO::FETCH_OBJ);
+        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formations;
         }
@@ -327,7 +331,7 @@ class Formation
         $query->bindParam(":q", $q);
         $query->execute();
 
-        $formations = $query->fetchAll(PDO::FETCH_OBJ);
+        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formations;
         }
@@ -370,7 +374,7 @@ class Formation
         $query->bindParam(":q", $q);
         $query->execute();
 
-        $formations = $query->fetchAll(PDO::FETCH_OBJ);
+        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formations;
         }
@@ -398,7 +402,8 @@ class Formation
                 formations.id_niveau AS niveau,
                 formations.id_langue AS langue,
                 langues.nom AS nomLangue,
-                niveaux.nom AS nomNiveau
+                niveaux.nom AS nomNiveau,
+                niveaux.icon AS iconNiveau
             FROM formations, formateurs, categories, langues, niveaux
             WHERE formations.id_formateur = formateurs.id_formateur
             AND categories.id_categorie = formations.id_categorie
@@ -410,7 +415,7 @@ class Formation
         $query->bindParam(":id", $id);
         $query->execute();
 
-        $formation = $query->fetch(PDO::FETCH_OBJ);
+        $formation = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formation;
         }
@@ -428,7 +433,7 @@ class Formation
         ");
 
         $query->execute();
-        $numbFormations = $query->fetch(PDO::FETCH_OBJ)->numbFormations;
+        $numbFormations = $query->fetch(\PDO::FETCH_OBJ)->numbFormations;
         if ($query->rowCount() > 0) {
             return $numbFormations;
         }
@@ -469,7 +474,7 @@ class Formation
         ");
 
         $query->execute();
-        $formations = $query->fetchAll(PDO::FETCH_OBJ);
+        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formations;
         }
@@ -494,7 +499,7 @@ class Formation
         $query->bindParam(":categorie", $cat);
         $query->execute();
 
-        $numbFormations = $query->fetch(PDO::FETCH_OBJ)->numbFormations;
+        $numbFormations = $query->fetch(\PDO::FETCH_OBJ)->numbFormations;
         if ($query->rowCount() > 0) {
             return $numbFormations;
         }
@@ -532,7 +537,7 @@ class Formation
         $query->bindParam(":categorie", $cat);
         $query->execute();
 
-        $formations = $query->fetchAll(PDO::FETCH_OBJ);
+        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formations;
         }
@@ -559,7 +564,7 @@ class Formation
         ");
 
         $query->execute();
-        $numbFormations = $query->fetch(PDO::FETCH_OBJ)->numbFormations;
+        $numbFormations = $query->fetch(\PDO::FETCH_OBJ)->numbFormations;
         if ($query->rowCount() > 0) {
             return $numbFormations;
         }
@@ -596,7 +601,7 @@ class Formation
         ");
 
         $query->execute();
-        $formations = $query->fetchAll(PDO::FETCH_OBJ);
+        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
 
         if ($query->rowCount() > 0) {
             return $formations;
@@ -630,7 +635,7 @@ class Formation
         ");
 
         $query->execute();
-        $formations = $query->fetchAll(PDO::FETCH_OBJ);
+        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formations;
         }
@@ -662,7 +667,7 @@ class Formation
         ");
 
         $query->execute();
-        $formations = $query->fetchAll(PDO::FETCH_OBJ);
+        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formations;
         }
@@ -681,7 +686,7 @@ class Formation
         $query->bindParam(":id_langue", $id_langue);
         $query->execute();
 
-        $numbFormations = $query->fetch(PDO::FETCH_OBJ)->numbFormations;
+        $numbFormations = $query->fetch(\PDO::FETCH_OBJ)->numbFormations;
         if ($query->rowCount() > 0) {
             return $numbFormations;
         }
@@ -718,7 +723,7 @@ class Formation
         $query->bindParam(":langue", $id_langue);
         $query->execute();
 
-        $formations = $query->fetchAll(PDO::FETCH_OBJ);
+        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formations;
         }
@@ -737,7 +742,7 @@ class Formation
         $query->bindParam(":id_niveau", $id_niveau);
         $query->execute();
 
-        $numbFormations = $query->fetch(PDO::FETCH_OBJ)->numbFormations;
+        $numbFormations = $query->fetch(\PDO::FETCH_OBJ)->numbFormations;
         if ($query->rowCount() > 0) {
             return $numbFormations;
         }
@@ -774,7 +779,7 @@ class Formation
         $query->bindParam(":id_niveau", $id_niveau);
         $query->execute();
 
-        $formations = $query->fetchAll(PDO::FETCH_OBJ);
+        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formations;
         }
@@ -796,7 +801,7 @@ class Formation
         $query->bindParam(":fin", $fin);
         $query->execute();
 
-        $numbFormations = $query->fetch(PDO::FETCH_OBJ)->numbFormations;
+        $numbFormations = $query->fetch(\PDO::FETCH_OBJ)->numbFormations;
         if ($query->rowCount() > 0) {
             return $numbFormations;
         }
@@ -867,7 +872,7 @@ class Formation
         $query->bindParam(":fin", $fin);
         $query->execute();
 
-        $formations = $query->fetchAll(PDO::FETCH_OBJ);
+        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formations;
         }
@@ -889,7 +894,7 @@ class Formation
         ");
 
         $query->execute(['code' => htmlspecialchars($code)]);
-        $formations = $query->fetchAll(PDO::FETCH_OBJ);
+        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
 
         if ($query->rowCount() > 0) {
             return $formations;

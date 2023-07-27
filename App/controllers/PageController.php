@@ -1,27 +1,32 @@
 <?php
 
-class Pages extends Controller
+use App\Models\Stocked;
+use App\Models\Formation;
+use App\Models\Inscription;
+use App\Models\Etudiant;
+use App\Models\Formateur;
+
+class PageController
 {
-	private $stockedModel;
 	private $formationModel;
 	private $inscriptionModel;
-	private $categorieModel;
 	private $formateurModel;
 	private $etudiantModel;
+	private $stockedModel;
 
 	public function __construct()
 	{
-		$this->categorieModel = $this->model("Stocked");
-		$this->formationModel = $this->model("Formation");
-		$this->inscriptionModel = $this->model("Inscription");
-		$this->etudiantModel = $this->model("Etudiant");
-		$this->formateurModel = $this->model("Formateur");
-		$this->stockedModel = $this->model("Stocked");
+		$this->formationModel = new Formation;
+		$this->inscriptionModel = new Inscription;
+		$this->formateurModel = new Formateur;
+		$this->etudiantModel = new Etudiant;
+		$this->stockedModel = new Stocked;
 	}
+
 	public function index()
 	{
 		$formations = $this->formationModel->getPopularCourses();
-		$categories = $this->categorieModel->getAllCategories();
+		$categories = $this->stockedModel->getAllCategories();
 		$totalEtudiants = $this->etudiantModel->countEtudiant();
 		$totalFormations = $this->formationModel->countFormations();
 		$totalFormateurs = $this->formateurModel->countFormateurs();

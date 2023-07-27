@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <!-- Style -->
-    <link rel="stylesheet" href="<?= URLROOT . "/Public/css/addFormation.css" ?>">
+    <link rel="stylesheet" href="<?= CSSROOT ?>/addFormation.css" />
     <title><?= SITENAME ?> | Ajouter Formation</title>
 </head>
 
@@ -126,8 +126,8 @@
             </div>
         </form>
     </div>
-    <script src="<?= URLROOT . "/Public/js/addFormation.js" ?>"></script>
-    <script src="<?= URLROOT; ?>/public/js/dashBoardNav.js"></script>
+    <script src="<?= JSROOT ?>/addFormation.js"></script>
+    <script src="<?= JSROOT ?>/dashBoardNav.js"></script>
 </body>
 
 </html>

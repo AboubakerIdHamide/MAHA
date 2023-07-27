@@ -3,18 +3,18 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <title><?= SITENAME ?> | <?= $data["videos"][0]->nomFormation ?></title>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/dashBoardNav.css">
-    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/dashboard-formateur.css" />
-    <link rel="stylesheet" href="<?= URLROOT ?>/public/css/videos.css" />
-    <link rel="stylesheet" href="<?= URLROOT ?>/public/css/notifications.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/dashBoardNav.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/dashboard-formateur.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/videos.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/notifications.css" />
 </head>
 
 <body>
@@ -33,7 +33,7 @@
 
             <ul class="hide-menu">
                 <li id="notifications" class="justify-content-center">
-                    <a href="<?= URLROOT . '/formateurs/notifications' ?>">
+                    <a href="<?= URLROOT . '/formateur/notifications' ?>">
                         <i style="font-size:25px;" class="fa-solid fa-bell position-relative">
                             <?php if ($data['nbrNotifications']->totalNew != 0) : ?>
                                 <span style="font-size: 9px;" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger nbr-notifications">
@@ -43,10 +43,10 @@
                         </i>
                     </a>
                 </li>
-                <li id="addnews"><a href="<?= URLROOT . '/formateurs/dashboard' ?>"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a></li>
-                <li id="paiment"><a href="<?= URLROOT . '/formateurs/requestPayment' ?>"><i class=" far fa-credit-card"></i><span>Paiement</span></a></li>
-                <li id="statistics"><a href="<?= URLROOT . '/formateurs/updateInfos' ?>"><i class="fas fa-user-gear"></i><span>Paramètre</span></a></li>
-                <li id="disconnect"><a href="<?= URLROOT . '/users/logout' ?>"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
+                <li id="addnews"><a href="<?= URLROOT . '/formateur/dashboard' ?>"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a></li>
+                <li id="paiment"><a href="<?= URLROOT . '/formateur/requestPayment' ?>"><i class=" far fa-credit-card"></i><span>Paiement</span></a></li>
+                <li id="statistics"><a href="<?= URLROOT . '/formateur/updateInfos' ?>"><i class="fas fa-user-gear"></i><span>Paramètre</span></a></li>
+                <li id="disconnect"><a href="<?= URLROOT . '/user/logout' ?>"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
             </ul>
         </nav>
     </header>
@@ -54,7 +54,7 @@
     <main class="container my-5 ps-md-5">
         <div class="row mb-3 align-items-center ms-md-3 ms-xl-0 header">
             <div class="col-2 col-md-2 col-lg-1">
-                <a href="<?= URLROOT ?>/formateurs/dashboard"><i class="fas fa-chevron-left go-back rounded"></i></a>
+                <a href="<?= URLROOT ?>/formateur/dashboard"><i class="fas fa-chevron-left go-back rounded"></i></a>
             </div>
             <div class="col-6 col-md-7 col-lg-9">
                 <h1><?= $data["videos"][0]->nomFormation ?></h1>
@@ -62,7 +62,7 @@
                 <span>Total videos (<?= count($data["videos"]) ?> videos) · <span class="badge bg-primary"><i class="fas fa-clock"></i> <?= $data["videos"][0]->masse_horaire ?></span></span>
             </div>
             <div class="col">
-                <a href="<?= URLROOT ?>/formations/addVideo/<?= $_SESSION['id_formation'] ?>" class="btn btn-primary">Add
+                <a href="<?= URLROOT ?>/formation/addVideo/<?= $_SESSION['id_formation'] ?>" class="btn btn-primary">Add
                     Video <i class="fa-solid fa-file-circle-plus"></i></a>
             </div>
         </div>

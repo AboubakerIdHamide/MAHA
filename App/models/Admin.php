@@ -4,13 +4,17 @@
  * Model Admin
  */
 
-class Administrateur
+namespace App\Models;
+
+use App\Libraries\Database;
+
+class Admin
 {
     private $connect;
 
-    public function __construct($database)
+    public function __construct()
     {
-        $this->connect = $database;
+        $this->connect = Database::getConnection();
     }
 
     public function getAdminByEmail($email)
@@ -19,9 +23,9 @@ class Administrateur
             SELECT * FROM admins 
             WHERE email = :email
         ");
-        $query->bindParam(':email', $email, PDO::PARAM_STR);
+        $query->bindParam(':email', $email, \PDO::PARAM_STR);
         $query->execute();
-        $admin = $query->fetch(PDO::FETCH_OBJ);
+        $admin = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $admin;
         }
@@ -38,7 +42,7 @@ class Administrateur
             FROM admins 
         ");
         $query->execute();
-        $settings = $query->fetch(PDO::FETCH_OBJ);
+        $settings = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $settings;
         }
@@ -54,9 +58,9 @@ class Administrateur
 			    password_paypal = :password_p
 		");
 
-        $query->bindParam(':platform_pourcentage', $data['platform_pourcentage'], PDO::PARAM_STR);
-        $query->bindParam(':username_p', $data['username_p'], PDO::PARAM_STR);
-        $query->bindParam(':password_p', $data['password_p'], PDO::PARAM_STR);
+        $query->bindParam(':platform_pourcentage', $data['platform_pourcentage'], \PDO::PARAM_STR);
+        $query->bindParam(':username_p', $data['username_p'], \PDO::PARAM_STR);
+        $query->bindParam(':password_p', $data['password_p'], \PDO::PARAM_STR);
         $query->execute();
 
         if ($query->rowCount() > 0) {

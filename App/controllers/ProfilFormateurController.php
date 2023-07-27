@@ -1,20 +1,25 @@
 <?php
 
-class ProfilFormateur extends Controller
+use App\Models\Formation;
+use App\Models\Formateur;
+use App\Models\Stocked;
+use App\Models\Inscription;
+
+class ProfilFormateurController
 {
-    private $stockedModel;
     private $formationModel;
-    private $inscriptionModel;
     private $fomateurModel;
+    private $stockedModel;
+    private $inscriptionModel;
 
     public function __construct()
     {
-        $this->fomateurModel = $this->model("Formateur");
-        $this->formationModel = $this->model("Formation");
-        $this->inscriptionModel = $this->model("Inscription");
-        $this->stockedModel = $this->model("Stocked");
+        $this->formationModel = new Formation;
+        $this->fomateurModel = new Formateur;
+        $this->stockedModel = new Stocked;
+        $this->inscriptionModel = new Inscription;
     }
-    public function index($id)
+    public function index($id = null)
     {
         $formateur = $this->fomateurModel->getFormateurById($id);
         $formateur->img = URLROOT . "/Public/" . $formateur->img;

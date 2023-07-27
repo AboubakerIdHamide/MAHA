@@ -23,7 +23,7 @@ $(document).ready(function () {
       url: `${urlRoot}/ajax/joinCourse/${$(".code-formation").val()}`,
       type: "POST",
       success: function (res) {
-        window.location.href = urlRoot + "/etudiants/dashboard";
+        window.location.href = urlRoot + "/etudiant/dashboard";
       },
       error: function (res) {
         $(".code-formation").addClass("is-invalid");

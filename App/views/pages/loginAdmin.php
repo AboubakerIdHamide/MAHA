@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?= SITENAME ?> | Admin</title>
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
     <!-- Font Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <!-- Style -->
-    <link rel="stylesheet" href="<?= URLROOT . "/Public/css/mahaAlert.css"; ?>" />
-    <link rel="stylesheet" href="<?= URLROOT; ?>/public/css/login.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/mahaAlert.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/login.css" />
 </head>
 
 <body>
@@ -21,8 +21,8 @@
         <div class="form login">
             <div class="main-form-heading">
                 <h1 class="logo">
-                    <a href="<?= URLROOT . "/pages/index"; ?>">
-                        <img src="<?= URLROOT . '/Public/images/MAHA.png' ?>" alt="">
+                    <a href="<?= URLROOT ?>/page">
+                        <img src="<?= IMAGEROOT ?>/MAHA.png" alt="logo platform">
                     </a>
                 </h1>
                 <span class="badge bg-primary fs-6">Admin</span>
@@ -54,7 +54,7 @@
             </form>
         </div>
     </div>
-    <script src="<?= URLROOT; ?>/public/js/login.js"></script>
+    <script src="<?= JSROOT ?>/login.js"></script>
 </body>
 
 </html>

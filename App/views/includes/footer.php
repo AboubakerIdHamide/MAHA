@@ -13,7 +13,7 @@
                     <h5>Liens utiles</h5>
                     <ul class="links">
                         <li><a href="<?= URLROOT ?>">Home</a></li>
-                        <li><a href="<?= URLROOT . "/pageFormations/" ?>">Formations</a></li>
+                        <li><a href="<?= URLROOT ?>/pageFormation">Formations</a></li>
                         <li><a href="<?= URLROOT ?>/#catalogue">Catalogue</a></li>
                         <li><a href="<?= URLROOT ?>/#popular">Les Plus Populaires</a></li>
                         <li><a href="<?= URLROOT ?>/#contact">Contactez-Nous</a></li>
@@ -50,13 +50,13 @@
     </div>
     <!-- page -->
     <script src="<?= URLROOT ?>/public/jQuery/jquery-3.6.0.min.js"></script>
-    <script src="<?= URLROOT ?>/public/js/bootstrap.bundle.min.js"></script>
-    <script src="<?= URLROOT ?>/public/js/owl.carousel.min.js"></script>
+    <script src="<?= JSROOT ?>/bootstrap.bundle.min.js"></script>
+    <script src="<?= JSROOT ?>/owl.carousel.min.js"></script>
     <!-- COMMON SCRIPTS -->
-    <script src="<?= URLROOT ?>/public/js/common_scripts.js"></script>
-    <script src="<?= URLROOT ?>/public/js/mainT.js"></script>
-    <script src="<?= URLROOT ?>/public/js/main.js"></script>
-    <script src="<?= URLROOT ?>/public/js/pageFormations.js"></script>
+    <script src="<?= JSROOT ?>/common_scripts.js"></script>
+    <script src="<?= JSROOT ?>/mainT.js"></script>
+    <script src="<?= JSROOT ?>/main.js"></script>
+    <script src="<?= JSROOT ?>/pageFormations.js"></script>
     </body>
 
     </html>
