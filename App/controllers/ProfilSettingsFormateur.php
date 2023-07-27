@@ -18,7 +18,7 @@ class ProfilSettingsFormateur extends Controller
         $data = [
             'formateur' => $formateur
         ];
-        $this->view("formateur/profilSettingsFormateur", $data);
+        return view("formateur/profilSettingsFormateur", $data);
     }
     public function updateInfoFormateur()
     {

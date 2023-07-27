@@ -36,6 +36,6 @@ class ProfilFormateur extends Controller
             'theme' => $theme
         ];
 
-        $this->view("pages/profilFormateur", $data);
+        return view("pages/profilFormateur", $data);
     }
 }

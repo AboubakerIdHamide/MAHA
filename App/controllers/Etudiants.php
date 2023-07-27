@@ -45,7 +45,7 @@ class Etudiants extends Controller
 		}
 		$data['nbrNotifications'] = $this->_getNotifications();
 		// loading the view
-		$this->view("etudiant/index", $data);
+		return view("etudiant/index", $data);
 	}
 
 	public function coursVideos($idFormateur = "", $idFormation = "")
@@ -81,7 +81,7 @@ class Etudiants extends Controller
 		}
 
 		// loading the view
-		$this->view("etudiant/coursVideos", $formation);
+		return view("etudiant/coursVideos", $formation);
 	}
 
 	public function watchedVideos()
@@ -96,7 +96,7 @@ class Etudiants extends Controller
 		$data["nbrNotifications"] = $this->_getNotifications();
 
 		// loading the view
-		$this->view("etudiant/videoCards", $data);
+		return view("etudiant/videoCards", $data);
 	}
 
 	public function bookmarkedVideos()
@@ -111,7 +111,7 @@ class Etudiants extends Controller
 		$data["nbrNotifications"] = $this->_getNotifications();
 
 		// loading the view
-		$this->view("etudiant/videoCards", $data);
+		return view("etudiant/videoCards", $data);
 	}
 
 	// Update Profil 
@@ -189,7 +189,7 @@ class Etudiants extends Controller
 
 			$data["nbrNotifications"] = $this->_getNotifications();
 
-			$this->view("etudiant/updateInfos", $data);
+			return view("etudiant/updateInfos", $data);
 		}
 	}
 
@@ -306,7 +306,7 @@ class Etudiants extends Controller
 				"img_err" => "",
 				"tel_err" => "",
 			];
-			$this->view("etudiant/updateInfos", $data);
+			return view("etudiant/updateInfos", $data);
 		}
 	}
 
@@ -358,7 +358,7 @@ class Etudiants extends Controller
 	public function notifications()
 	{
 		$data = ['nbrNotifications' => $this->_getNotifications()];
-		$this->view('etudiant/notifications', $data);
+		return view('etudiant/notifications', $data);
 	}
 
 	public function setStateToSeen($id_notification)

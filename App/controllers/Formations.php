@@ -137,7 +137,7 @@ class Formations extends Controller
 				flash("formationAdded", "Vos détails de cours sont insérés avec succès, vous devez donner une description à vos vidéos", "alert alert-info mt-1");
 			} else {
 				$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
-				$this->view("formation/addFormation", $data);
+				return view("formation/addFormation", $data);
 			}
 		} else {
 			$data = [
@@ -151,7 +151,7 @@ class Formations extends Controller
 			$data["langues"] = $this->stockedModel->getAllLangues();
 			$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
 			$data["logo"] = URLROOT . "/Public/" . $this->stockedModel->getThemeData()->logo;
-			$this->view("formation/addFormation", $data);
+			return view("formation/addFormation", $data);
 		}
 	}
 
@@ -185,7 +185,7 @@ class Formations extends Controller
 		} else {
 			$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
 			$data["logo"]= URLROOT . "/Public/" . $this->stockedModel->getThemeData()->logo;
-			$this->view("formateur/addVideo", $data);
+			return view("formateur/addVideo", $data);
 		}
 	}
 
@@ -344,7 +344,7 @@ class Formations extends Controller
 				}
 				$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
 
-				$this->view('formateur/videos', $data);
+				return view('formateur/videos', $data);
 			} else {
 				flash("formationVide", "Votre cours ne contient aucune vidéo, veuillez ajoutez des vidéos", "alert alert-info");
 				redirect("formations/addVideo/" . $id_formation);

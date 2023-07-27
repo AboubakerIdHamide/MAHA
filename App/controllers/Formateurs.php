@@ -48,7 +48,7 @@ class Formateurs extends Controller
 			'nbrNotifications' => $this->_getNotifications()
 		];
 
-		$this->view('formateur/index', $data);
+		return view('formateur/index', $data);
 	}
 
 	public function requestPayment()
@@ -61,7 +61,7 @@ class Formateurs extends Controller
 				echo json_encode("votre demande a été mis avec success");
 			}
 		} else {
-			$this->view('formateur/requestPayment', ['nbrNotifications' => $this->_getNotifications()]);
+			return view('formateur/requestPayment', ['nbrNotifications' => $this->_getNotifications()]);
 		}
 	}
 
@@ -100,7 +100,7 @@ class Formateurs extends Controller
 
 	public function notifications()
 	{
-		$this->view('formateur/notifications', ['nbrNotifications' => $this->_getNotifications()]);
+		return view('formateur/notifications', ['nbrNotifications' => $this->_getNotifications()]);
 	}
 
 	public function setStateToSeen($id_notification)
@@ -204,7 +204,7 @@ class Formateurs extends Controller
 				"categories" => $categories,
 				"nbrNotifications" => $this->_getNotifications()
 			];
-			$this->view("formateur/updateInfos", $data);
+			return view("formateur/updateInfos", $data);
 		}
 	}
 
@@ -339,7 +339,7 @@ class Formateurs extends Controller
 				"specId_err" => "",
 				"bio_err" => "",
 			];
-			$this->view("formateur/updateInfos", $data);
+			return view("formateur/updateInfos", $data);
 		}
 	}
 
@@ -410,7 +410,7 @@ class Formateurs extends Controller
 				}
 			}
 			// loading the view
-			$this->view("formateur/coursVideos", $data);
+			return view("formateur/coursVideos", $data);
 		} else
 			die("Une erreur s'est produite !!!");
 	}
@@ -424,6 +424,6 @@ class Formateurs extends Controller
 			$data['code_formateur'] = $this->fomateurModel->refreshCode($_SESSION['id_formateur']);
 		}
 
-		$this->view("formateur/subscriptionCode", $data);
+		return view("formateur/subscriptionCode", $data);
 	}
 }

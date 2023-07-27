@@ -59,7 +59,7 @@ class PageFormations extends Controller
             'theme' => $theme,
         ];
 	
-        $this->view("pages/pageFormations", $data);
+        return view("pages/pageFormations", $data);
     }
 
     public function coursDetails($id_formation = null)
@@ -92,7 +92,7 @@ class PageFormations extends Controller
             'previewVideo' => $previewVideo,
             'theme' => $theme
         ];
-        $this->view("pages/cours-details", $data);
+        return view("pages/cours-details", $data);
     }
 
     public function rechercheFormations($valRech = '')
@@ -137,7 +137,7 @@ class PageFormations extends Controller
                     'theme' => $theme
                 ];
 
-                $this->view("pages/pageFormations", $data);
+                return view("pages/pageFormations", $data);
             } else {
                 $this->formationModel->insertIntoTableFilter($type = 'rech', $numbFormations['numbFormations'], $valRecherche, $arg2 = '');
                 $formations = $this->formationModel->getFormationsByValRech($valRecherche, $offset);
@@ -157,7 +157,7 @@ class PageFormations extends Controller
                     'theme' => $theme
                 ];
 
-                $this->view("pages/pageFormations", $data);
+                return view("pages/pageFormations", $data);
             }
         } else {
             $data = [
@@ -169,7 +169,7 @@ class PageFormations extends Controller
                 'theme' => $theme
             ];
 
-            $this->view("pages/pageFormations", $data);
+            return view("pages/pageFormations", $data);
         }
     }
 
@@ -201,7 +201,7 @@ class PageFormations extends Controller
                 'theme' => $theme
             ];
 
-            $this->view("pages/pageFormations", $data);
+            return view("pages/pageFormations", $data);
         } else {
             $this->formationModel->insertIntoTableFilter($type = 'filter', $numbFormations, $cat, $choi);
 
@@ -221,7 +221,7 @@ class PageFormations extends Controller
                 'totalPages' => $totalPages,
                 'theme' => $theme
             ];
-            $this->view("pages/pageFormations", $data);
+            return view("pages/pageFormations", $data);
         }
     }
 
@@ -252,7 +252,7 @@ class PageFormations extends Controller
                 'theme' => $theme
             ];
 
-            $this->view("pages/pageFormations", $data);
+            return view("pages/pageFormations", $data);
         } else {
             $this->formationModel->insertIntoTableFilter($type = 'all', $numbFormations, $arg1 = '', $arg2 = '');
             $formations = $this->formationModel->getPopularCourses($offset);
@@ -271,7 +271,7 @@ class PageFormations extends Controller
                 'totalPages' => $totalPages,
                 'theme' => $theme
             ];
-            $this->view("pages/pageFormations", $data);
+            return view("pages/pageFormations", $data);
         }
     }
 
@@ -302,7 +302,7 @@ class PageFormations extends Controller
                 'theme' => $theme
             ];
 
-            $this->view("pages/pageFormations", $data);
+            return view("pages/pageFormations", $data);
         } else {
             $this->formationModel->insertIntoTableFilter($type = 'all', $numbFormations, $arg1 = '', $arg2 = '');
 
@@ -322,7 +322,7 @@ class PageFormations extends Controller
                 'totalPages' => $totalPages,
                 'theme' => $theme
             ];
-            $this->view("pages/pageFormations", $data);
+            return view("pages/pageFormations", $data);
         }
     }
 
@@ -353,7 +353,7 @@ class PageFormations extends Controller
                 'theme' => $theme
             ];
 
-            $this->view("pages/pageFormations", $data);
+            return view("pages/pageFormations", $data);
         } else {
             $this->formationModel->insertIntoTableFilter($type = 'all', $numbFormations, $arg1 = '', $arg2 = '');
 
@@ -373,7 +373,7 @@ class PageFormations extends Controller
                 'totalPages' => $totalPages,
                 'theme' => $theme
             ];
-            $this->view("pages/pageFormations", $data);
+            return view("pages/pageFormations", $data);
         }
     }
 
@@ -404,7 +404,7 @@ class PageFormations extends Controller
                 'theme' => $theme
             ];
 
-            $this->view("pages/pageFormations", $data);
+            return view("pages/pageFormations", $data);
         } else {
             $formations = $this->formationModel->getFormationsByLangue($id_langue, $offset);
             foreach ($formations as $formation) {
@@ -422,7 +422,7 @@ class PageFormations extends Controller
                 'totalPages' => $totalPages,
                 'theme' => $theme
             ];
-            $this->view("pages/pageFormations", $data);
+            return view("pages/pageFormations", $data);
         }
     }
 
@@ -453,7 +453,7 @@ class PageFormations extends Controller
                 'theme' => $theme
             ];
 
-            $this->view("pages/pageFormations", $data);
+            return view("pages/pageFormations", $data);
         } else {
             $formations = $this->formationModel->getFormationsByNiveau($id_niveau, $offset);
             foreach ($formations as $formation) {
@@ -471,7 +471,7 @@ class PageFormations extends Controller
                 'totalPages' => $totalPages,
                 'theme' => $theme
             ];
-            $this->view("pages/pageFormations", $data);
+            return view("pages/pageFormations", $data);
         }
     }
 
@@ -537,7 +537,7 @@ class PageFormations extends Controller
                     'theme' => $theme
                 ];
 
-                $this->view("pages/pageFormations", $data);
+                return view("pages/pageFormations", $data);
             } else {
                 $formations = $this->formationModel->getFormationsByDuree($minH, $maxH, $offset);
                 foreach ($formations as $formation) {
@@ -555,7 +555,7 @@ class PageFormations extends Controller
                     'totalPages' => $totalPages,
                     'theme' => $theme
                 ];
-                $this->view("pages/pageFormations", $data);
+                return view("pages/pageFormations", $data);
             }
         } else {
             $data = [
@@ -567,7 +567,7 @@ class PageFormations extends Controller
                 'theme' => $theme
             ];
 
-            $this->view("pages/pageFormations", $data);
+            return view("pages/pageFormations", $data);
         }
     }
 

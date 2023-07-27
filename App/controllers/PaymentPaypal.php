@@ -225,13 +225,13 @@ class PaymentPaypal extends Controller
 		$formateurModel = $this->model('Formateur');
 		$formateurProfit = (100 - $this->adminModel->getProfitAndPaypalToken()->platform_pourcentage) / 100;
 		$formateurModel->updateFormateurBalance($inscription->id_formateur, $inscription->prix * $formateurProfit);
-		return $this->view('payment/paymentSuccess');
+		return return view('payment/paymentSuccess');
 	}
 
 	public function cancel($idFormation)
 	{
 		if (isset($_GET['token'])) {
-			return $this->view('payment/paymentCancel', ['idFormation' => $idFormation]);
+			return return view('payment/paymentCancel', ['idFormation' => $idFormation]);
 		} else {
 			redirect('pageFormations/coursDetails/' . $idFormation);
 			exit;

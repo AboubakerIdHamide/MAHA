@@ -84,7 +84,7 @@ class Admin extends Controller
                 $data["email_err"] = "Aucun utilisateur avec cet email";
             }
             if (empty($admin) || !empty($data["password_err"]) || !empty($data["email_err"])) {
-                $this->view("pages/loginAdmin", $data);
+                return view("pages/loginAdmin", $data);
             }
         } else {
             $data = [
@@ -98,7 +98,7 @@ class Admin extends Controller
                 $data["password"] = $_COOKIE["userpw"];
             }
 
-            $this->view("pages/loginAdmin", $data);
+            return view("pages/loginAdmin", $data);
         }
     }
 
@@ -132,7 +132,7 @@ class Admin extends Controller
         $data['countFormateurs'] = $this->fomateurModel->countFormateurs();
         $data['countEtudiant'] = $this->etudiantModel->countEtudiant();
         $data['balance'] = $this->adminModel->getAdminByEmail($_SESSION['admin']->email)->balance;
-        $this->view('admin/index', $data);
+        return view('admin/index', $data);
     }
 
     public function getAllRequestsPayments($etat)
@@ -171,7 +171,7 @@ class Admin extends Controller
         foreach ($data['formateurs'] as $formateur) {
             $formateur->img = URLROOT . "/Public/" . $formateur->img;
         }
-        $this->view("admin/formateurs", $data);
+        return view("admin/formateurs", $data);
     }
 
     public function removeFormateur($id_formateur)
@@ -208,7 +208,7 @@ class Admin extends Controller
             $etudiant->img = URLROOT . "/Public/" . $etudiant->img;
             $etudiant->total_inscription = $this->etudiantModel->countTotalInscriById($etudiant->id_etudiant);
         }
-        $this->view("admin/etudiants", $data);
+        return view("admin/etudiants", $data);
     }
 
     public function removeEtudiant($id_etudiant)
@@ -261,7 +261,7 @@ class Admin extends Controller
         $data['langues'] = $this->stockedModel->getAllLangues();
         $data['niveaux'] = $this->stockedModel->getAllLevels();
 
-        $this->view("admin/formations", $data);
+        return view("admin/formations", $data);
     }
 
     public function removeFormation($idFormation)
@@ -421,7 +421,7 @@ class Admin extends Controller
     public function requestPayment()
     {
         $this->checkSession();
-        return $this->view('admin/requestPayment');
+        return return view('admin/requestPayment');
     }
 
     public function getTop10BestSellers()
@@ -436,7 +436,7 @@ class Admin extends Controller
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $data['categories'] = $this->stockedModel->getAllCategories();
-            $this->view('admin/categories', $data);
+            return view('admin/categories', $data);
         } else {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $this->stockedModel->insertCategorie($_POST);
@@ -458,7 +458,7 @@ class Admin extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $data['langues'] = $this->stockedModel->getAllLangues();
 
-            $this->view('admin/langues', $data);
+            return view('admin/langues', $data);
         } else {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $this->stockedModel->insertLangue($_POST['nom_langue']);
@@ -499,7 +499,7 @@ class Admin extends Controller
         } else {
             $data["logo"] = URLROOT . "/Public/" . $theme->logo;
             $data["landingImg"] = URLROOT . "/Public/" . $theme->landingImg;
-            $this->view('admin/theme', $data);
+            return view('admin/theme', $data);
         }
     }
 
@@ -510,7 +510,7 @@ class Admin extends Controller
             echo json_encode("SMTP modifié avec succès !");
         } else {
             $smtp = $this->smtpModel->getSmtp();
-            $this->view('admin/smtp', $smtp);
+            return view('admin/smtp', $smtp);
         }
     }
 
@@ -550,7 +550,7 @@ class Admin extends Controller
             echo json_encode("Paramètre modifié avec succès !");
         } else {
             $settings = $this->adminModel->getProfitAndPaypalToken();
-            $this->view('admin/settings', $settings);
+            return view('admin/settings', $settings);
         }
     }
 }

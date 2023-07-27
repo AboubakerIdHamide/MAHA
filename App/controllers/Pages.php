@@ -43,6 +43,6 @@ class Pages extends Controller
 			'theme' => $theme
 		];
 
-		$this->view("pages/index", $data);
+		return view("pages/index", $data);
 	}
 }

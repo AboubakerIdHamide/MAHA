@@ -84,7 +84,7 @@ class Users extends Controller
                 }
             }
             if (empty($user) || !empty($data["password_err"]) || !empty($data["email_err"])) {
-                $this->view("pages/login", $data);
+                return view("pages/login", $data);
             }
         } else {
             $data = [
@@ -98,7 +98,7 @@ class Users extends Controller
                 $data["password"] = $_COOKIE["userpw"];
             }
 
-            $this->view("pages/login", $data);
+            return view("pages/login", $data);
         }
     }
 
@@ -143,7 +143,7 @@ class Users extends Controller
 
             // Checking If There Is An Error
             if ($data["thereIsError"] == true) {
-                $this->view("pages/register", [$data, $categories]);
+                return view("pages/register", [$data, $categories]);
             } else {
                 // Hashing Password
                 $data["mdp"] = password_hash($data["mdp"], PASSWORD_DEFAULT);
@@ -185,7 +185,7 @@ class Users extends Controller
                 "specId_err" => "",
                 "bio_err" => "",
             ];
-            $this->view("pages/register", [$data, $categories]);
+            return view("pages/register", [$data, $categories]);
         }
     }
 
@@ -226,7 +226,7 @@ class Users extends Controller
             } else {
                 $data[1]["code"] = $_POST["code"];
                 $data[1]["code_err"] = "Code invalide";
-                $this->view("pages/emailVerification", $data);
+                return view("pages/emailVerification", $data);
             }
 
 
@@ -234,7 +234,7 @@ class Users extends Controller
                 $_SESSION["resend"] = true;
             }
         } else {
-            $this->view("pages/emailVerification", $data);
+            return view("pages/emailVerification", $data);
         }
 
         // send Email Verification
@@ -298,7 +298,7 @@ class Users extends Controller
             }
 
             if (empty($user) || !empty($data["mdp_err"]) || !empty($data["email_err"]) || !empty($data["vmdp_err"])) {
-                $this->view("pages/forgotpassword", $data);
+                return view("pages/forgotpassword", $data);
             }
         } else {
             $data = [
@@ -309,7 +309,7 @@ class Users extends Controller
                 "mdp_err" => "",
                 "vmdp_err" => ""
             ];
-            $this->view("pages/forgotpassword", $data);
+            return view("pages/forgotpassword", $data);
         }
     }
 
@@ -354,7 +354,7 @@ class Users extends Controller
             } else {
                 $data[1]["code"] = $_POST["code"];
                 $data[1]["code_err"] = "Code invalide";
-                $this->view("pages/emailVerification", $data);
+                return view("pages/emailVerification", $data);
             }
 
 
@@ -362,7 +362,7 @@ class Users extends Controller
                 $_SESSION["resend"] = true;
             }
         } else {
-            $this->view("pages/emailVerification", $data);
+            return view("pages/emailVerification", $data);
         }
 
         // send Email Change Password
