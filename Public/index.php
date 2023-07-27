@@ -1,4 +1,122 @@
 <?php
-require_once("../app/bootstrap.php");
-// Intialize Core
-$init = new Core;
+
+use App\Libraries\Response;
+
+session_start();
+
+// Composer autoload => composer dumpautoload
+require_once '../vendor/autoload.php';
+
+// Global Constants
+require_once '../app/Config/globalConstants.php';
+
+// Require all helpers
+require_once '../App/helpers/redirect.php';
+require_once '../App/helpers/view.php';
+require_once '../App/helpers/flash.php';
+require_once '../App/helpers/old.php';
+require_once '../App/helpers/print_r2.php';
+
+
+/*
+ * Router File
+ * URL FORMAT (Controller) - controller/method/params
+ * URL FORMAT (ApiController) - api/controller/method/params
+ */
+
+class Router
+{
+    protected $currentController = "AuthController";
+    protected $currentMethod = "index";
+    protected $currentParams = [];
+
+    public function __construct()
+    {
+        $url = $this->getUrl();
+        if (!isset($url[0])) {
+            require '../app/Controllers/' . $this->currentController . '.php';
+            // initialize a contoller object
+            $this->currentController = new $this->currentController;
+            // getParams
+            $this->currentParams = $url ? array_values($url) : [];
+            // call callback with the params
+            call_user_func_array([$this->currentController, $this->currentMethod], $this->currentParams);
+            return;
+        }
+
+        if ($url[0] === 'api') {
+            if (!isset($url[1])) {
+                Response::json(null, 404, "404 Route Not Found");
+            }
+            $this->isApiControllerExist($url[1]);
+            require '../app/Controllers/api/' . $this->currentController . '.php';
+            // initialize a contoller object
+            $this->currentController = new $this->currentController;
+        } else {
+            $this->isControllerExist($url[0]);
+            require '../app/Controllers/' . $this->currentController . '.php';
+            // initialize a contoller object
+            $this->currentController = new $this->currentController;
+            if (isset($url[1])) {
+                $this->isMethodExist($url[1]);
+                unset($url[1]);
+            }
+
+            // to keep only params
+            unset($url[0]);
+
+            // getParams
+            $this->currentParams = $url ? array_values($url) : [];
+            // call callback with the params
+            call_user_func_array([$this->currentController, $this->currentMethod], $this->currentParams);
+        }
+    }
+
+    public function isControllerExist($controllerName)
+    {
+        if (file_exists("../app/Controllers/" . ucwords($controllerName) . "Controller.php")) {
+            $this->currentController = ucwords($controllerName) . 'Controller';
+            return true;
+        }
+        require_once "../app/Views/errors/404.php";
+        exit;
+    }
+
+    public function isApiControllerExist($controllerName)
+    {
+        $controllerName = ucwords(substr($controllerName, 0, -1));
+        if (file_exists("../app/Controllers/api/" . $controllerName . "Controller.php")) {
+            $this->currentController = $controllerName . 'Controller';
+            return true;
+        }
+        Response::json(null, 404, "404 Route Not Found");
+        exit;
+    }
+
+    public function isMethodExist($methodName)
+    {
+        if (method_exists($this->currentController, $methodName)) {
+            $this->currentMethod = $methodName;
+            return true;
+        }
+
+        if ($this->getUrl()[0] !== "api") {
+            require_once "../app/Views/errors/404.php";
+        } else {
+            Response::json(null, 404, "404 Route Not Found");
+        }
+        exit;
+    }
+
+    public function getUrl()
+    {
+        if (isset($_GET["url"])) {
+            $url = rtrim($_GET["url"], "/");
+            $url = filter_var($url, FILTER_SANITIZE_URL);
+            $url = explode("/", $url);
+            return $url;
+        }
+    }
+}
+
+$init = new Router;
