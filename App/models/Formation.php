@@ -377,60 +377,6 @@ class Formation
         return [];
     }
 
-    // ===================================== Insert Into Table Formations =====================
-
-
-    public function insertIntoTableFilter($type, $num, $arg1, $arg2)
-    {
-        if ($type == 'all') {
-            $query = $this->connect->prepare("
-                DELETE FROM tablefilter;
-                CALL insertItoTableFilterAll(:nb)
-            ");
-
-            $query->bindParam(":nb", $num);
-            $query->execute();
-        } elseif ($type == 'rech') {
-            $query = $this->connect->prepare("
-                DELETE FROM tablefilter;
-                CALL insertItoTableFilterRech(:nb, :arg)
-            ");
-
-            $query->bindParam(":nb", $num);
-            $query->bindParam(":arg", $arg1);
-            $query->execute();
-        } else {
-            $query = $this->connect->prepare("
-                DELETE FROM tablefilter;
-                CALL insertItoTableFilterFilter(:nb, :arg1, :arg2)
-            ");
-
-            $query->bindParam(":nb", $num);
-            $query->bindParam(":arg1", $arg1);
-            $query->bindParam(":arg2", $arg2);
-            $query->execute();
-        }
-    }
-
-    // ===================================== Insert Into Table Formations =====================
-    // ========================== Delete From Table Filter ========================== 
-
-    public function deleteFromTableFilter()
-    {
-
-        $query = $this->connect->prepare("
-            DELETE FROM tablefilter
-        ");
-
-        $query->execute();
-        if ($query->rowCount() > 0) {
-            return true;
-        }
-        return false;
-    }
-    // ========================== Delete From Table Filter ========================== 
-    // ================================ Get Formation By Id ================================
-
     public function getFormationById($id)
     {
         $query = $this->connect->prepare("
