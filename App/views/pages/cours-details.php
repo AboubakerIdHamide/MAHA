@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="MAHA a modern educational platform">
-    <title>MAHA | <?= $data['formation']->nomFormation ?></title>
+    <title><?= SITENAME ?> | <?= $data['formation']->nomFormation ?></title>
     <!-- Favicons-->
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
     <!-- GOOGLE WEB FONT -->

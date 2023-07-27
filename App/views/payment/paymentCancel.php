@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="<?= URLROOT . '/public' ?>/images/favicon.ico">
-    <title>MAHA | Paiement annulé</title>
+    <title><?= SITENAME ?> | Paiement annulé</title>
     <!-- Bootstrap Vapor -->
     <link href="<?= URLROOT . '/public/css/' ?>vapor.min.css" rel="stylesheet">
     <style>
