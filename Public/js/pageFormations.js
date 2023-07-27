@@ -1,12 +1,12 @@
-const plusPopilaires = $('#plusPopilaires');
+const plusPopular = $('#plusPopular');
 const plusAmais = $('#plusAmais'); 
-const plusAchter = $('#plusAchter'); 
+const plusAcheter = $('#plusAcheter'); 
 
 const currentURL = window.location.href;
 
-if(currentURL.includes('plusPopilairesFormations')){
-    plusPopilaires.css('background-color', '#662d91');
-    plusPopilaires.css('color', '#fff');
+if(currentURL.includes('getPopularCourses')){
+    plusPopular.css('background-color', '#662d91');
+    plusPopular.css('color', '#fff');
 }
 
 if(currentURL.includes('plusFormationsAmais')){
@@ -14,9 +14,9 @@ if(currentURL.includes('plusFormationsAmais')){
     plusAmais.css('color', '#fff');
 }
 
-if(currentURL.includes('plusFormationsAchter')){
-    plusAchter.css('background-color', '#662d91');
-    plusAchter.css('color', '#fff');
+if(currentURL.includes('plusFormationsAcheter')){
+    plusAcheter.css('background-color', '#662d91');
+    plusAcheter.css('color', '#fff');
 }
 
 //  -------------------------- Pagenition ---------------------

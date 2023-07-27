@@ -15,9 +15,9 @@
             <ul class="clearfix">
                 <li>
                     <div class="switch-field">
-                        <a class="dropdown-item" id='plusPopilaires' ckecked href="<?= URLROOT . "/pageFormations/getPopularCourses" ?>">Les Plus Populaires</a>
+                        <a class="dropdown-item" id='plusPopular' ckecked href="<?= URLROOT . "/pageFormations/getPopularCourses" ?>">Les Plus Populaires</a>
                         <a class="dropdown-item" id='plusAmais' href="<?= URLROOT . "/pageFormations/plusFormationsAmais" ?>">Les Plus Amais</a>
-                        <a class="dropdown-item" id='plusAchter' href="<?= URLROOT . "/pageFormations/plusFormationsAcheter" ?>">Les Plus Achter</a>
+                        <a class="dropdown-item" id='plusAcheter' href="<?= URLROOT . "/pageFormations/plusFormationsAcheter" ?>">Les Plus Achter</a>
                     </div>
                 </li>
             </ul>
