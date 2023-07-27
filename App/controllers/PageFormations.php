@@ -32,8 +32,6 @@ class PageFormations extends Controller
         $offset = $dataPages['offset'];
         $totalPages = $dataPages['total_pages'];
 
-        $this->formationModel->insertIntoTableFilter($type = 'all', $totalFormations, $arg1 = '', $arg2 = '');
-
         $formations = $this->formationModel->getAllFormations($offset);
 	
         if ($formations) {
@@ -139,7 +137,6 @@ class PageFormations extends Controller
 
                 return view("pages/pageFormations", $data);
             } else {
-                $this->formationModel->insertIntoTableFilter($type = 'rech', $numbFormations['numbFormations'], $valRecherche, $arg2 = '');
                 $formations = $this->formationModel->getFormationsByValRech($valRecherche, $offset);
                 foreach ($formations as $formation) {
                     $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
@@ -203,8 +200,6 @@ class PageFormations extends Controller
 
             return view("pages/pageFormations", $data);
         } else {
-            $this->formationModel->insertIntoTableFilter($type = 'filter', $numbFormations, $cat, $choi);
-
             $formations = $this->formationModel->getFormationsByFilter($cat, $choi, $offset);
             foreach ($formations as $formation) {
                 $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
@@ -254,7 +249,6 @@ class PageFormations extends Controller
 
             return view("pages/pageFormations", $data);
         } else {
-            $this->formationModel->insertIntoTableFilter($type = 'all', $numbFormations, $arg1 = '', $arg2 = '');
             $formations = $this->formationModel->getPopularCourses($offset);
             foreach ($formations as $formation) {
                 $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
@@ -304,8 +298,6 @@ class PageFormations extends Controller
 
             return view("pages/pageFormations", $data);
         } else {
-            $this->formationModel->insertIntoTableFilter($type = 'all', $numbFormations, $arg1 = '', $arg2 = '');
-
             $formations = $this->formationModel->getPlusFormationsAmais($offset);
             foreach ($formations as $formation) {
                 $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
@@ -355,7 +347,6 @@ class PageFormations extends Controller
 
             return view("pages/pageFormations", $data);
         } else {
-            $this->formationModel->insertIntoTableFilter($type = 'all', $numbFormations, $arg1 = '', $arg2 = '');
 
             $formations = $this->formationModel->getPlusFormationsAcheter($offset);
             foreach ($formations as $formation) {
