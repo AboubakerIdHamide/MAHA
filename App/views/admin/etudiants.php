@@ -28,15 +28,15 @@
                             <td class="text-center"><?= $etudiant->id_etudiant ?></td>
                             <td class="d-flex gap-1" style="font-weight: 500;">
                                 <img class="img-fluid me-1 rounded-circle avatar-etudiant"
-                                    src="<?= $etudiant->img_etudiant ?>" alt="etudiant avatar">
+                                    src="<?= $etudiant->img ?>" alt="etudiant avatar">
                                 <div class="d-flex flex-column me-3">
-                                    <span class="nom-etudiant"><?= $etudiant->nom_etudiant ?></span>
-                                    <span class="prenom-etudiant"><?= $etudiant->prenom_etudiant ?></span>
+                                    <span class="nom-etudiant"><?= $etudiant->nom ?></span>
+                                    <span class="prenom-etudiant"><?= $etudiant->prenom ?></span>
                                 </div>
                             </td>
-                            <td class="email-etudiant"><?= $etudiant->email_etudiant ?></td>
-                            <td class="tele-etudiant"><?= $etudiant->tel_etudiant ?></td>
-                            <td><?= $etudiant->date_creation_etudiant ?></td>
+                            <td class="email-etudiant"><?= $etudiant->email ?></td>
+                            <td class="tele-etudiant"><?= $etudiant->tel ?></td>
+                            <td><?= $etudiant->date_creation ?></td>
                             <td class="text-center"><span
                                     class="nbr-inscriptions"><?= $etudiant->total_inscription ?></span> inscriptions
                                 <?php if ($etudiant->total_inscription != 0) echo '<button class="btn btn-primary btn-sm show" id="' . $etudiant->id_etudiant . '" data-bs-toggle="modal" data-bs-target="#showModal"><i class="fa-solid fa-eye"></i></button>' ?>

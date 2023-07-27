@@ -182,19 +182,19 @@ $(document).ready(function () {
             `
         <div class="card mb-3">
             <div class="card-header">
-                <span class='h6'>${formation.nom_formation}</span>
+                <span class='h6'>${formation.nomFormation}</span>
                 <span class='text-muted'> - ${formation.date_inscription}</span>
             </div>
             <div class="card-body d-flex justify-content-between align-items-center">
                 <div class="d-flex gap-1 align-items-center" style="font-weight: 500;">
-                    <img class="img-fluid rounded-circle avatar-formateur me-1" src="${formation.img_formateur}" alt="formateur avatar">
+                    <img class="img-fluid rounded-circle avatar-formateur me-1" src="${formation.imgFormateur}" alt="formateur avatar">
                     <div class="d-flex flex-column">
-                        <span>${formation.nom_formateur}</span>
-                        <span>${formation.prenom_formateur}</span>
+                        <span>${formation.nomFormateur}</span>
+                        <span>${formation.prenomFormateur}</span>
                     </div>
                 </div>
                 <div>
-                  <button id="${formation.id_inscription}" data-prenom-etudiant="${formation.prenom_etudiant}" data-nom-etudiant="${formation.nom_etudiant}" data-nom-formation="${formation.nom_formation}" type="button" class="btn btn-danger deleteInscription" data-bs-toggle="modal" data-bs-target="#deleteModal">supprimer inscription</button>
+                  <button id="${formation.id_inscription}" data-prenom-etudiant="${formation.prenomEtudiant}" data-nom-etudiant="${formation.nomEtudiant}" data-nom-formation="${formation.nomFormation}" type="button" class="btn btn-danger deleteInscription" data-bs-toggle="modal" data-bs-target="#deleteModal">supprimer inscription</button>
                   <a href="http://localhost/maha/pageFormations/coursDetails/${formation.id_formation}" class="btn btn-dark">Voir Formation</a>
                 </div> 
             </div>
