@@ -199,6 +199,13 @@ class Users extends Controller
         // preparing data
         $data = [$_SESSION["user_data"], ["code" => "", "code_err" => ""]];
 
+         // send Email Verification
+        if (isset($_SESSION["vcode"]) == true && $_SESSION["resend"] == true) {
+            $email = $this->model("Smtp")->getSmtp()->username;
+            $this->sendEmail($data[0]["email"], $email, 'MAHA', 'Email verification', null, $data[0]["prenom"], $_SESSION["vcode"], URLROOT . "/pages/verifyEmail");
+            $_SESSION["resend"] = false;
+        }
+
         // checking Post Data
         if (isset($_POST["code"])) {
             // if the code valide insert user
@@ -237,12 +244,7 @@ class Users extends Controller
             return view("pages/emailVerification", $data);
         }
 
-        // send Email Verification
-        if (isset($_SESSION["vcode"]) == true && $_SESSION["resend"] == true) {
-            $email = $this->model("Smtp")->getSmtp()->username;
-            $this->sendEmail($data[0]["email"], $email, 'MAHA', 'Email verification', null, $data[0]["prenom"], $_SESSION["vcode"], URLROOT . "/pages/verifyEmail");
-            $_SESSION["resend"] = false;
-        }
+       
     }
 
     public function forgotPassword()
