@@ -20,16 +20,4 @@ class Controller
         // Instantiate this model
         return new $model($db);
     }
-
-    // Load View
-    public function view($view, $data = [])
-    {
-        // check for view file
-        if (file_exists('../App/views/' . $view . '.php')) {
-            // require that model
-            require_once "../App/views/" . $view . ".php";
-        } else {
-            die("Cette page n'existe pas !");
-        }
-    }
 }

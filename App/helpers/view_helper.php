@@ -10,6 +10,6 @@ function view($view, $data = [])
         // require that view
         require_once "../App/views/" . $view . ".php";
     } else {
-        require_once "../App/views/page404.php";
+        require_once "../App/views/errors/page_404.php";
     }
 }
