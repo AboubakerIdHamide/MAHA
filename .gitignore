@@ -2,3 +2,4 @@
 vendor/
 Public/images/formations
 Public/images/userImage
+FakerController.php
