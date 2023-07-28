@@ -127,7 +127,7 @@ class EtudiantController
 	public function updateInfos()
 	{
 		$idEtudiant = $this->id;
-		$etudiant = $this->etudiantModel->getEtudiantById($idEtudiant);
+		$etudiant = $this->etudiantModel->find($idEtudiant);
 		$etudiant->img = URLROOT . "/Public/" . $etudiant->img;
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -159,11 +159,11 @@ class EtudiantController
 				// Hashing Password
 				$data["n_mdp"] = password_hash($data["n_mdp"], PASSWORD_DEFAULT);
 
-				$this->etudiantModel->updateEtudiant($data);
+				$this->etudiantModel->update($data);
 
 				$_SESSION["user_data"] = $data;
 
-				$etudiant = $this->etudiantModel->getEtudiantById($idEtudiant);
+				$etudiant = $this->etudiantModel->find($idEtudiant);
 				$etudiant->img = URLROOT . "/Public/" . $etudiant->img;
 				$data = [
 					"nom" => $etudiant->nom,
@@ -256,7 +256,7 @@ class EtudiantController
 
 	public function validateMDP($data)
 	{
-		$data['mdpDb'] = $this->etudiantModel->getMDPEtudiantById($data['id'])->mdp;
+		$data['mdpDb'] = $this->etudiantModel->getPassword($data['id'])->mdp;
 
 		if (!(password_verify($data["c_mdp"], $data['mdpDb']))) {
 			$data["thereIsError"] = true;
@@ -268,7 +268,7 @@ class EtudiantController
 	public function changeImg()
 	{
 		$idEtudiant = $this->id;
-		$etudiant = $this->etudiantModel->getEtudiantById($idEtudiant);
+		$etudiant = $this->etudiantModel->find($idEtudiant);
 		$etudiant->img = URLROOT . "/Public/" . $etudiant->img;
 
 		$data = [];
@@ -291,7 +291,7 @@ class EtudiantController
 					unlink($etudiant->img);
 				}
 
-				$this->etudiantModel->changeImg($data["img"], $idEtudiant);
+				$this->etudiantModel->updateImage($data["img"], $idEtudiant);
 
 				$_SESSION["user_data"] = $data;
 

@@ -67,7 +67,7 @@ class UserController
 
 
             // Shecking If That User Exists
-            $user = $this->etudiantModel->getEtudiantByEmail($data["email"]);
+            $user = $this->etudiantModel->whereEmail($data["email"]);
             if (empty($user)) {
                 $user = $this->fomateurModel->getFormateurByEmail($data["email"]);
                 if (!empty($user)) {
@@ -228,7 +228,7 @@ class UserController
 
                     $this->fomateurModel->insertFormateur($data[0]);
                 } else {
-                    $this->etudiantModel->insertEtudiant($data[0]);
+                    $this->etudiantModel->create($data[0]);
                 }
                 unset($_SESSION["vcode"]);
                 unset($_SESSION["resend"]);
@@ -284,7 +284,7 @@ class UserController
             }
 
             // Shecking If That User Exists
-            $user = $this->etudiantModel->getEtudiantByEmail($data["email"]);
+            $user = $this->etudiantModel->whereEmail($data["email"]);
             if (empty($user)) {
                 $user = $this->fomateurModel->getFormateurByEmail($data["email"]);
                 if (!empty($user)) {
@@ -350,7 +350,7 @@ class UserController
                 if ($_SESSION["type"] == "formateur") {
                     $this->fomateurModel->updateFormateurPasswordByEmail($data[0]);
                 } else {
-                    $this->etudiantModel->updateEtudiantPasswordByEmail($data[0]);
+                    $this->etudiantModel->updatePassword($data[0]);
                 }
 
                 unset($_SESSION["vcode"]);

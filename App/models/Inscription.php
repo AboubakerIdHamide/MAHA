@@ -98,6 +98,25 @@ class Inscription
         return false;
     }
 
+    public function countTotalInscriById($id_etudiant)
+    {
+        $query = $this->connect->prepare("
+            SELECT 
+                COUNT(*) AS total_inscription
+            FROM inscriptions
+            WHERE id_etudiant = :id_etudiant
+        ");
+
+        $query->bindParam(':id_etudiant', $id_etudiant);
+        $query->execute();
+
+        $response = $query->fetch(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $response->total_inscription;
+        }
+        return false;
+    }
+
     public function getInscriptionByEtudiant($idEtudiant)
     {
         $query = $this->connect->prepare("

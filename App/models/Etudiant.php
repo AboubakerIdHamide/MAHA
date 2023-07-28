@@ -17,7 +17,7 @@ class Etudiant
 		$this->connect = Database::getConnection();
 	}
 
-	public function countEtudiant()
+	public function count()
 	{
 		$query = $this->connect->prepare("
 			SELECT 
@@ -33,7 +33,7 @@ class Etudiant
 		return 0;
 	}
 
-	public function getAllEtudiant($q = '')
+	public function whereNomOrPrenom($q = '')
 	{
 		$query = $this->connect->prepare("
 			SELECT  
@@ -49,7 +49,6 @@ class Etudiant
 			OR prenom LIKE CONCAT('%', :q,'%')
 		");
 
-		$q = htmlspecialchars($q);
 		$query->bindParam(':q', $q);
 		$query->execute();
 
@@ -60,37 +59,18 @@ class Etudiant
 		return [];
 	}
 
-	public function countTotalInscriById($id_etudiant)
+	public function create($etudiant)
 	{
 		$query = $this->connect->prepare("
-			SELECT 
-				COUNT(*) AS total_inscription
-			FROM inscriptions
-			WHERE id_etudiant = :id_etudiant
+			INSERT INTO etudiants(nom, prenom, email, tel, mot_de_passe, img) VALUES (:nom, :prenom, :email, :tel, :mdp, :img)
 		");
 
-		$query->bindParam(':id_etudiant', $id_etudiant);
-		$query->execute();
-
-		$response = $query->fetch(\PDO::FETCH_OBJ);
-		if ($query->rowCount() > 0) {
-			return $response->total_inscription;
-		}
-		return false;
-	}
-
-	public function insertEtudiant($dataEtudiant)
-	{
-		$query = $this->connect->prepare("
-			INSERT INTO etudiants(nom, prenom, email, tel, mot_de_passe, img) VALUES (:nom, :prenom, :email, :tel, :mdp, :img_etu)
-		");
-
-		$query->bindParam(':nom', $dataEtudiant['nom']);
-		$query->bindParam(':prenom', $dataEtudiant['prenom']);
-		$query->bindParam(':email', $dataEtudiant['email']);
-		$query->bindParam(':img_etu', $dataEtudiant['img']);
-		$query->bindParam(':tel', $dataEtudiant['tel']);
-		$query->bindParam(':mdp', $dataEtudiant['mdp']);
+		$query->bindParam(':nom', $etudiant['nom']);
+		$query->bindParam(':prenom', $etudiant['prenom']);
+		$query->bindParam(':email', $etudiant['email']);
+		$query->bindParam(':img', $etudiant['img']);
+		$query->bindParam(':tel', $etudiant['tel']);
+		$query->bindParam(':mdp', $etudiant['mdp']);
 		$query->execute();
 
 		$lastInsertId = $this->connect->lastInsertId();
@@ -100,7 +80,7 @@ class Etudiant
 		return false;
 	}
 
-	public function getEtudiantByEmail($email)
+	public function whereEmail($email)
 	{
 		$query = $this->connect->prepare("
 			SELECT
@@ -126,15 +106,16 @@ class Etudiant
 		return false;
 	}
 
-	public function updateEtudiantPasswordByEmail($dataEtudiant)
+	public function updatePassword($etudiant)
 	{
 		$query = $this->connect->prepare("
 			UPDATE etudiants 
 			SET mot_de_passe = :mdp 
 			WHERE email = :email
 		");
-		$query->bindParam(':email', $dataEtudiant['email']);
-		$query->bindParam(':mdp', $dataEtudiant['mdp']);
+
+		$query->bindParam(':email', $etudiant['email']);
+		$query->bindParam(':mdp', $etudiant['mdp']);
 		$query->execute();
 
 		if ($query->rowCount() > 0) {
@@ -143,7 +124,7 @@ class Etudiant
 		return false;
 	}
 
-	public function updateEtudiant($dataEtudiant)
+	public function update($etudiant)
 	{
 		$query = $this->connect->prepare("
 			UPDATE etudiants
@@ -154,11 +135,11 @@ class Etudiant
 			WHERE id_etudiant = :id
 		");
 
-		$query->bindParam(':nom', $dataEtudiant['nom']);
-		$query->bindParam(':prenom', $dataEtudiant['prenom']);
-		$query->bindParam(':tel', $dataEtudiant['tel']);
-		$query->bindParam(':mdp', $dataEtudiant['n_mdp']);
-		$query->bindParam(':id', $dataEtudiant['id']);
+		$query->bindParam(':nom', $etudiant['nom']);
+		$query->bindParam(':prenom', $etudiant['prenom']);
+		$query->bindParam(':tel', $etudiant['tel']);
+		$query->bindParam(':mdp', $etudiant['n_mdp']);
+		$query->bindParam(':id', $etudiant['id']);
 
 		$query->execute();
 		if ($query->rowCount() > 0) {
@@ -167,15 +148,15 @@ class Etudiant
 		return false;
 	}
 
-	public function changeImg($img, $id)
+	public function updateImage($image, $id)
 	{
 		$query = $this->connect->prepare("
 			UPDATE etudiants
-			SET img = :img
+			SET img = :image
 			WHERE id_etudiant = :id
 		");
 
-		$query->bindParam(':img', $img);
+		$query->bindParam(':image', $image);
 		$query->bindParam(':id', $id);
 
 		$query->execute();
@@ -185,11 +166,11 @@ class Etudiant
 		return false;
 	}
 
-	public function getMDPEtudiantById($id)
+	public function getPassword($id)
 	{
 		$query = $this->connect->prepare("
 			SELECT 
-				mot_de_passe as mdp
+				mot_de_passe AS mdp
 			FROM  etudiants
 			WHERE id_etudiant = :id
 		");
@@ -204,7 +185,7 @@ class Etudiant
 		return false;
 	}
 
-	public function getEtudiantById($id)
+	public function find($id)
 	{
 		$query = $this->connect->prepare("
 			SELECT 
@@ -228,7 +209,7 @@ class Etudiant
 		return false;
 	}
 
-	public function deteleEtudiant($id)
+	public function delete($id)
 	{
 		$query = $this->connect->prepare("
 			DELETE FROM etudiants
@@ -244,7 +225,7 @@ class Etudiant
 		return false;
 	}
 
-	public function editEtudiant($dataEtudiant)
+	public function edit($etudiant)
 	{
 		$query = $this->connect->prepare("
 			UPDATE etudiants
@@ -255,17 +236,11 @@ class Etudiant
 			WHERE id_etudiant = :id_etudiant
 		");
 
-		$dataEtudiant['nom_etudiant'] = htmlspecialchars($dataEtudiant['nom_etudiant']);
-		$dataEtudiant['prenom_etudiant'] = htmlspecialchars($dataEtudiant['prenom_etudiant']);
-		$dataEtudiant['email_etudiant'] = htmlspecialchars($dataEtudiant['email_etudiant']);
-		$dataEtudiant['tel_etudiant'] = htmlspecialchars($dataEtudiant['tel_etudiant']);
-		$dataEtudiant['id_etudiant'] = htmlspecialchars($dataEtudiant['id_etudiant']);
-
-		$query->bindParam(':nom_etudiant', $dataEtudiant['nom_etudiant']);
-		$query->bindParam(':prenom_etudiant', $dataEtudiant['prenom_etudiant']);
-		$query->bindParam(':email_etudiant', $dataEtudiant['email_etudiant']);
-		$query->bindParam(':tel_etudiant', $dataEtudiant['tel_etudiant']);
-		$query->bindParam(':id_etudiant', $dataEtudiant['id_etudiant']);
+		$query->bindParam(':nom_etudiant', $etudiant['nom_etudiant']);
+		$query->bindParam(':prenom_etudiant', $etudiant['prenom_etudiant']);
+		$query->bindParam(':email_etudiant', $etudiant['email_etudiant']);
+		$query->bindParam(':tel_etudiant', $etudiant['tel_etudiant']);
+		$query->bindParam(':id_etudiant', $etudiant['id_etudiant']);
 		$query->execute();
 
 		if ($query->rowCount() > 0) {

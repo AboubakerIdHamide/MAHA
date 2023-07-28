@@ -140,7 +140,7 @@ class AdminController
         $data = [];
         $data['countFormations'] = $this->formationModel->countFormations();
         $data['countFormateurs'] = $this->fomateurModel->countFormateurs();
-        $data['countEtudiant'] = $this->etudiantModel->countEtudiant();
+        $data['countEtudiant'] = $this->etudiantModel->count();
         $data['balance'] = $this->adminModel->getAdminByEmail($_SESSION['admin']->email)->balance;
         return view('admin/index', $data);
     }
@@ -209,14 +209,14 @@ class AdminController
         $this->checkSession();
 
         if (isset($_GET['q'])) {
-            $data = $this->etudiantModel->getAllEtudiant($_GET['q']);
+            $data = $this->etudiantModel->whereNomOrPrenom($_GET['q']);
         } else {
             $data = $this->etudiantModel->getAllEtudiant();
         }
         // get link of image etudiant
         foreach ($data as $etudiant) {
             $etudiant->img = URLROOT . "/Public/" . $etudiant->img;
-            $etudiant->total_inscription = $this->etudiantModel->countTotalInscriById($etudiant->id_etudiant);
+            $etudiant->total_inscription = $this->inscriptionModel->countTotalInscriById($etudiant->id_etudiant);
         }
         return view("admin/etudiants", $data);
     }
@@ -225,7 +225,7 @@ class AdminController
     {
         $this->checkSession();
 
-        $this->etudiantModel->deteleEtudiant($id_etudiant);
+        $this->etudiantModel->delete($id_etudiant);
         echo json_encode("Etudiant supprimé avec succès !!!");
     }
 
@@ -236,7 +236,7 @@ class AdminController
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // don't forget validate data
             $data = (array) json_decode($_POST['etudiant']);
-            $this->etudiantModel->editEtudiant($data);
+            $this->etudiantModel->edit($data);
             echo json_encode("Etudiant modifiè avec succès !!!");
         }
     }

@@ -34,7 +34,7 @@ class AjaxController
         ];
 
         if (isset($_POST["email"])) {
-            if (!empty($this->etudiantModel->getEtudiantByEmail($_POST["email"]))) {
+            if (!empty($this->etudiantModel->whereEmail($_POST["email"]))) {
                 $data["thereIsError"] = true;
                 $data["error"] = "Adresse e-mail déjà utilisée";
             }
@@ -201,7 +201,7 @@ class AjaxController
                 $email = $data['email'];
 
                 // Shecking If That User Exists
-                $user = $this->etudiantModel->getEtudiantByEmail($email);
+                $user = $this->etudiantModel->whereEmail($email);
                 if (empty($user)) {
                     $user = $this->fomateurModel->getFormateurByEmail($email);
                     if (!empty($user)) {
@@ -253,7 +253,7 @@ class AjaxController
             $email = $data['email'];
 
             // Shecking If That User Exists
-            $user = $this->etudiantModel->getEtudiantByEmail($email);
+            $user = $this->etudiantModel->whereEmail($email);
             if (empty($user)) {
                 $user = $this->fomateurModel->getFormateurByEmail($email);
                 if (!empty($user)) {

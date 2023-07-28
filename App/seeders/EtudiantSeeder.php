@@ -18,8 +18,8 @@ class EtudiantSeeder extends Seed {
 		];
 
 		$etudiant = new Etudiant;
-		$etudiant->insertEtudiant($data);
-		return $etudiant->getEtudiantByEmail($data['email'])->id_etudiant;
+		$etudiant->create($data);
+		return $etudiant->whereEmail($data['email'])->id_etudiant;
 	}
 
 	public function seed($records = 1, $id)

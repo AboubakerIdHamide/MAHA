@@ -27,7 +27,7 @@ class PageController
 	{
 		$formations = $this->formationModel->getPopularCourses();
 		$categories = $this->stockedModel->getAllCategories();
-		$totalEtudiants = $this->etudiantModel->countEtudiant();
+		$totalEtudiants = $this->etudiantModel->count();
 		$totalFormations = $this->formationModel->countFormations();
 		$totalFormateurs = $this->formateurModel->countFormateurs();
 		$themeData = $this->stockedModel->getThemeData();
