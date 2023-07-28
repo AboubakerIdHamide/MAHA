@@ -226,7 +226,7 @@ class PaymentPaypalController
 		$this->inscriptionModel->updateInscriptionByPaymentID($_GET['paymentId'], $paymentState);
 		$formateurModel = new Formateur;
 		$formateurProfit = (100 - $this->adminModel->getProfitAndPaypalToken()->platform_pourcentage) / 100;
-		$formateurModel->updateFormateurBalance($inscription->id_formateur, $inscription->prix * $formateurProfit);
+		$formateurModel->updateBalance($inscription->id_formateur, $inscription->prix * $formateurProfit);
 		return view('payment/paymentSuccess');
 	}
 

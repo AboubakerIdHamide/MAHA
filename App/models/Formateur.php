@@ -17,7 +17,7 @@ class Formateur
 		$this->connect = Database::getConnection();
 	}
 
-	public function countFormateurs()
+	public function count()
 	{
 		$query = $this->connect->prepare("
 			SELECT 
@@ -34,7 +34,7 @@ class Formateur
 		return 0;
 	}
 
-	public function getAllFormateur($q = '')
+	public function whereNomOrPrenom($q = '')
 	{
 		$query = $this->connect->prepare("
 			SELECT  
@@ -56,7 +56,6 @@ class Formateur
 			OR f.prenom LIKE CONCAT('%', :q,'%')
 		");
 
-		$q = htmlspecialchars($q);
 		$query->bindParam(':q', $q);
 		$query->execute();
 
@@ -67,22 +66,22 @@ class Formateur
 		return [];
 	}
 
-	public function insertFormateur($dataFormateur)
+	public function create($formateur)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO formateurs(nom, prenom, email, tel, mot_de_passe, img, biography,  paypalMail, id_categorie, code) VALUES (:nom, :prenom, :email, :tel, :mdp, :img_for, :bio, :pmail, :spId, :code_formateur)
+			INSERT INTO formateurs(nom, prenom, email, tel, mot_de_passe, img, biography,  paypalMail, id_categorie, code) VALUES (:nom, :prenom, :email, :tel, :mdp, :img, :bio, :pmail, :spId, :code_formateur)
 		");
 
-		$query->bindParam(':nom', $dataFormateur['nom']);
-		$query->bindParam(':prenom', $dataFormateur['prenom']);
-		$query->bindParam(':email', $dataFormateur['email']);
-		$query->bindParam(':img_for', $dataFormateur['img']);
-		$query->bindParam(':tel', $dataFormateur['tel']);
-		$query->bindParam(':mdp', $dataFormateur['mdp']);
-		$query->bindParam(':pmail', $dataFormateur['pmail']);
-		$query->bindParam(':bio', $dataFormateur['bio']);
-		$query->bindParam(':spId', $dataFormateur['specId']);
-		$query->bindParam(':code_formateur', $dataFormateur['code_formateur']);
+		$query->bindParam(':nom', $formateur['nom']);
+		$query->bindParam(':prenom', $formateur['prenom']);
+		$query->bindParam(':email', $formateur['email']);
+		$query->bindParam(':img', $formateur['img']);
+		$query->bindParam(':tel', $formateur['tel']);
+		$query->bindParam(':mdp', $formateur['mdp']);
+		$query->bindParam(':pmail', $formateur['pmail']);
+		$query->bindParam(':bio', $formateur['bio']);
+		$query->bindParam(':spId', $formateur['specId']);
+		$query->bindParam(':code_formateur', $formateur['code_formateur']);
 		$query->execute();
 
 		$lastInsertId = $this->connect->lastInsertId();
@@ -92,7 +91,7 @@ class Formateur
 		return false;
 	}
 
-	public function getFormateurByEmail($email)
+	public function whereEmail($email)
 	{
 		$query = $this->connect->prepare("
 			SELECT 
@@ -113,6 +112,7 @@ class Formateur
 			FROM formateurs
 			WHERE email = :email
 		");
+
 		$query->bindParam(':email', $email);
 		$query->execute();
 
@@ -123,7 +123,7 @@ class Formateur
 		return false;
 	}
 
-	public function getFormateurByPaypalEmail($email)
+	public function wherePaypal($paypalEmail)
 	{
 		$query = $this->connect->prepare("
 			SELECT 
@@ -142,7 +142,7 @@ class Formateur
 			FROM formateurs 
 			WHERE paypalMail = :pmail
 		");
-		$query->bindParam(':pmail', $email);
+		$query->bindParam(':pmail', $paypalEmail);
 		$query->execute();
 
 		$formateur = $query->fetch(\PDO::FETCH_OBJ);
@@ -152,7 +152,7 @@ class Formateur
 		return false;
 	}
 
-	public function updateFormateur($dataFormateur)
+	public function update($formateur)
 	{
 		$query = $this->connect->prepare("
 			UPDATE formateurs
@@ -165,13 +165,13 @@ class Formateur
 			WHERE id_formateur = :id
 		");
 
-		$query->bindParam(':nom', $dataFormateur['nom']);
-		$query->bindParam(':prenom', $dataFormateur['prenom']);
-		$query->bindParam(':tel', $dataFormateur['tel']);
-		$query->bindParam(':bio', $dataFormateur['bio']);
-		$query->bindParam(':specialite', $dataFormateur['specId']);
-		$query->bindParam(':mdp', $dataFormateur['n_mdp']);
-		$query->bindParam(':id', $dataFormateur['id']);
+		$query->bindParam(':nom', $formateur['nom']);
+		$query->bindParam(':prenom', $formateur['prenom']);
+		$query->bindParam(':tel', $formateur['tel']);
+		$query->bindParam(':bio', $formateur['bio']);
+		$query->bindParam(':specialite', $formateur['specId']);
+		$query->bindParam(':mdp', $formateur['n_mdp']);
+		$query->bindParam(':id', $formateur['id']);
 		$query->execute();
 
 		if ($query->rowCount() > 0) {
@@ -180,15 +180,15 @@ class Formateur
 		return false;
 	}
 
-	public function changeImg($img, $id)
+	public function updateImage($image, $id)
 	{
 		$query = $this->connect->prepare("
 			UPDATE formateurs
-			SET img = :img
+			SET img = :image
 			WHERE id_formateur = :id
 		");
 
-		$query->bindParam(':img', $img);
+		$query->bindParam(':image', $img);
 		$query->bindParam(':id', $id);
 		$query->execute();
 
@@ -198,7 +198,7 @@ class Formateur
 		return false;
 	}
 
-	public function getMDPFormateurById($id)
+	public function getPassword($id)
 	{
 		$query = $this->connect->prepare("
 			SELECT 
@@ -216,7 +216,7 @@ class Formateur
 		return false;
 	}
 
-	public function editFormateur($dataFormateur)
+	public function edit($formateur)
 	{
 		$query = $this->connect->prepare("
 			UPDATE formateurs
@@ -230,23 +230,14 @@ class Formateur
 			WHERE id_formateur = :id_formateur
 		");
 
-		$dataFormateur['nom_formateur'] = htmlspecialchars($dataFormateur['nom_formateur']);
-		$dataFormateur['prenom_formateur'] = htmlspecialchars($dataFormateur['prenom_formateur']);
-		$dataFormateur['email_formateur'] = htmlspecialchars($dataFormateur['email_formateur']);
-		$dataFormateur['tel_formateur'] = htmlspecialchars($dataFormateur['tel_formateur']);
-		$dataFormateur['paypalMail'] = htmlspecialchars($dataFormateur['paypalMail']);
-		$dataFormateur['specialiteId'] = htmlspecialchars($dataFormateur['specialiteId']);
-		$dataFormateur['biography'] = htmlspecialchars($dataFormateur['biography']);
-		$dataFormateur['id_formateur'] = htmlspecialchars($dataFormateur['id_formateur']);
-
-		$query->bindParam(':nom_formateur', $dataFormateur['nom_formateur']);
-		$query->bindParam(':prenom_formateur', $dataFormateur['prenom_formateur']);
-		$query->bindParam(':email_formateur', $dataFormateur['email_formateur']);
-		$query->bindParam(':tel_formateur', $dataFormateur['tel_formateur']);
-		$query->bindParam(':paypalMail', $dataFormateur['paypalMail']);
-		$query->bindParam(':specialiteId', $dataFormateur['specialiteId']);
-		$query->bindParam(':biography', $dataFormateur['biography']);
-		$query->bindParam(':id_formateur', $dataFormateur['id_formateur']);
+		$query->bindParam(':nom_formateur', $formateur['nom_formateur']);
+		$query->bindParam(':prenom_formateur', $formateur['prenom_formateur']);
+		$query->bindParam(':email_formateur', $formateur['email_formateur']);
+		$query->bindParam(':tel_formateur', $formateur['tel_formateur']);
+		$query->bindParam(':paypalMail', $formateur['paypalMail']);
+		$query->bindParam(':specialiteId', $formateur['specialiteId']);
+		$query->bindParam(':biography', $formateur['biography']);
+		$query->bindParam(':id_formateur', $formateur['id_formateur']);
 		$query->execute();
 
 		if ($query->rowCount() > 0) {
@@ -255,7 +246,7 @@ class Formateur
 		return false;
 	}
 
-	public function updateFormateurPasswordByEmail($dataFormateur)
+	public function updatePassword($formateur)
 	{
 		$query = $this->connect->prepare("
 			UPDATE formateurs 
@@ -263,8 +254,8 @@ class Formateur
 			WHERE email = :email
 		");
 
-		$query->bindParam(':email', $dataFormateur['email']);
-		$query->bindParam(':mdp', $dataFormateur['mdp']);
+		$query->bindParam(':email', $formateur['email']);
+		$query->bindParam(':mdp', $formateur['mdp']);
 		$query->execute();
 
 		if ($query->rowCount() > 0) {
@@ -273,7 +264,7 @@ class Formateur
 		return false;
 	}
 
-	public function deteleFormateur($id)
+	public function delete($id)
 	{
 		$query = $this->connect->prepare("
 			DELETE FROM formateurs
@@ -289,7 +280,7 @@ class Formateur
 		return false;
 	}
 
-	public function getFormateurById($id)
+	public function find($id)
 	{
 		$query = $this->connect->prepare("
 			SELECT 
@@ -316,13 +307,14 @@ class Formateur
 		}
 		return false;
 	}
-	public function getnumFormationsFormateurById($id)
+
+	public function countFormations($id)
 	{
 		$query = $this->connect->prepare("
 			SELECT 
-				COUNT(formations.id_formation) as numFormations
+				COUNT(id_formation) as numFormations
 			FROM formations
-			WHERE formations.id_formateur = :id
+			WHERE id_formateur = :id
 		");
 
 		$query->bindParam(':id', $id);
@@ -334,35 +326,36 @@ class Formateur
 		}
 		return 0;
 	}
-	public function getNumFormationAchtByIdFormateur($id)
+
+	public function countInscriptions($id)
 	{
 		$query = $this->connect->prepare("
 			SELECT 
-				COUNT(inscriptions.id_formation) AS numAcht
+				COUNT(id_formation) AS inscriptions
 			FROM inscriptions
-			WHERE inscriptions.id_formateur = :id
+			WHERE id_formateur = :id
 		");
 
 		$query->bindParam(':id', $id);
 		$query->execute();
 
-		$numAcht = $query->fetch(\PDO::FETCH_OBJ)->numAcht;
+		$inscriptions = $query->fetch(\PDO::FETCH_OBJ)->inscriptions;
 		if ($query->rowCount() > 0) {
-			return $numAcht;
+			return $inscriptions;
 		}
 		return 0;
 	}
 
-	public function updateFormateurBalance($IdFormateur, $balance)
+	public function updateBalance($id, $balance)
 	{
 		$query = $this->connect->prepare("
 			UPDATE formateurs 
 			SET balance = balance + :balance 
-			WHERE id_formateur = :id_formateur
+			WHERE id_formateur = :id
 		");
 
 		$query->bindParam(':balance', $balance);
-		$query->bindParam(':id_formateur', $IdFormateur);
+		$query->bindParam(':id', $id);
 		$query->execute();
 
 		if ($query->rowCount() > 0) {
@@ -371,7 +364,7 @@ class Formateur
 		return false;
 	}
 
-	public function getBalance($formateurID)
+	public function getBalance($id)
 	{
 		$query = $this->connect->prepare("
 			SELECT 
@@ -379,8 +372,10 @@ class Formateur
 			FROM formateurs 
 			WHERE id_formateur = :id
 		");
-		$query->bindParam(':id', $formateurID);
+
+		$query->bindParam(':id', $id);
 		$query->execute();
+
 		$formateur = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
 			return $formateur->balance;
@@ -388,12 +383,17 @@ class Formateur
 		return 0;
 	}
 
-	// checking code of formateur is already used
 	public function isValideCode($code)
 	{
-		$request = $this->connect->prepare("SELECT code FROM formateurs WHERE code=:code");
+		$request = $this->connect->prepare("
+			SELECT code 
+			FROM formateurs 
+			WHERE code=:code
+		");
+
 		$request->bindParam(":code", $code);
 		$request->execute();
+
 		$response = $request->fetch(\PDO::FETCH_OBJ);
 		if (!empty($response)) {
 			return false;
@@ -401,7 +401,6 @@ class Formateur
 		return true;
 	}
 
-	// changer le code de formateur
 	public function refreshCode($id){
 		$isValideCode = false;
 		$code_formateur="";
@@ -415,11 +414,11 @@ class Formateur
 		$query = $this->connect->prepare("
 			UPDATE formateurs 
 			SET code = :code
-			WHERE id_formateur = :id_formateur
+			WHERE id_formateur = :id
 		");
 
 		$query->bindParam(':code', $code_formateur);
-		$query->bindParam(':id_formateur', $id);
+		$query->bindParam(':id', $id);
 		$query->execute();
 
 		if ($query->rowCount() > 0) {

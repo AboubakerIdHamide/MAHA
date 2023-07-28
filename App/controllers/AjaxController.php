@@ -38,7 +38,7 @@ class AjaxController
                 $data["thereIsError"] = true;
                 $data["error"] = "Adresse e-mail déjà utilisée";
             }
-            if (!empty($this->fomateurModel->getFormateurByEmail($_POST["email"]))) {
+            if (!empty($this->fomateurModel->whereEmail($_POST["email"]))) {
                 $data["thereIsError"] = true;
                 $data["error"] = "Adresse e-mail déjà utilisée";
             }
@@ -55,7 +55,7 @@ class AjaxController
         ];
 
         if (isset($_POST["pmail"])) {
-            if (!empty($this->fomateurModel->getFormateurByPaypalEmail($_POST["pmail"]))) {
+            if (!empty($this->fomateurModel->wherePaypal($_POST["pmail"]))) {
                 $data["thereIsError"] = true;
                 $data["error"] = "Adresse e-mail de Paypal déjà utilisée";
             }
@@ -203,7 +203,7 @@ class AjaxController
                 // Shecking If That User Exists
                 $user = $this->etudiantModel->whereEmail($email);
                 if (empty($user)) {
-                    $user = $this->fomateurModel->getFormateurByEmail($email);
+                    $user = $this->fomateurModel->whereEmail($email);
                     if (!empty($user)) {
                         $user->type = "formateur";
                         $url = $this->createUserSessions($user);
@@ -255,7 +255,7 @@ class AjaxController
             // Shecking If That User Exists
             $user = $this->etudiantModel->whereEmail($email);
             if (empty($user)) {
-                $user = $this->fomateurModel->getFormateurByEmail($email);
+                $user = $this->fomateurModel->whereEmail($email);
                 if (!empty($user)) {
                     $user->type = "formateur";
                     $url = $this->createUserSessions($user);

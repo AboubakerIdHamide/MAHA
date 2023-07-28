@@ -69,7 +69,7 @@ class UserController
             // Shecking If That User Exists
             $user = $this->etudiantModel->whereEmail($data["email"]);
             if (empty($user)) {
-                $user = $this->fomateurModel->getFormateurByEmail($data["email"]);
+                $user = $this->fomateurModel->whereEmail($data["email"]);
                 if (!empty($user)) {
                     if (password_verify($data["password"], $user->mot_de_passe)) {
                         $user->type = "formateur";
@@ -226,7 +226,7 @@ class UserController
                         $data[0]["code_formateur"] = $code_formateur;
                     }
 
-                    $this->fomateurModel->insertFormateur($data[0]);
+                    $this->fomateurModel->create($data[0]);
                 } else {
                     $this->etudiantModel->create($data[0]);
                 }
@@ -286,7 +286,7 @@ class UserController
             // Shecking If That User Exists
             $user = $this->etudiantModel->whereEmail($data["email"]);
             if (empty($user)) {
-                $user = $this->fomateurModel->getFormateurByEmail($data["email"]);
+                $user = $this->fomateurModel->whereEmail($data["email"]);
                 if (!empty($user)) {
                     if (empty($data["mdp_err"]) && empty($data["vmdp_err"])) {
                         $_SESSION["changePasswordData"] = $data;
@@ -348,7 +348,7 @@ class UserController
 
                 // Upadte The Password
                 if ($_SESSION["type"] == "formateur") {
-                    $this->fomateurModel->updateFormateurPasswordByEmail($data[0]);
+                    $this->fomateurModel->updatePassword($data[0]);
                 } else {
                     $this->etudiantModel->updatePassword($data[0]);
                 }
@@ -510,11 +510,11 @@ class UserController
             $data["thereIsError"] = true;
             $data["email_err"] = "L'e-mail inséré est invalide";
         }
-        if (!empty($this->etudiantModel->getEtudiantByEmail($data["email"]))) {
+        if (!empty($this->etudiantModel->whereEmail($data["email"]))) {
             $data["thereIsError"] = true;
             $data["email_err"] = "Adresse e-mail déjà utilisée";
         }
-        if (!empty($this->fomateurModel->getFormateurByEmail($data["email"]))) {
+        if (!empty($this->fomateurModel->whereEmail($data["email"]))) {
             $data["thereIsError"] = true;
             $data["email_err"] = "Adresse e-mail déjà utilisée";
         }
@@ -574,7 +574,7 @@ class UserController
                 $data["thereIsError"] = true;
                 $data["pmail_err"] = "L'e-mail inséré est invalide";
             }
-            if (!empty($this->fomateurModel->getFormateurByPaypalEmail($data["pmail"]))) {
+            if (!empty($this->fomateurModel->wherePaypal($data["pmail"]))) {
                 $data["thereIsError"] = true;
                 $data["pmail_err"] = "Adresse e-mail de Paypal déjà utilisée";
             }

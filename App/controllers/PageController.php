@@ -29,7 +29,7 @@ class PageController
 		$categories = $this->stockedModel->getAllCategories();
 		$totalEtudiants = $this->etudiantModel->count();
 		$totalFormations = $this->formationModel->countFormations();
-		$totalFormateurs = $this->formateurModel->countFormateurs();
+		$totalFormateurs = $this->formateurModel->count();
 		$themeData = $this->stockedModel->getThemeData();
 
 		foreach ($formations as $formation) {

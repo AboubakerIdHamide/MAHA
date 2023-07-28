@@ -16,7 +16,7 @@ class ProfilSettingsFormateurController
     }
     public function index($id)
     {
-        $formateur = $this->fomateurModel->getFormateurById($id);
+        $formateur = $this->fomateurModel->find($id);
         $data = [
             'formateur' => $formateur
         ];

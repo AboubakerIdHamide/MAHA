@@ -48,7 +48,7 @@ class FormateurController
 		$categories = $this->stockedModel->getAllCategories();
 		$langues = $this->stockedModel->getAllLangues();
 		$niveaux = $this->stockedModel->getAllLevels();
-		$balance = $this->fomateurModel->getFormateurByEmail($_SESSION['user']->email)->balance;
+		$balance = $this->fomateurModel->whereEmail($_SESSION['user']->email)->balance;
 		$data = [
 			'balance' => $balance,
 			'categories' => $categories,
@@ -78,7 +78,7 @@ class FormateurController
 	{
 		if ($requestInfo->paypalEmail == $_SESSION['user']->paypalMail) {
 			if ($requestInfo->montant >= 10) {
-				$formateur_balance = $this->fomateurModel->getFormateurByEmail($_SESSION['user']->email)->balance;
+				$formateur_balance = $this->fomateurModel->whereEmail($_SESSION['user']->email)->balance;
 				if ($requestInfo->montant <= $formateur_balance)
 					return true;
 				return false;
@@ -127,7 +127,7 @@ class FormateurController
 	// Update Profil 
 	public function updateInfos()
 	{
-		$formateur = $this->fomateurModel->getFormateurById($_SESSION['id_formateur']);
+		$formateur = $this->fomateurModel->find($_SESSION['id_formateur']);
 		$formateur->img = URLROOT . "/Public/" . $formateur->img;
 		$categories = $this->stockedModel->getAllCategories();
 
@@ -164,11 +164,11 @@ class FormateurController
 				// Hashing Password
 				$data["n_mdp"] = password_hash($data["n_mdp"], PASSWORD_DEFAULT);
 
-				$this->fomateurModel->updateFormateur($data);
+				$this->fomateurModel->update($data);
 
 				$_SESSION["user_data"] = $data;
 
-				$formateur = $this->fomateurModel->getFormateurById($_SESSION['id_formateur']);
+				$formateur = $this->fomateurModel->find($_SESSION['id_formateur']);
 				$formateur->img = URLROOT . "/Public/" . $formateur->img;
 
 				$data = [
@@ -288,7 +288,7 @@ class FormateurController
 
 	public function validateMDP($data)
 	{
-		if (!(password_verify($data["c_mdp"], $this->fomateurModel->getMDPFormateurById($data['id'])->mdp))) {
+		if (!(password_verify($data["c_mdp"], $this->fomateurModel->getPassword($data['id'])->mdp))) {
 			$data["thereIsError"] = true;
 			$data["c_mdp_err"] = "Mot de passe incorrect !";
 		}
@@ -297,7 +297,7 @@ class FormateurController
 
 	public function changeImg()
 	{
-		$formateur = $this->fomateurModel->getFormateurById($_SESSION['id_formateur']);
+		$formateur = $this->fomateurModel->find($_SESSION['id_formateur']);
 		$formateur->img = URLROOT . "/Public/" . $formateur->img;
 
 		$data = [];
@@ -320,7 +320,7 @@ class FormateurController
 					unlink($formateur['img']);
 				}
 
-				$this->fomateurModel->changeImg($data["img"], $_SESSION['id_formateur']);
+				$this->fomateurModel->updateImage($data["img"], $_SESSION['id_formateur']);
 
 				$_SESSION["user_data"] = $data;
 

@@ -21,11 +21,11 @@ class ProfilFormateurController
     }
     public function index($id = null)
     {
-        $formateur = $this->fomateurModel->getFormateurById($id);
+        $formateur = $this->fomateurModel->find($id);
         $formateur->img = URLROOT . "/Public/" . $formateur->img;
         $formations = $this->formationModel->getFormationsFormateurById($id);
-        $numFormations = $this->fomateurModel->getnumFormationsFormateurById($id);
-        $numAcht = $this->fomateurModel->getNumFormationAchtByIdFormateur($id);
+        $numFormations = $this->fomateurModel->countFormations($id);
+        $numAcht = $this->fomateurModel->countInscriptions($id);
         $themeData = $this->stockedModel->getThemeData();
         $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
         foreach ($formations as $formation) {

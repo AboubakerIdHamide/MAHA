@@ -139,7 +139,7 @@ class AdminController
 
         $data = [];
         $data['countFormations'] = $this->formationModel->countFormations();
-        $data['countFormateurs'] = $this->fomateurModel->countFormateurs();
+        $data['countFormateurs'] = $this->fomateurModel->count();
         $data['countEtudiant'] = $this->etudiantModel->count();
         $data['balance'] = $this->adminModel->getAdminByEmail($_SESSION['admin']->email)->balance;
         return view('admin/index', $data);
@@ -171,9 +171,9 @@ class AdminController
         $this->checkSession();
 
         if (isset($_GET['q'])) {
-            $data['formateurs'] = $this->fomateurModel->getAllFormateur($_GET['q']);
+            $data['formateurs'] = $this->fomateurModel->whereNomOrPrenom($_GET['q']);
         } else {
-            $data['formateurs'] = $this->fomateurModel->getAllFormateur();
+            $data['formateurs'] = $this->fomateurModel->whereNomOrPrenom();
         }
 
         $data['specialite'] = $this->stockedModel->getAllCategories();
@@ -188,7 +188,7 @@ class AdminController
     {
         $this->checkSession();
 
-        $this->fomateurModel->deteleFormateur($id_formateur);
+        $this->fomateurModel->delete($id_formateur);
         echo json_encode("Formateur supprimé avec succès !!!");
     }
 
@@ -199,7 +199,7 @@ class AdminController
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // don't forget validate data
             $data = (array) json_decode($_POST['formateur']);
-            $this->fomateurModel->editFormateur($data);
+            $this->fomateurModel->edit($data);
             echo json_encode("Formateur modifié avec succès !!!");
         }
     }
@@ -211,7 +211,7 @@ class AdminController
         if (isset($_GET['q'])) {
             $data = $this->etudiantModel->whereNomOrPrenom($_GET['q']);
         } else {
-            $data = $this->etudiantModel->getAllEtudiant();
+            $data = $this->etudiantModel->whereNomOrPrenom();
         }
         // get link of image etudiant
         foreach ($data as $etudiant) {
@@ -424,7 +424,7 @@ class AdminController
     public function getAllFormateurs()
     {
         $this->checkSession();
-        $formateurs = $this->fomateurModel->getAllFormateur();
+        $formateurs = $this->fomateurModel->whereNomOrPrenom();
         echo json_encode($formateurs);
     }
 

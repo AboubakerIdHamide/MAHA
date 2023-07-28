@@ -22,8 +22,8 @@ class FormateurSeeder extends Seed {
 		];
 
 		$formateur = new Formateur;
-		$formateur->insertFormateur($data);
-		return $formateur->getFormateurByEmail($data['email'])->id_formateur;
+		$formateur->create($data);
+		return $formateur->whereEmail($data['email'])->id_formateur;
 	}
 
 	public function seed($records = 1)
