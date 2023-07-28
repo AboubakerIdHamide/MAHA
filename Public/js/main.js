@@ -55,6 +55,6 @@ if (searchForm) {
 // Search Bar
 function searchCoursesSubmit(val) {
   if (!(val.length < 1 && val.length > 200)) {
-    window.location.href = `http://localhost/MAHA/pageFormation/rechercheFormations/${val}`;
+    window.location.href = `http://localhost/MAHA/pageFormation/recherche?q=${val}`;
   }
 }

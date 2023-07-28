@@ -94,7 +94,7 @@ class PageFormationController
         return view("pages/cours-details", $data);
     }
 
-    public function rechercheFormations($valRech = '')
+    public function recherche()
     {
         $langues = $this->stockedModel->getAllLangues();
         $niveaux = $this->stockedModel->getAllLevels();
@@ -102,68 +102,56 @@ class PageFormationController
         $themeData = $this->stockedModel->getThemeData();
         $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
         $theme["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
+        
+        if(!isset($_GET['q'])){
+             $data = [
+                'niveaux' => $niveaux,
+                'langues' => $langues,
+                'categories' => $categories,
+                'numbFormations' => 0,
+                'formations' => 'Aucun Formations',
+                'theme' => $theme
+            ];
 
-        $errs = false;
-        // ================  Valide Valeur de Recherche  ================
-        $arrVal = str_split($valRech);
-        $newArrVal = [];
-        foreach ($arrVal as $car) {
-            if (preg_match('/[a-zA-Z]/', $car) == 1) {
-                array_push($newArrVal, $car);
-            }
+            return view("pages/pageFormations", $data);
         }
-        $valRecherche = implode($newArrVal);
-        // ================  Valide Valeur de Recherche  ================
-        if (strlen($valRecherche) > 200 || strlen($valRecherche) < 1) {
-            $errs = true;
-        }
-        if ($errs == false) {
-            $numbFormations = $this->formationModel->countFormationsRech($valRecherche);
 
-            $dataPages = $this->pagenition($numbFormations);
+        $valRecherche = strip_tags($_GET['q']);
 
-            $pageno = $dataPages['pageno'];
-            $offset = $dataPages['offset'];
-            $totalPages = $dataPages['total_pages'];
+        $numbFormations = $this->formationModel->countFormationsRech($valRecherche);
 
-            if ($numbFormations == 0) {
-                $data = [
-                    'niveaux' => $niveaux,
-                    'langues' => $langues,
-                    'categories' => $categories,
-                    'numbFormations' => 0,
-                    'formations' => 'Aucun Formations',
-                    'theme' => $theme
-                ];
+        $dataPages = $this->pagenition($numbFormations);
 
-                return view("pages/pageFormations", $data);
-            } else {
-                $formations = $this->formationModel->getFormationsByValRech($valRecherche, $offset);
-                foreach ($formations as $formation) {
-                    $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
-                    $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
-                    $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
-                }
-                $data = [
-                    'niveaux' => $niveaux,
-                    'langues' => $langues,
-                    'categories' => $categories,
-                    'numbFormations' => $numbFormations['numbFormations'],
-                    'formations' => $formations,
-                    'pageno' => $pageno,
-                    'totalPages' => $totalPages,
-                    'theme' => $theme
-                ];
+        $pageno = $dataPages['pageno'];
+        $offset = $dataPages['offset'];
+        $totalPages = $dataPages['total_pages'];
 
-                return view("pages/pageFormations", $data);
-            }
-        } else {
+        if ($numbFormations == 0) {
             $data = [
                 'niveaux' => $niveaux,
                 'langues' => $langues,
                 'categories' => $categories,
                 'numbFormations' => 0,
                 'formations' => 'Aucun Formations',
+                'theme' => $theme
+            ];
+
+            return view("pages/pageFormations", $data);
+        } else {
+            $formations = $this->formationModel->getFormationsByValRech($valRecherche, $offset);
+            foreach ($formations as $formation) {
+                $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
+                $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
+                $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
+            }
+            $data = [
+                'niveaux' => $niveaux,
+                'langues' => $langues,
+                'categories' => $categories,
+                'numbFormations' => $numbFormations,
+                'formations' => $formations,
+                'pageno' => $pageno,
+                'totalPages' => $totalPages,
                 'theme' => $theme
             ];
 

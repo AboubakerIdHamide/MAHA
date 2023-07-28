@@ -589,7 +589,7 @@ class Formation
             FROM formations, formateurs, categories
             WHERE formations.id_formateur = formateurs.id_formateur
             AND categories.id_categorie = formations.id_categorie
-            AND formations.etat_formation = 'public'
+            AND formations.etat = 'public'
             AND (
                 categories.nom LIKE '%{$val}%'
                 OR formateurs.nom LIKE '%{$val}%'
