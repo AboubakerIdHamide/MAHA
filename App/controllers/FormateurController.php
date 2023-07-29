@@ -407,7 +407,7 @@ class FormateurController
 			$data->niveauIcon = $niveau->icon;
 			$data->apprenants = $this->inscriptionModel->countApprenantsOfFormation($data->id_formateur, $data->id_formation);
 			$data->videos = $this->videoModel->getVideosOfFormation($idFormation);
-			$data->liked = $this->formationModel->likedBefore($data->id_etudiant, $data->id_formation);
+			$data->liked = $this->formationModel->isLikedBefore($data->id_etudiant, $data->id_formation);
 
 			foreach ($data->videos as $video) {
 				// settingUp Video Link

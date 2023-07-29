@@ -138,7 +138,7 @@ class AdminController
         $this->checkSession();
 
         $data = [];
-        $data['countFormations'] = $this->formationModel->countFormations();
+        $data['countFormations'] = $this->formationModel->count();
         $data['countFormateurs'] = $this->fomateurModel->count();
         $data['countEtudiant'] = $this->etudiantModel->count();
         $data['balance'] = $this->adminModel->getAdminByEmail($_SESSION['admin']->email)->balance;
@@ -251,15 +251,15 @@ class AdminController
             if (in_array($critere, $criteres)) {
                 $q = $_GET['q'];
                 if ($critere == 'nom_formation') {
-                    $data['formations'] = $this->formationModel->getFormationByNomFormation($q);
+                    $data['formations'] = $this->formationModel->whereNom($q);
                 } else {
-                    $data['formations'] = $this->formationModel->getFormationByNomFormateur($q);
+                    $data['formations'] = $this->formationModel->whereNomFormateur($q);
                 }
             } else {
-                $data['formations'] = $this->formationModel->getAllFormations();
+                $data['formations'] = $this->formationModel->all();
             }
         } else {
-            $data['formations'] = $this->formationModel->getAllFormations();
+            $data['formations'] = $this->formationModel->all();
         }
         // get link of image formateur
         foreach ($data['formations'] as $formation) {
@@ -278,7 +278,7 @@ class AdminController
     {
         $this->checkSession();
 
-        $this->formationModel->deleteFormation($idFormation);
+        $this->formationModel->delete($idFormation);
         echo json_encode("Formation supprimé avec succès !!!");
     }
 
@@ -289,7 +289,7 @@ class AdminController
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // don't forget validate data
             $data = (array) json_decode($_POST['formation']);
-            $this->formationModel->updateFormation($data);
+            $this->formationModel->update($data);
             echo json_encode("Formation modifiè avec succès !!!");
         }
     }

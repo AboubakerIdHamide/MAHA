@@ -69,7 +69,7 @@ class PaymentPaypalController
 
 
 
-		$formation = $this->formationModel->getFormationById($idFormation);
+		$formation = $this->formationModel->find($idFormation);
 		if (empty($formation)) {
 			// cette formation n'existe pas redirect to URLROOT
 			redirect();

@@ -21,7 +21,7 @@ class FormationSeeder extends Seed {
 		$data['categorie'] = $this->faker->numberBetween(1, 12);
 
 		$formation = new Formation;
-		return $formation->insertFormation($data);
+		return $formation->create($data);
 	}
 
 	public function seed($records = 1, $id_formateur = null)

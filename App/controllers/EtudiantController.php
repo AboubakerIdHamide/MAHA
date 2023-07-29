@@ -49,7 +49,7 @@ class EtudiantController
 			$inscription->imgFormateur = URLROOT . "/Public/" . $inscription->imgFormateur;
 			$inscription->image = URLROOT . "/Public/" . $inscription->image;
 			$inscription->apprenants = $this->inscriptionModel->countApprenantsOfFormation($inscription->id_formateur, $inscription->id_formation);
-			$inscription->liked = $this->formationModel->likedBefore($inscription->id_etudiant, $inscription->id_formation);
+			$inscription->liked = $this->formationModel->isLikedBefore($inscription->id_etudiant, $inscription->id_formation);
 		}
 		$data['nbrNotifications'] = $this->_getNotifications();
 		// loading the view
@@ -74,7 +74,7 @@ class EtudiantController
 		$formation->niveauIcon = $niveau->icon;
 		$formation->apprenants = $this->inscriptionModel->countApprenantsOfFormation($idFormateur, $idFormation);
 		$formation->videos = $this->videoModel->getVideosOfFormation($idFormation);
-		$formation->liked = $this->formationModel->likedBefore($_SESSION['id_etudiant'], $idFormation);
+		$formation->liked = $this->formationModel->isLikedBefore($_SESSION['id_etudiant'], $idFormation);
 
 		foreach ($formation->videos as $video) {
 			// settingUp Video Link

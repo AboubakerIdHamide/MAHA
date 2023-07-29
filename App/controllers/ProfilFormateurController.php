@@ -23,8 +23,8 @@ class ProfilFormateurController
     {
         $formateur = $this->fomateurModel->find($id);
         $formateur->img = URLROOT . "/Public/" . $formateur->img;
-        $formations = $this->formationModel->getFormationsFormateurById($id);
-        $numFormations = $this->fomateurModel->countFormations($id);
+        $formations = $this->formationModel->getFormationsOfFormateur($id);
+        $numFormations = $this->fomateurModel->count($id);
         $numAcht = $this->fomateurModel->countInscriptions($id);
         $themeData = $this->stockedModel->getThemeData();
         $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;

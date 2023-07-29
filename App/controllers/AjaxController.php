@@ -64,9 +64,9 @@ class AjaxController
         echo json_encode($data);
     }
 
-    public function getMyFormations($words = '')
+    public function getMyFormations($nomFormation = '')
     {
-        $formations = $this->formationModel->getAllFormationsOfFormateur($_SESSION['id_formateur'], $words);
+        $formations = $this->formationModel->getFormationsOfFormateur($_SESSION['id_formateur'], $nomFormation);
 
         // don't forget to add Zipfile (Ressourses)
         foreach ($formations as $formation) {
@@ -82,7 +82,7 @@ class AjaxController
             if (isset($_POST['formations'])) {
                 foreach ($_POST['formations'] as $id_formation) {
                     $videos = $this->videoModel->getVideosOfFormation($id_formation);
-                    $this->formationModel->deleteFormation($id_formation);
+                    $this->formationModel->delete($id_formation);
                     if (!empty($videos)) {
                         foreach ($videos as $video) {
                             $this->videoModel->deteleVideo($video->id_formation, $video->id_video);
@@ -100,7 +100,7 @@ class AjaxController
         $id_etudiant = $_POST["idEtudiant"];
         $id_formation = $_POST["idFormation"];
         $res = $this->formationModel->setLike($id_etudiant, $id_formation);
-        $jaimes = $this->formationModel->getLikesOfFormation($id_formation);
+        $jaimes = $this->formationModel->getLikes($id_formation);
         $data = ["success" => $res, "jaimes" => $jaimes];
         echo json_encode($data);
     }
@@ -313,7 +313,7 @@ class AjaxController
                 exit;
             }
 
-            $formations = $this->formationModel->joinCourse($code);
+            $formations = $this->formationModel->join($code);
             if ($formations) {
                 foreach ($formations as $formation) {
                     $inscription = $this->inscriptionModel->checkIfAlready($_SESSION['id_etudiant'], $formation->id_formation);

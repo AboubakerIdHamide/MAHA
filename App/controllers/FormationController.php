@@ -126,7 +126,7 @@ class FormationController
 
 			// insert data
 			if ($data["error"] == false) {
-				$formationId = $this->formationModel->insertFormation($data);
+				$formationId = $this->formationModel->create($data);
 				if ($formationId) {
 					foreach ($data["videosCollection"] as $video) {
 						$videoData = [
@@ -287,10 +287,10 @@ class FormationController
 			$data['path'] = $upload_path;
 			$data['id'] = $id;
 			if (explode('/', $path)[2] === 'files') {
-				$this->formationModel->updateFichierAttache($data);
+				$this->formationModel->updateFile($data);
 				echo json_encode("Pièce jointe ajouté avec succès");
 			} else {
-				$this->formationModel->updateImgFormation($data);
+				$this->formationModel->updateImage($data);
 				echo json_encode("La vignette de formation ajouté avec succès");
 			}
 		} else {
@@ -313,7 +313,7 @@ class FormationController
 				if ($error === false) {
 					unset($error);
 					// update formation
-					$this->formationModel->updateFormation($_POST);
+					$this->formationModel->update($_POST);
 					flash('updateFormation', 'Modification affecté avec succès !!!');
 					redirect('formateur/dashboard');
 				}
