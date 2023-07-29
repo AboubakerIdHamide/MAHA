@@ -85,7 +85,7 @@ class AjaxController
                     $this->formationModel->delete($id_formation);
                     if (!empty($videos)) {
                         foreach ($videos as $video) {
-                            $this->videoModel->deteleVideo($video->id_formation, $video->id_video);
+                            $this->videoModel->delete($video->id_video);
                             unlink($video->url);
                         }
                     }

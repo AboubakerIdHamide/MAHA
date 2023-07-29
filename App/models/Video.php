@@ -17,17 +17,17 @@ class Video
 		$this->connect = Database::getConnection();
 	}
 
-	public function insertVideo($dataVideo)
+	public function create($video)
 	{
 		$query = $this->connect->prepare("
 			INSERT INTO videos(id_formation, nom, url, duree, description) VALUES (:formation, :nom, :url, SEC_TO_TIME(:duree), :description)
 		");
 
-		$query->bindParam(':formation', $dataVideo['Idformation']);
-		$query->bindParam(':nom', $dataVideo['nomVideo']);
-		$query->bindParam(':url', $dataVideo['url']);
-		$query->bindParam(':duree', $dataVideo['duree']);
-		$query->bindParam(':description', $dataVideo['desc']);
+		$query->bindParam(':formation', $video['Idformation']);
+		$query->bindParam(':nom', $video['nomVideo']);
+		$query->bindParam(':url', $video['url']);
+		$query->bindParam(':duree', $video['duree']);
+		$query->bindParam(':description', $video['desc']);
 		$query->execute();
 
 		$lastInsertId = $this->connect->lastInsertId();
@@ -77,16 +77,16 @@ class Video
 		return false;
 	}
 
-	public function setOrderVideos($data)
+	public function setOrderVideos($videos)
 	{
-		foreach ($data as $value) {
+		foreach ($videos as $video) {
 			$query = $this->connect->prepare("
 				UPDATE videos
 				SET ordre = :order_video
 				WHERE id_video = :id_video
 			");
-			$query->bindParam(':order_video', $value->order);
-			$query->bindParam(':id_video', $value->id);
+			$query->bindParam(':order_video', $video->order);
+			$query->bindParam(':id_video', $video->id);
 			$query->execute();
 		}
 	}
@@ -123,53 +123,37 @@ class Video
 		return [];
 	}
 
-	public function updateVideo($dataVideo)
+	public function update($video)
 	{
-		if (isset($dataVideo['description']) && isset($dataVideo['titre'])) {
+		if (isset($video['description']) && isset($video['titre'])) {
 			$query = $this->connect->prepare("
 				UPDATE videos
 				SET description = :description,
 					nom = :titre
 				WHERE id_formation = :id_formation AND id_video = :id_video
 			");
-			$query->bindParam(':description', $dataVideo['description']);
-			$query->bindParam(':titre', $dataVideo['titre']);
+			$query->bindParam(':description', $video['description']);
+			$query->bindParam(':titre', $video['titre']);
 		} else {
-			if (isset($dataVideo['description'])) {
+			if (isset($video['description'])) {
 				$query = $this->connect->prepare("
 					UPDATE videos
 					SET description = :description
 					WHERE id_formation = :id_formation AND id_video = :id_video
 				");
-				$query->bindParam(':description', $dataVideo['description']);
+				$query->bindParam(':description', $video['description']);
 			} else {
 				$query = $this->connect->prepare("
 					UPDATE videos
 					SET nom = :titre
 					WHERE id_formation = :id_formation AND id_video = :id_video
 				");
-				$query->bindParam(':titre', $dataVideo['titre']);
+				$query->bindParam(':titre', $video['titre']);
 			}
 		}
 
-		$query->bindParam(':id_formation', $dataVideo['id_formation']);
-		$query->bindParam(':id_video', $dataVideo['id_video']);
-		$query->execute();
-		if ($query->rowCount() > 0) {
-			return true;
-		}
-		return false;
-	}
-
-	public function deteleVideo($idFormation, $idVideo)
-	{
-		$query = $this->connect->prepare("
-			DELETE FROM videos
-			WHERE id_formation = :id_formation 
-			AND id_video = :id_video
-		");
-		$query->bindParam(':id_formation', $idFormation);
-		$query->bindParam(':id_video', $idVideo);
+		$query->bindParam(':id_formation', $video['id_formation']);
+		$query->bindParam(':id_video', $video['id_video']);
 		$query->execute();
 		if ($query->rowCount() > 0) {
 			return true;
@@ -252,7 +236,7 @@ class Video
 	public function setBookmark($etudiant_id, $video_id)
 	{
 		// watch or unwatch
-		$bookmarked = $this->bookmarked($etudiant_id, $video_id);
+		$bookmarked = $this->isBookmarked($etudiant_id, $video_id);
 		if ($bookmarked) {
 			// watch
 			$query = $this->connect->prepare("
@@ -275,7 +259,7 @@ class Video
 		return false;
 	}
 
-	public function bookmarked($etudiant_id, $video_id)
+	public function isBookmarked($etudiant_id, $video_id)
 	{
 		$query = $this->connect->prepare("
 			SELECT * 
@@ -321,16 +305,14 @@ class Video
 		return [];
 	}
 
-
-	public function deteleVideoId($idVideo)
+	public function delete($id)
 	{
 		$query = $this->connect->prepare("
 			DELETE FROM videos
-			WHERE id_video = :id_video
+			WHERE id_video = :id
 		");
 
-		$idVideo = htmlspecialchars($idVideo);
-		$query->bindParam(':id_video', $idVideo);
+		$query->bindParam(':id', $id);
 		$query->execute();
 
 		if ($query->rowCount() > 0) {

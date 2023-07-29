@@ -136,7 +136,7 @@ class FormationController
 							"url" => $video->videoPath,
 							"desc" => "décrivez ce vidéo ou ajoutez des ressources !",
 						];
-						$this->videoModel->insertVideo($videoData);
+						$this->videoModel->create($videoData);
 					}
 				}
 				redirect("formateur/dashboard");
@@ -184,7 +184,7 @@ class FormationController
 					"url" => $video->videoPath,
 					"desc" => "décrivez ces vidéos ou ajoutez des ressources !",
 				];
-				$this->videoModel->insertVideo($videoData);
+				$this->videoModel->create($videoData);
 			}
 			redirect("formateur");
 			flash("videoAdded", "Vos vidéos ajoutées avec succès !", "alert alert-info mt-1");
@@ -198,7 +198,7 @@ class FormationController
 	public function deleteVideo()
 	{
 		if (isset($_POST['id_video'])) {
-			$res = $this->videoModel->deteleVideo($_SESSION['id_formation'], $_POST['id_video']);
+			$res = $this->videoModel->delete($_POST['id_video']);
 			if ($res) {
 				unlink($this->videoModel->getVideo($_SESSION['id_formation'], $_POST['id_video'])->url);
 				echo json_encode('Video supprimé avec succès !!!');
@@ -404,7 +404,7 @@ class FormationController
 				// update Video
 				$data = $_POST;
 				$data['id_formation'] = $_SESSION['id_formation'];
-				$this->videoModel->updateVideo($data);
+				$this->videoModel->update($data);
 				flash('updateVideo', 'Modification affecté avec succès !!!');
 				echo json_encode('Modification affecté avec succès !!!');
 			}

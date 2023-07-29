@@ -16,7 +16,7 @@ class VideoSeeder extends Seed {
 	    $data['desc'] = $this->faker->paragraph;
 
 		$video = new Video;
-		return $video->insertVideo($data);
+		return $video->create($data);
 	}
 
 	public function seed($records = 1, $id_formation = null)

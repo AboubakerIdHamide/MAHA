@@ -81,7 +81,7 @@ class EtudiantController
 			$video->url = URLROOT . "/Public/" . $video->url;
 			$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video, $idFormateur, $_SESSION['id_etudiant']);
 			$video->watched = $this->videoModel->watchedBefore($_SESSION['id_etudiant'], $video->id_video);
-			$video->bookmarked = $this->videoModel->bookmarked($_SESSION['id_etudiant'], $video->id_video);
+			$video->bookmarked = $this->videoModel->isBookmarked($_SESSION['id_etudiant'], $video->id_video);
 			// settingUp User image Link for comment
 			foreach ($video->comments as $comment) {
 				$comment->img = URLROOT . "/Public/" . $comment->img;
