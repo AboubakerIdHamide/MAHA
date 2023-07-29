@@ -330,7 +330,7 @@ class AjaxController
                             "approval_url" => 0
                         ];
 
-                        $this->inscriptionModel->insertInscription($inscriptionData);
+                        $this->inscriptionModel->create($inscriptionData);
                         http_response_code(201);
                     }
                 }

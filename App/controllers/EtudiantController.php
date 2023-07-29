@@ -44,7 +44,7 @@ class EtudiantController
 	public function dashboard()
 	{
 		// preparing data
-		$data["inscriptions"] = $this->inscriptionModel->getInscriptionByEtudiant($_SESSION['id_etudiant']);
+		$data["inscriptions"] = $this->inscriptionModel->getInscriptionsOfEtudiant($_SESSION['id_etudiant']);
 		foreach ($data["inscriptions"] as $inscription) {
 			$inscription->imgFormateur = URLROOT . "/Public/" . $inscription->imgFormateur;
 			$inscription->image = URLROOT . "/Public/" . $inscription->image;

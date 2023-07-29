@@ -21,7 +21,7 @@ class InscriptionSeeder extends Seed {
 		];
 
 		$inscription = new Inscription;
-		return $inscription->insertInscription($data);
+		return $inscription->create($data);
 	}
 
 	public function seed($records = 1, $id_formation, $etudiants, $id_formateur)

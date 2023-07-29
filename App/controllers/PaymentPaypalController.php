@@ -178,7 +178,7 @@ class PaymentPaypalController
 			"approval_url" => $approvalURL
 		];
 
-		$this->inscriptionModel->insertInscription($inscriptionData);
+		$this->inscriptionModel->create($inscriptionData);
 
 
 		// redirect to paypal page to make payment

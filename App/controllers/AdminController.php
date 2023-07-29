@@ -216,7 +216,7 @@ class AdminController
         // get link of image etudiant
         foreach ($data as $etudiant) {
             $etudiant->img = URLROOT . "/Public/" . $etudiant->img;
-            $etudiant->total_inscription = $this->inscriptionModel->countTotalInscriById($etudiant->id_etudiant);
+            $etudiant->total_inscription = $this->inscriptionModel->countInscriptionsOfEtudiant($etudiant->id_etudiant);
         }
         return view("admin/etudiants", $data);
     }
@@ -381,7 +381,7 @@ class AdminController
     {
         $this->checkSession();
 
-        $this->inscriptionModel->deteleInscription($id_inscription);
+        $this->inscriptionModel->delete($id_inscription);
         echo json_encode("Inscription supprimé avec succès !!!");
     }
 

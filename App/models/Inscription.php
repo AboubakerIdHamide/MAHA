@@ -17,21 +17,21 @@ class Inscription
         $this->connect = Database::getConnection();
     }
 
-    public function insertInscription($dataInscription)
+    public function create($inscription)
     {
         $query = $this->connect->prepare("
             INSERT INTO inscriptions(id_formation, id_etudiant, id_formateur, date_inscription, prix, transaction_info, payment_id, payment_state, approval_url) VALUES (:id_formation, :id_etudiant, :id_formateur, :date_inscription, :prix, :transaction_info, :payment_id, :payment_state, :approval_url)
         ");
 
-        $query->bindParam(':id_formation', $dataInscription['id_formation']);
-        $query->bindParam(':id_etudiant', $dataInscription['id_etudiant']);
-        $query->bindParam(':id_formateur', $dataInscription['id_formateur']);
-        $query->bindParam(':prix', $dataInscription['prix']);
-        $query->bindParam(':transaction_info', $dataInscription['transaction_info']);
-        $query->bindParam(':payment_id', $dataInscription['payment_id']);
-        $query->bindParam(':payment_state', $dataInscription['payment_state']);
-        $query->bindParam(':date_inscription', $dataInscription['date_inscription']);
-        $query->bindParam(':approval_url', $dataInscription['approval_url']);
+        $query->bindParam(':id_formation', $inscription['id_formation']);
+        $query->bindParam(':id_etudiant', $inscription['id_etudiant']);
+        $query->bindParam(':id_formateur', $inscription['id_formateur']);
+        $query->bindParam(':prix', $inscription['prix']);
+        $query->bindParam(':transaction_info', $inscription['transaction_info']);
+        $query->bindParam(':payment_id', $inscription['payment_id']);
+        $query->bindParam(':payment_state', $inscription['payment_state']);
+        $query->bindParam(':date_inscription', $inscription['date_inscription']);
+        $query->bindParam(':approval_url', $inscription['approval_url']);
         $query->execute();
 
         $lastInsertId = $this->connect->lastInsertId();
@@ -41,40 +41,21 @@ class Inscription
         return false;
     }
 
-    public function getInscription($id_formation, $id_etudiant, $id_formateur)
-    {
-        $query = $this->connect->prepare("
-            SELECT * 
-            FROM inscriptions 
-            WHERE id_formation = :id_formation 
-            AND id_etudiant = :id_etudiant 
-            AND id_formateur = :id_formateur 
-            AND payment_state != 'created'
-        ");
-
-        $query->bindParam(':id_formation', $id_formation);
-        $query->bindParam(':id_etudiant', $id_formation);
-        $query->bindParam(':id_formateur', $id_formation);
-        $query->execute();
-        $inscription = $query->fetch(\PDO::FETCH_OBJ);
-        if ($query->rowCount() > 0) {
-            return $inscription;
-        }
-        return false;
-    }
-
     public function countApprenantsOfFormation($id_formateur, $id_formation)
     {
         $query = $this->connect->prepare("
-            SELECT COUNT(*) AS total_apprenants 
+            SELECT 
+                COUNT(*) AS total_apprenants 
             FROM inscriptions 
             WHERE id_formateur = :id_formateur 
             AND id_formation = :id_formation 
-            AND payment_state != 'created'
+            AND payment_state = 'approved'
         ");
+
         $query->bindParam(":id_formateur", $id_formateur);
         $query->bindParam(":id_formation", $id_formation);
         $query->execute();
+
         $total_apprenants = $query->fetch(\PDO::FETCH_OBJ)->total_apprenants;
         if ($query->rowCount() > 0) {
             return $total_apprenants;
@@ -82,14 +63,14 @@ class Inscription
         return 0;
     }
 
-    public function deteleInscription($id_inscription)
+    public function delete($id)
     {
         $query = $this->connect->prepare("
             DELETE FROM inscriptions
-		    WHERE id_inscription = :id_inscription
+		    WHERE id_inscription = :id
         ");
 
-        $query->bindParam(':id_inscription', $id_inscription);
+        $query->bindParam(':id', $id);
         $query->execute();
 
         if ($query->rowCount() > 0) {
@@ -98,16 +79,16 @@ class Inscription
         return false;
     }
 
-    public function countTotalInscriById($id_etudiant)
+    public function countInscriptionsOfEtudiant($id)
     {
         $query = $this->connect->prepare("
             SELECT 
                 COUNT(*) AS total_inscription
             FROM inscriptions
-            WHERE id_etudiant = :id_etudiant
+            WHERE id_etudiant = :id
         ");
 
-        $query->bindParam(':id_etudiant', $id_etudiant);
+        $query->bindParam(':id', $id);
         $query->execute();
 
         $response = $query->fetch(\PDO::FETCH_OBJ);
@@ -117,7 +98,7 @@ class Inscription
         return false;
     }
 
-    public function getInscriptionByEtudiant($idEtudiant)
+    public function getInscriptionsOfEtudiant($id)
     {
         $query = $this->connect->prepare("
             SELECT 
@@ -139,11 +120,12 @@ class Inscription
             JOIN formateurs f ON i.id_formateur = f.id_formateur
             JOIN formations fore ON i.id_formation = fore.id_formation
             JOIN categories c ON fore.id_categorie = c.id_categorie
-            WHERE e.id_etudiant=:id_etudiant AND payment_state = 'approved'
+            WHERE e.id_etudiant=:id AND payment_state = 'approved'
         ");
 
-        $query->bindParam(":id_etudiant", $idEtudiant);
+        $query->bindParam(":id", $id);
         $query->execute();
+
         $inscriptions = $query->fetchAll(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $inscriptions;
@@ -180,7 +162,7 @@ class Inscription
             WHERE i.id_formation = :id_formation 
             AND i.id_etudiant = :id_etudiant 
             AND i.id_formateur = :id_formateur
-            AND i.payment_state != 'created'
+            AND i.payment_state = 'approved'
         ");
         $query->bindParam(':id_formation', $id_formation);
         $query->bindParam(':id_etudiant', $id_etudiant);
@@ -212,7 +194,7 @@ class Inscription
             JOIN etudiants e USING (id_etudiant)
             JOIN formateurs f ON i.id_formateur = f.id_formateur
             WHERE id_etudiant = :id_etudiant
-            AND payment_state != 'created'
+            AND payment_state = 'approved'
         ");
 
         $query->bindParam(":id_etudiant", $id_etudiant);
@@ -230,7 +212,9 @@ class Inscription
     public function checkIfAlready($idEtudiant, $idFormation)
     {
         $query = $this->connect->prepare("
-            SELECT * 
+            SELECT 
+                payment_state,
+                approval_url
             FROM inscriptions 
             WHERE id_etudiant = :id_etudiant
             AND id_formation = :id_formation
@@ -408,6 +392,7 @@ class Inscription
         }
         return [];
     }
+    
     public function top5BestSellersLastYear()
     {
         $query = $this->connect->prepare("
