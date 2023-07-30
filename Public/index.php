@@ -53,6 +53,8 @@ class Router
             require '../app/Controllers/api/' . $this->currentController . '.php';
             // initialize a contoller object
             $this->currentController = new $this->currentController;
+
+            call_user_func_array([$this->currentController, $this->currentMethod], $this->currentParams);
         } else {
             $this->isControllerExist($url[0]);
             require '../app/Controllers/' . $this->currentController . '.php';
