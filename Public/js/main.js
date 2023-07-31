@@ -39,22 +39,22 @@ if ($p_decription_PF) {
 }
 
 // Search Bar
-let searchForm = document.querySelectorAll(".searchForm");
+// let searchForm = document.querySelectorAll(".searchForm");
 
-if (searchForm) {
-  for (let i = 0; i < searchForm.length; i++)
-    searchForm[i].onsubmit = (e) => {
-      e.preventDefault();
-      const el = e.target;
-      const inpRech = el.querySelector("input");
-      const valRech = inpRech.value;
-      searchCoursesSubmit(valRech);
-    };
-}
+// if (searchForm) {
+//   for (let i = 0; i < searchForm.length; i++)
+//     searchForm[i].onsubmit = (e) => {
+//       e.preventDefault();
+//       const el = e.target;
+//       const inpRech = el.querySelector("input");
+//       const valRech = inpRech.value;
+//       searchCoursesSubmit(valRech);
+//     };
+// }
 
 // Search Bar
-function searchCoursesSubmit(val) {
-  if (!(val.length < 1 && val.length > 200)) {
-    window.location.href = `http://localhost/MAHA/pageFormation/recherche?q=${val}`;
-  }
-}
+// function searchCoursesSubmit(val) {
+//   if (!(val.length < 1 && val.length > 200)) {
+//     window.location.href = `http://localhost/MAHA/courses/search?q=${val + window.location.search.replace('?', '&')}`;
+//   }
+// }

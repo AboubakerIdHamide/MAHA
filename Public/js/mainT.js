@@ -1,8 +1,10 @@
 (function ($) {
 
 	"use strict";
+	document.body.style.overflow = "hidden";
 	
 	$(window).on('load', function () {
+		document.body.style.overflow = "auto";
 		$('[data-loader="circle-side"]').fadeOut(); // will first fade out the loading animation
 		$('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website.
 		$('body').delay(350);
@@ -178,8 +180,8 @@
 
 	// Check and radio input styles
 	$('input.icheck').iCheck({
-		checkboxClass: 'icheckbox_square-grey',
-		radioClass: 'iradio_square-grey'
+		checkboxClass: 'icheckbox_square-yellow',
+		radioClass: 'iradio_square-yellow'
 	});
 	
 	// Carousels
@@ -225,10 +227,10 @@
 
 	// Sticky filters
 	$(window).bind('load resize', function () {
-		var width = $(window).width();
+		const width = $(window).width();
 		if (width <= 991) {
 			$('.sticky_horizontal').stick_in_parent({
-				offset_top: 50
+				offset_top: 51.40
 			});
 		} else {
 			$('.sticky_horizontal').stick_in_parent({
@@ -270,5 +272,17 @@
 		$('ul#cat_nav li a.active').removeClass('active');
 		$(this).addClass('active');
 	});
+
+	/*
+ Search overlay
+*/
+$(".search-overlay-menu-btn").on("click", function (a) {
+	$(".search-overlay-menu").addClass("open"), 
+	$('.search-overlay-menu > form > input[type="search"]').focus()}), 
+	$(".search-overlay-close").on("click", function (a) {
+	$(".search-overlay-menu").removeClass("open")}),
+	$(".search-overlay-menu, .search-overlay-menu .search-overlay-close").on("click keyup", function (a) {
+	(a.target == this || "search-overlay-close" == a.target.className || 27 == a.keyCode) && $(this).removeClass("open")
+});
 	
 })(window.jQuery); 

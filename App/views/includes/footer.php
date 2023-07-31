@@ -49,11 +49,17 @@
 
     </div>
     <!-- page -->
-    <script src="<?= URLROOT ?>/public/jQuery/jquery-3.6.0.min.js"></script>
+    <script src="<?= URLROOT ?>/public/jQuery/jquery-3.6.3.min.js"></script>
     <script src="<?= JSROOT ?>/bootstrap.bundle.min.js"></script>
-    <script src="<?= JSROOT ?>/owl.carousel.min.js"></script>
-    <!-- COMMON SCRIPTS -->
-    <script src="<?= JSROOT ?>/common_scripts.js"></script>
+    <script src="<?= JSROOT ?>/plugins/theia-sticky-sidebar.js"></script>
+    <script src="<?= JSROOT ?>/plugins/jquery.mmenu.js"></script>
+    <script src="<?= JSROOT ?>/plugins/jquery.magnific-popup.min.js"></script>
+    <script src="<?= JSROOT ?>/plugins/jquery.selectbox.js"></script>
+    <script src="<?= JSROOT ?>/plugins/owl.carousel.min.js"></script>
+    <script src="<?= JSROOT ?>/plugins/sticky-kit.min.js"></script>
+    <script src="<?= JSROOT ?>/plugins/wow.min.js"></script>
+    <script src="<?= JSROOT ?>/public/courses.js"></script>
+    <script src="<?= JSROOT ?>/plugins/icheck.min.js"></script>
     <script src="<?= JSROOT ?>/mainT.js"></script>
     <script src="<?= JSROOT ?>/main.js"></script>
     <script src="<?= JSROOT ?>/pageFormations.js"></script>

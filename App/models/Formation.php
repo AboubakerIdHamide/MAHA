@@ -17,12 +17,13 @@ class Formation
         $this->connect = Database::getConnection();
     }
 
-    public function count()
+    public function count($etat = 'public')
     {
         $query = $this->connect->prepare("
             SELECT 
                 COUNT(*) AS total_formations 
             FROM formations
+            WHERE etat = '{$etat}'
         ");
 
         $query->execute();
@@ -893,6 +894,160 @@ class Formation
 
         if ($query->rowCount() > 0) {
             return $formations;
+        }
+        return [];
+    }
+
+    public function filter($filter, $offset = 1, $sort)
+    {
+        $query = $this->connect->prepare("
+            SELECT
+                fore.id_formation,
+                image AS imgFormation,
+                mass_horaire,
+                fore.nom AS nomFormation,
+                fore.date_creation,
+                prix,
+                description,
+                jaimes,
+                description,
+                f.id_formateur,
+                f.nom AS nomFormateur,
+                f.prenom,
+                f.img AS imgFormateur,
+                c.id_categorie,
+                c.nom AS nomCategorie,
+                l.id_langue,
+                l.nom AS nomLangue,
+                n.id_niveau,
+                n.nom AS nomNiveau,
+                n.icon AS iconNiveau,
+                insc.total_inscriptions
+            FROM formations fore
+            JOIN formateurs f ON fore.id_formateur = f.id_formateur
+            JOIN categories c ON fore.id_categorie = c.id_categorie
+            JOIN langues l ON fore.id_langue = l.id_langue
+            JOIN niveaux n ON fore.id_niveau = n.id_niveau
+            LEFT JOIN (
+                SELECT
+                    f.id_formation,
+                    COUNT(i.id_formation) AS total_inscriptions
+                FROM formations f
+                LEFT JOIN inscriptions i ON f.id_formation = i.id_formation
+                GROUP BY f.id_formation
+            ) AS insc ON fore.id_formation = insc.id_formation
+            WHERE fore.etat = 'public'
+            {$filter}
+            ORDER BY insc.total_inscriptions {$sort} DESC
+            LIMIT {$offset}, 10
+        ");
+
+        $query->execute();
+
+        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $formations;
+        }
+        return [];
+    }
+
+    public function countFiltred($filter)
+    {
+        $query = $this->connect->prepare("
+            SELECT
+                COUNT(fore.id_formation) AS total_filtred
+            FROM formations fore
+            JOIN formateurs f ON fore.id_formateur = f.id_formateur
+            JOIN categories c ON fore.id_categorie = c.id_categorie
+            JOIN langues l ON fore.id_langue = l.id_langue
+            JOIN niveaux n ON fore.id_niveau = n.id_niveau
+            WHERE fore.etat = 'public'
+            {$filter}
+        ");
+
+        $query->execute();
+
+        $response = $query->fetch(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $response->total_filtred;
+        }
+        return [];
+    }
+
+    public function groupByCategorie()
+    {
+        $query = $this->connect->prepare("
+            SELECT
+                c.nom,
+                COALESCE(COUNT(f.id_categorie), 0) AS total_formations
+            FROM categories c
+            LEFT JOIN formations f USING (id_categorie)
+            WHERE COALESCE(f.etat, 'public') = 'public'
+            GROUP BY c.id_categorie, c.nom
+        ");
+
+        $query->execute();
+
+        $categories = $query->fetchAll(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $categories;
+        }
+        return [];
+    }
+
+    public function groupByLangue()
+    {
+        $query = $this->connect->prepare("
+            SELECT
+                l.nom,
+                COALESCE(COUNT(f.id_langue), 0) AS total_formations
+            FROM langues l
+            LEFT JOIN formations f USING (id_langue)
+            WHERE COALESCE(f.etat, 'public') = 'public'
+            GROUP BY l.id_langue, l.nom
+        ");
+
+        $query->execute();
+
+        $categories = $query->fetchAll(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $categories;
+        }
+        return [];
+    }
+
+    public function groupByNiveau()
+    {
+        $query = $this->connect->prepare("
+            SELECT
+                n.nom,
+                COALESCE(COUNT(f.id_niveau), 0) AS total_formations
+            FROM niveaux n
+            LEFT JOIN formations f USING (id_niveau)
+            WHERE COALESCE(f.etat, 'public') = 'public'
+            GROUP BY n.id_niveau, n.nom
+        ");
+
+        $query->execute();
+
+        $categories = $query->fetchAll(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $categories;
+        }
+        return [];
+    }
+
+    public function groupByDuration()
+    {
+        $query = $this->connect->prepare("
+            CALL group_formation_by_duration()
+        ");
+
+        $query->execute();
+
+        $categories = $query->fetchAll(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $categories;
         }
         return [];
     }

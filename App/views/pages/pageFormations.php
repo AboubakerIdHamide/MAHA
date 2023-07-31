@@ -4,7 +4,8 @@
     <section id="hero_in" class="courses">
         <div class="wrapper">
             <div class="container">
-                <h1 class="fadeInUp"><span></span>Les Formations</h1>
+                <h1 class="fadeInUp"><span></span>Formations</h1>
+                <div class="hero-section"></div>
             </div>
         </div>
     </section>
@@ -12,12 +13,16 @@
 
     <div class="filters_listing sticky_horizontal">
         <div class="container">
-            <ul class="clearfix">
+            <ul class="clearfix d-flex align-items-center">
+                <li><span class="h6 text-white"><i class="fa-solid fa-sort"></i> Trier par</span></li>
                 <li>
                     <div class="switch-field">
-                        <a class="dropdown-item" id='plusPopular' ckecked href="<?= URLROOT . "/pageFormation/getPopularCourses" ?>">Les Plus Populaires</a>
-                        <a class="dropdown-item" id='plusAmais' href="<?= URLROOT . "/pageFormation/plusFormationsAmais" ?>">Les Plus Amais</a>
-                        <a class="dropdown-item" id='plusAcheter' href="<?= URLROOT . "/pageFormation/plusFormationsAcheter" ?>">Les Plus Achter</a>
+                        <input type="radio" id="all" name="sort" value="all" />
+                        <label for="all">les plus pertinents</label>
+                        <input type="radio" id="newest" name="sort" value="newest" />
+                        <label for="newest">les plus récents</label>
+                        <input type="radio" id="mostLiked" name="sort" value="mostLiked">
+                        <label for="mostLiked">les plus aimés</label>
                     </div>
                 </li>
             </ul>
@@ -25,56 +30,92 @@
         <!-- /container -->
     </div>
     <!-- /filters -->
-    <div class="container margin_60_35">
+    <div class="container margin_35_35">
         <div class="row">
             <aside class="col-lg-3" id="sidebar">
-                <div id="filters_col"> <a data-bs-toggle="collapse" href="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" id="filters_col_bt">Filters </a>
+                <div id="filters_col"> <a data-bs-toggle="collapse" href="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" id="filters_col_bt">Filtrer </a>
                     <div class="collapse show" id="collapseFilters">
                         <div class="filter_type">
-                            <h6><strong>Categories</strong></h6>
-                            <ul>
+                            <h6 class="d-flex justify-content-between align-items-center">
+                                <span>Categories</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </h6>
+                            <ul style="display: none;">
+                                <li>
+                                    <label for="categorie-all">
+                                        <input id="categorie-all" name="categorie" type="radio" class="icheck" value="all" />Tous les categories
+                                    </label>
+                                </li>
                                 <?php foreach ($data['categories'] as $categorie) : ?>
-                                    <li>
-                                        <a class="nav-link" href="<?= URLROOT . '/pageFormation/filter/' . $categorie->nom ?>"><?= $categorie->nom ?></a>
-                                    </li>
+                                <li>
+                                    <label for="categorie-<?= $categorie->nom ?>">
+                                        <input id="categorie-<?= $categorie->nom ?>" name="categorie" type="radio" value="<?= strtolower($categorie->nom) ?>" class="icheck"><?= $categorie->nom ?> <small>(<?= $categorie->total_formations ?>)</small>
+                                    </label>
+                                </li>
                                 <?php endforeach ?>
                             </ul>
                         </div>
                         <div class="filter_type">
-                            <h6><strong>Langues</strong></h6>
-                            <ul>
+                            <h6 class="d-flex justify-content-between align-items-center">
+                                <span>Langues</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </h6>
+                            <ul style="display: none;">
+                                <li>
+                                    <label for="langue-all">
+                                        <input id="langue-all" name="langue" type="radio" class="icheck" value="all" />Tous les langues
+                                    </label>
+                                </li>
                                 <?php foreach ($data['langues'] as $langue) : ?>
-                                    <li>
-                                        <a class="nav-link" href="<?= URLROOT . '/pageFormation/formationsByLangue/' . $langue->id_langue ?>"><?= $langue->nom ?></a>
-                                    </li>
+                                <li>
+                                    <label for="langue-<?= $langue->nom ?>">
+                                        <input id="langue-<?= $langue->nom ?>" name="langue" type="radio" value="<?= strtolower($langue->nom) ?>" class="icheck"><?= $langue->nom ?> <small>(<?= $langue->total_formations ?>)</small>
+                                    </label>
+                                </li>
                                 <?php endforeach ?>
                             </ul>
                         </div>
                         <div class="filter_type">
-                            <h6><strong>Niveaux</strong></h6>
-                            <ul>
+                            <h6 class="d-flex justify-content-between align-items-center">
+                                <span>Niveaux</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </h6>
+                            <ul style="display: none;">
+                                <li>
+                                    <label for="niveau-all">
+                                        <input id="niveau-all" name="niveau" type="radio" class="icheck" value="all" />
+                                        Tous les niveaux
+                                    </label>
+                                </li>
                                 <?php foreach ($data['niveaux'] as $niveau) : ?>
-                                    <li>
-                                        <a class="nav-link" href="<?= URLROOT . '/pageFormation/formationsByNiveau/' . $niveau->id_niveau ?>"><?= $niveau->nom ?></a>
-                                    </li>
+                                <li>
+                                    <label for="niveau-<?= $niveau->nom ?>">
+                                        <input id="niveau-<?= $niveau->nom ?>" name="niveau" type="radio" value="<?= strtolower($niveau->nom) ?>" class="icheck"><?= $niveau->nom ?> <small>(<?= $niveau->total_formations ?>)</small>
+                                    </label>
+                                </li>
                                 <?php endforeach ?>
                             </ul>
                         </div>
                         <div class="filter_type">
-                            <h6><strong>Durée :</strong></h6>
-                            <form action="<?= URLROOT . "/pageFormation/formationsByDuree/" ?>" method="GET">
-                                <div class="m-2">
-                                    <label class="form-label" for="minH">Min heure :</label>
-                                    <input type="number" name="minH" class="form-control">
-                                </div>
-                                <div class="m-2">
-                                    <label class="form-label" for="maxH">Max heure :</label>
-                                    <input type="number" name="maxH" class="form-control">
-                                </div>
-                                <div class="m-2 d-grid">
-                                    <input type="submit" value="Filter" class="btn btn-primary">
-                                </div>
-                            </form>
+                            <h6 class="d-flex justify-content-between align-items-center">
+                                <span>Durée de la formation</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </h6>
+                            <ul style="display: none;">
+                                <li>
+                                    <label for="duration-all">
+                                        <input id="duration-all" name="duration" type="radio" class="icheck" value="all" />
+                                        Tous
+                                    </label>
+                                </li>
+                                <?php foreach ($data['durations'] as $duration) :  ?>
+                                <li>
+                                    <label for="duration-<?= $duration->value ?>">
+                                        <input id="duration-<?= $duration->value ?>" name="duration" value="<?= $duration->value ?>" type="radio" class="icheck" /><?= $duration->label ?> <small>(<?= $duration->total_formations ?>)</small>
+                                    </label>
+                                </li>
+                                <?php endforeach ?>
+                            </ul>
                         </div>
                     </div>
                     <!--/collapse -->
@@ -82,70 +123,15 @@
                 <!--/filters col-->
             </aside>
             <!-- /aside -->
-            <?php if (!is_array($data['formations'])) : ?>
-                <div class="col-lg-9">
-                    <h2 style="color: #662d91; padding-top: 180px" class='aucunF d-flex justify-content-center'>
-                        <?= $data['formations'] ?></h2>
-                </div>
-            <?php else : ?>
-                <div class="col-lg-9">
-                    <div class="row">
-                        <?php foreach ($data['formations'] as $formation) : ?>
-                            <div class="col-md-6">
-                                <div class="box_grid wow">
-                                    <figure class="block-reveal">
-                                        <div class="block-horizzontal"></div>
-                                        <a href='<?= URLROOT . "/pageFormation/coursDetails/" . $formation->id_formation ?>'><img src="<?= $formation->imgFormation ?>" class="img-fluid" alt="Photo"></a>
-                                        <div class="price">$<?= $formation->prix ?></div>
-                                        <div class="preview"><span>Plus Details</span></div>
-                                    </figure>
-                                    <div class="wrapper">
-                                        <small><?= $formation->nomCategorie ?></small>
-                                        <h3><?= $formation->nomFormation ?></h3>
-                                        <p class='description'><?= $formation->description ?></p>
-                                    </div>
-                                    <ul>
-                                        <li><i class="fa-solid fa-clock"></i> <?= $formation->mass_horaire ?></li>
-                                        <li><i class="fa-solid fa-user"></i> <?= $formation->inscriptions ?></li>
-                                        <li><i class="fa-solid fa-heart"></i> <?= $formation->jaimes ?></li>
-                                        <li><a href='<?= URLROOT . "/pageFormation/coursDetails/" . $formation->id_formation ?>'>Plus</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- /box_list -->
-                        <?php endforeach; ?>
-                    </div>
-                </div>
+
+            <div class="col-lg-9">
+                <div class="row" id="courses"></div>
+            </div>
+            <!-- /col -->
         </div>
+        <!-- /row -->
     </div>
-    <!-- start pagenition -->
-    <div class='footer_page_formations'>
-        <ul class="pagination d-flex justify-content-center">
-            <li style='font-size: 22px;' class='page-item'><a class='page-link' href="?pageno=1">First</a></li>
-            <li style='font-size: 22px;' class="page-item <?php if (intval($data['pageno']) <= 1) {
-                                                                echo 'disabled';
-                                                            } ?>">
-                <a class='page-link' href="<?php if (intval($data['pageno']) <= 1) {
-                                                echo '#';
-                                            } else {
-                                                echo "?pageno=" . (intval($data['pageno']) - 1);
-                                            } ?>">Prev</a>
-            </li>
-            <li style='font-size: 22px;' class="page-item  <?php if (intval($data['pageno']) >= intval($data['totalPages'])) {
-                                                                echo 'disabled';
-                                                            } ?>">
-                <a class='page-link' href="<?php if (intval($data['pageno']) >= intval($data['totalPages'])) {
-                                                echo '#';
-                                            } else {
-                                                echo "?pageno=" . (intval($data['pageno']) + 1);
-                                            } ?>">Next</a>
-            </li>
-            <li style='font-size: 22px;' class='page-item'><a class='page-link' href="?pageno=<?= intval($data['totalPages']); ?>">Last</a></li>
-        </ul>
-    </div>
-    <!-- end pagenition -->
-<?php endif; ?>
+    <!-- /container -->
 </div>
 <!-- /container -->
 </main>

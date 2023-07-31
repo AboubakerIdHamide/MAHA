@@ -16,7 +16,7 @@ class Request
     {
         $this->headers = $_SERVER;
         $this->uri = isset($_GET["url"]) ? explode("/", $_GET["url"]) : [null];
-        $this->checkContentType();
+        // $this->checkContentType();
         $this->setParams();
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->body = $this->getBody();
