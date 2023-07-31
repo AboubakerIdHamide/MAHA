@@ -83,8 +83,7 @@
                             <ul style="display: none;">
                                 <li>
                                     <label for="niveau-all">
-                                        <input id="niveau-all" name="niveau" type="radio" class="icheck" value="all" />
-                                        Tous les niveaux
+                                        <input id="niveau-all" name="niveau" type="radio" class="icheck" value="all" />Tous les niveaux
                                     </label>
                                 </li>
                                 <?php foreach ($data['niveaux'] as $niveau) : ?>
@@ -104,8 +103,7 @@
                             <ul style="display: none;">
                                 <li>
                                     <label for="duration-all">
-                                        <input id="duration-all" name="duration" type="radio" class="icheck" value="all" />
-                                        Tous
+                                        <input id="duration-all" name="duration" type="radio" class="icheck" value="all" />Tous
                                     </label>
                                 </li>
                                 <?php foreach ($data['durations'] as $duration) :  ?>

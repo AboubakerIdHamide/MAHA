@@ -104,7 +104,7 @@ $(function(){
                                 <i class="fa-solid fa-heart" style="color: #e91e63"></i>
                                 ${course.jaimes}
                             </span>
-                            <a href="${URLROOT}/courses/${course.id_formation}">
+                            <a href="${URLROOT}/courses/${course.slug}">
                                 <img src="${course.imgFormation}" class="img-fluid" alt="image formation">
                             </a>
                             <div class="price">$${course.prix}</div>
@@ -122,7 +122,7 @@ $(function(){
                                 ${course.mass_horaire.split(':')[1]}min
                             </li>
                             <li><i class="fa-solid fa-user"></i> ${course.total_inscriptions}</li>
-                            <li><a href="${URLROOT}/courses/${course.id_formation}">Acheter</a></li>
+                            <li><a href="${URLROOT}/courses/${course.slug}">Acheter</a></li>
                         </ul>
                     </div>
                 </div>

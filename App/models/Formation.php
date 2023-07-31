@@ -898,11 +898,53 @@ class Formation
         return [];
     }
 
+    public function whereSlug($slug)
+    {
+        $query = $this->connect->prepare("
+            SELECT 
+                formations.id_formation,
+                formations.image AS imgFormation,
+                formations.mass_horaire,
+                categories.nom AS nomCategorie,
+                formations.nom AS nomFormation,
+                formations.prix,
+                formations.description,
+                formations.jaimes,
+                formateurs.id_formateur,
+                formateurs.nom AS nomFormateur,
+                formateurs.prenom,
+                formateurs.id_categorie AS categorie,
+                formateurs.img AS imgFormateur,
+                date(formations.date_creation) AS date_creation,
+                formations.id_niveau AS niveau,
+                formations.id_langue AS langue,
+                langues.nom AS nomLangue,
+                niveaux.nom AS nomNiveau,
+                niveaux.icon AS iconNiveau
+            FROM formations, formateurs, categories, langues, niveaux
+            WHERE formations.id_formateur = formateurs.id_formateur
+            AND categories.id_categorie = formations.id_categorie
+            AND formations.id_langue = langues.id_langue
+            AND formations.id_niveau = niveaux.id_niveau
+            AND formations.slug = :slug
+        ");
+
+        $query->bindParam(":slug", $slug);
+        $query->execute();
+
+        $formation = $query->fetch(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $formation;
+        }
+        return false;
+    }
+
     public function filter($filter, $offset = 1, $sort)
     {
         $query = $this->connect->prepare("
             SELECT
                 fore.id_formation,
+                fore.slug,
                 image AS imgFormation,
                 mass_horaire,
                 fore.nom AS nomFormation,

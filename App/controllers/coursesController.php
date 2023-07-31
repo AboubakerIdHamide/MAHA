@@ -44,17 +44,17 @@ class coursesController
         return view("pages/pageFormations", $data);
     }
 
-    public function index($id = null)
+    public function index($slug = null)
     {
-        $formation = $this->formationModel->find($id);
+        $formation = $this->formationModel->whereSlug($slug);
         if(!$formation){
             redirect('courses/search');
             exit;
         }
 
         
-        $videos = $this->videoModel->getVideosOfFormationPublic($id);
-        $numVideos = $this->videoModel->countVideosOfFormation($id);
+        $videos = $this->videoModel->getVideosOfFormationPublic($formation->id_formation);
+        $numVideos = $this->videoModel->countVideosOfFormation($formation->id_formation);
         $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
         $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
         $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
