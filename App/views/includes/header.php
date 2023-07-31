@@ -9,7 +9,7 @@
     <title><?= SITENAME ?></title>
     <!-- Font Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
-     <!-- GOOGLE WEB FONT -->
+    <!-- GOOGLE WEB FONT -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- BASE CSS -->
     <link href="<?= CSSROOT ?>/bootstrap.min.css" rel="stylesheet" />
@@ -31,7 +31,6 @@
 </head>
 
 <body>
-
     <div id="page" class="theia-exception">
         <header class="header menu_2">
             <div id="preloader">
