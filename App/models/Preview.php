@@ -53,7 +53,8 @@ class Preview
     public function getPreviewVideo($id_formation)
     {
         $query = $this->connect->prepare("
-            SELECT  
+            SELECT
+                a.id_video,  
                 url
             FROM apercus a
             JOIN videos USING (id_video)
