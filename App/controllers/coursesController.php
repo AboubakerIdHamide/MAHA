@@ -41,7 +41,7 @@ class coursesController
             'theme' => $theme
         ];
 
-        return view("pages/pageFormations", $data);
+        return view("courses/index", $data);
     }
 
     public function index($slug = null)
@@ -52,14 +52,14 @@ class coursesController
             exit;
         }
 
-        
         $videos = $this->videoModel->getVideosOfFormationPublic($formation->id_formation);
         $numVideos = $this->videoModel->countVideosOfFormation($formation->id_formation);
         $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
         $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
         $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
-        $previewVideo = $this->previewsModel->getPreviewVideo($formation->id_formation);
-        $previewVideo = $previewVideo ? URLROOT . "/Public/" . $previewVideo->url : null;
+        $preview = $this->previewsModel->getPreviewVideo($formation->id_formation);
+        if($preview) $preview->url = URLROOT . "/Public/" . $preview->url;
+        
 
         $themeData = $this->stockedModel->getThemeData();
         $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
@@ -69,10 +69,10 @@ class coursesController
             'formation' => $formation,
             'videos' => $videos,
             'numbVIdeo' => $numVideos,
-            'previewVideo' => $previewVideo,
+            'previewVideo' => $preview,
             'theme' => $theme
         ];
-        return view("pages/cours-details", $data);   
+        return view("courses/show", $data);   
     }
 
     public function getPopularCourses()
