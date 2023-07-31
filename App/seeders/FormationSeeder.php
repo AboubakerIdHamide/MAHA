@@ -9,7 +9,7 @@ class FormationSeeder extends Seed {
 	private function definition($id_formateur)
 	{
         $data = [];
-		$data['nom_formation'] = $this->faker->sentence(4);
+		$data['nom_formation'] = str_replace('.', '', $this->faker->sentence(4));
 		$data['img_formation'] = $this->getRandomImage('600', '400');
 		$data['masse_horaire'] = $this->faker->time('H:i:s');
 		$data['prix_formation'] = $this->faker->randomFloat(2, 10, 1000);
