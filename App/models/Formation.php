@@ -904,7 +904,7 @@ class Formation
             SELECT 
                 formations.id_formation,
                 formations.image AS imgFormation,
-                formations.mass_horaire,
+                DATE_FORMAT(formations.mass_horaire, '%H:%i') AS mass_horaire,
                 categories.nom AS nomCategorie,
                 formations.nom AS nomFormation,
                 formations.prix,
