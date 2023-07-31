@@ -364,9 +364,8 @@ class Video
 			SELECT 
 				videos.id_video,
 				videos.nom,
-				videos.duree
+				DATE_FORMAT(videos.duree, '%i:%s') AS duree
 			FROM videos
-			JOIN formations USING (id_formation)
 			WHERE id_formation = :id_formation
 		");
 
