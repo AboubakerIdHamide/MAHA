@@ -17,6 +17,7 @@ require_once '../App/helpers/view.php';
 require_once '../App/helpers/flash.php';
 require_once '../App/helpers/old.php';
 require_once '../App/helpers/print_r2.php';
+require_once '../App/helpers/date.php';
 
 
 /*
