@@ -26,6 +26,11 @@
 	$('#sidebar').theiaStickySidebar({
 		additionalMarginTop: 150
 	});
+
+	// sidebar for Course
+	$('#sidebar-course').theiaStickySidebar({
+		additionalMarginTop: 170
+	});
 	
 	// Mobile Mmenu
 	var $menu = $("nav#menu").mmenu({
@@ -95,9 +100,9 @@
 	wow.init();
 	
 	/*  video popups */
-	$('.video').magnificPopup({
-		type:'iframe'
-	});	/* video modal*/
+	// $('.video').magnificPopup({
+	// 	type:'iframe'
+	// });	/* video modal*/
 	
 	
 	// Accordion
