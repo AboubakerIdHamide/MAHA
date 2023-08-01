@@ -22,13 +22,9 @@
                 <div class="col-lg-3 col-md-6">
                     <h5>En contact avec nous</h5>
                     <ul class="contacts">
-                        <li><a href="tel://0524345057"><i class="fa-solid fa-mobile"></i> (+212) 524 34 50 57</a>
-                        </li>
-                        <li><a href="mailto:mahateamisgi@gmail.com"><i class="fa-solid fa-envelope"></i>
-                                mahateamisgi@gmail.com</a></li>
-                        <li><a href="mailto:mahateamisgi@gmail.com"><i class="fa-solid fa-location-dot"></i> Boulevard
-                                de
-                                Mohammedia, QI Azli 40150</a></li>
+                        <li><a href="tel://0524345057"><i class="fa-solid fa-mobile"></i> (+212) 524 34 50 57</a></li>
+                        <li><a href="mailto:mahateamisgi@gmail.com"><i class="fa-solid fa-envelope"></i> mahateamisgi@gmail.com</a></li>
+                        <li><a href="mailto:mahateamisgi@gmail.com"><i class="fa-solid fa-location-dot"></i> Boulevard de Mohammedia</a></li>
                     </ul>
                 </div>
             </div>
@@ -42,15 +38,12 @@
         </div>
     </footer>
     <!--/footer-->
+</div>
 
-    <!-- To-up Button -->
-    <!-- <span class="to-top" href="#"><i class="fa fa-chevron-up"></i></span> -->
-    <!-- To-up Button -->
-
-    </div>
-    <!-- page -->
-    <script src="<?= URLROOT ?>/public/jQuery/jquery-3.6.3.min.js"></script>
-    <script src="<?= JSROOT ?>/bootstrap.bundle.min.js"></script>
+    <!-- Scripts -->
+    <script src="<?= JSROOT ?>/plugins/plyr.min.js"></script>
+    <script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
+    <script src="<?= JSROOT ?>/plugins/bootstrap.bundle.min.js"></script>
     <script src="<?= JSROOT ?>/plugins/theia-sticky-sidebar.js"></script>
     <script src="<?= JSROOT ?>/plugins/jquery.mmenu.js"></script>
     <script src="<?= JSROOT ?>/plugins/jquery.magnific-popup.min.js"></script>
