@@ -92,7 +92,7 @@
             <div class="search-overlay-menu">
                 <span class="search-overlay-close"><span class="closebt"><i class="fa-solid fa-xmark"></i></span></span>
                 <form role="search" class="searchForm">
-                    <input id="input-search" name="q" type="search" placeholder="Recherche..." />
+                    <input id="input-search" name="q" type="text" placeholder="Recherche..." />
                     <button type="submit"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </form>
