@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
 DELETE FROM `admins`;
 /*!40000 ALTER TABLE `admins` DISABLE KEYS */;
 INSERT INTO `admins` (`id_admin`, `nom`, `prenom`, `email`, `img`, `mot_de_passe`, `balance`, `platform_pourcentage`, `username_paypal`, `password_paypal`) VALUES
-  (1, 'MAHA', 'Team', 'mahateam@gmail.com', 'images/membre.jpg', 'admin123@@@', 0, 10, 'Af173BC6L0TzwyZG3Q1ToevB8qmvCAOI_xmgtNnbKex2QydeYCM335mCsvJwvuupkJmABbUxYnThj9wE', 'ELTMVnjyg1lmDXDnZZTTVJKeLrWBfz5Cgg0GGp-9hPKzKwqY7GwkQEm5upYE4t6y2ip_JutuifOMD_0x');
+	(1, 'MAHA', 'Team', 'mahateam@gmail.com', 'images/membre.jpg', 'admin123@@@', 5445.23, 10, 'Af173BC6L0TzwyZG3Q1ToevB8qmvCAOI_xmgtNnbKex2QydeYCM335mCsvJwvuupkJmABbUxYnThj9wE', 'ELTMVnjyg1lmDXDnZZTTVJKeLrWBfz5Cgg0GGp-9hPKzKwqY7GwkQEm5upYE4t6y2ip_JutuifOMD_0x');
 /*!40000 ALTER TABLE `admins` ENABLE KEYS */;
 
 -- Dumping structure for table maha.apercus
@@ -75,24 +75,25 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `nom` varchar(50) NOT NULL,
   `icon` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id_categorie`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table maha.categories: ~12 rows (approximately)
 DELETE FROM `categories`;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
 INSERT INTO `categories` (`id_categorie`, `nom`, `icon`) VALUES
-  (1, '3D', '<i class="fa-brands fa-unity"></i>'),
-  (2, 'Architecture & BIM', '<i class="fa-solid fa-ruler-combined"></i>'),
-  (3, 'Audio-MAO', '<i class="fa-solid fa-sliders"></i>'),
-  (4, 'Business & Finance', '<i class="fa-sharp fa-solid fa-briefcase"></i>'),
-  (5, 'Code', '<i class="fa-solid fa-code"></i>'),
-  (6, 'Infographie', '<i class="fa-sharp fa-solid fa-pen-nib"></i>'),
-  (7, 'Photographie', '<i class="fa-solid fa-camera-retro"></i>'),
-  (8, 'Vidéo-Compositing', '<i class="fa-solid fa-video"></i>'),
-  (9, 'Webmarketing', '<i class="fa-solid fa-chart-simple"></i>'),
-  (10, 'Réseaux informatique', '<i class="fa-solid fa-network-wired"></i>'),
-  (11, 'Management', '<i class="fa-solid fa-list-check"></i>'),
-  (12, 'Bureautique', '<i class="fa-solid fa-computer-mouse"></i>');
+	(1, '3D', '<i class="fa-brands fa-unity"></i>'),
+	(2, 'Architecture &amp; BIM', '<i class="fa-solid fa-ruler-combined"></i>'),
+	(3, 'Audio-MAO', '<i class="fa-solid fa-sliders"></i>'),
+	(4, 'Business &amp; Finance', '<i class="fa-sharp fa-solid fa-briefcase"></i>'),
+	(5, 'Code', '<i class="fa-solid fa-code"></i>'),
+	(6, 'Infographie', '<i class="fa-sharp fa-solid fa-pen-nib"></i>'),
+	(7, 'Photographie', '<i class="fa-solid fa-camera-retro"></i>'),
+	(8, 'Vidéo-Compositing', '<i class="fa-solid fa-video"></i>'),
+	(9, 'Webmarketing', '<i class="fa-solid fa-chart-simple"></i>'),
+	(10, 'Réseaux informatique', '<i class="fa-solid fa-network-wired"></i>'),
+	(11, 'Management', '<i class="fa-solid fa-list-check"></i>'),
+	(12, 'Bureautique', '<i class="fa-solid fa-computer-mouse"></i>'),
+	(13, 'Musique', '<i class="fa-solid fa-music"></i>');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 
 -- Dumping structure for table maha.commentaires
@@ -144,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `etudiants` (
   PRIMARY KEY (`id_etudiant`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.etudiants: ~0 rows (approximately)
+-- Dumping data for table maha.etudiants: ~85 rows (approximately)
 DELETE FROM `etudiants`;
 /*!40000 ALTER TABLE `etudiants` DISABLE KEYS */;
 /*!40000 ALTER TABLE `etudiants` ENABLE KEYS */;
@@ -164,12 +165,14 @@ CREATE TABLE IF NOT EXISTS `formateurs` (
   `balance` float NOT NULL DEFAULT '0',
   `code` varchar(50) DEFAULT NULL,
   `id_categorie` int(11) NOT NULL,
+  `slug` varchar(200) NOT NULL,
   PRIMARY KEY (`id_formateur`) USING BTREE,
+  UNIQUE KEY `slug` (`slug`),
   KEY `fk_categories_formateurs` (`id_categorie`),
   CONSTRAINT `fk_categories_formateurs` FOREIGN KEY (`id_categorie`) REFERENCES `categories` (`id_categorie`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.formateurs: ~0 rows (approximately)
+-- Dumping data for table maha.formateurs: ~1 rows (approximately)
 DELETE FROM `formateurs`;
 /*!40000 ALTER TABLE `formateurs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `formateurs` ENABLE KEYS */;
@@ -190,7 +193,9 @@ CREATE TABLE IF NOT EXISTS `formations` (
   `id_niveau` int(11) DEFAULT NULL,
   `id_formateur` varchar(255) DEFAULT NULL,
   `id_categorie` int(11) DEFAULT NULL,
+  `slug` varchar(200) NOT NULL,
   PRIMARY KEY (`id_formation`),
+  UNIQUE KEY `slug` (`slug`),
   KEY `fk_langues_formations` (`id_langue`),
   KEY `fk_categories_formations` (`id_categorie`),
   KEY `fk_formateurs_formations` (`id_formateur`),
@@ -201,10 +206,61 @@ CREATE TABLE IF NOT EXISTS `formations` (
   CONSTRAINT `fk_niveaux_formations` FOREIGN KEY (`id_niveau`) REFERENCES `niveaux` (`id_niveau`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.formations: ~0 rows (approximately)
+-- Dumping data for table maha.formations: ~10 rows (approximately)
 DELETE FROM `formations`;
 /*!40000 ALTER TABLE `formations` DISABLE KEYS */;
 /*!40000 ALTER TABLE `formations` ENABLE KEYS */;
+
+-- Dumping structure for procedure maha.group_formation_by_duration
+DELIMITER //
+CREATE PROCEDURE `group_formation_by_duration`()
+BEGIN
+	-- 'extraShort' => "'00' AND '01:00:59'",
+	-- 'short' => "'01:00:00' AND '03:00:59'", 
+	-- 'medium' => "'03:00:00' AND '06:00:59'",
+	-- 'long' => "'06:00:00' AND '17:00:59'",
+	-- 'extraLong' => "'17:00:00' AND '800:00'"
+	
+	SELECT
+		'0 à 1 Heure' AS label,
+		'extraShort' AS `value`,
+		COUNT(*) AS total_formations
+	FROM formations f
+	WHERE etat = 'public'
+	AND mass_horaire BETWEEN '00' AND '01:00:59'
+	UNION
+	SELECT
+		'1 à 3 Heures' AS label,
+		'short' AS `value`,
+		COUNT(*)
+	FROM formations f
+	WHERE mass_horaire BETWEEN '01:00:00' AND '03:00:59'
+	UNION
+	SELECT
+		'3 à 6 Heures' AS label,
+		'medium' AS `value`,
+		COUNT(*)
+	FROM formations f
+	WHERE etat = 'public'
+	AND mass_horaire BETWEEN '03:00:00' AND '06:00:59'
+	UNION
+	SELECT
+		'6 à 17 Heures' AS label,
+		'long' AS `value`,
+		COUNT(*)
+	FROM formations f
+	WHERE etat = 'public'
+	AND mass_horaire BETWEEN '06:00:00' AND '17:00:59'
+	UNION
+	SELECT
+		'Plus de 17 Heures' AS label,
+		'extraLong' AS `value`,
+		COUNT(*)
+	FROM formations f
+	WHERE etat = 'public'
+	AND mass_horaire >= '17:00:00';
+END//
+DELIMITER ;
 
 -- Dumping structure for table maha.inscriptions
 CREATE TABLE IF NOT EXISTS `inscriptions` (
@@ -227,7 +283,7 @@ CREATE TABLE IF NOT EXISTS `inscriptions` (
   CONSTRAINT `fk_formations_inscriptions` FOREIGN KEY (`id_formation`) REFERENCES `formations` (`id_formation`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.inscriptions: ~0 rows (approximately)
+-- Dumping data for table maha.inscriptions: ~90 rows (approximately)
 DELETE FROM `inscriptions`;
 /*!40000 ALTER TABLE `inscriptions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `inscriptions` ENABLE KEYS */;
@@ -252,16 +308,30 @@ CREATE TABLE IF NOT EXISTS `langues` (
   `id_langue` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(30) NOT NULL,
   PRIMARY KEY (`id_langue`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
--- Dumping data for table maha.langues: ~4 rows (approximately)
+-- Dumping data for table maha.langues: ~18 rows (approximately)
 DELETE FROM `langues`;
 /*!40000 ALTER TABLE `langues` DISABLE KEYS */;
 INSERT INTO `langues` (`id_langue`, `nom`) VALUES
-  (1, 'Français'),
-  (2, 'Anglais'),
-  (3, 'Espagnol'),
-  (4, 'العربية');
+	(1, 'Français'),
+	(2, 'English'),
+	(3, 'Español'),
+	(4, 'العربية'),
+	(5, 'Türkçe'),
+	(6, 'Português'),
+	(7, 'Deutsch'),
+	(8, 'Italiano'),
+	(9, 'Русский'),
+	(10, '日本語'),
+	(11, '中文'),
+	(12, 'Polski'),
+	(13, 'हिन्दी'),
+	(14, 'Nederlands'),
+	(15, 'Română'),
+	(16, 'ไทย'),
+	(17, 'اردو'),
+	(18, 'বাংলা');
 /*!40000 ALTER TABLE `langues` ENABLE KEYS */;
 
 -- Dumping structure for table maha.niveaux
@@ -276,9 +346,9 @@ CREATE TABLE IF NOT EXISTS `niveaux` (
 DELETE FROM `niveaux`;
 /*!40000 ALTER TABLE `niveaux` DISABLE KEYS */;
 INSERT INTO `niveaux` (`id_niveau`, `nom`, `icon`) VALUES
-  (1, 'Débutant', '<svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="#E5E5E5" d="M9 4h6v2H9zM23 4h6v2h-6z"></path><circle cx="5" cy="5" r="5" fill="#8887FF"></circle><circle fill="#E5E5E5" cx="19" cy="5" r="5"></circle><circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle></svg>'),
-  (2, 'Intermédiaire', '<svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 4h6v2H9z" fill="#8887FF"></path><path d="M23 4h6v2h-6z" fill="#E5E5E5"></path><circle cx="5" cy="5" r="5" fill="#8887FF"></circle><circle cx="19" cy="5" r="5" fill="#8887FF"></circle><circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle></svg>\r\n'),
-  (3, 'Avancé', '<svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="#8887FF" d="M9 4h6v2H9zM23 4h6v2h-6z"></path><circle cx="5" cy="5" r="5" fill="#8887FF"></circle><circle fill="#8887FF" cx="19" cy="5" r="5"></circle><circle fill="#8887FF" cx="33" cy="5" r="5"></circle></svg>');
+	(1, 'Débutant', '<svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="#E5E5E5" d="M9 4h6v2H9zM23 4h6v2h-6z"></path><circle cx="5" cy="5" r="5" fill="#8887FF"></circle><circle fill="#E5E5E5" cx="19" cy="5" r="5"></circle><circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle></svg>'),
+	(2, 'Intermédiaire', '<svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 4h6v2H9z" fill="#8887FF"></path><path d="M23 4h6v2h-6z" fill="#E5E5E5"></path><circle cx="5" cy="5" r="5" fill="#8887FF"></circle><circle cx="19" cy="5" r="5" fill="#8887FF"></circle><circle fill="#E5E5E5" cx="33" cy="5" r="5"></circle></svg>\r\n'),
+	(3, 'Avancé', '<svg width="58" height="30" viewBox="0 0 38 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="#8887FF" d="M9 4h6v2H9zM23 4h6v2h-6z"></path><circle cx="5" cy="5" r="5" fill="#8887FF"></circle><circle fill="#8887FF" cx="19" cy="5" r="5"></circle><circle fill="#8887FF" cx="33" cy="5" r="5"></circle></svg>');
 /*!40000 ALTER TABLE `niveaux` ENABLE KEYS */;
 
 -- Dumping structure for table maha.notifications
@@ -310,7 +380,7 @@ CREATE TABLE IF NOT EXISTS `smtp` (
 DELETE FROM `smtp`;
 /*!40000 ALTER TABLE `smtp` DISABLE KEYS */;
 INSERT INTO `smtp` (`id_smtp`, `host`, `username`, `password`, `port`) VALUES
-  (1, 'smtp.gmail.com', 'mahateamisgi@gmail.com', 'fcpfxrepelndwpqr', '465');
+	(1, 'smtp.gmail.com', 'mahateamisgi@gmail.com', 'fcpfxrepelndwpqr', '465');
 /*!40000 ALTER TABLE `smtp` ENABLE KEYS */;
 
 -- Dumping structure for table maha.theme
@@ -325,7 +395,7 @@ CREATE TABLE IF NOT EXISTS `theme` (
 DELETE FROM `theme`;
 /*!40000 ALTER TABLE `theme` DISABLE KEYS */;
 INSERT INTO `theme` (`id_theme`, `logo`, `landingImg`) VALUES
-  (1, 'images/maha.png', 'images/banner_home.jpg');
+	(1, 'images/maha.png', 'images/banner_home.jpg');
 /*!40000 ALTER TABLE `theme` ENABLE KEYS */;
 
 -- Dumping structure for table maha.videos
@@ -417,13 +487,15 @@ DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
 -- Dumping structure for trigger maha.formateurs_before_insert
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `formateurs_before_insert` BEFORE INSERT ON `formateurs` FOR EACH ROW BEGIN
   DECLARE numero INT;
   DECLARE v_id_formateur VARCHAR(100);
   DECLARE is_exist BOOLEAN DEFAULT FALSE;
   DECLARE cpt INT;
+  DECLARE new_slug VARCHAR(255);
+  DECLARE suffix INT DEFAULT 1;
   
   SET numero = (SELECT COUNT(*) FROM formateurs) + 1;
   SET v_id_formateur = CONCAT("FOR", numero);
@@ -438,6 +510,34 @@ CREATE TRIGGER `formateurs_before_insert` BEFORE INSERT ON `formateurs` FOR EACH
   END LOOP check_exist;
   
   SET NEW.id_formateur = v_id_formateur;
+  
+  SET new_slug = LOWER(REPLACE(CONCAT(NEW.nom, ' ', NEW.prenom), ' ', '-'));
+
+  WHILE EXISTS(SELECT 1 FROM formateurs WHERE slug = new_slug) DO
+    SET new_slug = CONCAT(LOWER(REPLACE(NEW.nom, ' ', '-')), '-', suffix);
+    SET suffix = suffix + 1;
+  END WHILE;
+
+  SET NEW.slug = new_slug;
+END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
+
+-- Dumping structure for trigger maha.formations_before_insert
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE TRIGGER `formations_before_insert` BEFORE INSERT ON `formations` FOR EACH ROW BEGIN
+  DECLARE new_slug VARCHAR(255);
+  DECLARE suffix INT DEFAULT 1;
+
+  SET new_slug = LOWER(REPLACE(NEW.nom, ' ', '-'));
+
+  WHILE EXISTS(SELECT 1 FROM formations WHERE slug = new_slug) DO
+    SET new_slug = CONCAT(LOWER(REPLACE(NEW.nom, ' ', '-')), '-', suffix);
+    SET suffix = suffix + 1;
+  END WHILE;
+
+  SET NEW.slug = new_slug;
 END//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
@@ -456,7 +556,7 @@ SET SQL_MODE=@OLDTMP_SQL_MODE;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `jaimes_after_delete` AFTER DELETE ON `jaimes` FOR EACH ROW BEGIN
-  /* calcLikeDelete */
+	/* calcLikeDelete */
   DECLARE likesCount int DEFAULT 0;
     SET likesCount=(SELECT count(*) FROM jaimes WHERE id_formation=OLD.id_formation);
   UPDATE formations SET jaimes=likesCount WHERE id_formation=OLD.id_formation;
@@ -468,7 +568,7 @@ SET SQL_MODE=@OLDTMP_SQL_MODE;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `jaimes_after_insert` AFTER INSERT ON `jaimes` FOR EACH ROW BEGIN
-  /* calcLikeInsert */
+	/* calcLikeInsert */
   DECLARE likesCount int DEFAULT 0;
     SET likesCount=(SELECT count(*) FROM jaimes WHERE id_formation=NEW.id_formation);
   UPDATE formations f SET jaimes=likesCount WHERE id_formation=NEW.id_formation;
@@ -480,7 +580,7 @@ SET SQL_MODE=@OLDTMP_SQL_MODE;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `videos_after_delete` AFTER DELETE ON `videos` FOR EACH ROW BEGIN
-  /* calcDureeOnDelete */
+	/* calcDureeOnDelete */
   UPDATE formations f SET mass_horaire=
     (SELECT  SEC_TO_TIME(SUM(TIME_TO_SEC(v.duree))) 
     FROM videos v WHERE v.id_formation=OLD.id_formation)
@@ -493,7 +593,7 @@ SET SQL_MODE=@OLDTMP_SQL_MODE;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `videos_after_insert` AFTER INSERT ON `videos` FOR EACH ROW BEGIN
-  /* calcDuree */
+	/* calcDuree */
   UPDATE formations f SET mass_horaire=
     (SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(v.duree))) 
     FROM videos v WHERE v.id_formation=NEW.id_formation)
@@ -506,7 +606,7 @@ SET SQL_MODE=@OLDTMP_SQL_MODE;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `videos_after_update` AFTER UPDATE ON `videos` FOR EACH ROW BEGIN
-  /* calcDureeOnUpdate */
+	/* calcDureeOnUpdate */
   UPDATE formations f SET mass_horaire=
     (SELECT  SEC_TO_TIME(SUM(TIME_TO_SEC(v.duree))) 
     FROM videos v WHERE v.id_formation=NEW.id_formation)
