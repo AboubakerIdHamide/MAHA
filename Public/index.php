@@ -28,7 +28,7 @@ require_once '../App/helpers/date.php';
 
 class Router
 {
-    protected $currentController = "PageController";
+    protected $currentController = "HomeController";
     protected $currentMethod = "index";
     protected $currentParams = [];
 
