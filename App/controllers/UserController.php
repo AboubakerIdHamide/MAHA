@@ -7,6 +7,7 @@ use PHPMailer\PHPMailer\Exception;
 use App\Models\Formateur;
 use App\Models\Etudiant;
 use App\Models\Stocked;
+use App\Models\Formation;
 use App\Models\Smtp;
 
 class UserController
@@ -14,6 +15,7 @@ class UserController
     private $fomateurModel;
     private $etudiantModel;
     private $stockedModel;
+    private $formationModel;
     private $smtpModel;
 
     public function __construct()
@@ -21,12 +23,45 @@ class UserController
         $this->fomateurModel = new Formateur;
         $this->etudiantModel = new Etudiant;
         $this->stockedModel = new Stocked;
+        $this->formationModel = new Formation;
         $this->smtpModel = new Smtp;
     }
 
-    public function index()
+    public function index($slug = null)
     {
-        $this->login();
+        if(is_null($slug)){
+            redirect();
+            exit;
+        }
+
+        $formateur = $this->fomateurModel->whereSlug($slug);
+        if(!$formateur){
+            redirect();
+            exit;
+        }
+ 
+        $formateur->img = URLROOT . "/Public/" . $formateur->img;
+        $formations = $this->formationModel->getFormationsOfFormateur($formateur->id_formateur);
+        $numberInscriptions = $this->fomateurModel->countInscriptions($formateur->id_formateur);
+
+        $themeData = $this->stockedModel->getThemeData();
+        $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
+
+        foreach ($formations as $formation) {
+            $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
+            $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
+            $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
+        }
+
+        $data = [
+            'formateur' => $formateur,
+            'formations' => $formations,
+            'numberFormations' => count($formations),
+            'numberInscriptions' => $numberInscriptions,
+            'theme' => $theme
+        ];
+
+        return view("formateurs/profil", $data);
     }
 
     public function login()
