@@ -204,7 +204,7 @@
                                     <h3>Informations du cours</h3>
                                     <ul>
                                         <li><i class="fa-solid fa-chalkboard-user"></i>
-                                            <a href="<?= URLROOT . "/profilFormateur/" . $data['formation']->id_formateur ?>">
+                                            <a href="<?= URLROOT . "/user/" . $data['formation']->slugFormateur ?>">
                                                 <?= $data['formation']->prenom . ' ' . $data['formation']->nomFormateur ?>
                                             </a>
                                         </li>
