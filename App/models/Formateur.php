@@ -66,6 +66,34 @@ class Formateur
 		return [];
 	}
 
+	public function whereSlug($slug)
+	{
+		$query = $this->connect->prepare("
+			SELECT 
+				id_formateur,
+				f.nom AS nomFormateur,
+				prenom,
+				img,
+				biography,
+				c.nom AS nomCategorie,
+				c.id_categorie,
+				email,
+				tel
+			FROM formateurs f, categories c
+			WHERE f.id_categorie = c.id_categorie 
+			AND f.slug = :slug
+		");
+
+		$query->bindParam(':slug', $slug);
+		$query->execute();
+
+		$formateur = $query->fetch(\PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $formateur;
+		}
+		return false;
+	}
+
 	public function create($formateur)
 	{
 		$query = $this->connect->prepare("
