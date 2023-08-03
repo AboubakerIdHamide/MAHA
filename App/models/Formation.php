@@ -130,19 +130,22 @@ class Formation
         $query = $this->connect->prepare("
             SELECT 
                 id_formation,
-                formations.nom,
+                fore.nom AS nomFormation,
+                fore.slug,
                 image,
-                DATE(formations.date_creation) AS date_creation,
+                DATE(fore.date_creation) AS date_creation,
                 prix,
                 description,
                 jaimes,
                 id_langue,
                 id_niveau,
-                formations.id_categorie,
+                c.id_categorie,
+                c.nom AS nomCategorie,
                 fichier_attache,
                 etat
-            FROM formations
-            JOIN formateurs USING (id_formateur)
+            FROM formations fore
+            JOIN formateurs f USING (id_formateur)
+            JOIN categories c ON fore.id_categorie = c.id_categorie
             WHERE id_formateur = :id
             AND formations.nom LIKE CONCAT('%', :nomFormation, '%')
         ");
@@ -913,6 +916,7 @@ class Formation
                 formateurs.id_formateur,
                 formateurs.nom AS nomFormateur,
                 formateurs.prenom,
+                formateurs.slug AS slugFormateur,
                 formateurs.id_categorie AS categorie,
                 formateurs.img AS imgFormateur,
                 date(formations.date_creation) AS date_creation,
