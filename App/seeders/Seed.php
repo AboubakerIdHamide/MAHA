@@ -15,13 +15,13 @@ class Seed {
         $this->faker = \Faker\Factory::create();
     }
 
-	protected function getRandomImage($width, $height, $prefix = 'image')
+	protected function getRandomImage($width, $height, $path, $prefix = 'image')
 	{
 		// URL of the image you want to download.
 		$imageUrl = "https://dummyimage.com/{$width}x{$height}/ffc107/000/fff.png";
 
 		// Generate a unique filename for the downloaded image.
-		$localFilename = "images/formations/images/{$prefix}_". uniqid() . '.png';
+		$localFilename = "public/images/{$path}/{$prefix}_". uniqid() . '.png';
 
 		file_put_contents($localFilename, file_get_contents($imageUrl));
 
