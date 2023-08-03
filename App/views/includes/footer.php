@@ -13,7 +13,7 @@
                     <h5>Liens utiles</h5>
                     <ul class="links">
                         <li><a href="<?= URLROOT ?>">Home</a></li>
-                        <li><a href="<?= URLROOT ?>/pageFormation">Formations</a></li>
+                        <li><a href="<?= URLROOT ?>/courses/search">Formations</a></li>
                         <li><a href="<?= URLROOT ?>/#catalogue">Catalogue</a></li>
                         <li><a href="<?= URLROOT ?>/#popular">Les Plus Populaires</a></li>
                         <li><a href="<?= URLROOT ?>/#contact">Contactez-Nous</a></li>
