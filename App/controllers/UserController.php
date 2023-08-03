@@ -9,6 +9,7 @@ use App\Models\Etudiant;
 use App\Models\Stocked;
 use App\Models\Formation;
 use App\Models\Smtp;
+use App\Models\Inscription;
 
 class UserController
 {
@@ -25,6 +26,7 @@ class UserController
         $this->stockedModel = new Stocked;
         $this->formationModel = new Formation;
         $this->smtpModel = new Smtp;
+        $this->inscriptionModel = new Inscription;
     }
 
     public function index($slug = null)
@@ -48,9 +50,7 @@ class UserController
         $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
 
         foreach ($formations as $formation) {
-            $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
-            $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
-            $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
+            $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formateur->id_formateur, $formation->id_formation);
         }
 
         $data = [
