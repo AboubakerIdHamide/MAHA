@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="MAHA a modern educational platform" />
-    <title><?= SITENAME ?> | Formateur</title>
+    <title><?= $data['formateur']->prenom . ' ' . $data['formateur']->nomFormateur ?> | <?= SITENAME ?></title>
     <!-- Favicons-->
     <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <!-- GOOGLE WEB FONT -->
@@ -15,8 +15,7 @@
     <link href="<?= CSSROOT ?>/style.css" rel="stylesheet" />
     <link href="<?= CSSROOT ?>/vendors.css" rel="stylesheet" />
     <!-- font awesome -->
-    <!-- Font Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"  />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <!-- YOUR CUSTOM CSS -->
     <link href="<?= CSSROOT ?>/custom.css" rel="stylesheet" />
     <style>
@@ -49,7 +48,7 @@
                         alt="logo Maha"></a>
             </div>
             <ul id="top_menu">
-                <li class="search-overlay-menu-btn"><i class="fa-solid fa-magnifying-glass"></i></li>
+                 <li><a href="javascript:void(0)" class="search-overlay-menu-btn">Search</a></li>
                 <?php if (!isset($_SESSION['user'])) : ?>
                 <li class="hidden_tablet"><a href="<?= URLROOT . "/user/login" ?>" class="btn_1 rounded">Se
                         Connecter</a></li>
@@ -77,7 +76,7 @@
             <nav id="menu" class="main-menu">
                 <ul>
                     <li><span><a href="<?= URLROOT ?>">Accueil</a></span></li>
-                    <li><span><a href="<?= URLROOT ?>/pageFormation">Courses</a></span></li>
+                    <li><span><a href="<?= URLROOT ?>/courses/search">Formations</a></span></li>
                     <li><span><a href="<?= URLROOT ?>/#catalogue">Categories</a></span></li>
                     <li><span><a href="<?= URLROOT ?>/#contact">Contactez-nous</a></span></li>
                     <?php if (!isset($_SESSION['user'])) : ?>
@@ -101,8 +100,8 @@
             <!-- Search Menu -->
             <div class="search-overlay-menu">
                 <span class="search-overlay-close"><span class="closebt"><i class="fa-solid fa-xmark"></i></span></span>
-                <form role="search" id="searchform" method="get">
-                    <input id="input-search" type="search" placeholder="Search..." />
+                <form role="search" id="searchform" method="GET" action="<?= URLROOT ?>/courses/search">
+                    <input id="input-search" name="q" type="text" placeholder="Search..." />
                     <button type="submit"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </form>
@@ -121,24 +120,21 @@
                 </div>
             </section>
             <!--/hero_in-->
-            <div class="container margin_60_35">
+            <div class="container margin_60_35 mt-5">
                 <div class="row">
                     <aside class="col-lg-3" id="sidebar">
                         <div class="profile">
-                            <figure><img id="avatar-formateur" src="<?= $data['formateur']->img ?>"
+                            <figure><img id="avatar-formateur" src="<?= $formateur->img ?>"
                                     alt="Formateur image" class="rounded-circle"></figure>
                             <ul>
-                                <li>Name <span
-                                        class="float-right"><?= $data['formateur']->prenom . ' ' . $data['formateur']->nomFormateur ?></span>
+                                <li class="d-flex justify-content-between align-items-center"><span>Participants</span><span style="background-color: #662d91" class="badge"><?= $data['numberInscriptions'] ?></span></li>
+                                <li class="d-flex justify-content-between align-items-center"><span>Formations</span> <span style="background-color: #662d91" class="badge"
+                                       ><?= $data['numberFormations'] ?></span></li>
+                                <li class="d-flex justify-content-between align-items-center"><span>Téléphone</span> <span style="background-color: #662d91" class="badge"><?= $data['formateur']->tel ?></span>
                                 </li>
-                                <li>Etudiants <span class="float-right"><?= $data['numAcht'] ?></span></li>
-                                <li>Courses <span
-                                        class="float-right"><?= $data['numFormations'] ?></span></li>
-                                <li>Email <span class="float-right"><a class="text-muted"
+                                <li><div class="text-center"><a class="text-muted"
                                             href="mailto:<?= $data['formateur']->email ?>">
-                                            <?= $data['formateur']->email ?></a></span></li>
-                                <li>Telephone <span class="float-right"><?= $data['formateur']->tel ?></span>
-                                </li>
+                                            <?= $data['formateur']->email ?></a></div></li>
                             </ul>
                         </div>
                     </aside>
@@ -176,7 +172,7 @@
                                             <?php foreach ($data['formations'] as $formation) : ?>
                                             <tr>
                                                 <td><a
-                                                        href="<?= URLROOT . "/pageFormation/coursDetails/" . $formation->id_formation ?>"><?= $formation->nomFormation ?></a>
+                                                        href="<?= URLROOT . "/courses/" . $formation->slug ?>"><?= $formation->nomFormation ?></a>
                                                 </td>
                                                 <td><?= $formation->nomCategorie ?></td>
                                                 <td>$<?= $formation->prix ?></td>
@@ -213,7 +209,7 @@
                         <h5>Liens utiles</h5>
                         <ul class="links">
                             <li><a href="<?= URLROOT ?>">Home</a></li>
-                            <li><a href="<?= URLROOT ?>/pageFormation">Formations</a></li>
+                            <li><a href="<?= URLROOT ?>/courses/search">Formations</a></li>
                             <li><a href="<?= URLROOT ?>/#catalogue">Catalogue</a></li>
                             <li><a href="<?= URLROOT ?>/#popular">Les Plus Populaires</a></li>
                             <li><a href="<?= URLROOT ?>/#contact">Contactez-Nous</a></li>
@@ -228,7 +224,7 @@
                                     mahateamisgi@gmail.com</a></li>
                             <li><a href="mailto:mahateamisgi@gmail.com"><i class="fa-solid fa-location-dot"></i>
                                     Boulevard de
-                                    Mohammedia, QI Azli 40150</a></li>
+                                    Mohammedia</a></li>
                         </ul>
                     </div>
                 </div>
@@ -246,9 +242,10 @@
     <!-- page -->
 
     <!-- SCRIPTS -->
-    <script src="<?= URLROOT ?>/public/jQuery/jquery-3.6.0.min.js"></script>
-    <script src="<?= JSROOT ?>/common_scripts.js"></script>
-    <script src="<?= JSROOT ?>/cours-details.js"></script>
+    <script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
+    <script src="<?= JSROOT ?>/plugins/jquery.mmenu.js"></script>
+    <script src="<?= JSROOT ?>/plugins/theia-sticky-sidebar.js"></script>
+    <script src="<?= JSROOT ?>/common.js"></script>
 
 </body>
 

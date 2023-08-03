@@ -147,7 +147,7 @@ class Formation
             JOIN formateurs f USING (id_formateur)
             JOIN categories c ON fore.id_categorie = c.id_categorie
             WHERE id_formateur = :id
-            AND formations.nom LIKE CONCAT('%', :nomFormation, '%')
+            AND fore.nom LIKE CONCAT('%', :nomFormation, '%')
         ");
 
         $query->bindParam(":id", $id);

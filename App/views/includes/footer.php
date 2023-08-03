@@ -53,8 +53,7 @@
     <script src="<?= JSROOT ?>/plugins/wow.min.js"></script>
     <script src="<?= JSROOT ?>/public/courses.js"></script>
     <script src="<?= JSROOT ?>/plugins/icheck.min.js"></script>
-    <script src="<?= JSROOT ?>/mainT.js"></script>
-    <script src="<?= JSROOT ?>/main.js"></script>
+    <script src="<?= JSROOT ?>/common.js"></script>
     <script src="<?= JSROOT ?>/pageFormations.js"></script>
     </body>
 
