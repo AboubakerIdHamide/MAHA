@@ -43,7 +43,7 @@
 		navbar: {
 			title: 'MENU'
 		},
-		navbars: [{position:'bottom',content: ['<a href="#0">© 2021 Udema</a>']}]}, 
+		navbars: [{position:'bottom',content: ['<a href="#0">© 2023 Maha</a>']}]}, 
 		{
 		// configuration
 		clone: true,
@@ -82,149 +82,114 @@
 			});
 		});
 	
-	// WoW - animation on scroll
-	var wow = new WOW(
-	  {
-		boxClass:     'wow',      // animated element css class (default is wow)
-		animateClass: 'animated', // animation css class (default is animated)
-		offset:       0,          // distance to the element when triggering the animation (default is 0)
-		mobile:       true,       // trigger animations on mobile devices (default is true)
-		live:         true,       // act on asynchronously loaded content (default is true)
-		callback:     function(box) {
-		  // the callback is fired every time an animation is started
-		  // the argument that is passed in is the DOM node being animated
-		},
-		scrollContainer: null // optional scroll container selector, otherwise use window
-	  }
-	);
-	wow.init();
-	
-	/*  video popups */
-	// $('.video').magnificPopup({
-	// 	type:'iframe'
-	// });	/* video modal*/
-	
-	
-	// Accordion
-	function toggleChevron(e) {
-		$(e.target)
-			.prev('.card-header')
-			.find("i.indicator")
-			.toggleClass('ti-minus ti-plus');
-	}
-	$('#accordion_lessons').on('hidden.bs.collapse shown.bs.collapse', toggleChevron);
-		function toggleIcon(e) {
-        $(e.target)
-            .prev('.panel-heading')
-            .find(".indicator")
-            .toggleClass('ti-minus ti-plus');
-    }
-    // Accordion 2 (updated v1.2)
-	$('.accordion_2').on('hidden.bs.collapse shown.bs.collapse', toggleChevron);
-		function toggleIcon(e) {
-        $(e.target)
-            .prev('.panel-heading')
-            .find(".indicator")
-            .toggleClass('ti-minus ti-plus');
-    }
-    $('.panel-group').on('hidden.bs.collapse', toggleIcon);
-    $('.panel-group').on('shown.bs.collapse', toggleIcon);
-	
+	// // WoW - animation on scroll
+	// var wow = new WOW(
+	//   {
+	// 	boxClass:     'wow',      // animated element css class (default is wow)
+	// 	animateClass: 'animated', // animation css class (default is animated)
+	// 	offset:       0,          // distance to the element when triggering the animation (default is 0)
+	// 	mobile:       true,       // trigger animations on mobile devices (default is true)
+	// 	live:         true,       // act on asynchronously loaded content (default is true)
+	// 	callback:     function(box) {
+	// 	  // the callback is fired every time an animation is started
+	// 	  // the argument that is passed in is the DOM node being animated
+	// 	},
+	// 	scrollContainer: null // optional scroll container selector, otherwise use window
+	//   }
+	// );
+	// wow.init();
 	  
-	// Input field effect
-	(function () {
-		if (!String.prototype.trim) {
-			(function () {
-				// Make sure we trim BOM and NBSP
-				var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
-				String.prototype.trim = function () {
-					return this.replace(rtrim, '');
-				};
-			})();
-		}
-		[].slice.call(document.querySelectorAll('input.input_field, textarea.input_field')).forEach(function (inputEl) {
-			// in case the input is already filled..
-			if (inputEl.value.trim() !== '') {
-				classie.add(inputEl.parentNode, 'input--filled');
-			}
+	// // Input field effect
+	// (function () {
+	// 	if (!String.prototype.trim) {
+	// 		(function () {
+	// 			// Make sure we trim BOM and NBSP
+	// 			var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+	// 			String.prototype.trim = function () {
+	// 				return this.replace(rtrim, '');
+	// 			};
+	// 		})();
+	// 	}
+	// 	[].slice.call(document.querySelectorAll('input.input_field, textarea.input_field')).forEach(function (inputEl) {
+	// 		// in case the input is already filled..
+	// 		if (inputEl.value.trim() !== '') {
+	// 			classie.add(inputEl.parentNode, 'input--filled');
+	// 		}
 
-			// events:
-			inputEl.addEventListener('focus', onInputFocus);
-			inputEl.addEventListener('blur', onInputBlur);
-		});
-		function onInputFocus(ev) {
-			classie.add(ev.target.parentNode, 'input--filled');
-		}
-		function onInputBlur(ev) {
-			if (ev.target.value.trim() === '') {
-				classie.remove(ev.target.parentNode, 'input--filled');
-			}
-		}
-	})();
-	
-	// Selectbox
-	$(".selectbox").selectbox();
+	// 		// events:
+	// 		inputEl.addEventListener('focus', onInputFocus);
+	// 		inputEl.addEventListener('blur', onInputBlur);
+	// 	});
+	// 	function onInputFocus(ev) {
+	// 		classie.add(ev.target.parentNode, 'input--filled');
+	// 	}
+	// 	function onInputBlur(ev) {
+	// 		if (ev.target.value.trim() === '') {
+	// 			classie.remove(ev.target.parentNode, 'input--filled');
+	// 		}
+	// 	}
+	// })();
 
-	// Check and radio input styles
-	$('input.icheck').iCheck({
-		checkboxClass: 'icheckbox_square-yellow',
-		radioClass: 'iradio_square-yellow'
-	});
+	// // Check and radio input styles
+	// $('input.icheck').iCheck({
+	// 	checkboxClass: 'icheckbox_square-yellow',
+	// 	radioClass: 'iradio_square-yellow'
+	// });
 	
-	// Carousels
-	$('#carousel').owlCarousel({
-		center: true,
-		items: 2,
-		loop: true,
-		margin: 10,
-		responsive: {
-			0: {
-				items: 1,
-				dots:false
-			},
-			600: {
-				items: 2
-			},
-			1000: {
-				items: 4
-			}
-		}
-	});
+	// // Carousels
+	// $('#carousel').owlCarousel({
+	// 	center: true,
+	// 	items: 2,
+	// 	loop: true,
+	// 	margin: 10,
+	// 	responsive: {
+	// 		0: {
+	// 			items: 1,
+	// 			dots:false
+	// 		},
+	// 		600: {
+	// 			items: 2
+	// 		},
+	// 		1000: {
+	// 			items: 4
+	// 		}
+	// 	}
+	// });
 	
-	$('#reccomended').owlCarousel({
-		center: true,
-		items: 2,
-		loop: true,
-		margin: 0,
-		responsive: {
-			0: {
-				items: 1
-			},
-			767: {
-				items: 2
-			},
-			1000: {
-				items: 3
-			},
-			1400: {
-				items: 4
-			}
-		}
-	});
+	// $('#reccomended').owlCarousel({
+	// 	center: true,
+	// 	items: 2,
+	// 	loop: true,
+	// 	margin: 0,
+	// 	responsive: {
+	// 		0: {
+	// 			items: 1
+	// 		},
+	// 		767: {
+	// 			items: 2
+	// 		},
+	// 		1000: {
+	// 			items: 3
+	// 		},
+	// 		1400: {
+	// 			items: 4
+	// 		}
+	// 	}
+	// });
 
-	// Sticky filters
-	$(window).bind('load resize', function () {
-		const width = $(window).width();
-		if (width <= 991) {
-			$('.sticky_horizontal').stick_in_parent({
-				offset_top: 51.40
-			});
-		} else {
-			$('.sticky_horizontal').stick_in_parent({
-				offset_top: 73
-			});
-		}
-	});
+	// // Sticky filters
+	// $(window).bind('load resize', function () {
+	// 	const width = $(window).width();
+	// 	if (width <= 991) {
+	// 		$('.sticky_horizontal').stick_in_parent({
+	// 			offset_top: 51.40
+	// 		});
+	// 	} else {
+	// 		$('.sticky_horizontal').stick_in_parent({
+	// 			offset_top: 73
+	// 		});
+	// 	}
+	// });
 	            
 	// Secondary nav scroll
 	var $sticky_nav= $('.secondary_nav');
@@ -240,36 +205,15 @@
 		$sticky_nav.find('ul li a.active').removeClass('active');
 		$(this).addClass('active');
 	});
-	
-	// Faq section (updated v1.2)
-	$('#faq_box a[href^="#"]').on('click', function () {
-		if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') 
-			|| location.hostname == this.hostname) {
-			var target = $(this.hash);
-			target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-			   if (target.length) {
-				 $('html,body').animate({
-					 scrollTop: target.offset().top -185
-				}, 200);
-				return false;
-			}
-		}
-	});
-	$('ul#cat_nav li a').on('click', function () {
-		$('ul#cat_nav li a.active').removeClass('active');
-		$(this).addClass('active');
-	});
 
-	/*
- Search overlay
-*/
-$(".search-overlay-menu-btn").on("click", function (a) {
-	$(".search-overlay-menu").addClass("open"), 
-	$('.search-overlay-menu > form > input[type="search"]').focus()}), 
-	$(".search-overlay-close").on("click", function (a) {
-	$(".search-overlay-menu").removeClass("open")}),
-	$(".search-overlay-menu, .search-overlay-menu .search-overlay-close").on("click keyup", function (a) {
-	(a.target == this || "search-overlay-close" == a.target.className || 27 == a.keyCode) && $(this).removeClass("open")
-});
+	// Search overlay
+	$(".search-overlay-menu-btn").on("click", function (a) {
+		$(".search-overlay-menu").addClass("open"), 
+		$('.search-overlay-menu > form > input[type="search"]').focus()}), 
+		$(".search-overlay-close").on("click", function (a) {
+		$(".search-overlay-menu").removeClass("open")}),
+		$(".search-overlay-menu, .search-overlay-menu .search-overlay-close").on("click keyup", function (a) {
+		(a.target == this || "search-overlay-close" == a.target.className || 27 == a.keyCode) && $(this).removeClass("open")
+	});
 	
 })(window.jQuery); 

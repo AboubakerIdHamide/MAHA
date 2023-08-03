@@ -282,9 +282,7 @@ class UserController
             }
         } else {
             return view("pages/emailVerification", $data);
-        }
-
-       
+        }   
     }
 
     public function forgotPassword()
@@ -415,7 +413,7 @@ class UserController
         }
     }
 
-    public function isLoggedIn()
+    private function isLoggedIn()
     {
         if (isset($_SESSION['id_formateur'])) {
             return 'formateur';
@@ -425,7 +423,7 @@ class UserController
         return false;
     }
 
-    public function createUserSessios($user)
+    private function createUserSessios($user)
     {
         if ($user->type === 'formateur') {
             $_SESSION['id_formateur'] = $user->id_formateur;

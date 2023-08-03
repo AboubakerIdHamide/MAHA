@@ -5697,7 +5697,7 @@ ul.bullets li:before {
     margin: -25px auto 0;
   }
 }
-.search-overlay-menu input[type="search"] {
+.search-overlay-menu input[type="text"] {
   height: 100%;
   width: 100%;
   color: #fff;
@@ -5713,7 +5713,7 @@ ul.bullets li:before {
   padding: 10px 0 10px 0;
 }
 @media (max-width: 767px) {
-  .search-overlay-menu input[type="search"] {
+  .search-overlay-menu input[type="text"] {
     font-size: 24px;
     font-size: 1.5rem;
   }
