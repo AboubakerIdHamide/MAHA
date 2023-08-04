@@ -15,7 +15,7 @@ class Validator
         $this->errors = [];
     }
 
-    public function validate($rules, $view = null)
+    public function validate($rules, $view = null, $setOldValue = false)
     {
         foreach ($rules as $field => $rule) {
             $rulesList = explode('|', $rule);
@@ -29,7 +29,7 @@ class Validator
 
         if (!empty($this->errors)) {
             if (explode('/', $_GET['url'])[0] !== "api") {
-                $this->setOldValuesInSession();
+                if($setOldValue) $this->setOldValuesInSession();
                 if(!is_null($view)) {
                     view($view, $this->errors);
                     exit;
