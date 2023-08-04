@@ -115,9 +115,9 @@ class Stocked
 	public function insertCategorie($data)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO categories VALUES (DEFAULT, :nom, :icon)
+			INSERT INTO categories VALUES (DEFAULT, :nom, :image)
 		");
-		$query->execute(['icon' => $data['icon'], 'nom' => $data['nom_categorie']]);
+		$query->execute(['image' => $data['image'], 'nom' => $data['nom_categorie']]);
 		$lastInsertId = $this->connect->lastInsertId();
 		if ($lastInsertId > 0) {
 			return $lastInsertId;
@@ -125,6 +125,31 @@ class Stocked
 		return false;
 	}
 
+	public function getPopularCategories()
+    {
+        $query = $this->connect->prepare("
+			SELECT
+				c.nom,
+				c.image,
+				COUNT(DISTINCT f.id_formation) AS formation_count,
+				COUNT(i.id_inscription) AS inscription_count,
+				SUM(f.jaimes) AS total_jaimes
+			FROM categories c
+			INNER JOIN formations f ON c.id_categorie = f.id_categorie
+			LEFT JOIN inscriptions i ON f.id_formation = i.id_formation
+			GROUP BY c.id_categorie, c.nom
+			ORDER BY inscription_count DESC, total_jaimes DESC
+			LIMIT 6
+        ");
+
+        $query->execute();
+        $categories = $query->fetchAll(\PDO::FETCH_OBJ);
+
+        if ($query->rowCount() > 0) {
+            return $categories;
+        }
+        return [];
+    }
 
 	public function deleteCategorie($categorie_id)
 	{
