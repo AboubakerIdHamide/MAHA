@@ -21,7 +21,7 @@ class Seed {
 		$imageUrl = "https://dummyimage.com/{$width}x{$height}/ffc107/000/fff.png";
 
 		// Generate a unique filename for the downloaded image.
-		$localFilename = "public/images/{$path}/{$prefix}_". uniqid() . '.png';
+		$localFilename = "images/{$path}/{$prefix}_". uniqid() . '.png';
 
 		file_put_contents($localFilename, file_get_contents($imageUrl));
 
