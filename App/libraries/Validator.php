@@ -30,8 +30,10 @@ class Validator
         if (!empty($this->errors)) {
             if (explode('/', $_GET['url'])[0] !== "api") {
                 $this->setOldValuesInSession();
-                view($view, $this->errors);
-                exit;
+                if(!is_null($view)) {
+                    view($view, $this->errors);
+                    exit;
+                }
             }
             return Response::json(null, 400, $this->errors);
         }
