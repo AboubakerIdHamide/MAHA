@@ -33,7 +33,7 @@
 	});
 	
 	// Mobile Mmenu
-	var $menu = $("nav#menu").mmenu({
+	const $menu = $("nav#menu").mmenu({
 		"extensions": ["pagedim-black"],
 		counters: false,
 		keyboardNavigation: {
@@ -54,8 +54,9 @@
 			}
 		}
 	});
-	var $icon = $("#hamburger");
-	var API = $menu.data("mmenu");
+
+	const $icon = $("#hamburger");
+	const API = $menu.data("mmenu");
 	$icon.on("click", function () {
 		API.open();
 	});
@@ -69,71 +70,18 @@
 			$icon.removeClass("is-active");
 		}, 100);
 	});
-    
-    // Header button explore
-    $('a[href^="#"].btn_explore').on('click', function (e) {
-			e.preventDefault();
-			var target = this.hash;
-			var $target = $(target);
-			$('html, body').stop().animate({
-				'scrollTop': $target.offset().top
-			}, 100, 'linear', function () {
-				window.location.hash = target;
-			});
-		});
-
-	// // Check and radio input styles
-	// $('input.icheck').iCheck({
-	// 	checkboxClass: 'icheckbox_square-yellow',
-	// 	radioClass: 'iradio_square-yellow'
-	// });
-	
-	// // Carousels
-	// $('#carousel').owlCarousel({
-	// 	center: true,
-	// 	items: 2,
-	// 	loop: true,
-	// 	margin: 10,
-	// 	responsive: {
-	// 		0: {
-	// 			items: 1,
-	// 			dots:false
-	// 		},
-	// 		600: {
-	// 			items: 2
-	// 		},
-	// 		1000: {
-	// 			items: 4
-	// 		}
-	// 	}
-	// });
-	
-	
-
-	// // Sticky filters
-	// $(window).bind('load resize', function () {
-	// 	const width = $(window).width();
-	// 	if (width <= 991) {
-	// 		$('.sticky_horizontal').stick_in_parent({
-	// 			offset_top: 51.40
-	// 		});
-	// 	} else {
-	// 		$('.sticky_horizontal').stick_in_parent({
-	// 			offset_top: 73
-	// 		});
-	// 	}
-	// });
-	            
+        
 	// Secondary nav scroll
-	var $sticky_nav= $('.secondary_nav');
+	const $sticky_nav= $('.secondary_nav');
 	$sticky_nav.find('a').on('click', function(e) {
 		e.preventDefault();
-		var target = this.hash;
-		var $target = $(target);
+		const target = this.hash;
+		const $target = $(target);
 		$('html, body').animate({
 			'scrollTop': $target.offset().top - 150
 		}, 200, 'linear');
 	});
+
 	$sticky_nav.find('ul li a').on('click', function () {
 		$sticky_nav.find('ul li a.active').removeClass('active');
 		$(this).addClass('active');
