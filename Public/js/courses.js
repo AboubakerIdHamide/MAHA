@@ -122,7 +122,7 @@ $(function(){
                                 ${course.mass_horaire.split(':')[1]}min
                             </li>
                             <li><i class="fa-solid fa-user"></i> ${course.total_inscriptions}</li>
-                            <li><a href="${URLROOT}/courses/${course.slug}">Acheter</a></li>
+                            <li><a href="${URLROOT}/PaymentPaypal/makePayment/${course.id_formation}">Acheter</a></li>
                         </ul>
                     </div>
                 </div>
@@ -189,4 +189,39 @@ $(function(){
         $(this).find('ul').slideToggle();
         $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
     });
+
+    // Check and radio input styles
+    $('input.icheck').iCheck({
+        checkboxClass: 'icheckbox_square-yellow',
+        radioClass: 'iradio_square-yellow'
+    });
+    
+    // Sticky filters
+    $(window).bind('load resize', function () {
+        const width = $(window).width();
+        if (width <= 991) {
+            $('.sticky_horizontal').stick_in_parent({
+                offset_top: 51.40
+            });
+        } else {
+            $('.sticky_horizontal').stick_in_parent({
+                offset_top: 73
+            });
+        }
+    });
+
+    // WoW - animation on scroll
+    const wow = new WOW({
+        boxClass:     'wow',      // animated element css class (default is wow)
+        animateClass: 'animated', // animation css class (default is animated)
+        offset:       0,          // distance to the element when triggering the animation (default is 0)
+        mobile:       true,       // trigger animations on mobile devices (default is true)
+        live:         true,       // act on asynchronously loaded content (default is true)
+        callback:     function(box) {
+        // the callback is fired every time an animation is started
+        // the argument that is passed in is the DOM node being animated
+        },
+        scrollContainer: null // optional scroll container selector, otherwise use window
+    });
+    wow.init();
 });
