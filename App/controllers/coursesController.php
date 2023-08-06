@@ -27,18 +27,11 @@ class coursesController
 
     public function search()
     {
-        // Theme
-        $themeData = $this->stockedModel->getThemeData();
-        // Remembre: (Move to view)
-        $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
-        $theme["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
-
         $data = [
             'niveaux' => $this->formationModel->groupByNiveau(),
             'langues' => $this->formationModel->groupByLangue(),
             'categories' => $this->formationModel->groupByCategorie(),
             'durations' => $this->formationModel->groupByDuration(),
-            'theme' => $theme
         ];
 
         return view("courses/index", $data);
@@ -53,25 +46,15 @@ class coursesController
         }
 
         $videos = $this->videoModel->getVideosOfFormationPublic($formation->id_formation);
-        $numVideos = $this->videoModel->countVideosOfFormation($formation->id_formation);
         $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formation->id_formateur, $formation->id_formation);
-        $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
-        $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
-        $preview = $this->previewsModel->getPreviewVideo($formation->id_formation);
-        if($preview) $preview->url = URLROOT . "/Public/" . $preview->url;
-        
-
-        $themeData = $this->stockedModel->getThemeData();
-        $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
-        $theme["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
 
         $data = [
             'formation' => $formation,
             'videos' => $videos,
-            'numbVIdeo' => $numVideos,
-            'previewVideo' => $preview,
-            'theme' => $theme
+            'totalVideos' => count($videos),
+            'previewVideo' => $this->previewsModel->getPreviewVideo($formation->id_formation),
         ];
+
         return view("courses/show", $data);   
     }
 }
