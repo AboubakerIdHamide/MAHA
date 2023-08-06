@@ -125,33 +125,33 @@ class Formation
         return false;
     }
 
-    public function getFormationsOfFormateur($id, $nomFormation = '')
+    public function getFormationsOfFormateur($id)
     {
         $query = $this->connect->prepare("
             SELECT 
                 id_formation,
                 fore.nom AS nomFormation,
                 fore.slug,
-                image,
+                fore.image,
+                fore.slug,
                 DATE(fore.date_creation) AS date_creation,
+                mass_horaire,
                 prix,
                 description,
                 jaimes,
-                id_langue,
-                id_niveau,
+                n.nom AS nomNiveau,
                 c.id_categorie,
-                c.nom AS nomCategorie,
-                fichier_attache,
-                etat
+                c.nom AS nomCategorie
             FROM formations fore
             JOIN formateurs f USING (id_formateur)
             JOIN categories c ON fore.id_categorie = c.id_categorie
+            JOIN niveaux n ON fore.id_niveau = n.id_niveau
             WHERE id_formateur = :id
-            AND fore.nom LIKE CONCAT('%', :nomFormation, '%')
+            AND etat = 'public'
+            ORDER BY fore.date_creation DESC
         ");
 
         $query->bindParam(":id", $id);
-        $query->bindParam(":nomFormation", $nomFormation);
         $query->execute();
 
         $formations = $query->fetchAll(\PDO::FETCH_OBJ);
@@ -225,30 +225,41 @@ class Formation
         return 0;
     }
 
-    public function getPopularCourses($offset = 0)
+    public function getPopularCourses()
     {
         $query = $this->connect->prepare("
-            SELECT 
-                DISTINCT formations.id_formation,
-                formations.image AS imgFormation,
-                formations.mass_horaire,
-                categories.nom AS nomCategorie,
-                formations.nom AS nomFormation,
-                formations.prix,
-                formations.description,
-                formations.jaimes,
-                formateurs.id_formateur,
-                formateurs.nom AS nomFormateur,
-                formateurs.prenom,
-                formateurs.img AS imgFormateur,
-                categories.nom AS nomCategorie
-            FROM formations, formateurs, categories, inscriptions
-            WHERE formations.id_formateur = formateurs.id_formateur
-            AND formations.etat = 'public'
-            AND categories.id_categorie = formations.id_categorie
-            AND inscriptions.payment_state = 'approved'
-            ORDER BY formations.jaimes DESC
-            LIMIT {$offset}, 10
+            SELECT
+                fore.id_formation,
+                fore.slug,
+                fore.image AS imgFormation,
+                mass_horaire,
+                fore.nom AS nomFormation,
+                fore.date_creation,
+                COUNT(id_inscription) AS total_inscriptions,
+                fore.prix,
+                jaimes,
+                description,
+                f.id_formateur,
+                f.nom AS nomFormateur,
+                f.prenom,
+                f.img AS imgFormateur,
+                c.id_categorie,
+                c.nom AS nomCategorie,
+                l.id_langue,
+                l.nom AS nomLangue,
+                n.id_niveau,
+                n.nom AS nomNiveau,
+                n.icon AS iconNiveau
+            FROM formations fore
+            LEFT JOIN inscriptions i ON fore.id_formation = i.id_formation
+            JOIN formateurs f ON fore.id_formateur = f.id_formateur
+            JOIN categories c ON fore.id_categorie = c.id_categorie
+            JOIN langues l ON fore.id_langue = l.id_langue
+            JOIN niveaux n ON fore.id_niveau = n.id_niveau
+            WHERE fore.etat = 'public'
+            GROUP BY id_formation, fore.nom, jaimes
+            ORDER BY GREATEST(COUNT(id_inscription), jaimes) DESC
+            LIMIT 10
         ");
 
         $query->execute();
@@ -905,32 +916,33 @@ class Formation
     {
         $query = $this->connect->prepare("
             SELECT 
-                formations.id_formation,
-                formations.image AS imgFormation,
-                DATE_FORMAT(formations.mass_horaire, '%H:%i') AS mass_horaire,
-                categories.nom AS nomCategorie,
-                formations.nom AS nomFormation,
-                formations.prix,
-                formations.description,
-                formations.jaimes,
-                formateurs.id_formateur,
-                formateurs.nom AS nomFormateur,
-                formateurs.prenom,
-                formateurs.slug AS slugFormateur,
-                formateurs.id_categorie AS categorie,
-                formateurs.img AS imgFormateur,
-                date(formations.date_creation) AS date_creation,
-                formations.id_niveau AS niveau,
-                formations.id_langue AS langue,
-                langues.nom AS nomLangue,
-                niveaux.nom AS nomNiveau,
-                niveaux.icon AS iconNiveau
-            FROM formations, formateurs, categories, langues, niveaux
-            WHERE formations.id_formateur = formateurs.id_formateur
-            AND categories.id_categorie = formations.id_categorie
-            AND formations.id_langue = langues.id_langue
-            AND formations.id_niveau = niveaux.id_niveau
-            AND formations.slug = :slug
+                f.id_formation,
+                f.image AS imgFormation,
+                DATE_FORMAT(f.mass_horaire, '%H:%i') AS mass_horaire,
+                cf.nom AS nomCategorieFormation,
+                f.nom AS nomFormation,
+                f.prix,
+                f.description,
+                f.jaimes,
+                fo.id_formateur,
+                fo.nom AS nomFormateur,
+                fo.prenom,
+                fo.slug AS slugFormateur,
+                cf_formateurs.nom AS nomCategorieFormateur,
+                fo.img AS imgFormateur,
+                DATE(f.date_creation) AS date_creation,
+                f.id_niveau AS niveau,
+                f.id_langue AS langue,
+                l.nom AS nomLangue,
+                n.nom AS nomNiveau,
+                n.icon AS iconNiveau
+            FROM formations f
+            JOIN formateurs fo ON f.id_formateur = fo.id_formateur
+            JOIN categories cf ON cf.id_categorie = f.id_categorie
+            JOIN categories cf_formateurs ON cf_formateurs.id_categorie = fo.id_categorie
+            JOIN langues l ON f.id_langue = l.id_langue
+            JOIN niveaux n ON f.id_niveau = n.id_niveau
+            WHERE f.slug = :slug
         ");
 
         $query->bindParam(":slug", $slug);
@@ -949,12 +961,11 @@ class Formation
             SELECT
                 fore.id_formation,
                 fore.slug,
-                image AS imgFormation,
+                fore.image AS imgFormation,
                 mass_horaire,
                 fore.nom AS nomFormation,
                 fore.date_creation,
                 prix,
-                description,
                 jaimes,
                 description,
                 f.id_formateur,
