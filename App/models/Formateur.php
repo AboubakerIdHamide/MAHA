@@ -374,6 +374,27 @@ class Formateur
 		return 0;
 	}
 
+	public function countPublicInscriptions($id)
+	{
+		$query = $this->connect->prepare("
+			SELECT 
+				COUNT(id_formation) AS inscriptions
+			FROM inscriptions i
+			JOIN formations f USING (id_formation)
+			WHERE i.id_formateur = :id
+			AND f.etat = 'public'
+		");
+
+		$query->bindParam(':id', $id);
+		$query->execute();
+
+		$inscriptions = $query->fetch(\PDO::FETCH_OBJ)->inscriptions;
+		if ($query->rowCount() > 0) {
+			return $inscriptions;
+		}
+		return 0;
+	}
+
 	public function updateBalance($id, $balance)
 	{
 		$query = $this->connect->prepare("
@@ -453,5 +474,34 @@ class Formateur
 			return $code_formateur;
 		}
 		return false;
+	}
+
+	public function getPopularFormateurs()
+	{
+		$query = $this->connect->prepare("
+            SELECT 
+			   	i.id_formateur,
+			   	f.nom AS nomFormateur,
+			   	prenom,
+			   	c.nom AS nomCategorie,
+			   	f.img,
+			   	slug, 
+			   	COUNT(DISTINCT id_etudiant) AS `etudiants`
+			FROM inscriptions i
+			JOIN formateurs f ON i.id_formateur = f.id_formateur
+			JOIN categories c ON f.id_categorie = c.id_categorie
+			WHERE i.payment_state = 'approved'
+			GROUP BY id_formateur
+			ORDER BY `etudiants` DESC
+			LIMIT 6
+        ");
+
+        $query->execute();
+        $formateurs = $query->fetchAll(\PDO::FETCH_OBJ);
+
+        if ($query->rowCount() > 0) {
+            return $formateurs;
+        }
+        return [];
 	}
 }
