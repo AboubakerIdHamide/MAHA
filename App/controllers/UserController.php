@@ -10,6 +10,8 @@ use App\Models\Stocked;
 use App\Models\Formation;
 use App\Models\Smtp;
 use App\Models\Inscription;
+use App\Libraries\Response;
+use App\Libraries\Validator;
 
 class UserController
 {
@@ -42,12 +44,7 @@ class UserController
             exit;
         }
  
-        $formateur->img = URLROOT . "/Public/" . $formateur->img;
         $formations = $this->formationModel->getFormationsOfFormateur($formateur->id_formateur);
-        $numberInscriptions = $this->fomateurModel->countInscriptions($formateur->id_formateur);
-
-        $themeData = $this->stockedModel->getThemeData();
-        $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
 
         foreach ($formations as $formation) {
             $formation->inscriptions = $this->inscriptionModel->countApprenantsOfFormation($formateur->id_formateur, $formation->id_formation);
@@ -57,8 +54,7 @@ class UserController
             'formateur' => $formateur,
             'formations' => $formations,
             'numberFormations' => count($formations),
-            'numberInscriptions' => $numberInscriptions,
-            'theme' => $theme
+            'numberInscriptions' => $this->fomateurModel->countPublicInscriptions($formateur->id_formateur),
         ];
 
         return view("formateurs/profil", $data);
@@ -124,7 +120,7 @@ class UserController
                 }
             }
             if (empty($user) || !empty($data["password_err"]) || !empty($data["email_err"])) {
-                return view("pages/login", $data);
+                return view("auth/login", $data);
             }
         } else {
             $data = [
@@ -138,7 +134,7 @@ class UserController
                 $data["password"] = $_COOKIE["userpw"];
             }
 
-            return view("pages/login", $data);
+            return view("auth/login", $data);
         }
     }
 
@@ -183,7 +179,7 @@ class UserController
 
             // Checking If There Is An Error
             if ($data["thereIsError"] == true) {
-                return view("pages/register", [$data, $categories]);
+                return view("auth/register", [$data, $categories]);
             } else {
                 // Hashing Password
                 $data["mdp"] = password_hash($data["mdp"], PASSWORD_DEFAULT);
@@ -225,7 +221,7 @@ class UserController
                 "specId_err" => "",
                 "bio_err" => "",
             ];
-            return view("pages/register", [$data, $categories]);
+            return view("auth/register", [$data, $categories]);
         }
     }
 
@@ -273,7 +269,7 @@ class UserController
             } else {
                 $data[1]["code"] = $_POST["code"];
                 $data[1]["code_err"] = "Code invalide";
-                return view("pages/emailVerification", $data);
+                return view("auth/emailVerification", $data);
             }
 
 
@@ -281,7 +277,7 @@ class UserController
                 $_SESSION["resend"] = true;
             }
         } else {
-            return view("pages/emailVerification", $data);
+            return view("auth/emailVerification", $data);
         }   
     }
 
@@ -338,7 +334,7 @@ class UserController
             }
 
             if (empty($user) || !empty($data["mdp_err"]) || !empty($data["email_err"]) || !empty($data["vmdp_err"])) {
-                return view("pages/forgotpassword", $data);
+                return view("auth/forgotpassword", $data);
             }
         } else {
             $data = [
@@ -349,7 +345,7 @@ class UserController
                 "mdp_err" => "",
                 "vmdp_err" => ""
             ];
-            return view("pages/forgotpassword", $data);
+            return view("auth/forgotpassword", $data);
         }
     }
 
@@ -394,7 +390,7 @@ class UserController
             } else {
                 $data[1]["code"] = $_POST["code"];
                 $data[1]["code_err"] = "Code invalide";
-                return view("pages/emailVerification", $data);
+                return view("auth/emailVerification", $data);
             }
 
 
@@ -402,7 +398,7 @@ class UserController
                 $_SESSION["resend"] = true;
             }
         } else {
-            return view("pages/emailVerification", $data);
+            return view("auth/emailVerification", $data);
         }
 
         // send Email Change Password
@@ -492,19 +488,37 @@ class UserController
             // send it
             $mail->send();
         } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-            die;
+            // echo $mail->ErrorInfo;
+            return Response::json("Le message n'a pas pu être envoyé.", 500);
         }
     }
 
     public function contactUs()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $request = new App\Libraries\Request;
+        if ($request->getMethod() === 'POST') {
+            $validator = new Validator([
+                'email' => strip_tags($request->post("email")),
+                'name' => strip_tags($request->post("name")),
+                'subject' => strip_tags($request->post("subject")),
+                'message' => strip_tags($request->post("message")),
+            ]);
+
+            $validator->validate([
+                'email' => 'required|email',
+                'name' => 'required',
+                'subject' => 'required',
+                'message' => 'required',
+            ]);
+
             extract($_POST);
+
             $username = $this->smtpModel->getSmtp()->username;
             $this->sendEmail($username, $email, $name, $subject, $message, 'MAHA', null, null);
-            echo json_encode("Votre Message a été envoyé avec succès !");
+            return Response::json("Votre Message a été envoyé avec succès !");
         }
+
+        return Response::json(null, 405, "Method Not Allowed");
     }
 
     public function logout()
