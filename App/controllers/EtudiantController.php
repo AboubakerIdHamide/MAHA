@@ -23,8 +23,7 @@ class EtudiantController
 	public function __construct()
 	{
 		if (!isset($_SESSION['id_etudiant'])) {
-			redirect('user/login');
-			return;
+			return redirect('user/login');
 		}
 		$this->etudiantModel = new Etudiant;
 		$this->formationModel = new Formation;
@@ -53,13 +52,13 @@ class EtudiantController
 		}
 		$data['nbrNotifications'] = $this->_getNotifications();
 		// loading the view
-		return view("etudiant/index", $data);
+		return view("etudiants/index", $data);
 	}
 
 	public function coursVideos($idFormateur = "", $idFormation = "")
 	{
 		if (empty($idFormateur) || empty($idFormation)) {
-			redirect("etudiant");
+			return redirect("etudiant");
 		}
 		// preparing data
 		$formation = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, $_SESSION['id_etudiant'], $idFormateur);
@@ -89,7 +88,7 @@ class EtudiantController
 		}
 
 		// loading the view
-		return view("etudiant/coursVideos", $formation);
+		return view("common/coursVideos", $formation);
 	}
 
 	public function watchedVideos()
@@ -104,7 +103,7 @@ class EtudiantController
 		$data["nbrNotifications"] = $this->_getNotifications();
 
 		// loading the view
-		return view("etudiant/videoCards", $data);
+		return view("etudiants/videoCards", $data);
 	}
 
 	public function bookmarkedVideos()
@@ -119,7 +118,7 @@ class EtudiantController
 		$data["nbrNotifications"] = $this->_getNotifications();
 
 		// loading the view
-		return view("etudiant/videoCards", $data);
+		return view("etudiants/videoCards", $data);
 	}
 
 	// Update Profil 
@@ -197,7 +196,7 @@ class EtudiantController
 
 			$data["nbrNotifications"] = $this->_getNotifications();
 
-			return view("etudiant/updateInfos", $data);
+			return view("etudiants/profil", $data);
 		}
 	}
 
@@ -314,7 +313,7 @@ class EtudiantController
 				"img_err" => "",
 				"tel_err" => "",
 			];
-			return view("etudiant/updateInfos", $data);
+			return view("etudiants/updateInfos", $data);
 		}
 	}
 
