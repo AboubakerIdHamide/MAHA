@@ -106,7 +106,7 @@ class Inscription
                 i.id_formateur,
                 i.id_etudiant,
                 mass_horaire,
-                image,
+                fore.image,
                 c.nom AS nomCategorie,
                 fore.prix,
                 fore.nom AS nomFormation,

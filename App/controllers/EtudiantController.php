@@ -365,7 +365,7 @@ class EtudiantController
 	public function notifications()
 	{
 		$data = ['nbrNotifications' => $this->_getNotifications()];
-		return view('etudiant/notifications', $data);
+		return view('common/index', $data);
 	}
 
 	public function setStateToSeen($id_notification)
