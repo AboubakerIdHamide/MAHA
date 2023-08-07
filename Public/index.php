@@ -34,13 +34,16 @@ class Router
 
     public function __construct()
     {
+        // Get URL
         $url = $this->getUrl();
+        // Default
         if (!isset($url[0])) {
             require '../app/Controllers/' . $this->currentController . '.php';
             // initialize a contoller object
             $this->currentController = new $this->currentController;
             // getParams
             $this->currentParams = $url ? array_values($url) : [];
+
             // call callback with the params
             call_user_func_array([$this->currentController, $this->currentMethod], $this->currentParams);
             return;
@@ -63,11 +66,6 @@ class Router
                 if(!$this->isMethodExist($url[1])){
                     if(!$this->isMethodExist('index')){
                         if ($this->getUrl()[0] !== "api") {
-                            $stocked = new Stocked;
-                            $themeData = $stocked->getThemeData();
-                            $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
-                            $theme["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
-                            $data['theme'] = $theme;
                             require_once "../app/Views/errors/page_404.php";
                         } else {
                             Response::json(null, 404, "404 Route Not Found");
@@ -84,12 +82,25 @@ class Router
 
             // getParams
             $this->currentParams = $url ? array_values($url) : [];
+
+            if($this->checkVisibility() === 'private'){
+                require_once "../app/Views/errors/page_404.php";
+                exit;
+            }
+
             // call callback with the params
             call_user_func_array([$this->currentController, $this->currentMethod], $this->currentParams);
         }
     }
 
-    public function isControllerExist($controllerName)
+    private function checkVisibility()
+    {
+        $reflectionMethod = new \ReflectionMethod($this->currentController, $this->currentMethod);
+        $visibility = \Reflection::getModifierNames($reflectionMethod->getModifiers());
+        return $visibility[0];
+    }
+
+    private function isControllerExist($controllerName)
     {
         if (file_exists("../app/Controllers/" . ucwords($controllerName) . "Controller.php")) {
             $this->currentController = ucwords($controllerName) . 'Controller';
@@ -104,7 +115,7 @@ class Router
         exit;
     }
 
-    public function isApiControllerExist($controllerName)
+    private function isApiControllerExist($controllerName)
     {
         $controllerName = ucwords(substr($controllerName, 0, -1));
         if (file_exists("../app/Controllers/api/" . $controllerName . "Controller.php")) {
@@ -115,7 +126,7 @@ class Router
         exit;
     }
 
-    public function isMethodExist($methodName)
+    private function isMethodExist($methodName)
     {
         if (method_exists($this->currentController, $methodName)) {
             $this->currentMethod = $methodName;
@@ -124,7 +135,7 @@ class Router
         return false;
     }
 
-    public function getUrl()
+    private function getUrl()
     {
         if (isset($_GET["url"])) {
             $url = rtrim($_GET["url"], "/");
