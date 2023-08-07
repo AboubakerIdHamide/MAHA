@@ -189,19 +189,6 @@ section#lessons {
   border-bottom: none;
 }
 
-.statistics {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  text-align: center;
-  color: #fff;
-  padding: 10px 0px;
-  border-bottom: 5px solid #ffc107;
-  border-radius: 10px;
-  font-size: 1.2rem;
-}
-
-
 .box_detail {
   padding: 25px 25px 15px 25px;
   border: 1px solid #ededed;
@@ -210,14 +197,13 @@ section#lessons {
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   border-radius: 5px;
-  margin-bottom: 30px;
   position: relative;
   overflow: hidden;
 }
 
 .box_detail .price-wrapper {
   border-bottom: 1px solid #ededed;
-  margin: 0 -25px 25px -25px;
+  margin: 0 -25px 15px -25px;
   padding: 5px 25px 15px 25px;
 }
 
@@ -244,7 +230,7 @@ section#lessons {
 }
 .box_detail ul {
   margin-bottom: 0;
-  margin-top: 25px;
+  margin-top: 15px;
 }
 .box_detail ul li {
   margin-bottom: 5px;
@@ -326,7 +312,7 @@ section#lessons {
   transform: translate(-50%, 1000%);
   width: 85%;
   z-index: 9999;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.4s ease-in-out;
   padding: 6px;
   background-color: #662d91;
   border-radius: 8px;
@@ -353,8 +339,9 @@ section#lessons {
 
 /* Layout */
 .margin_35_35 {
-  padding-top: 35px;
+  padding-top: 20px;
   padding-bottom: 35px;
+  border-top: 10px solid #ffc107;
 }
 @media (max-width: 575px) {
   .margin_35_35 {
@@ -398,4 +385,56 @@ section#lessons {
   font-size: 1rem;
   color: #113731;
   font-weight: 700;
+}
+
+.to-top-btn {
+  display: block;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 2;
+  text-align: center;
+  line-height: 4rem;
+  font-size: 2rem;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: #560948;
+  cursor: pointer; 
+  color: #f8f8f8;
+  transition: background-color .3s;
+}
+
+.to-top-btn:hover {
+  background-color: #662d91;
+}
+
+.video-item {
+  border: 2px solid #f8f8f8;
+  transition: border 0.3s;
+}
+
+.video-item:hover {
+  border: 2px solid #5d0c48;
+}
+
+.video-item:first-child{
+  border: 2px solid #5d0c48;
+  background-color: #5d0c48;
+  color: white;
+}
+
+.title {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.title::before, .title::after {
+  flex: 1;
+  content: '';
+  padding: 3px;
+  background-color: #ffc107;
+  margin: 5px;
 }

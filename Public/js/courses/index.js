@@ -98,7 +98,6 @@ $(function(){
                             </span>
                             <span class="niveau d-flex align-items-center gap-2">
                                 <span>${course.iconNiveau}</span>
-                                ${course.nomNiveau}
                             </span>
                             <span class="likes d-flex align-items-center gap-2">
                                 <i class="fa-solid fa-heart" style="color: #e91e63"></i>

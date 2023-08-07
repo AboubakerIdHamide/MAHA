@@ -1,18 +1,18 @@
 html {
-  font-size: 18px;
+  font-size: 11px;
 }
 
-/* @media (min-width: 575.98px) {
+@media (min-width: 575.98px) {
     html {
-      font-size: 20px;
+      font-size: 14px;
     }
-} */
+}
 
-@media (min-width: 767.98px) {
+/* @media (min-width: 767.98px) {
   html {
       font-size: 15px;
     }
-} 
+}  */
 
 /* @media (min-width: 991.98px) {
   html {
@@ -20,15 +20,15 @@ html {
     }
 } */
 
-@media (min-width: 1199.98px) {
+/* @media (min-width: 1199.98px) {
   html {
       font-size: 13px;
     }
 }
-
+ */
 @media (min-width: 1399.98px) {
   html {
-      font-size: 14px;
+      font-size: 20px;
     }
 } 
 

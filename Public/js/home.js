@@ -165,24 +165,4 @@ $(function(){
         }
     });
 
-    // Navigate to course details
-    $('#reccomended .item').click(function(event){
-        window.location.href = $(this).data('url');
-    });
-
-    // Navigate to Instructor profil
-    $('#instructors .item').click(function(event){
-        window.location.href = urlRoot + '/user/' + $(this).data('formateurSlug');
-    });
-
-    // Truncate course description
-    const $p_decription_PF = $(".box_grid .description");
-    if ($p_decription_PF) {
-        for (let i = 0; i < $p_decription_PF.length; i++) {
-            if ($p_decription_PF[i].textContent.length > 160) {
-                const text = $p_decription_PF[i].textContent.slice(0, 80);
-                $p_decription_PF[i].textContent = `${text} ...`;
-            }
-        }
-    }
 });

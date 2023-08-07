@@ -26,11 +26,6 @@
 	$('#sidebar').theiaStickySidebar({
 		additionalMarginTop: 150
 	});
-
-	// sidebar for Course
-	$('#sidebar-course').theiaStickySidebar({
-		additionalMarginTop: 170
-	});
 	
 	// Mobile Mmenu
 	const $menu = $("nav#menu").mmenu({

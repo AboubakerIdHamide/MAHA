@@ -8,7 +8,7 @@ $(function(){
     // Open the overlay when the button is clicked
     $("#show-preview").click(function(event) {
         $("#overlay").fadeIn();
-        $(".overlay-content").css({ transform: "translate(-50%, -50%) scale(1)" });
+        $(".overlay-content").css({ transform: "translate(-50%, -50%)" });
         $("body").css({
             overflow : 'hidden'
         });
@@ -18,7 +18,7 @@ $(function(){
 
     function hideOverlay() {
         $("#overlay").fadeOut();
-        $(".overlay-content").css({ transform: "translate(-50%, -50%) scale(0)" });
+        $(".overlay-content").css({ transform: "translate(-50%, 1000%)" });
         $("body").css({
             overflow : 'auto'
         });
@@ -29,16 +29,23 @@ $(function(){
 
     $("#closeBtn, #overlay").click(hideOverlay);
 
-     $(window).bind('load resize', function () {
-        const width = $(window).width();
-        if (width <= 991) {
-            $('.sticky_horizontal').stick_in_parent({
-                offset_top: 51.40
-            });
+    // sidebar for Course
+    $('#sidebar-course').theiaStickySidebar({
+        additionalMarginTop: 76
+    });
+
+    const $toTopBtn = $('.to-top-btn');
+
+    $(window).scroll(function(){
+        if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+            $toTopBtn.fadeIn('slow');
         } else {
-            $('.sticky_horizontal').stick_in_parent({
-                offset_top: 73
-            });
+            $toTopBtn.fadeOut('slow');
         }
     });
+
+    $toTopBtn.click(function() {
+        document.body.scrollTop = 532; // For Safari
+        document.documentElement.scrollTop = 532; // For Chrome, Firefox, IE and Opera
+    })
 });

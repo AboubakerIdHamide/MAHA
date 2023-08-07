@@ -13,11 +13,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- BASE CSS -->
     <link href="<?= CSSROOT ?>/bootstrap.min.css" rel="stylesheet" />
-    <link href="<?= CSSROOT ?>/style.css" rel="stylesheet" />
+    <link href="<?= CSSROOT ?>/common.css" rel="stylesheet" />
+    <link href="<?= CSSROOT ?>/index.css" rel="stylesheet" />
+    <!-- <link href="<?= CSSROOT ?>/style.css" rel="stylesheet" /> -->
     <link href="<?= CSSROOT ?>/vendors.css" rel="stylesheet" />
     <style>
-        .hero_single.version_2:before {
-            background: url("<?= $theme->landingImg ?>") center center no-repeat;
+        .hero_single.version_2 {
+            background: url(<?= $theme->landingImg ?>) center center no-repeat;
         }
 
         @media (max-width: 575px) {
@@ -135,8 +137,8 @@
                 </div>
                 <div id="reccomended" class="owl-carousel owl-theme">
                     <?php foreach ($formations as $formation) : ?>
-                    <div class="item" data-url="<?= URLROOT ?>/courses/<?= $formation->slug ?>">
-                        <div class="box_grid">
+                    <div class="item">
+                        <div class="box_grid wow">
                             <figure class="block-reveal">
                                 <div class="block-horizzontal"></div>
                                 <span class="langue">
@@ -145,20 +147,22 @@
                                 </span>
                                 <span class="niveau d-flex align-items-center gap-2">
                                     <span><?= $formation->iconNiveau ?></span>
-                                    <?= $formation->nomNiveau ?>
+                                    <!-- <?= $formation->nomNiveau ?> -->
                                 </span>
                                 <span class="likes d-flex align-items-center gap-2">
                                     <i class="fa-solid fa-heart" style="color: #e91e63"></i>
                                     <?= $formation->jaimes ?>
                                 </span>
-                                <img src="<?= $formation->imgFormation ?>" class="img-fluid" alt="image formation" />
+                                <a href="<?= URLROOT ?>/courses/<?= $formation->slug ?>">
+                                    <img src="<?= $formation->imgFormation ?>" class="img-fluid" alt="image formation" />
+                                </a>
                                 <div class="price">$<?= $formation->prix ?></div>
                                 <div class="preview"><span>Apercu de formation</span></div>
                             </figure>
                             <div class="wrapper">
                                 <small><?= $formation->nomCategorie ?></small>
                                 <h3 class="title"><?= $formation->nomFormation ?></h3>
-                                <p class="description"><?= $formation->description ?></p>
+                                <p class="text-dark description"><?= $formation->description ?></p>
                             </div>
                             <ul>
                                 <li>
@@ -218,8 +222,8 @@
                 </div>
                 <div id="instructors" class="owl-carousel owl-theme">
                 <?php foreach ($formateurs as $formateur) : ?>
-                <div class="item" data-formateur-slug="<?= $formateur->slug ?>">
-                    <div class="box_grid">
+                <div class="item">
+                    <div class="box_grid wow">
                         <figure class="block-reveal">
                             <div class="block-horizzontal"></div>
                             <?php if($formateurs[0] === $formateur) : ?>
@@ -231,8 +235,9 @@
                                 <i class="fa-solid fa-graduation-cap"></i>
                                 <?= $formateur->etudiants ?>
                             </span>
-                            <img src="<?= $formateur->img ?>" class="img-fluid" alt="image formation" />
-                        
+                            <a href="<?= URLROOT ?>/user/<?= $formateur->slug ?>">
+                                <img src="<?= $formateur->img ?>" class="img-fluid" alt="image formateur" />
+                            </a>
                         </figure>
                         <div class="wrapper text-center">
                             <small><?= $formateur->nomCategorie ?></small>
@@ -255,33 +260,23 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
-                        <div class="d-flex align-items-center bg-white p-4 shadow etudiant-box">
-                            <div class="custom-shape-divider-top-1691155204">
-                                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
-                                </svg>
-                            </div>
+                        <div class="d-flex align-items-center p-4 py-xl-0 shadow etudiant-box">
                             <div>
-                                <h3 class="text-white">Voulez-vous <span style="color: #ffc107">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apprendre</span>?</h3>
-                                <p class="text-muted mt-5">Un apprentissage qui vous ressemble des compétences pour aujourd'hui.</p>
+                                <h3>Voulez-vous <span style="color: #662d91">apprendre</span>?</h3>
+                                <p class="text-dark">Un apprentissage qui vous ressemble des compétences pour aujourd'hui.</p>
                                 <a href="<?= URLROOT ?>/user/register" class="btn_1">Rejoignez maintenant</a>
                             </div>
-                           <img src="images/home/etudiant.png" alt="instructor illustration" class="img-fluid w-50" />
+                           <img src="images/home/etudiant.png" alt="instructor illustration" class="img-fluid" />
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="d-flex align-items-center bg-white p-4 shadow formateur-box">
-                            <div class="custom-shape-divider-top-1691155204">
-                                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
-                            </svg>
-                            </div>
+                        <div class="d-flex align-items-center p-4 py-xl-0 shadow formateur-box">
                             <div>
-                                <h3 class="text-white">Voulez-vous <span style="color: #ffc107">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enseigner</span>?</h3>
-                                <p class="text-muted mt-5">Nous vous offrons les outils et les compétences nécessaires pour enseigner ce que vous aimez.</p>
+                                <h3>Voulez-vous <span style="color: #662d91">enseigner</span>?</h3>
+                                <p class="text-dark">Nous vous offrons les outils et les compétences nécessaires pour enseigner ce que vous aimez.</p>
                                 <a href="<?= URLROOT ?>/user/register" class="btn_1">Commencez à enseigner</a>
                             </div>
-                           <img src="images/home/formateur.png" alt="instructor illustration" class="img-fluid w-50" />
+                           <img src="images/home/formateur.png" alt="instructor illustration" class="img-fluid" />
                         </div>
                     </div>
                     <!-- /grid_item -->
@@ -338,7 +333,7 @@
                                 </span>
                                 <small class="text-danger message_error error"></small>
                                 <div style="position:relative;" class="mt-4">
-                                    <button type="submit"class="btn_1 full-width" id="submit-contact">Envoyer Mon Message</button>
+                                    <button type="submit" class="btn_1 full-width" id="submit-contact">Envoyer Mon Message</button>
                                 </div>
                             </form>
                         </div>
@@ -396,9 +391,9 @@
     <script src="<?= JSROOT ?>/plugins/theia-sticky-sidebar.js"></script>
     <script src="<?= JSROOT ?>/plugins/jquery.mmenu.js"></script>
     <script src="<?= JSROOT ?>/plugins/owl.carousel.min.js"></script>
-    <script src="<?= JSROOT ?>/plugins/wow.min.js"></script>
     <script src="<?= JSROOT ?>/plugins/classie.js"></script>
     <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
+    <script src="<?= JSROOT ?>/plugins/wow.min.js"></script>
     <script src="<?= JSROOT ?>/common.js"></script>
     <script src="<?= JSROOT ?>/home.js"></script>
 </body>
