@@ -38,8 +38,7 @@ class AdminController
     private function checkSession()
     {
         if (!$this->isLoggedIn()) {
-            redirect('admin/login');
-            return;
+            return redirect('admin/login');
         }
     }
 
@@ -51,8 +50,7 @@ class AdminController
     public function login()
     {
         if ($this->isLoggedIn()) {
-            redirect('admin/dashboard');
-            exit;
+            return redirect('admin/dashboard');
         }
 
         // Checking If The User Submit
@@ -124,13 +122,13 @@ class AdminController
         $_SESSION['admin_id'] = $admin->id_admin;
         $_SESSION['admin'] = $admin;
         $admin->img = URLROOT . "/Public/" . $admin->img;
-        redirect('admin/dashboard');
+        return redirect('admin/dashboard');
     }
 
     public function logout()
     {
         session_destroy();
-        redirect('admin/login');
+        return redirect('admin/login');
     }
 
     public function dashboard()
@@ -505,7 +503,7 @@ class AdminController
                 "landingImg" => $landingImg
             ]);
 
-            redirect("admin/changeTheme");
+            return redirect("admin/changeTheme");
         } else {
             $data["logo"] = URLROOT . "/Public/" . $theme->logo;
             $data["landingImg"] = URLROOT . "/Public/" . $theme->landingImg;
