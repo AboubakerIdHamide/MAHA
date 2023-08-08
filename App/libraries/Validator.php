@@ -138,6 +138,13 @@ class Validator
             }
 
             unset($this->data[$field . '_confirmation']);
+        } elseif (strpos($rule, 'in_array:') === 0) {
+            $allowedValues = explode(':', $rule)[1];
+            $allowedValuesArray = explode(',', $allowedValues);
+
+            if (!in_array($value, $allowedValuesArray)) {
+                $this->addError($field, 'The selected ' . $field . ' value is not allowed.');
+            }
         }
 
         // Add more validation rules as needed...
