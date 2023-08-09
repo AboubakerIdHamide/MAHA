@@ -62,15 +62,13 @@ class Etudiant
 	public function create($etudiant)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO etudiants(nom, prenom, email, tel, mot_de_passe, img) VALUES (:nom, :prenom, :email, :tel, :mdp, :img)
+			INSERT INTO etudiants(nom, prenom, email, mot_de_passe) VALUES (:nom, :prenom, :email, :mdp)
 		");
 
 		$query->bindParam(':nom', $etudiant['nom']);
 		$query->bindParam(':prenom', $etudiant['prenom']);
 		$query->bindParam(':email', $etudiant['email']);
-		$query->bindParam(':img', $etudiant['img']);
-		$query->bindParam(':tel', $etudiant['tel']);
-		$query->bindParam(':mdp', $etudiant['mdp']);
+		$query->bindParam(':mdp', $etudiant['password']);
 		$query->execute();
 
 		$lastInsertId = $this->connect->lastInsertId();
