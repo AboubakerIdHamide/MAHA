@@ -21,6 +21,7 @@ class Stocked
 		$query = $this->connect->prepare("
 			SELECT * 
 			FROM categories
+			ORDER BY nom
 		");
 
 		$query->execute();
