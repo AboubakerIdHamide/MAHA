@@ -46,7 +46,7 @@ class Formateur
 				date_creation,
 				img,
 				paypalMail, 
-				biography,
+				biographie,
 				c.nom AS nomCategorie,
 				balance,
 				c.id_categorie
@@ -74,7 +74,7 @@ class Formateur
 				f.nom AS nomFormateur,
 				prenom,
 				img,
-				biography,
+				biographie,
 				c.nom AS nomCategorie,
 				c.id_categorie,
 				email,
@@ -97,18 +97,13 @@ class Formateur
 	public function create($formateur)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO formateurs(nom, prenom, email, tel, mot_de_passe, img, biography,  paypalMail, id_categorie, code) VALUES (:nom, :prenom, :email, :tel, :mdp, :img, :bio, :pmail, :spId, :code_formateur)
+			INSERT INTO formateurs(nom, prenom, email, mot_de_passe, code) VALUES (:nom, :prenom, :email, :mdp, :code_formateur)
 		");
 
 		$query->bindParam(':nom', $formateur['nom']);
 		$query->bindParam(':prenom', $formateur['prenom']);
 		$query->bindParam(':email', $formateur['email']);
-		$query->bindParam(':img', $formateur['img']);
-		$query->bindParam(':tel', $formateur['tel']);
-		$query->bindParam(':mdp', $formateur['mdp']);
-		$query->bindParam(':pmail', $formateur['pmail']);
-		$query->bindParam(':bio', $formateur['bio']);
-		$query->bindParam(':spId', $formateur['specId']);
+		$query->bindParam(':mdp', $formateur['password']);
 		$query->bindParam(':code_formateur', $formateur['code_formateur']);
 		$query->execute();
 
@@ -128,7 +123,7 @@ class Formateur
 				tel,
 				date_creation,
 				paypalMail,
-				biography,
+				biographie,
 				balance,
 				code,
 				id_categorie,
@@ -136,7 +131,8 @@ class Formateur
 				email, 
 				prenom,
 				mot_de_passe,
-				code
+				code,
+				is_all_info_present
 			FROM formateurs
 			WHERE email = :email
 		");
@@ -160,7 +156,7 @@ class Formateur
 				tel,
 				date_creation,
 				paypalMail,
-				biography,
+				biographie,
 				balance,
 				code,
 				id_categorie,
@@ -180,27 +176,27 @@ class Formateur
 		return false;
 	}
 
-	public function update($formateur)
+	public function update($data, $id)
 	{
-		$query = $this->connect->prepare("
-			UPDATE formateurs
-			SET nom = :nom,
-				prenom = :prenom, 
-				tel = :tel,
-				biography = :bio,
-				id_categorie = :specialite,
-				mot_de_passe = :mdp
-			WHERE id_formateur = :id
-		");
+        $sql = "UPDATE formateurs SET ";
+        
+        $updates = [];
+        foreach ($data as $field => $value) {
+            $updates[] = "$field = :$field";
+        }
+        
+        $sql .= implode(', ', $updates);
+        $sql .= " WHERE id_formateur = :id";
+        
+        $query = $this->connect->prepare($sql);
+        
+        foreach ($data as $field => $value) {
+            $query->bindValue(":$field", $value);
+        }
 
-		$query->bindParam(':nom', $formateur['nom']);
-		$query->bindParam(':prenom', $formateur['prenom']);
-		$query->bindParam(':tel', $formateur['tel']);
-		$query->bindParam(':bio', $formateur['bio']);
-		$query->bindParam(':specialite', $formateur['specId']);
-		$query->bindParam(':mdp', $formateur['n_mdp']);
-		$query->bindParam(':id', $formateur['id']);
-		$query->execute();
+
+        $query->bindValue(':id', $id);
+        $query->execute();
 
 		if ($query->rowCount() > 0) {
 			return true;
@@ -254,7 +250,7 @@ class Formateur
 				tel = :tel_formateur,
 				paypalMail = :paypalMail,
 				id_categorie = :specialiteId,
-				biography = :biography
+				biographie = :biographie
 			WHERE id_formateur = :id_formateur
 		");
 
@@ -264,7 +260,7 @@ class Formateur
 		$query->bindParam(':tel_formateur', $formateur['tel_formateur']);
 		$query->bindParam(':paypalMail', $formateur['paypalMail']);
 		$query->bindParam(':specialiteId', $formateur['specialiteId']);
-		$query->bindParam(':biography', $formateur['biography']);
+		$query->bindParam(':biographie', $formateur['biographie']);
 		$query->bindParam(':id_formateur', $formateur['id_formateur']);
 		$query->execute();
 
@@ -316,7 +312,7 @@ class Formateur
 				f.nom AS nomFormateur,
 				prenom,
 				img,
-				biography,
+				biographie,
 				c.nom AS nomCategorie,
 				c.id_categorie,
 				email,
