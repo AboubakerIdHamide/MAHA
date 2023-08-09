@@ -28,23 +28,27 @@ class AjaxController
 
     public function checkEmail()
     {
-        $data = [
-            "thereIsError" => false,
-            "error" => "",
-        ];
+        $request = new App\Libraries\Request;
+        if($request->getMethod() === 'POST'){
+            $isThisEmailNew  = true;
 
-        if (isset($_POST["email"])) {
-            if (!empty($this->etudiantModel->whereEmail($_POST["email"]))) {
-                $data["thereIsError"] = true;
-                $data["error"] = "Adresse e-mail déjà utilisée";
+            if(!$request->post('email')){
+                return App\Libraries\Response::json(null, 400, "The email is field is requied.");
             }
-            if (!empty($this->fomateurModel->whereEmail($_POST["email"]))) {
-                $data["thereIsError"] = true;
-                $data["error"] = "Adresse e-mail déjà utilisée";
+
+            if ($this->etudiantModel->whereEmail($request->post('email'))) {
+                $isThisEmailNew = false;
             }
+
+            if ($this->fomateurModel->whereEmail($request->post('email'))) {
+                $isThisEmailNew = false;
+            }
+
+            echo json_encode($isThisEmailNew);
+            return;
         }
 
-        echo json_encode($data);
+        return App\Libraries\Response::json(null, 405, "Method Not Allowed");
     }
 
     public function checkPaypalEmail()
