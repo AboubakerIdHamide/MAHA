@@ -57,7 +57,7 @@ class Request
             }
             return $body;
         }
-        return "";
+        return [];
     }
 
     public function body($field)
