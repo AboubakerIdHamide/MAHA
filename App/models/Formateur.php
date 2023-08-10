@@ -130,9 +130,9 @@ class Formateur
 				img, 
 				email, 
 				prenom,
-				mot_de_passe,
 				code,
-				is_all_info_present
+				is_all_info_present,
+				'formateur' AS `type`
 			FROM formateurs
 			WHERE email = :email
 		");
