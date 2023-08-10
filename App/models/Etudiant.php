@@ -89,7 +89,7 @@ class Etudiant
 				img, 
 				email, 
 				prenom,
-				mot_de_passe
+				'etudiant' AS `type`
 			FROM etudiants 
 			WHERE email = :email
 		");
