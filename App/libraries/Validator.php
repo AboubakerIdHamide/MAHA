@@ -120,18 +120,6 @@ class Validator
             if ($count > 0) {
                 $this->addError($field, 'The ' . $field . ' already taken.');
             }
-        } elseif ($rule === 'checkbox') {
-            // Assuming the field is an array of checkbox values
-
-            if (!is_array($value) || empty($value)) {
-                $this->addError($field, 'The ' . $field . ' field must be checked.');
-            }
-        } elseif ($rule === 'radio') {
-            // Assuming the field is a single radio button value
-
-            if (empty($value)) {
-                $this->addError($field, 'Please select a value for the ' . $field . ' field.');
-            }
         } elseif ($rule === 'confirm') {
             if ($value !== $this->data[$field . '_confirmation']) {
                 $this->addError($field, "Passwords do not match.");
@@ -139,11 +127,51 @@ class Validator
 
             unset($this->data[$field . '_confirmation']);
         } elseif (strpos($rule, 'in_array:') === 0) {
-            $allowedValues = explode(':', $rule)[1];
-            $allowedValuesArray = explode(',', $allowedValues);
+            $allowedValues = explode(',', explode(':', $rule)[1]);
 
-            if (!in_array($value, $allowedValuesArray)) {
+            if (!in_array($value, $allowedValues)) {
                 $this->addError($field, 'The selected ' . $field . ' value is not allowed.');
+            }
+        } elseif (strpos($rule, 'exists:') === 0) {
+            $tablesName = explode(',', explode(':', $rule)[1]);
+            $columnName = $field;
+
+            foreach ($tablesName as $table) {
+                $isExist = false;
+                $query = "SELECT COUNT(*) FROM {$table} WHERE {$columnName} = :value";
+                $statement = Database::getConnection()->prepare($query);
+                $statement->bindParam(':value', $value);
+                $statement->execute();
+                $count = $statement->fetchColumn();
+                if($count > 0) {
+                    $isExist = true;
+                    break;
+                }
+            }
+            
+            if ($isExist === false) {
+                $this->addError($field, 'The ' . $field . " doesn't exist.");
+            }
+        } elseif ($rule === 'auth') {
+            $tablesName = ['etudiants', 'formateurs'];
+
+            foreach ($tablesName as $table) {
+                $isExist = false;
+                $query = "SELECT mot_de_passe FROM {$table} WHERE email = :email";
+                $statement = Database::getConnection()->prepare($query);
+                $statement->bindParam(':email', $value);
+                $statement->execute();
+                $hashed_password = $statement->fetchColumn();
+                if(!password_verify($this->data['password'], $hashed_password ?? '')) {
+                    continue;
+                }
+                $isExist = true;
+                $this->data['type'] = rtrim($table, 's');
+                break;
+            }
+      
+            if ($isExist === false) {
+                $this->addError($field, "Les identifiants ne correspondent pas à nos enregistrements.");
             }
         }
 
