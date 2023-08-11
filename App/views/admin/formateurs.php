@@ -26,7 +26,7 @@
                     <tbody>
                         <?php foreach ($data['formateurs'] as $formateur) : ?>
                             <tr>
-                                <input type="hidden" value="<?= $formateur->biography ?>" class="biographie-formateur">
+                                <input type="hidden" value="<?= $formateur->biographie ?>" class="biographie-formateur">
                                 <td><?= $formateur->id_formateur ?></td>
                                 <td class="d-flex gap-1" style="font-weight: 500;">
                                     <img class="img-fluid rounded-circle avatar-formateur me-1" src="<?= $formateur->img ?>" alt="formateur avatar">
