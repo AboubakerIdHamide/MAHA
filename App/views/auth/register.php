@@ -1,150 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
-    <title><?= SITENAME ?> | Register</title>
+    <title>Register | <?= SITENAME ?></title>
+    <!-- GOOGLE WEB FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
     <!-- Font Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <!-- Style -->
-    <link rel="stylesheet" href="<?= CSSROOT ?>/register.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/auth/register.css" />
+    <style>
+        #register_bg {
+            background: url(<?= URLROOT ?>/public/images/banner_home.jpg) center center no-repeat fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
 </head>
 
-<body>
-    <div class="container">
-        <form method="post" enctype="multipart/form-data">
-            <div class="register-type">
-                <h3>S'inscrire <sup>Avec</sup></h3>
-                <button type="button" id="maha-register" class="maha"><i class="fa fa-user-plus"></i>MAHA</button>
-                <button type="button" id="facebook-register" class="facebook"><i class="fa-brands fa-facebook"></i>
-                    Facebook</button>
-                <button type="button" id="google-register" class="google"><i class="fa-brands fa-google-plus-g"></i>
-                    Google</button>
-                <small class="connection-error"></small>
-            </div>
-            <div class="maha-fields hide">
-                <div class="main-form-heading">
-                    <h1 class="logo">
-                        <a href="<?= URLROOT . "/page"; ?>">
-                            <img src="<?= IMAGEROOT ?>/MAHA.png" alt="logo platform">
-                        </a>
-                    </h1>
-                    <div class="form-progress">
-                        <span class="fill-prog" id="fillSpan"></span>
-
-                        <div class="steps">
-                            <div>1</div>
-                            <div>2</div>
-                            <div>3</div>
-                            <div>4</div>
+<body id="register_bg">
+    <div id="register">
+        <aside>
+            <figure>
+                <a href="<?= URLROOT ?>"><img src="<?= LOGO ?>" width="149" height="42" alt="logo maha"></a>
+            </figure>
+            <form method="POST" id="register-form">
+                <div class="access_social">
+                    <a id="facebook-login" href="javascript:void(0)" class="social_bt facebook">Connexion avec Facebook</a>
+                    <a id="google-login" href="javascript:void(0)" class="social_bt google">Connexion avec Google</a>
+                    <small class="connection-error d-block text-center"></small>
+                </div>
+                <div class="divider"><span>Ou</span></div>
+                <div class="form-group">
+                    <div class="d-flex gap-3 flex-column flex-lg-row">
+                        <div class="flex-item">
+                            <span class="input">
+                    <input class="input_field" type="text" id="nom" name="nom" />
+                        <label class="input_label">
+                        <span class="input__label-content">Nom</span>
+                    </label>
+                    </span>
+                    <small class="error-message" id="error-nom"><?= $nom_error ?? '' ?></small>
                         </div>
+
+                        <div class="flex-item">
+                             <span class="input">
+                    <input class="input_field" type="text" id="prenom" name="prenom" />
+                        <label class="input_label">
+                        <span class="input__label-content">Prénom</span>
+                    </label>
+                    </span>
+                    <small class="error-message" id="error-prenom"><?= $prenom_error ?? '' ?></small>
+                        </div>
+                   
                     </div>
 
-                    <span class="last-step hide">Dérniere étape !</span>
-                </div>
-                <div class="inputs-boxs-container">
-                    <input type="hidden" id="register-img" name="registerImg">
-                    <div class="inputs-boxs-container-slider" id="inputsSlider">
-                        <div class="input-box">
-                            <div class="field">
-                                <label for="nom">Nom :</label>
-                                <input type="text" id="nom" name="nom" value="<?= $data[0]["nom"] ?>">
-                                <span class="error" id="error-nom"><?= $data[0]["nom_err"] ?></span>
-                            </div>
-                            <div class="field">
-                                <label for="prenom">Prenom :</label>
-                                <input type="text" id="prenom" name="prenom" value="<?= $data[0]["prenom"] ?>">
-                                <span class="error" id="error-prenom"><?= $data[0]["prenom_err"] ?></span>
-                            </div>
+                    <span class="input">
+                    <input class="input_field" type="email" id="email" name="email" />
+                        <label class="input_label">
+                        <span class="input__label-content">Email</span>
+                    </label>
+                    </span>
+                    <small class="error-message" id="error-email"><?= $email_error ?? '' ?></small>
+
+                    <div class="d-flex gap-3 flex-column flex-lg-row mb-3">
+                        <div class="flex-item">
+                            <span class="input">
+                    <input class="input_field" type="password" id="mdp" name="mdp" />
+                        <label class="input_label">
+                        <span class="input__label-content">Mot de passe</span>
+                    </label>
+                    </span>
+                    <small class="error-message" id="error-mdp"><?= $password_error ?? '' ?></small>
                         </div>
 
-                        <div class="input-box">
-                            <div class="field">
-                                <label for="email">E-mail :</label>
-                                <input type="email" id="email" name="email" value="<?= $data[0]["email"] ?>">
-                                <span class="error" id="error-email"><?= $data[0]["email_err"] ?></span>
-                            </div>
-                            <div class="field">
-                                <label for="tele">N.Telephone :</label>
-                                <input type="text" id="tele" name="tele" value="<?= $data[0]["tel"] ?>">
-                                <span class="error" id="error-tele"><?= $data[0]["tel_err"] ?></span>
-                            </div>
-                        </div>
-
-                        <div class="input-box">
-                            <div class="field">
-                                <label for="mdp">Mot De Passe :</label>
-                                <input type="password" id="mdp" name="mdp" value="<?= $data[0]["mdp"] ?>">
-                                <span class="error" id="error-mdp"><?= $data[0]["mdp_err"] ?></span>
-                            </div>
-                            <div class="field">
-                                <label for="vmdp">Vérifier Mot De Passe :</label>
-                                <div class="masquer-mdb">
-                                    <input type="password" id="vmdp" name="vmdp" value="<?= $data[0]["vmdp"] ?>">
-                                    <i class="fa fa-eye" id="showPassIcon"></i>
-                                </div>
-                                <span class="error" id="error-vmdp"><?= $data[0]["vmdp_err"] ?></span>
-                            </div>
-                        </div>
-
-                        <div class="input-box">
-                            <div class="field upload-img">
-                                <div class="img-profile-wrapper">
-                                    <input type="file" id="photoInp" name="photo">
-                                </div>
-                                <span class="error" id="error-photo"><?= $data[0]["img_err"] ?></span>
-                            </div>
-                            <div class="field for-radio">
-                                <input type="radio" id="formateur" name="type" value="formateur">
-                                <label for="formateur">Formateur</label>
-                                <input type="radio" id="etudiant" name="type" value="etudiant" checked>
-                                <label for="etudiant">Etudiant</label>
-                            </div>
-                        </div>
-
-
-                        <div class="input-box" id="lastSection">
-                            <div class="alert-regiter-msg" id="lastSectionEtudiant">
-                                Vous avez terminé l'opération d'inscription
-                                merci de valider
-                            </div>
-                            <div class="input-box hide" id="lastSectionFormateur">
-                                <div class="field">
-                                    <label for="pmail">Email Paypal :</label>
-                                    <input type="email" id="pmail" name="pmail" value="<?= $data[0]["pmail"] ?>">
-                                    <span class="error" id="error-pmail"><?= $data[0]["pmail_err"] ?></span>
-                                </div>
-                                <div class="field">
-                                    <label spec="bio">Spécialité :</label>
-                                    <select name="specialite" id="spec">
-                                        <option value="aucun">Aucun</option>
-                                        <?php foreach ($data[1] as $cat) : ?>
-                                        <option value="<?= $cat->id_categorie ?>"><?= $cat->nom ?></option>
-                                        <?php endforeach ?>
-                                    </select>
-                                    <span class="error" id="error-spec"><?= $data[0]["spec_err"] ?></span>
-                                </div>
-                                <div class="field">
-                                    <label for="bio">Biography :</label>
-                                    <textarea name="biography" id="bio"><?= $data[0]["bio"] ?></textarea>
-                                    <span class="error" id="error-bio"><?= $data[0]["bio_err"] ?></span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="flex-item">
+                        <span class="input">
+                    <input class="input_field" type="password" id="vmdp" name="vmdp" />
+                        <label class="input_label">
+                        <span class="input__label-content">Confirmer le mot de passe</span>
+                    </label>
+                    </span>
+                    <small class="error-message" id="error-vmdp"></small>
+                    </div>
+                    
                     </div>
                 </div>
-                <div class="form-buttons">
-                    <button class="prev not-allowed" id="prev">Précédent</button>
-                    <button class="next" id="next">Suivant</button>
+                <div class="mb-2">
+                    <label style="color: #999">Veuillez choisir entre les deux options suivantes:</label>
+                    <div class="radio-tile-group">
+                        <div class="input-container w-50">
+                          <input id="etudiant" class="radio-button" type="radio" name="type" value="etudiant" />
+                          <div class="radio-tile">
+                            <div class="icon">
+                              <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                            <label for="drive" class="radio-tile-label">Etudiant</label>
+                          </div>
+                        </div>
+
+                        <div class="input-container w-50">
+                          <input id="formateur" class="radio-button" type="radio" name="type" value="formateur" />
+                          <div class="radio-tile">
+                            <div class="icon">
+                              <i class="fa-solid fa-chalkboard-user"></i>
+                            </div>
+                            <label for="fly" class="radio-tile-label">Formateur</label>
+                          </div>
+                        </div>
+                    </div>
+                    <small class="error-message d-inline-block text-center" id="error-type"><?= $type_error ?? '' ?></small>
                 </div>
-            </div>
-        </form>
+
+                <button class="btn_1 rounded full-width">S'inscrire</button>
+                <div class="text-center mt-3">Vous avez déjà un compte? <strong><a href="<?= URLROOT ?>/user/login">Se connecter</a></strong></div>
+            </form>
+            <div class="copy">© 2021 Udema</div>
+        </aside>
     </div>
+    <!-- /login -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="<?= JSROOT ?>/register.js"></script>
+    <script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
+    <script src="<?= JSROOT ?>/plugins/classie.js"></script>
+    <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
+    <script src="<?= JSROOT ?>/auth/register.js"></script>
 </body>
 
 </html>
