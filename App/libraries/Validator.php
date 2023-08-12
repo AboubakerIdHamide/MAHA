@@ -145,6 +145,7 @@ class Validator
                 $count = $statement->fetchColumn();
                 if($count > 0) {
                     $isExist = true;
+                    $this->data['type'] = rtrim($table, 's');
                     break;
                 }
             }
