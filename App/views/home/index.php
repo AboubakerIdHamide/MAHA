@@ -42,14 +42,14 @@
             </div>
             <ul id="top_menu">
                 <li><a href="javascript:void(0)" class="search-overlay-menu-btn">Search</a></li>
-                <?php if (!isset($_SESSION['user'])) : ?>
+                <?php if (!session('user')->get()) : ?>
                     <li class="hidden_tablet"><a href="<?= URLROOT . "/user/login" ?>" class="btn_1 rounded">Se Connecter</a></li>
                 <?php endif ?>
-                <?php if (isset($_SESSION['id_formateur'])) : ?>
+                <?php if (session('user')->get() && session('user')->get()->type === 'formateur') : ?>
                     <li class="hidden_tablet"><a href="<?= URLROOT . "/formateur/dashboard" ?>" class="btn_1 rounded">Dashboard</a>
                     </li>
                 <?php endif ?>
-                <?php if (isset($_SESSION['id_etudiant'])) : ?>
+                <?php if (session('user')->get() && session('user')->get()->type === 'etudiant') : ?>
                     <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiant/dashboard" ?>" class="btn_1 rounded">Mes Cours</a>
                     </li>
                 <?php endif ?>
