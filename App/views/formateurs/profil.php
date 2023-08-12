@@ -14,6 +14,7 @@
     <link href="<?= CSSROOT ?>/formateurs/profil.css" rel="stylesheet" />
     <link href="<?= CSSROOT ?>/common.css" rel="stylesheet" />
     <link href="<?= CSSROOT ?>/vendors.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/quill.snow.css" /> 
     <!-- font awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <style>
@@ -148,10 +149,9 @@
                                 <h3>Biographie</h3>
                                 <p><?= $formateur->nomCategorie ?></p>
                             </div>
-                            <div class="wrapper_indent">
-                                <p><?= $formateur->biography ?></p>
+                            <div class="wrapper_indent ql-editor">
+                                <p><?= $formateur->biographie ?></p>
                             </div>
-                            <!--wrapper_indent -->
                         </div>
                         <div class="row">
                             <?php foreach ($formations as $formation) : ?>
