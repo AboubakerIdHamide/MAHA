@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8">
@@ -44,16 +44,15 @@
                 <li><a href="javascript:void(0)" class="search-overlay-menu-btn">Search</a></li>
                 <?php if (!session('user')->get()) : ?>
                     <li class="hidden_tablet"><a href="<?= URLROOT . "/user/login" ?>" class="btn_1 rounded">Se Connecter</a></li>
+                <?php else: ?>
+                    <?php if (session('user')->get()->type === 'formateur') : ?>
+                        <li class="hidden_tablet"><a href="<?= URLROOT . "/formateur/dashboard" ?>" class="btn_1 rounded">Dashboard</a>
+                        </li>
+                    <?php else: ?>
+                        <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiant/dashboard" ?>" class="btn_1 rounded">Mes Cours</a>
+                        </li>
+                    <?php endif ?>
                 <?php endif ?>
-                <?php if (session('user')->get() && session('user')->get()->type === 'formateur') : ?>
-                    <li class="hidden_tablet"><a href="<?= URLROOT . "/formateur/dashboard" ?>" class="btn_1 rounded">Dashboard</a>
-                    </li>
-                <?php endif ?>
-                <?php if (session('user')->get() && session('user')->get()->type === 'etudiant') : ?>
-                    <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiant/dashboard" ?>" class="btn_1 rounded">Mes Cours</a>
-                    </li>
-                <?php endif ?>
-
             </ul>
             <!-- /top_menu -->
             <a href="#menu" class="btn_mobile">
