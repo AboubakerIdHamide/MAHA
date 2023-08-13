@@ -26,6 +26,10 @@ class EtudiantController
 			return redirect('user/login');
 		}
 
+		if(!session('user')->get()->email_verified_at) {
+			return redirect('user/verify');
+		}
+
 		$this->etudiantModel = new Etudiant;
 		$this->formationModel = new Formation;
 		$this->videoModel = new Video;
@@ -33,13 +37,13 @@ class EtudiantController
 		$this->stockedModel = new Stocked;
 		$this->commentModel = new Commentaire;
 		$this->notificationModel = new Notification;
-		$this->id = session('user')->id_etudiant;
+		$this->id = session('user')->get()->id_etudiant;
 	}
 
 	public function index()
 	{
 		// preparing data
-		$data["inscriptions"] = $this->inscriptionModel->getInscriptionsOfEtudiant(session('user')->id_etudiant);
+		$data["inscriptions"] = $this->inscriptionModel->getInscriptionsOfEtudiant(session('user')->get()->id_etudiant);
 		foreach ($data["inscriptions"] as $inscription) {
 			$inscription->imgFormateur = URLROOT . "/Public/" . $inscription->imgFormateur;
 			$inscription->image = URLROOT . "/Public/" . $inscription->image;
@@ -57,7 +61,7 @@ class EtudiantController
 			return redirect("etudiant");
 		}
 		// preparing data
-		$formation = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, session('user')->id_etudiant, $idFormateur);
+		$formation = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, session('user')->get()->id_etudiant, $idFormateur);
 		$formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
 		$formation->image = URLROOT . "/Public/" . $formation->image;
 		$formation->imgEtudiant = URLROOT . "/Public/" . $formation->imgEtudiant;
@@ -69,14 +73,14 @@ class EtudiantController
 		$formation->niveauIcon = $niveau->icon;
 		$formation->apprenants = $this->inscriptionModel->countApprenantsOfFormation($idFormateur, $idFormation);
 		$formation->videos = $this->videoModel->getVideosOfFormation($idFormation);
-		$formation->liked = $this->formationModel->isLikedBefore(session('user')->id_etudiant, $idFormation);
+		$formation->liked = $this->formationModel->isLikedBefore(session('user')->get()->id_etudiant, $idFormation);
 
 		foreach ($formation->videos as $video) {
 			// settingUp Video Link
 			$video->url = URLROOT . "/Public/" . $video->url;
-			$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video, $idFormateur, session('user')->id_etudiant);
-			$video->watched = $this->videoModel->watchedBefore(session('user')->id_etudiant, $video->id_video);
-			$video->bookmarked = $this->videoModel->isBookmarked(session('user')->id_etudiant, $video->id_video);
+			$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video, $idFormateur, session('user')->get()->id_etudiant);
+			$video->watched = $this->videoModel->watchedBefore(session('user')->get()->id_etudiant, $video->id_video);
+			$video->bookmarked = $this->videoModel->isBookmarked(session('user')->get()->id_etudiant, $video->id_video);
 			// settingUp User image Link for comment
 			foreach ($video->comments as $comment) {
 				$comment->img = URLROOT . "/Public/" . $comment->img;
@@ -90,7 +94,7 @@ class EtudiantController
 	public function watchedVideos()
 	{
 		// Preparing Data
-		$data["videos"] = $this->videoModel->getWatchedVideos(session('user')->id_etudiant);
+		$data["videos"] = $this->videoModel->getWatchedVideos(session('user')->get()->id_etudiant);
 		foreach ($data["videos"] as $video) {
 			// settingUp Video Link
 			$video->url = URLROOT . "/Public/" . $video->url;
@@ -105,7 +109,7 @@ class EtudiantController
 	public function bookmarkedVideos()
 	{
 		// Preparing Data
-		$data["videos"] = $this->videoModel->getBookmarkedVideos(session('user')->id_etudiant);
+		$data["videos"] = $this->videoModel->getBookmarkedVideos(session('user')->get()->id_etudiant);
 		foreach ($data["videos"] as $video) {
 			// settingUp Video Link
 			$video->url = URLROOT . "/Public/" . $video->url;
@@ -349,13 +353,13 @@ class EtudiantController
 
 	public function getAllNotifications()
 	{
-		$notifications = $this->notificationModel->getNotificationsOfEtudiant(session('user')->id_etudiant);
+		$notifications = $this->notificationModel->getNotificationsOfEtudiant(session('user')->get()->id_etudiant);
 		echo json_encode($notifications);
 	}
 
 	private function _getNotifications()
 	{
-		return $this->notificationModel->getNewNotificationsOfEtudiant(session('user')->id_etudiant);
+		return $this->notificationModel->getNewNotificationsOfEtudiant(session('user')->get()->id_etudiant);
 	}
 
 	public function notifications()
