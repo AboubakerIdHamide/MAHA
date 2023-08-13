@@ -22,9 +22,12 @@ class FormateurController
 
 	public function __construct()
 	{
-		if (!isset($_SESSION['id_formateur'])) {
-			redirect('user/login');
-			return;
+		if (!auth()) {
+			return redirect('user/login');
+		}
+
+		if(!session('user')->get()->email_verified_at) {
+			return redirect('user/verify');
 		}
 
 		$this->fomateurModel = new Formateur;
@@ -39,25 +42,23 @@ class FormateurController
 
 	public function index()
 	{
-		$this->dashboard();
-	}
+		if($_SESSION['user']->is_all_info_present){
+			if (isset($_SESSION['id_formation'])) unset($_SESSION['id_formation']);
+			$categories = $this->stockedModel->getAllCategories();
+			$langues = $this->stockedModel->getAllLangues();
+			$niveaux = $this->stockedModel->getAllLevels();
+			$balance = $this->fomateurModel->whereEmail($_SESSION['user']->email)->balance;
+			$data = [
+				'balance' => $balance,
+				'categories' => $categories,
+				'langues' => $langues,
+				'niveaux' => $niveaux,
+				'nbrNotifications' => $this->_getNotifications()
+			];
 
-	public function dashboard()
-	{
-		if (isset($_SESSION['id_formation'])) unset($_SESSION['id_formation']);
-		$categories = $this->stockedModel->getAllCategories();
-		$langues = $this->stockedModel->getAllLangues();
-		$niveaux = $this->stockedModel->getAllLevels();
-		$balance = $this->fomateurModel->whereEmail($_SESSION['user']->email)->balance;
-		$data = [
-			'balance' => $balance,
-			'categories' => $categories,
-			'langues' => $langues,
-			'niveaux' => $niveaux,
-			'nbrNotifications' => $this->_getNotifications()
-		];
-
-		return view('formateur/index', $data);
+			return view('formateurs/index', $data);
+		}
+		return redirect('user/continue');
 	}
 
 	public function requestPayment()
@@ -66,11 +67,11 @@ class FormateurController
 			$requestInfo = json_decode($_POST['data']);
 			if ($this->checkBalance($requestInfo)) {
 				// placer la demande
-				$this->requestPaymentModel->insertRequestPayment($_SESSION['id_formateur'], $requestInfo->montant);
+				$this->requestPaymentModel->insertRequestPayment($_SESSION['user']->id_formateur, $requestInfo->montant);
 				echo json_encode("votre demande a été mis avec success");
 			}
 		} else {
-			return view('formateur/requestPayment', ['nbrNotifications' => $this->_getNotifications()]);
+			return view('formateurs/requestPayment', ['nbrNotifications' => $this->_getNotifications()]);
 		}
 	}
 
@@ -88,7 +89,7 @@ class FormateurController
 
 	public function getPaymentsHistory()
 	{
-		echo json_encode($this->requestPaymentModel->getRequestsOfFormateur($_SESSION['id_formateur']));
+		echo json_encode($this->requestPaymentModel->getRequestsOfFormateur($_SESSION['user']->id_formateur));
 	}
 
 	public function deleteRequest($id_req)
@@ -99,17 +100,17 @@ class FormateurController
 
 	public function getAllNotifications()
 	{
-		echo json_encode($this->notificationModel->getNotificationsOfFormateur($_SESSION['id_formateur']));
+		echo json_encode($this->notificationModel->getNotificationsOfFormateur($_SESSION['user']->id_formateur));
 	}
 
 	private function _getNotifications()
 	{
-		return $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
+		return $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['user']->id_formateur);
 	}
 
 	public function notifications()
 	{
-		return view('formateur/notifications', ['nbrNotifications' => $this->_getNotifications()]);
+		return view('common/index', ['nbrNotifications' => $this->_getNotifications()]);
 	}
 
 	public function setStateToSeen($id_notification)
@@ -127,14 +128,14 @@ class FormateurController
 	// Update Profil 
 	public function updateInfos()
 	{
-		$formateur = $this->fomateurModel->find($_SESSION['id_formateur']);
+		$formateur = $this->fomateurModel->find($_SESSION['user']->id_formateur);
 		$formateur->img = URLROOT . "/Public/" . $formateur->img;
 		$categories = $this->stockedModel->getAllCategories();
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			// Prepare Data
 			$data = [
-				"id" => $_SESSION['id_formateur'],
+				"id" => $_SESSION['user']->id_formateur,
 				"nom" => trim($_POST["nom"]),
 				"prenom" => trim($_POST["prenom"]),
 				"tel" => trim($_POST["tel"]),
@@ -168,7 +169,7 @@ class FormateurController
 
 				$_SESSION["user_data"] = $data;
 
-				$formateur = $this->fomateurModel->find($_SESSION['id_formateur']);
+				$formateur = $this->fomateurModel->find($_SESSION['user']->id_formateur);
 				$formateur->img = URLROOT . "/Public/" . $formateur->img;
 
 				$data = [
@@ -179,7 +180,7 @@ class FormateurController
 					"img" => $formateur->img,
 					'categorie' => $formateur->nomCategorie,
 					"specId" => $formateur->id_categorie,
-					"bio" => $formateur->biography,
+					"bio" => $formateur->biographie,
 					"nom_err" => "",
 					"prenom_err" => "",
 					"img_err" => "",
@@ -201,7 +202,7 @@ class FormateurController
 				"img" => $formateur->img,
 				'categorie' => $formateur->nomCategorie,
 				"specId" => $formateur->id_categorie,
-				"bio" => $formateur->biography,
+				"bio" => $formateur->biographie,
 				"nom_err" => "",
 				"prenom_err" => "",
 				"img_err" => "",
@@ -213,7 +214,7 @@ class FormateurController
 				"categories" => $categories,
 				"nbrNotifications" => $this->_getNotifications()
 			];
-			return view("formateur/updateInfos", $data);
+			return view("formateurs/updateInfos", $data);
 		}
 	}
 
@@ -297,7 +298,7 @@ class FormateurController
 
 	public function changeImg()
 	{
-		$formateur = $this->fomateurModel->find($_SESSION['id_formateur']);
+		$formateur = $this->fomateurModel->find($_SESSION['user']->id_formateur);
 		$formateur->img = URLROOT . "/Public/" . $formateur->img;
 
 		$data = [];
@@ -320,11 +321,11 @@ class FormateurController
 					unlink($formateur['img']);
 				}
 
-				$this->fomateurModel->updateImage($data["img"], $_SESSION['id_formateur']);
+				$this->fomateurModel->updateImage($data["img"], $_SESSION['user']->id_formateur);
 
 				$_SESSION["user_data"] = $data;
 
-				// $infos = $this->fomateurModel->getFormateurById($_SESSION['id_formateur']);
+				// $infos = $this->fomateurModel->getFormateurById($_SESSION['user']->id_formateur);
 				$formateur->img = URLROOT . "/Public/" . $data['img'];
 				$data = [
 					"img" => $formateur->img,
@@ -339,7 +340,7 @@ class FormateurController
 				"tel" => $formateur->tel,
 				"img" => $formateur->img,
 				"specId" => $formateur->id_categorie,
-				"bio" => $formateur->biography,
+				"bio" => $formateur->biographie,
 				"nom_err" => "",
 				"prenom_err" => "",
 				"email_err" => "",
@@ -388,14 +389,14 @@ class FormateurController
 
 	private function _isFormateurHaveThisFormation($idFormation)
 	{
-		return (bool) $this->formationModel->getFormation($idFormation, $_SESSION['id_formateur']);
+		return (bool) $this->formationModel->getFormation($idFormation, $_SESSION['user']->id_formateur);
 	}
 
 	public function coursVideos($id_etudiant = "", $idFormation = "")
 	{
 		if ($this->_isFormateurHaveThisFormation($idFormation)) {
 			// preparing data 
-			$data = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, $id_etudiant, $_SESSION['id_formateur']);
+			$data = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, $id_etudiant, $_SESSION['user']->id_formateur);
 			$data->imgFormateur = URLROOT . "/Public/" . $data->imgFormateur;
 			$data->image = URLROOT . "/Public/" . $data->image;
 			$data->imgEtudiant = URLROOT . "/Public/" . $data->imgEtudiant;
@@ -412,7 +413,7 @@ class FormateurController
 			foreach ($data->videos as $video) {
 				// settingUp Video Link
 				$video->url = URLROOT . "/Public/" . $video->url;
-				$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video, $_SESSION['id_formateur'], $id_etudiant);
+				$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video, $_SESSION['user']->id_formateur, $id_etudiant);
 				// settingUp User image Link for comment
 				foreach ($video->comments as $comment) {
 					$comment->img = URLROOT . "/Public/" . $comment->img;
@@ -430,9 +431,9 @@ class FormateurController
 
 		// refresh code
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-			$data['code_formateur'] = $this->fomateurModel->refreshCode($_SESSION['id_formateur']);
+			$data['code_formateur'] = $this->fomateurModel->refreshCode($_SESSION['user']->id_formateur);
 		}
 
-		return view("formateur/subscriptionCode", $data);
+		return view("formateurs/subscriptionCode", $data);
 	}
 }
