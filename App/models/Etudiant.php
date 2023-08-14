@@ -59,16 +59,19 @@ class Etudiant
 		return [];
 	}
 
-	public function create($etudiant)
+	public function create($etudiant, $verificationToken, $expiry = 120)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO etudiants(nom, prenom, email, mot_de_passe) VALUES (:nom, :prenom, :email, :mdp)
+			INSERT INTO etudiants(nom, prenom, email, mot_de_passe, expiration_token_at, verification_token) 
+			VALUES (:nom, :prenom, :email, :password, :expiry, :token)
 		");
 
-		$query->bindParam(':nom', $etudiant['nom']);
-		$query->bindParam(':prenom', $etudiant['prenom']);
-		$query->bindParam(':email', $etudiant['email']);
-		$query->bindParam(':mdp', $etudiant['password']);
+		$query->bindValue(':nom', $etudiant['nom']);
+		$query->bindValue(':prenom', $etudiant['prenom']);
+		$query->bindValue(':email', $etudiant['email']);
+		$query->bindValue(':password', $etudiant['password']);
+		$query->bindValue(':expiry', date('Y-m-d H:i:s',  time() + 60 * $expiry));
+		$query->bindValue(':token', $verificationToken);
 		$query->execute();
 
 		$lastInsertId = $this->connect->lastInsertId();
@@ -89,6 +92,7 @@ class Etudiant
 				img, 
 				email, 
 				prenom,
+				email_verified_at,
 				'etudiant' AS `type`
 			FROM etudiants 
 			WHERE email = :email
@@ -239,6 +243,24 @@ class Etudiant
 		$query->bindParam(':email_etudiant', $etudiant['email_etudiant']);
 		$query->bindParam(':tel_etudiant', $etudiant['tel_etudiant']);
 		$query->bindParam(':id_etudiant', $etudiant['id_etudiant']);
+		$query->execute();
+
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public function updateToken($email, $token)
+	{
+		$query = $this->connect->prepare("
+			UPDATE etudiants
+			SET verification_token = :token
+			WHERE email = :email
+		");
+
+		$query->bindValue(':token', $token);
+		$query->bindValue(':email', $email);
 		$query->execute();
 
 		if ($query->rowCount() > 0) {
