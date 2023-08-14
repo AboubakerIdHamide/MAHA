@@ -94,17 +94,21 @@ class Formateur
 		return false;
 	}
 
-	public function create($formateur)
+	public function create($formateur, $verificationToken, $expiry = 120)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO formateurs(nom, prenom, email, mot_de_passe, code) VALUES (:nom, :prenom, :email, :mdp, :code_formateur)
+			INSERT INTO formateurs(nom, prenom, email, mot_de_passe, code, expiration_token_at, verification_token) 
+			VALUES (:nom, :prenom, :email, :password, :code_formateur, :expiry, :token)
 		");
 
-		$query->bindParam(':nom', $formateur['nom']);
-		$query->bindParam(':prenom', $formateur['prenom']);
-		$query->bindParam(':email', $formateur['email']);
-		$query->bindParam(':mdp', $formateur['password']);
-		$query->bindParam(':code_formateur', $formateur['code_formateur']);
+		$query->bindValue(':nom', $formateur['nom']);
+		$query->bindValue(':prenom', $formateur['prenom']);
+		$query->bindValue(':email', $formateur['email']);
+		$query->bindValue(':password', $formateur['password']);
+		$query->bindValue(':code_formateur', $formateur['code_formateur']);
+		$query->bindValue(':expiry', date('Y-m-d H:i:s',  time() + 60 * $expiry));
+		$query->bindValue(':token', $verificationToken);
+
 		$query->execute();
 
 		$lastInsertId = $this->connect->lastInsertId();
@@ -132,6 +136,7 @@ class Formateur
 				prenom,
 				code,
 				is_all_info_present,
+				email_verified_at,
 				'formateur' AS `type`
 			FROM formateurs
 			WHERE email = :email
@@ -428,22 +433,22 @@ class Formateur
 		return 0;
 	}
 
-	public function isValideCode($code)
+	public function isCodeExist($code)
 	{
-		$request = $this->connect->prepare("
+		$query = $this->connect->prepare("
 			SELECT code 
 			FROM formateurs 
 			WHERE code=:code
 		");
 
-		$request->bindParam(":code", $code);
-		$request->execute();
+		$query->bindValue(":code", $code);
+		$query->execute();
 
-		$response = $request->fetch(\PDO::FETCH_OBJ);
-		if (!empty($response)) {
-			return false;
+		$code = $query->fetch(\PDO::FETCH_OBJ);
+		if ($code) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	public function refreshCode($id){
@@ -499,5 +504,25 @@ class Formateur
             return $formateurs;
         }
         return [];
+	}
+
+	public function updateToken($email, $token, $expiry = 120)
+	{
+		$query = $this->connect->prepare("
+			UPDATE formateurs
+			SET verification_token = :token,
+				expiration_token_at = :expiry
+			WHERE email = :email
+		");
+
+		$query->bindValue(':token', $token);
+		$query->bindValue(':email', $email);
+		$query->bindValue(':expiry', date('Y-m-d H:i:s',  time() + 60 * $expiry));
+		$query->execute();
+
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 }
