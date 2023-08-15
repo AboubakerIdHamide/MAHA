@@ -1,35 +1,48 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
-    <title><?= SITENAME ?> | Vérification d'email</title>
-    <link rel="stylesheet" href="<?= CSSROOT ?>/emailVerification.css" />
+    <title>Vérification d'email | <?= SITENAME ?></title>
+    <!-- GOOGLE WEB FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <!-- Font Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <!-- Styles -->
+    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/auth/forgot.css" />
 </head>
+
 <body>
-    <div class="container">
-        <form action="" method="post" enctype="multipart/form-data">
-            <div class="main-form-heading">
-                <h1 class="logo">
-                    <a href="<?= URLROOT ?>">
-                        <img src="<?= LOGO ?>" alt="logo maha">
-                    </a>
-                </h1>
-            </div>
-            <p>Vous êtes presque! Nous avons envoyé un code de vérification à <span class="user-email">
-                <?= session('user_data')->get()["email"] ?></span> .</p>
-            <label for="code">Entrez le code ici pour vérifier votre identité</label>
-            <input type="text" id="code" placeholder="code" name="code" value="<?= $code ?>">
-            <span class="error" id="error"><?= $code_err ?></span>
-            <button class="submit-btn" id="sbmtBtn">Vérifier</button>
-            <button class="resend-link" name="resend" value="true" id="resend">Renvoyer</button>
-        </form>
+    <div id="preloader">
+        <div data-loader="circle-side"></div>
     </div>
-    <script src="<?= JSROOT ?>/emailVerification.js"></script>
+    <!-- End Preload -->
+    <div class="container">
+        <div class="wrapper">
+            <h1 class="logo mb-3">
+                <a href="<?= URLROOT ?>">
+                    <img src="<?= LOGO ?>" alt="logo maha">
+                </a>
+            </h1>
+            <div>
+                <h4>Merci de consulter vos emails</h4>
+                <div>Un e-mail a été envoyé à <span class="fw-bolder"><?= session('email')->get() ?></span>.Veuillez rechercher un e-mail de la société et cliquez sur le lien inclus pour Vérifiez votre compte.</div>
+                <div id="message" style="font-size: 14px;text-align: center"></div>
+            </div>
+            <div class="resent-container mb-3" style="display: none">
+                <span id="timer"></span>
+                <small>S'il vous plaît, attendez...</small>
+            </div>
+            <button class="btn_1 full-width" id="resend" type="button">Renvoyer</button>
+        </div>
+    </div>
+    <script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
+    <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
+    <script src="<?= JSROOT ?>/auth/forgot.js"></script>
 </body>
 
 </html>
