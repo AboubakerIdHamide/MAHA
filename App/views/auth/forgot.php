@@ -22,7 +22,7 @@
     </div>
     <!-- End Preload -->
     <div class="container">
-        <form method="post" id="forgot-form">
+        <form method="post" id="forgot-form" class="wrapper">
             <h1 class="logo">
                 <a href="<?= URLROOT ?>">
                     <img src="<?= LOGO ?>" alt="logo maha">
@@ -33,6 +33,10 @@
                 <p>Entrez votre adresse e-mail et nous vous enverrons un e-mail avec des instructions pour réinitialiser votre mot de passe.</p>
                 <div id="message" style="font-size: 14px;text-align: center"></div>
             </div>
+            <div class="resent-container mb-3" style="display: none">
+                <span id="timer"></span>
+                <small>S'il vous plaît, attendez...</small>
+            </div>
             <div class="form-group">
                 <input type="email" id="email" name="email" class="form-control" placeholder="Adresse e-mail" />
             </div>
@@ -41,7 +45,7 @@
     </div>
     <script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
     <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
-    <script src="<?= JSROOT ?>/forgotpassword.js"></script>
+    <script src="<?= JSROOT ?>/auth/forgot.js"></script>
 </body>
 
 </html>
