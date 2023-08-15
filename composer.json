@@ -3,7 +3,7 @@
         "guzzlehttp/guzzle": "^7.5",
         "phpmailer/phpmailer": "^6.8",
         "fakerphp/faker": "^1.23",
-        "google/apiclient": "^2.0"
+        "hybridauth/hybridauth": "^3.10"
     },
 	"autoload": {
 		"psr-4": {
