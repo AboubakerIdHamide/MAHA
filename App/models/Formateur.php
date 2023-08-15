@@ -94,20 +94,22 @@ class Formateur
 		return false;
 	}
 
-	public function create($formateur, $verificationToken, $expiry = 120)
+	public function create($formateur, $verificationToken = '', $expiry = 120)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO formateurs(nom, prenom, email, mot_de_passe, code, expiration_token_at, verification_token) 
-			VALUES (:nom, :prenom, :email, :password, :code_formateur, :expiry, :token)
+			INSERT INTO formateurs(nom, prenom, email, mot_de_passe, code, expiration_token_at, verification_token, img, email_verified_at) 
+			VALUES (:nom, :prenom, :email, :password, :code_formateur, :expiry, :token, :img, :email_verified_at)
 		");
 
-		$query->bindValue(':nom', $formateur['nom']);
+		$query->bindValue(':nom', $formateur['nom'] ?? '');
 		$query->bindValue(':prenom', $formateur['prenom']);
 		$query->bindValue(':email', $formateur['email']);
-		$query->bindValue(':password', $formateur['password']);
+		$query->bindValue(':password', $formateur['password'] ?? null);
 		$query->bindValue(':code_formateur', $formateur['code_formateur']);
 		$query->bindValue(':expiry', date('Y-m-d H:i:s',  time() + 60 * $expiry));
 		$query->bindValue(':token', $verificationToken);
+		$query->bindValue(':img', $formateur['img'] ?? null);
+		$query->bindValue(':email_verified_at', $formateur['verified'] ?? null);
 
 		$query->execute();
 
