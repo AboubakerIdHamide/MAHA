@@ -26,6 +26,10 @@ class EtudiantController
 			return redirect('user/login');
 		}
 
+		if(session('user')->get()->type !== 'etudiant'){
+			return view('errors/page_404');
+		}
+
 		if(!session('user')->get()->email_verified_at) {
 			return redirect('user/verify');
 		}
