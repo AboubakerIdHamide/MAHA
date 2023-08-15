@@ -59,19 +59,21 @@ class Etudiant
 		return [];
 	}
 
-	public function create($etudiant, $verificationToken, $expiry = 120)
+	public function create($etudiant, $verificationToken = '', $expiry = 120)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO etudiants(nom, prenom, email, mot_de_passe, expiration_token_at, verification_token) 
-			VALUES (:nom, :prenom, :email, :password, :expiry, :token)
+			INSERT INTO etudiants(nom, prenom, email, mot_de_passe, expiration_token_at, verification_token, img, email_verified_at) 
+			VALUES (:nom, :prenom, :email, :password, :expiry, :token, :img, :email_verified_at)
 		");
 
-		$query->bindValue(':nom', $etudiant['nom']);
+		$query->bindValue(':nom', $etudiant['nom'] ?? null);
 		$query->bindValue(':prenom', $etudiant['prenom']);
 		$query->bindValue(':email', $etudiant['email']);
-		$query->bindValue(':password', $etudiant['password']);
+		$query->bindValue(':password', $etudiant['password'] ?? null);
 		$query->bindValue(':expiry', date('Y-m-d H:i:s',  time() + 60 * $expiry));
 		$query->bindValue(':token', $verificationToken);
+		$query->bindValue(':img', $etudiant['img'] ?? null);
+		$query->bindValue(':email_verified_at', $etudiant['verified'] ?? null);
 		$query->execute();
 
 		$lastInsertId = $this->connect->lastInsertId();
