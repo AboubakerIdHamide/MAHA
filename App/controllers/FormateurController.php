@@ -26,6 +26,10 @@ class FormateurController
 			return redirect('user/login');
 		}
 
+		if(session('user')->get()->type !== 'formateur'){
+			return view('errors/page_404');
+		}
+
 		if(!session('user')->get()->email_verified_at) {
 			return redirect('user/verify');
 		}
@@ -129,7 +133,7 @@ class FormateurController
 	public function updateInfos()
 	{
 		$formateur = $this->fomateurModel->find($_SESSION['user']->id_formateur);
-		$formateur->img = URLROOT . "/Public/" . $formateur->img;
+		// $formateur->img = URLROOT . "/Public/" . $formateur->img;
 		$categories = $this->stockedModel->getAllCategories();
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
