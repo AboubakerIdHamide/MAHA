@@ -45,6 +45,9 @@ $(function () {
     // Register form validation
     const $registerForm = $("#register-form");
 
+    // Register Button
+    const $btnRegister = $('#register-btn');
+
     $.validator.addMethod("passwordRequirements", function (value, element) {
 	    // Password must contain at least one special character
 	    const specialCharacterRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
@@ -135,5 +138,36 @@ $(function () {
 		unhighlight: function(element) {
 		    $(element).next().removeClass("input_error");
 		},
+		submitHandler: function(form){
+            $.ajax({
+                url: `${URLROOT}/user/register`,
+                type: "POST",
+                dataType: "json",
+                data: $(form).serialize(),
+                beforeSend: function(){
+                    $('.register-message').text('');
+                    $btnRegister.prop('disabled', true);
+                    $btnRegister.html(`
+                        <div class="spinner-border spinner-border-sm text-warning" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    `);
+                },
+                success: function () {
+                    window.location.href = URLROOT + '/user/verify';
+                },
+                error: function({responseJSON: response}){
+					$('.divider').after(`
+						<div class="alert alert-danger alert-dismissible register-message" role="alert">
+							<div>${response.messages}</div>
+						</div>
+					`);
+                },
+                complete: function(){
+                    $btnRegister.prop('disabled', false);
+                    $btnRegister.text("S'inscrire");
+                }
+            });
+        }
     });
 });
