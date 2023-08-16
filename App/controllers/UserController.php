@@ -1,47 +1,45 @@
 <?php
 
-// PHP Mailler Classes
-use PHPMailer\PHPMailer\PHPMailer;
+
 use PHPMailer\PHPMailer\Exception;
+
+use Hybridauth\Hybridauth;
+
+use GuzzleHttp\Client;
+
+use App\Libraries\Response;
+use App\Libraries\Validator;
 
 use App\Models\Formateur;
 use App\Models\Etudiant;
 use App\Models\Stocked;
 use App\Models\Formation;
-use App\Models\Smtp;
 use App\Models\Inscription;
-use App\Libraries\Response;
-use App\Libraries\Validator;
 
 class UserController
 {
-    private $fomateurModel;
+    private $formateurModel;
     private $etudiantModel;
     private $stockedModel;
     private $formationModel;
-    private $smtpModel;
 
     public function __construct()
     {
-        $this->fomateurModel = new Formateur;
+        $this->formateurModel = new Formateur;
         $this->etudiantModel = new Etudiant;
         $this->stockedModel = new Stocked;
         $this->formationModel = new Formation;
-        $this->smtpModel = new Smtp;
         $this->inscriptionModel = new Inscription;
     }
 
     public function index($slug = null)
     {
         if(is_null($slug)){
-            redirect();
-            exit;
+            return redirect();
         }
 
-        $formateur = $this->fomateurModel->whereSlug($slug);
-        if(!$formateur){
-            redirect();
-            exit;
+        if(!$formateur = $this->formateurModel->whereSlug($slug)){
+            return view('errors/page_404');
         }
  
         $formations = $this->formationModel->getFormationsOfFormateur($formateur->id_formateur);
@@ -54,7 +52,7 @@ class UserController
             'formateur' => $formateur,
             'formations' => $formations,
             'numberFormations' => count($formations),
-            'numberInscriptions' => $this->fomateurModel->countPublicInscriptions($formateur->id_formateur),
+            'numberInscriptions' => $this->formateurModel->countPublicInscriptions($formateur->id_formateur),
         ];
 
         return view("formateurs/profil", $data);
@@ -62,435 +60,574 @@ class UserController
 
     public function login()
     {
-        if ($this->isLoggedIn()) {
-            if ($this->isLoggedIn() == 'formateur') {
-                redirect('formateur/dashboard');
-            } else {
-                redirect('etudiant/dashboard');
-            }
+        if (auth()) {
+            return redirect(session('user')->get()->type);
         }
 
-        // Checking If The User Submit
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (isset($_POST["rememberMe"]) && $_POST["rememberMe"] == "on") {
-                setcookie("useremail", $_POST["email"], time() + 2592000);
-                setcookie("userpw", $_POST["password"], time() + 2592000);
-            } else {
-                setcookie("useremail", $_POST["email"], time() + 10);
-                setcookie("userpw", $_POST["password"], time() + 10);
-            }
+        if(isset(session('user')->get()->email_verified_at) && 
+            !session('user')->get()->email_verified_at) {
+            return redirect('user/verify');
+        }
 
-            $data = [
-                'email' => trim($_POST['email']),
-                'password' => $_POST['password'],
-                'email_err' => '',
-                'password_err' => '',
+        $request = new App\Libraries\Request;
+        if ($request->getMethod() === 'POST') {
+            $validator = new Validator([
+                'email' => strip_tags(trim($request->post('email'))),
+                'password' => $request->post('mdp'),
+            ]);
+
+            $validator->validate([
+                'email' => 'required|email|auth',
+                'password' => 'required'
+            ], 'auth/login', true);
+
+            $credentials = $validator->validated(); 
+            $user = $this->{$credentials['type'].'Model'}->whereEmail($credentials['email']);
+            return $this->createUserSession($user);
+        }
+
+        $providers = ['LinkedIn', 'Google', 'Twitter'];
+        $provider = $request->get('provider');
+        if($provider && in_array($provider, $providers)){
+            session('provider')->set($provider);
+        }
+
+        if(session('provider')->get() && session('user_type')->get()){
+            // Load Environment Variables (.env)
+            $dotenv = \Dotenv\Dotenv::createImmutable(dirname(dirname(__DIR__)));
+            $dotenv->load();
+
+            $config = [
+                'callback' => $_ENV['REDIRECT_URI'], 
+                'providers' => [
+                    'Google' => [
+                        'enabled' => true,
+                        'keys' => [
+                            'id' => $_ENV['CLIENT_ID_GOOGLE'],
+                            'secret' => $_ENV['CLIENT_SECRET_GOOGLE'],
+                        ],
+                    ],
+                    'LinkedIn' => [
+                        'enabled' => true,
+                        'keys' => [
+                            'id' => $_ENV['CLIENT_ID_LINKEDIN'],
+                            'secret' => $_ENV['CLIENT_SECRET_LINKEDIN'],
+                        ],
+                        "scope" => "openid profile email"
+                    ],
+                    'Twitter' => [
+                        'enabled' => true,
+                        'keys' => [
+                            'id' => $_ENV['CLIENT_ID_TWITTER'],
+                            'secret' => $_ENV['CLIENT_SECRET_TWITTER'],
+                        ],
+                    ],
+                ],  
             ];
+            
+            $hybridauth = new Hybridauth($config);
+            $adapter = $hybridauth->authenticate(session('provider')->get());
+            $userProfile = $adapter->getUserProfile();
+            $token = $adapter->getAccessToken();
+            $this->revokeToken(session('provider')->get(), $token['access_token']);
+            $adapter->disconnect();
 
-            // Validate Data
-            if (filter_var($data["email"], FILTER_VALIDATE_EMAIL)) {
-                if (!preg_match_all("/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/", $data["email"])) {
-                    $data["email_err"] = "L'e-mail inséré est invalide";
-                }
-            } else {
-                $data["email_err"] = "L'e-mail inséré est invalide";
-            }
+            $formateur = $this->formateurModel->whereEmail($userProfile->email);
+            $etudiant = $this->etudiantModel->whereEmail($userProfile->email);
 
+            if(!$formateur && !$etudiant) {
+                $newUser = [];
+                $newUser['type'] = session('user_type')->get();
+                $newUser['email'] = $userProfile->email; 
+                $newUser['prenom'] = $userProfile->firstName;
+                $newUser['nom'] = $userProfile->lastName;
+                $newUser['img'] = $userProfile->photoURL;
+                $newUser['verified'] = date('Y-m-d H:i:s');
 
-            // Shecking If That User Exists
-            $user = $this->etudiantModel->whereEmail($data["email"]);
-            if (empty($user)) {
-                $user = $this->fomateurModel->whereEmail($data["email"]);
-                if (!empty($user)) {
-                    if (password_verify($data["password"], $user->mot_de_passe)) {
-                        $user->type = "formateur";
-                        $this->createUserSessios($user);
-                    } else {
-                        $data["password_err"] = "Mot de passe incorrect";
+                if($newUser['type'] === 'formateur'){
+                    $newUser['code_formateur'] = strtoupper(bin2hex(random_bytes(20)));
+                    while ($this->formateurModel->isCodeExist($newUser['code_formateur'])) {
+                        $newUser['code_formateur'] = strtoupper(bin2hex(random_bytes(20)));      
                     }
-                } else {
-                    $data["email_err"] = "Aucun utilisateur avec cet email";
                 }
-            } else {
-                if (password_verify($data["password"], $user->mot_de_passe)) {
-                    $user->type = "etudiant";
-                    $this->createUserSessios($user);
-                } else {
-                    $data["password_err"] = "Mot de passe incorrect";
-                }
-            }
-            if (empty($user) || !empty($data["password_err"]) || !empty($data["email_err"])) {
-                return view("auth/login", $data);
-            }
-        } else {
-            $data = [
-                'email' => "",
-                'password' => "",
-                'email_err' => "",
-                'password_err' => "",
-            ];
-            if (isset($_COOKIE["useremail"]) && isset($_COOKIE["userpw"])) {
-                $data["email"] = $_COOKIE["useremail"];
-                $data["password"] = $_COOKIE["userpw"];
+
+                $this->{$newUser['type'].'Model'}->create($newUser);
+                $user = $this->{$newUser['type'].'Model'}->whereEmail($userProfile->email);
+                
+                session('user_type')->remove();
+                session('provider')->remove();
+                session('user')->set($user);
+                return redirect(session('user')->get()->type);
             }
 
-            return view("auth/login", $data);
+            session('user_type')->remove();
+            session('provider')->remove();
+            session('user')->set($formateur ? $formateur : $etudiant);
+            return redirect(session('user')->get()->type);
+        }
+
+        return view("auth/login");
+    }
+
+    public function revokeToken($provider, $accessToken)
+    {
+        $client = new Client();
+        // Revoke token
+        try {
+            switch ($provider) {
+                case 'Google':
+                    $response = $client->post('https://oauth2.googleapis.com/revoke', [
+                        'form_params' => [
+                            'token' => $accessToken
+                        ]
+                    ]);
+                    break;
+                case 'LinkedIn':
+                    $response = $client->post('https://www.linkedin.com/oauth/v2/revoke', [
+                       'form_params' => [
+                            'client_id' => CLIENT_ID_LINKEDIN,
+                            'client_secret' => CLIENT_SECRET_LINKEDIN,
+                            'token' => $accessToken
+                        ],
+                        'headers' => [
+                            'Content-Type' => 'application/x-www-form-urlencoded'
+                        ]
+                    ]);
+                    break;
+                default:
+                    return null;
+                    break;
+            }
+
+            $statusCode = $response->getStatusCode();
+            if ($statusCode === 200) {
+                // print_r2("Token revoked successfully.");
+            } else {
+                // print_r2("Token revocation failed.");
+            }
+        } catch (ClientException $e) {
+            // print_r2($e->getMessage);
         }
     }
 
     public function register()
     {
-        // all categories
-        $categories = $this->stockedModel->getAllCategories();
-
-        // Checking If The User Submit
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Prepare Data
-            $data = [
-                "nom" => trim($_POST["nom"]),
-                "prenom" => trim($_POST["prenom"]),
-                "email" => trim($_POST["email"]),
-                "img" => $_FILES["photo"],
-                "tel" => trim($_POST["tele"]),
-                "mdp" => $_POST["mdp"],
-                "vmdp" => $_POST["vmdp"],
-                "type" => $_POST["type"],
-                "pmail" => trim($_POST["pmail"]),
-                "specId" => trim($_POST["specialite"]),
-                "bio" => trim($_POST["biography"]),
-                "nom_err" => "",
-                "prenom_err" => "",
-                "email_err" => "",
-                "img_err" => "",
-                "tel_err" => "",
-                "mdp_err" => "",
-                "vmdp_err" => "",
-                "pmail_err" => "",
-                "specId_err" => "",
-                "bio_err" => "",
-                "thereIsError" => false,
-            ];
-
-            // Upload The Image In Our Server
-            $data = $this->uploadImage($data);
-
-            // Validate Data
-            $data = $this->validateData($data);
-
-            // Checking If There Is An Error
-            if ($data["thereIsError"] == true) {
-                return view("auth/register", [$data, $categories]);
-            } else {
-                // Hashing Password
-                $data["mdp"] = password_hash($data["mdp"], PASSWORD_DEFAULT);
-
-                // Generating Verification Email Code
-                if (isset($_SESSION["vcode"])) {
-                    $verification_code = $_SESSION["vcode"];
-                } else {
-                    $verification_code = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
-                    $_SESSION["vcode"] = $verification_code;
-                    $_SESSION["resend"] = true;
-                }
-
-                // To Email Verification
-                $_SESSION["user_data"] = $data;
-                redirect("user/verifyEmail");
-            }
-        } else {
-            $data = [
-                "nom" => "",
-                "prenom" => "",
-                "email" => "",
-                "img" => "",
-                "tel" => "",
-                "mdp" => "",
-                "vmdp" => "",
-                "type" => "",
-                "pmail" => "",
-                "specId" => "",
-                "bio" => "",
-                "nom_err" => "",
-                "prenom_err" => "",
-                "email_err" => "",
-                "img_err" => "",
-                "tel_err" => "",
-                "mdp_err" => "",
-                "vmdp_err" => "",
-                "pmail_err" => "",
-                "specId_err" => "",
-                "bio_err" => "",
-            ];
-            return view("auth/register", [$data, $categories]);
+        if (auth()) {
+            return redirect(session('user')->get()->type);
         }
+
+        if(isset(session('user')->get()->email_verified_at) && 
+            !session('user')->get()->email_verified_at) {
+            return redirect('user/verify');
+        }
+        
+        $request = new App\Libraries\Request;
+        if ($request->getMethod() === 'POST') {
+            $validator = new Validator([
+                'nom' => strip_tags(trim($request->post("nom"))),
+                'prenom' => strip_tags(trim($request->post("prenom"))),
+                'email' => strip_tags(trim($request->post("email"))),
+                'password' => $request->post("mdp"),
+                'password_confirmation' => $request->post("vmdp"),
+                'type' => strip_tags(trim($request->post("type")))
+            ]);
+
+            $validator->validate([
+                'nom' => 'required|min:3|max:15|alpha',
+                'prenom' => 'required|min:3|max:15|alpha',
+                'email' => 'required|email|max:100|unique:formateurs|unique:etudiants',
+                'password' => 'required|confirm|min:10|max:50',
+                'type' => 'required|in_array:formateur,etudiant'
+            ]);
+
+            $user = $validator->validated();
+            if($user['type'] === 'formateur'){
+                $user['code_formateur'] = strtoupper(bin2hex(random_bytes(20)));
+                while ($this->formateurModel->isCodeExist($user['code_formateur'])) {
+                    $user['code_formateur'] = strtoupper(bin2hex(random_bytes(20)));      
+                }
+            }
+
+            // Generate token and hash it, after store it in DB and SESSION.
+            $token = bin2hex(random_bytes(16));
+            $this->{$user['type'].'Model'}->create($user, hash('sha256', $token));
+            session('token')->set($token);
+
+            // Get created user and authenticate him.
+            $user = $this->{$user['type'].'Model'}->whereEmail($user['email']);
+            session('user')->set($user);
+
+            // send email verification to the authenticated user.
+            $this->sendEmailVerification();
+        }elseif ($request->getMethod() === 'GET') {
+            return view("auth/register");   
+        }
+
+        return Response::json(null, 405, "Method Not Allowed");
+    } 
+
+    public function sendEmailVerification()
+    {
+        $request = new App\Libraries\Request;
+        if($request->getMethod() === 'POST') {
+            if(!session('user')->get() || session('user')->get()->email_verified_at){
+                Response::json(null, 404, "404 Route Not Found");
+            }
+
+            $token = bin2hex(random_bytes(16));
+            $this->{session('user')->get()->type.'Model'}->updateToken(session('user')->get()->email, hash('sha256', $token));
+            session('token')->set($token);
+
+            sleep(13);
+
+            try {
+                $mail = new App\Libraries\Mail;
+                $mail->to(session('user')->get()->email)
+                ->subject("Vérification d'adresse e-mail")
+                ->body(null, 'verify-email.php', [
+                    '::tokenLink',
+                    '::expirationTime',
+                ],
+                [
+                    URLROOT."/user/confirm/?token=".session('token')->get(),
+                    '2 heures',
+                ])->attach(['images/MAHA.png' => 'logo'])
+                ->send();
+
+                return Response::json(null, 200, "Nous avons envoyé votre lien de vérification par e-mail.");
+            } catch (Exception $e) {
+                // echo json_encode($mail->ErrorInfo);
+                return Response::json(null, 500, "L'email n'a pas pu être envoyé.");
+            }
+        }
+
+        return Response::json(null, 405, "Method Not Allowed");
     }
 
-    public  function verifyEmail()
+    public function verify()
     {
-        // redirect if there isn't a verification code
-        if (!isset($_SESSION["vcode"])) {
-            redirect("user/login");
-        }
-
-        // preparing data
-        $data = [$_SESSION["user_data"], ["code" => "", "code_err" => ""]];
-
-         // send Email Verification
-        if (isset($_SESSION["vcode"]) == true && $_SESSION["resend"] == true) {
-            $email = $this->smtpModel->getSmtp()->username;
-            $this->sendEmail($data[0]["email"], $email, 'MAHA', 'Email verification', null, $data[0]["prenom"], $_SESSION["vcode"], URLROOT . "/pages/verifyEmail");
-            $_SESSION["resend"] = false;
-        }
-
-        // checking Post Data
-        if (isset($_POST["code"])) {
-            // if the code valide insert user
-            if ($_POST["code"] == $_SESSION["vcode"]) {
-                // Insert The User 
-                if ($data[0]["type"] == "formateur") {
-                    $isValideCode = false;
-
-                    // Generate formateur code & if the code already used generate other one
-                    while (!$isValideCode) {
-                        $code_formateur = bin2hex(random_bytes(20));
-                        $isValideCode = $this->fomateurModel->isValideCode($code_formateur);
-                        $data[0]["code_formateur"] = $code_formateur;
-                    }
-
-                    $this->fomateurModel->create($data[0]);
-                } else {
-                    $this->etudiantModel->create($data[0]);
-                }
-                unset($_SESSION["vcode"]);
-                unset($_SESSION["resend"]);
-                unset($_SESSION["user_data"]);
-                flash("signupMsg", "Félicitations, votre compte a été créé avec succès.", "alert alert-primary");
-                redirect("user/login");
-            } else {
-                $data[1]["code"] = $_POST["code"];
-                $data[1]["code_err"] = "Code invalide";
-                return view("auth/emailVerification", $data);
+        $request = new App\Libraries\Request;
+        if ($request->getMethod() === 'GET') {
+            if(!session('user')->get() || session('user')->get()->email_verified_at){
+                return view('errors/page_404');
             }
 
 
-            if (isset($_POST["resend"]) && $_POST["resend"] == true) {
-                $_SESSION["resend"] = true;
-            }
-        } else {
-            return view("auth/emailVerification", $data);
-        }   
+            return view('auth/verify');
+        }
+        return Response::json(null, 405, "Method Not Allowed");
     }
 
-    public function forgotPassword()
+    public function confirm()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = [
-                "email" => trim($_POST["email"]),
-                "mdp" => $_POST["mdp"],
-                "vmdp" => $_POST["vmdp"],
-                "email_err" => "",
-                "mdp_err" => "",
-                "vmdp_err" => ""
-            ];
-
-            // Validate Email
-            if (filter_var($data["email"], FILTER_VALIDATE_EMAIL)) {
-                if (!preg_match_all("/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/", $data["email"])) {
-                    $data["email_err"] = "L'e-mail inséré est invalide";
-                }
-            } else {
-                $data["email_err"] = "L'e-mail inséré est invalide";
-            }
-            // Validate Password
-            if (empty($data["mdp"])) {
-                $data["mdp_err"] = "Le mot de passe doit comporter au moins 10 caractères";
-            }
-            if (strlen($data["mdp"]) > 50) {
-                $data["mdp_err"] = "Le mot de passe doit comporter au maximum 50 caractères";
-            }
-            if ($data["mdp"] != $data["vmdp"]) {
-                $data["vmdp"] = "Les deux mots de passe doivent être identiques";
+        $request = new App\Libraries\Request;
+        if ($request->getMethod() === 'GET') {
+            if(!$request->get('token') || 
+                !session('user')->get() || 
+                session('user')->get()->email_verified_at){
+                return view('errors/page_404');
             }
 
-            // Shecking If That User Exists
-            $user = $this->etudiantModel->whereEmail($data["email"]);
-            if (empty($user)) {
-                $user = $this->fomateurModel->whereEmail($data["email"]);
-                if (!empty($user)) {
-                    if (empty($data["mdp_err"]) && empty($data["vmdp_err"])) {
-                        $_SESSION["changePasswordData"] = $data;
-                        $_SESSION["type"] = "formateur";
-                        redirect("user/changePassword");
-                    }
-                } else {
-                    $data["email_err"] = "Aucun utilisateur avec cet e-mail";
-                }
-            } else {
-                if (empty($data["mdp_err"]) && empty($data["vmdp_err"])) {
-                    $_SESSION["changePasswordData"] = $data;
-                    $_SESSION["type"] = "etudiant";
-                    redirect("user/changePassword");
-                }
+            $statement = App\Libraries\Database::getConnection()->prepare("
+                SELECT
+                    verification_token,
+                    expiration_token_at
+                FROM ".session('user')->get()->type."s
+                WHERE verification_token = :token
+            ");
+
+            $statement->execute([
+                "token" => hash('sha256', $request->get('token')),
+            ]);
+
+            $user = $statement->fetch(\PDO::FETCH_OBJ);
+            if(!$user) {
+                return view('errors/page_404');
             }
 
-            if (empty($user) || !empty($data["mdp_err"]) || !empty($data["email_err"]) || !empty($data["vmdp_err"])) {
-                return view("auth/forgotpassword", $data);
+            if(strtotime($user->expiration_token_at) < time()) {
+                $statement = App\Libraries\Database::getConnection()->prepare("
+                    DELETE FROM ".session('user')->get()->type."s
+                    WHERE verification_token = :token
+                ");
+
+                $statement->execute([
+                    "token" => hash('sha256', $request->get('token')),
+                ]);
+
+                session()->flush();
+                return view('errors/token_expired');
             }
-        } else {
-            $data = [
-                "email" => "",
-                "mdp" => "",
-                "vmdp" => "",
-                "email_err" => "",
-                "mdp_err" => "",
-                "vmdp_err" => ""
-            ];
-            return view("auth/forgotpassword", $data);
+
+            $statement = App\Libraries\Database::getConnection()->prepare("
+                UPDATE ".session('user')->get()->type."s
+                SET email_verified_at = NOW()
+                WHERE verification_token = :token
+            ");
+
+            $statement->execute([
+                "token" => hash('sha256', $request->get('token')),
+            ]);
+
+            $user = $this->{session('user')->get()->type.'Model'}->whereEmail(session('user')->get()->email);
+            session('user')->set($user);
+            return view('auth/confirm');
         }
+        return Response::json(null, 405, "Method Not Allowed");
     }
 
-    public function changePassword()
+    public function forgot()
     {
-        // redirect if there isn't a data
-        if (!isset($_SESSION["changePasswordData"])) {
-            redirect("page");
+        if(auth()){
+            return view('errors/page_404');
         }
 
-        // prepare data
-        $data = [$_SESSION["changePasswordData"], ["code" => "", "code_err" => ""]];
+        $request = new App\Libraries\Request;
+        if ($request->getMethod() === 'POST') {
+            $validator = new Validator([
+                'email' => strip_tags(trim($request->post("email"))),
+            ]);
 
-        // Generating Verification Email Code
-        if (isset($_SESSION["vcode"])) {
-            $verification_code = $_SESSION["vcode"];
-        } else {
-            $verification_code = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
-            $_SESSION["vcode"] = $verification_code;
-            $_SESSION["resend"] = true;
-        }
+            $validator->validate([
+                'email' => 'required|email|max:100|exists:formateurs,etudiants',
+            ], "auth/forgot");
 
-        // checking for post data
-        if (isset($_POST["code"])) {
-            // if the code valide update password
-            if ($_POST["code"] == $_SESSION["vcode"]) {
-                // hach the new password
-                $data[0]["mdp"] = password_hash($data[0]["mdp"], PASSWORD_DEFAULT);
+            $user = $validator->validated();
 
-                // Upadte The Password
-                if ($_SESSION["type"] == "formateur") {
-                    $this->fomateurModel->updatePassword($data[0]);
-                } else {
-                    $this->etudiantModel->updatePassword($data[0]);
-                }
+            $statement = App\Libraries\Database::getConnection()->prepare("
+                UPDATE reinitialisations_de_mot_de_passe 
+                SET token = :token, 
+                    expired_at = :expired_at
+                WHERE email = :email
+            ");
 
-                unset($_SESSION["vcode"]);
-                unset($_SESSION["resend"]);
-                unset($_SESSION["changePasswordData"]);
-                flash("changePassMsg", "votre mot de passe a été changé avec succès.", "alert alert-primary");
-                redirect("user/login");
-            } else {
-                $data[1]["code"] = $_POST["code"];
-                $data[1]["code_err"] = "Code invalide";
-                return view("auth/emailVerification", $data);
+            $token = bin2hex(random_bytes(16));
+            $statement->execute([
+                "email" => $user['email'],
+                "token" => hash('sha256', $token),
+                "expired_at" => date("Y-m-d H:i:s", time() + 60 * 60)
+            ]);
+
+            if($statement->rowCount() < 1) {
+                $statement = App\Libraries\Database::getConnection()->prepare("
+                    INSERT INTO reinitialisations_de_mot_de_passe 
+                    VALUES (:email, :token, :expired_at, :type_utilisateur)
+                ");
+
+                $token = bin2hex(random_bytes(16));
+                $statement->execute([
+                    "email" => $user['email'],
+                    "type_utilisateur" => $user['type'],
+                    "token" => hash('sha256', $token),
+                    "expired_at" => date("Y-m-d H:i:s", time() + 60 * 60)
+                ]);
             }
 
+            sleep(17);
 
-            if (isset($_POST["resend"]) && $_POST["resend"] == true) {
-                $_SESSION["resend"] = true;
+            try {
+                $mail = new App\Libraries\Mail;
+                $mail->to($user['email'])
+                ->subject('Réinitialiser le mot de passe')
+                ->body(null, 'reset-password.php', [
+                    '::tokenLink',
+                    '::expirationTime',
+                ],
+                [
+                    URLROOT."/user/reset/?token=$token",
+                    '60 Minutes',
+                ])->attach(['images/MAHA.png' => 'logo'])
+                ->send();
+
+                return Response::json(null, 200, "Nous avons envoyé votre lien de réinitialisation par e-mail.");
+            } catch (Exception $e) {
+                // echo $mail->ErrorInfo;
+                return Response::json(null, 500, "L'email n'a pas pu être envoyé.");
             }
-        } else {
-            return view("auth/emailVerification", $data);
         }
 
-        // send Email Change Password
-        if (isset($_SESSION["vcode"]) == true && $_SESSION["resend"] == true) {
-            $email = $this->smtpModel->getSmtp()->username;
-            $this->sendEmail($data[0]["email"], $email, 'MAHA', 'Email vérification', null, '', $_SESSION["vcode"], URLROOT . "/pages/changePassword");
-            $_SESSION["resend"] = false;
-        }
+        return view("auth/forgot");
     }
 
-    private function isLoggedIn()
+    public function reset()
     {
-        if (isset($_SESSION['id_formateur'])) {
-            return 'formateur';
-        } else if (isset($_SESSION['id_etudiant'])) {
-            return 'etudiant';
+        $request = new App\Libraries\Request;
+        if($request->getMethod() === 'GET'){
+            if(!$request->get('token')) {
+                return view('errors/page_404');
+            }
+
+            $statement = App\Libraries\Database::getConnection()->prepare("
+                SELECT * FROM reinitialisations_de_mot_de_passe
+                WHERE token = :token
+            ");
+
+            $statement->execute([
+                "token" => hash('sha256', $request->get('token')),
+            ]);
+
+            $user = $statement->fetch(\PDO::FETCH_OBJ);
+            if(!$user) {
+                return view('errors/page_404');
+            }
+
+            if(strtotime($user->expired_at) < time()) {
+                $statement = App\Libraries\Database::getConnection()->prepare("
+                    DELETE FROM reinitialisations_de_mot_de_passe
+                    WHERE token = :token
+                ");
+
+                $statement->execute([
+                    "token" => hash('sha256', $request->get('token')),
+                ]);
+
+                return view('errors/token_expired');
+            }
+
+            return view('auth/reset');
+
+        }elseif ($request->getMethod() === 'POST') {
+           $validator = new Validator([
+                'password' => $request->post("password"),
+                'password_confirmation' => $request->post("password_confirmation"),
+                'token' => strip_tags(trim($request->post("token")))
+            ]);
+
+            $validator->validate([
+                'password' => 'required|confirm|min:10|max:50',
+                'token' => 'required'
+            ]);
+
+            $validatedData = $validator->validated();
+
+            $statement = App\Libraries\Database::getConnection()->prepare("
+                SELECT * FROM reinitialisations_de_mot_de_passe
+                WHERE token = :token
+            ");
+
+            $statement->execute([
+                "token" => hash('sha256', $validatedData['token']),
+            ]);
+
+            $user = $statement->fetch(\PDO::FETCH_OBJ);
+            if(!$user) {
+                return view('errors/page_404');
+            }
+
+            if(strtotime($user->expired_at) < time()) {
+                $statement = App\Libraries\Database::getConnection()->prepare("
+                    DELETE FROM reinitialisations_de_mot_de_passe
+                    WHERE token = :token
+                ");
+
+                $statement->execute([
+                    "token" => hash('sha256', $validatedData['token']),
+                ]);
+
+                return view('errors/token_expired');
+            }
+
+            $isUpdated = $this->{$user->type_utilisateur.'Model'}->updatePassword([
+                'mdp' => $validatedData['password'],
+                'email' => $user->email
+            ]);
+
+            if($isUpdated){
+                $statement = App\Libraries\Database::getConnection()->prepare("
+                    DELETE FROM reinitialisations_de_mot_de_passe
+                    WHERE token = :token
+                ");
+
+                $statement->execute([
+                    "token" => hash('sha256', $validatedData['token']),
+                ]);
+
+                flash("changePassMsg", "Votre mot de passe a été réinitialisé avec succès");
+                return redirect('user/login');
+            }
+       
+            return view('error/page_500');
         }
-        return false;
+        return Response::json(null, 405, "Method Not Allowed");
     }
 
-    private function createUserSessios($user)
+    private function createUserSession($user)
     {
+        session('user')->set($user);
         if ($user->type === 'formateur') {
-            $_SESSION['id_formateur'] = $user->id_formateur;
-            $_SESSION['user'] = $user;
-            // setting up the image link
-            $_SESSION['user']->img = URLROOT . "/Public/" . $_SESSION['user']->img;
-            redirect('formateur/dashboard');
-        } else {
-            $_SESSION['id_etudiant'] = $user->id_etudiant;
-            $_SESSION['user'] = $user;
-            // setting up the image link
-            $_SESSION['user']->img = URLROOT . "/Public/" . $_SESSION['user']->img;
-            redirect('etudiant/dashboard');
-        }
+            if($user->is_all_info_present) {
+                return redirect('formateur');
+            }
+            return redirect('user/continue');
+        } 
+        return redirect('etudiant');
     }
 
-    private function sendEmail($to, $from, $name, $subject, $message, $destinataire, $code, $link)
+    private function strip_critical_tags($text)
     {
-        //Instantiation and passing `true` enables exceptions
-        $mail = new PHPMailer(true);
-        $smtp = $this->smtpModel->getSmtp();
-        try {
-            //Enable verbose debug output
-            $mail->SMTPDebug = 0; //SMTP::DEBUG_SERVER;
+        $dom = new DOMDocument();
+        $dom->loadHTML($text);
+        $tags_to_remove = ['script', 'style', 'iframe', 'link', 'video', 'img'];
+        foreach($tags_to_remove as $tag){
+            $element = $dom->getElementsByTagName($tag);
+            foreach($element as $item){
+                $item->parentNode->removeChild($item);
+            }
+        }
 
-            //Send using SMTP
-            $mail->isSMTP();
+        $body = $dom->getElementsByTagName('body')->item(0);
+        $cleanedHtml = '';
 
-            //Set the SMTP server to send through => 'smtp.gmail.com'
-            $mail->Host = $smtp->host;
+        if ($body) {
+            foreach ($body->childNodes as $childNode) {
+                $cleanedHtml .= $dom->saveHTML($childNode);
+            }
+        }
+        return $cleanedHtml; 
+    }
 
-            //Enable SMTP authentication
-            $mail->SMTPAuth = true;
+    public function continue()
+    {
+        if(!auth()){
+            return redirect('user/login');
+        }
 
-            //SMTP username => 'mahateamisgi@gmail.com'
-            $mail->Username = $smtp->username;
+        if(!session('user')->get()->email_verified_at) {
+            return redirect('user/verify');
+        }
 
-            //SMTP password => 'fmllrxzwfsrovexr'
-            $mail->Password = $smtp->password;
+        if(session('user')->get()->type === 'formateur'){
+            $request = new App\Libraries\Request;
+            if(session('user')->get()->is_all_info_present == false) {
+                if($request->getMethod() === 'POST') {
+                    $validator = new Validator([
+                        'biographie' => $this->strip_critical_tags($request->post("biography")),
+                        'id_categorie' => strip_tags(trim($request->post("categorie"))),
+                        'specialite' => strip_tags(trim($request->post("speciality"))),
+                    ]);
 
-            //Enable TLS encryption;
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                    $validator->validate([
+                        'biographie' => 'required|min:15|max:700',
+                        'id_categorie' => 'required|numeric',
+                        'specialite' => 'required|min:3|max:30',
+                    ], 'formateurs/continue');
 
-            //TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
-            $mail->Port = $smtp->port;
+                    $data = $validator->validated();
+                    $data['is_all_info_present'] = true;
 
-            //Recipients
-            $mail->setFrom($from, $name);
+                    if($this->formateurModel->update($data, session('user')->get()->id_formateur)){
+                        session('user')->get()->is_all_info_present = true;
+                        return redirect('formateur');
+                    }
+                    return Response::json(null, 500, "Something went wrong, please try again later!");
+                }
 
-            //Add a recipient
-            $mail->addAddress($to);
-
-            //Set email format to HTML
-            $mail->isHTML(true);
-            $mail->Subject = "$from ($subject)";
-            if ($name === 'MAHA') {
-                $mail->Body    = '<p>Salut ' . $destinataire . '</p>
-                <p>Votre code de vérification est : <b style="font-size: 30px;color:#06283D;">' . $code . '</b><br/>
-                Entrez ce code <a href="' . $link . '" style="color:#47B5FF;">ici</a> pour vérifier votre identité .</p>
-                <p>Par l\'equipe de <span style="font-size:18px;color:#47B5FF;">M<span style="color:#06283D;">A</span>H<span style="color:#06283D;">A</span></span> .</p>';
-            } else {
-                $mail->Body = '<p>Bonjour ' . $destinataire . ',</p>
-                <p>' . $message . '</p>';
+                return view('formateurs/continue', ['categories' => $this->stockedModel->getAllCategories()]);
             }
 
-            // send it
-            $mail->send();
-        } catch (Exception $e) {
-            // echo $mail->ErrorInfo;
-            return Response::json("Le message n'a pas pu être envoyé.", 500);
+            return redirect('formateur');
         }
+        return redirect();
     }
 
     public function contactUs()
@@ -513,171 +650,45 @@ class UserController
 
             extract($_POST);
 
-            $username = $this->smtpModel->getSmtp()->username;
-            $this->sendEmail($username, $email, $name, $subject, $message, 'MAHA', null, null);
-            return Response::json("Votre Message a été envoyé avec succès !");
+            try {
+                $mail = new App\Libraries\Mail;
+                $mail->to(MAIL_FROM_ADDRESS)
+                ->subject("CONTACT US : $name ($email)")
+                ->body($message)
+                ->send();
+
+                return Response::json(null, 200, "Votre Message a été envoyé avec succès !");
+            } catch (Exception $e) {
+                // echo $mail->ErrorInfo;
+                return Response::json(null, 500, "L'email n'a pas pu être envoyé.");
+            }
         }
 
         return Response::json(null, 405, "Method Not Allowed");
     }
 
     public function logout()
-    {
-        session_destroy();
-        redirect('user/login');
+    {    
+        session()->flush();
+        return redirect('user/login');
     }
 
-    private function validateData($data)
+    public function setUserType()
     {
-        // Validate Nom & Prenom
-        if (strlen($data["nom"]) < 3) {
-            $data["thereIsError"] = true;
-            $data["nom_err"] = "Le nom doit comporter au moins 3 caractères";
-        }
-        if (strlen($data["prenom"]) < 3) {
-            $data["thereIsError"] = true;
-            $data["prenom_err"] = "Le prenom doit comporter au moins 3 caractères";
-        }
-        if (strlen($data["nom"]) > 30) {
-            $data["thereIsError"] = true;
-            $data["nom_err"] = "Le nom doit comporter au maximum 30 caractères";
-        }
-        if (strlen($data["prenom"]) > 30) {
-            $data["thereIsError"] = true;
-            $data["prenom_err"] = "Le prenom doit comporter au maximum 30 caractères";
+        $request = new App\Libraries\Request;
+        if ($request->getMethod() === 'POST') {
+            $validator = new Validator([
+                'user_type' => strip_tags(trim($request->post("user_type"))),
+            ]);
+
+            $validator->validate([
+                'user_type' => 'required|in_array:formateur,etudiant',
+            ]);
+
+            session('user_type')->set($request->post('user_type'));
+            return Response::json(null, 200, "success");
         }
 
-        // Validate Email
-        if (filter_var($data["email"], FILTER_VALIDATE_EMAIL)) {
-            if (!preg_match_all("/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/", $data["email"])) {
-                $data["thereIsError"] = true;
-                $data["email_err"] = "L'e-mail inséré est invalide";
-            }
-        } else {
-            $data["thereIsError"] = true;
-            $data["email_err"] = "L'e-mail inséré est invalide";
-        }
-        if (!empty($this->etudiantModel->whereEmail($data["email"]))) {
-            $data["thereIsError"] = true;
-            $data["email_err"] = "Adresse e-mail déjà utilisée";
-        }
-        if (!empty($this->fomateurModel->whereEmail($data["email"]))) {
-            $data["thereIsError"] = true;
-            $data["email_err"] = "Adresse e-mail déjà utilisée";
-        }
-
-
-
-        // Validate Tele
-        if (!preg_match_all("/^((06|07)\d{8})+$/", $data["tel"])) {
-            $data["thereIsError"] = true;
-            $data["tel_err"] = "Le numéro de telephone que vous saisi est invalide";
-        }
-
-        // Validate Password
-        if (preg_match_all("/[!@#$%^&*()\-__+.]/", $data["mdp"])) {
-            if (preg_match_all("/\d/", $data["mdp"])) {
-                if (!preg_match_all("/[a-zA-Z]/", $data["mdp"])) {
-                    $data["thereIsError"] = true;
-                    $data["mdp_err"] = "Le mot de passe doit contenir au moins une lettre";
-                }
-            } else {
-                $data["thereIsError"] = true;
-                $data["mdp_err"] = "Le mot de passe doit contenir au moins un chiffres";
-            }
-        } else {
-            $data["thereIsError"] = true;
-            $data["mdp_err"] = "Le mot de passe doit contient au moin un caractère spécial";
-        }
-        if (strlen($data["mdp"]) > 50) {
-            $data["thereIsError"] = true;
-            $data["mdp_err"] = "Le mot de passe doit comporter au maximum 50 caractères";
-        }
-        if (strlen($data["mdp"]) < 10) {
-            $data["thereIsError"] = true;
-            $data["mdp_err"] = "Le mot de passe doit comporter au moins 10 caractères";
-        }
-        if ($data["mdp"] != $data["vmdp"]) {
-            $data["thereIsError"] = true;
-            $data["mdp_err"] = "Les deux mots de passe doivent être identiques";
-        }
-
-
-        // Validate Type
-        if ($data["type"] != "formateur" && $data["type"] != "etudiant") {
-            $data["thereIsError"] = true;
-            $data["img_err"] = "Type invalide";
-        }
-
-        // Validate Other Info If UserType Is Formateur
-        if ($data["type"] == "formateur") {
-            // Validate  Paypal Email
-            if (filter_var($data["pmail"], FILTER_VALIDATE_EMAIL)) {
-                if (!preg_match_all("/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/", $data["pmail"])) {
-                    $data["thereIsError"] = true;
-                    $data["pmail_err"] = "L'e-mail inséré est invalide";
-                }
-            } else {
-                $data["thereIsError"] = true;
-                $data["pmail_err"] = "L'e-mail inséré est invalide";
-            }
-            if (!empty($this->fomateurModel->wherePaypal($data["pmail"]))) {
-                $data["thereIsError"] = true;
-                $data["pmail_err"] = "Adresse e-mail de Paypal déjà utilisée";
-            }
-
-
-            // Validate Biography
-            if (strlen($data["bio"]) > 500) {
-                $data["thereIsError"] = true;
-                $data["bio_err"] = "La Biographie doit comporter au maximum 500 caractères";
-            }
-            if (strlen($data["bio"]) < 130) {
-                $data["thereIsError"] = true;
-                $data["bio_err"] = "Le résumé doit avoir au moins 130 caractères";
-            }
-
-            // Validate Specialité
-            if (empty($this->stockedModel->getCategorieById($data["specId"]))) {
-                $data["thereIsError"] = true;
-                $data["specId_err"] = "Spécialité invalide";
-            }
-        }
-
-        return $data;
-    }
-
-    private  function uploadImage($data)
-    {
-        $file = $data["img"]; // Image Array
-        $fileName = $file["name"]; // name
-        $fileTmpName = $file["tmp_name"]; // location
-        $fileError = $file["error"]; // error
-
-        if (!empty($fileTmpName)) {
-            $fileExt = explode(".", $fileName);
-            $fileRealExt = strtolower(end($fileExt));
-            $allowed = array("jpg", "jpeg", "png");
-
-
-            if (in_array($fileRealExt, $allowed)) {
-                if ($fileError === 0) {
-                    $fileNameNew = substr(number_format(time() * rand(), 0, '', ''), 0, 5) . "." . $fileRealExt;
-                    $fileDestination = 'images/userImage/' . $fileNameNew;
-                    move_uploaded_file($fileTmpName, $fileDestination);
-                    $data["img"] = $fileDestination;
-                } else {
-                    $data["thereIsError"] = true;
-                    $data["img_err"] = "Une erreur s'est produite lors du téléchargement de votre image";
-                }
-            } else {
-                $data["thereIsError"] = true;
-                $data["img_err"] = "Vous ne pouvez pas télécharger ce fichier. (uniquement jpg, jpeg, png, ico sont autorisé)";
-            }
-        } else {
-            $data["img"] = 'images/default.jpg';
-        }
-
-        return $data;
+        return Response::json(null, 405, "Method Not Allowed");
     }
 }
