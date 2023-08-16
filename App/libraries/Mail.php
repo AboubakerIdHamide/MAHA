@@ -2,14 +2,6 @@
 
 namespace App\Libraries;
 
-// if ($name === 'MAHA') {
-//     $mail->Body    = '<p>Salut ' . $destinataire . '</p>
-//     <p>Votre code de vérification est : <b style="font-size: 30px;color:#06283D;">' . $code . '</b><br/>
-//     Entrez ce code <a href="' . $link . '" style="color:#47B5FF;">ici</a> pour vérifier votre identité .</p>
-//     <p>Par l\'equipe de <span style="font-size:18px;color:#47B5FF;">M<span style="color:#06283D;">A</span>H<span style="color:#06283D;">A</span></span> .</p>';
-// }
-
-
 class Mail
 {
 	private $mail;
@@ -18,29 +10,33 @@ class Mail
 	{
 		$mail = new \PHPMailer\PHPMailer\PHPMailer(true);
 
+        // Load Environment Variables (.env)
+        $dotenv = \Dotenv\Dotenv::createImmutable(dirname(dirname(__DIR__)));
+        $dotenv->load();
+
 		//Send using SMTP
     	$mail->isSMTP();
 
 		//Set the SMTP server to send through => 'smtp.gmail.com'
-		$mail->Host = MAIL_HOST;
+		$mail->Host = $_ENV['MAIL_HOST'];
 
 		//Enable SMTP authentication
 		$mail->SMTPAuth = true;
 
 		//SMTP username
-		$mail->Username = MAIL_USERNAME;
+		$mail->Username = $_ENV['MAIL_USERNAME'];
 
 		//SMTP password
-		$mail->Password = MAIL_PASSWORD;
+		$mail->Password = $_ENV['MAIL_PASSWORD'];
 
 		//Enable TLS encryption;
 		$mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
 
 		//TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
-		$mail->Port = MAIL_PORT;
+		$mail->Port = $_ENV['MAIL_PORT'];
 
 		//Recipients
-		$mail->setFrom(MAIL_FROM_ADDRESS, MAIL_FROM_NAME);
+		$mail->setFrom($_ENV['MAIL_FROM_ADDRESS'], $_ENV['MAIL_FROM_NAME']);
 
 		//Set email format to HTML
     	$mail->isHTML(true);
