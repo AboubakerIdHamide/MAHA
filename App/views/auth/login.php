@@ -40,9 +40,9 @@
             </figure>
               <form id="login-form" method="POST">
                 <div class="access_social">
-                    <a id="facebook-login" href="javascript:void(0)" class="social_bt facebook">Connexion avec Facebook</a>
-                    <a id="google-login" href="javascript:void(0)" class="social_bt google">Connexion avec Google</a>
-                    <small class="connection-error d-block text-center"></small>
+                    <a id="linkedin" href="<?= URLROOT ?>/user/login?provider=LinkedIn" class="social_bt linkedin">Connexion avec LinkedIn</a>
+                    <a id="google" href="<?= URLROOT ?>/user/login?provider=Google" class="social_bt google">Connexion avec Google</a>
+                    <a id="twitter" href="<?= URLROOT ?>/user/login?provider=Twitter" class="social_bt twitter">Connexion avec Twitter</a>
                 </div>
                 <div class="divider"><span>Ou</span></div>
                 <div class="form-group mb-3">
@@ -54,9 +54,7 @@
                             <span class="input__label-content">Email</span>
                         </label>
                     </span>
-                    <small class="error-message" id="error-email">
-                        <label id="email-error" class="error" for="email"><?= $email_error ?? '' ?></label>
-                    </small>
+                    <small class="error-message" id="error-email"><?= $email_error ?? '' ?></small>
                     <span class="input">
                         <input id="password" class="input_field" type="password" name="mdp" />
                             <label class="input_label">
@@ -66,17 +64,17 @@
                     </span>
                     <small class="error-message" id="error-mdp"><?= $password_error ?? '' ?></small>
                     <div class="mt-2">
-                        <small><a href="<?= URLROOT ?>/user/forgotPassword">Mot de passe oublié?</a></small>
+                        <small><a href="<?= URLROOT ?>/user/forgot">Mot de passe oublié?</a></small>
                     </div>
                 </div>
-                <button class="btn_1 rounded full-width">Se connecter</button>
+                <button id="btn-login" class="btn_1 rounded full-width">Se connecter</button>
                 <div class="text-center mt-3">Vous n'avez pas de compte? <strong><a href="<?= URLROOT ?>/user/register">Inscrivez-vous</a></strong></div>
             </form>
             <div class="copy">© 2023 MAHA</div>
         </aside>
     </div>
-    <!-- /login -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <!-- Scripts -->
     <script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
     <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
     <script src="<?= JSROOT ?>/plugins/classie.js"></script>
