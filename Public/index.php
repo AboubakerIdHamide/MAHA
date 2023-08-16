@@ -1,7 +1,6 @@
 <?php
 
 use App\Libraries\Response;
-use App\Models\Stocked;
 
 session_start();
 
@@ -108,11 +107,7 @@ class Router
             $this->currentController = ucwords($controllerName) . 'Controller';
             return true;
         }
-        $stocked = new Stocked;
-        $themeData = $stocked->getThemeData();
-        $theme["logo"] = URLROOT . "/Public/" . $themeData->logo;
-        $theme["landingImg"] = URLROOT . "/Public/" . $themeData->landingImg;
-        $data['theme'] = $theme;
+
         require_once "../app/Views/errors/page_404.php";
         exit;
     }
