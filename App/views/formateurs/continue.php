@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8" />
@@ -11,6 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <!-- Bootstrap -->
     <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
+    <!-- Font Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <!-- Style -->
     <link rel="stylesheet" href="<?= CSSROOT ?>/formateurs/continue.css" />
     <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/quill.snow.css" /> 
@@ -91,6 +93,9 @@
         <!-- /Wizard container -->
     </div>
     <!-- /Form_container -->
+
+    <!-- Logout -->
+    <a href="<?= URLROOT ?>/user/logout" class="btn_1 rounded"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
 
     <script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
     <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
