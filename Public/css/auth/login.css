@@ -292,7 +292,7 @@ a.btn_1.outline:hover,
   }
 }
 #login aside {
-  width: 430px;
+  width: 500px;
   padding: 45px 60px 30px 60px;
   position: absolute;
   left: 0;
@@ -370,8 +370,8 @@ a.social_bt:hover {
   -webkit-filter: brightness(115%);
   filter: brightness(115%);
 }
-a.social_bt.facebook:before, a.social_bt.google:before, a.social_bt.linkedin:before {
-  font-family: 'ElegantIcons';
+a.social_bt.linkedin:before, a.social_bt.google:before, a.social_bt.twitter:before {
+  font-family: "Font Awesome 6 Brands"; 
   position: absolute;
   left: 12px;
   top: 10px;
@@ -379,29 +379,24 @@ a.social_bt.facebook:before, a.social_bt.google:before, a.social_bt.linkedin:bef
   font-size: 1rem;
   color: #fff;
 }
-a.social_bt.facebook {
-  background-color: #3B5998;
-}
-a.social_bt.facebook:before {
-  content: "\e093";
-}
-a.social_bt.google {
-  background-color: #DC4E41;
-}
-a.social_bt.google:before {
-  content: "\e096";
-  top: 12px;
-}
 a.social_bt.linkedin {
   background-color: #0077B5;
 }
 a.social_bt.linkedin:before {
-  content: "\e09d";
+  content: "\f0e1";
 }
-
-input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
-  background-color: #fff !important;
-  color: #444 !important;
+a.social_bt.google {
+  background-color: #DB4437;
+}
+a.social_bt.google:before {
+  content: "\f1a0";
+  top: 12px;
+}
+a.social_bt.twitter {
+  background-color: #1DA1F2;
+}
+a.social_bt.twitter:before {
+  content: "\f099";
 }
 
 /*-------- 3.4 Input forms --------*/
@@ -557,4 +552,82 @@ span.input i:hover {
   font-weight: 600;
   color: #e3464c;
   width: 100%;
+}
+
+.radio-tile-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+.radio-tile-group .input-container {
+  position: relative;
+  height: 5rem;
+  width: 5rem;
+  margin: 0.5rem;
+}
+.radio-tile-group .input-container .radio-button {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+.radio-tile-group .input-container .radio-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #662d91;
+  border-radius: 5px;
+  padding: 1rem;
+  transition: transform 300ms ease;
+}
+.radio-tile-group .input-container .icon i {
+  font-size: 2rem;
+  color: #121921;
+}
+.radio-tile-group .input-container .radio-tile-label {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #121921;
+}
+.radio-tile-group .input-container .radio-button:checked + .radio-tile {
+  background-color: #662d91;
+  border: 2px solid #662d91;
+  color: white;
+  transform: scale(1.1, 1.1);
+}
+.radio-tile-group .input-container .radio-button:checked + .radio-tile .icon i {
+  color: white;
+  background-color: #662d91;
+}
+.radio-tile-group .input-container .radio-button:checked + .radio-tile .radio-tile-label {
+  color: white;
+  background-color: #662d91;
+}
+
+.back-icon {
+  font-size: 1.2rem;
+  display: block;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  border: 2px solid #ffffff;
+  width: 2.5rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  text-align:center;
+  border-radius: 50%;
+  transition: border 0.5s;
+}
+
+.back-icon:hover {
+  border: 2px solid #662d91;
 }
