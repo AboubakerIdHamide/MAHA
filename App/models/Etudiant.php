@@ -66,7 +66,7 @@ class Etudiant
 			VALUES (:nom, :prenom, :email, :password, :expiry, :token, :img, :email_verified_at)
 		");
 
-		$query->bindValue(':nom', $etudiant['nom'] ?? null);
+		$query->bindValue(':nom', $etudiant['nom'] ?? '');
 		$query->bindValue(':prenom', $etudiant['prenom']);
 		$query->bindValue(':email', $etudiant['email']);
 		$query->bindValue(':password', $etudiant['password'] ?? null);
