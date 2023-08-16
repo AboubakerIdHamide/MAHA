@@ -190,8 +190,10 @@ a:hover, a:focus {
 /*-------- 1.2 Buttons --------*/
 a.btn_1, .btn_1 {
     border: none;
-    color: #fff;
-    background: #121921;
+    position: fixed;
+    right: 5px;
+    top: 20px;
+    background: #e3464c;
     outline: none;
     cursor: pointer;
     display: inline-block;
