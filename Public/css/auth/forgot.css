@@ -293,9 +293,12 @@ a.btn_1.full-width,
   margin-bottom: 5px;
 }
 .btn_1:disabled {
+  cursor: not-allowed;
   opacity: 0.5;
   pointer-events: none;
+  
 }
+
 
 /* Timer */
 .resent-container {
