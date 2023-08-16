@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
-    <title>Register | <?= SITENAME ?></title>
+    <title>Inscrivez-vous et commencez à apprendre | <?= SITENAME ?></title>
     <!-- GOOGLE WEB FONT -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <!-- Bootstrap -->
@@ -33,12 +33,6 @@
                 <a href="<?= URLROOT ?>"><img src="<?= LOGO ?>" width="149" height="42" alt="logo maha"></a>
             </figure>
             <form method="POST" id="register-form">
-                <div class="access_social">
-                    <a id="facebook-login" href="javascript:void(0)" class="social_bt facebook">Connexion avec Facebook</a>
-                    <a id="google-login" href="javascript:void(0)" class="social_bt google">Connexion avec Google</a>
-                    <small class="connection-error d-block text-center"></small>
-                </div>
-                <div class="divider"><span>Ou</span></div>
                 <div class="form-group">
                     <div class="d-flex gap-3 flex-column flex-lg-row">
                         <div class="flex-item">
@@ -94,7 +88,7 @@
                     
                     </div>
                 </div>
-                <div class="mb-2">
+                <div class="mb-2 user-types">
                     <label style="color: #999">Veuillez choisir entre les deux options suivantes:</label>
                     <div class="radio-tile-group">
                         <div class="input-container w-50">
@@ -120,10 +114,10 @@
                     <small class="error-message d-inline-block text-center" id="error-type"><?= $type_error ?? '' ?></small>
                 </div>
 
-                <button class="btn_1 rounded full-width">S'inscrire</button>
+                <button id="register-btn" class="btn_1 rounded full-width">S'inscrire</button>
                 <div class="text-center mt-3">Vous avez déjà un compte? <strong><a href="<?= URLROOT ?>/user/login">Se connecter</a></strong></div>
             </form>
-            <div class="copy">© 2021 Udema</div>
+            <div class="copy">© 2023 MAHA</div>
         </aside>
     </div>
     <!-- /login -->
