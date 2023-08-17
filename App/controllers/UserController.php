@@ -185,8 +185,8 @@ class UserController
                 case 'LinkedIn':
                     $response = $client->post('https://www.linkedin.com/oauth/v2/revoke', [
                        'form_params' => [
-                            'client_id' => CLIENT_ID_LINKEDIN,
-                            'client_secret' => CLIENT_SECRET_LINKEDIN,
+                            'client_id' => $_ENV['CLIENT_ID_LINKEDIN'],
+                            'client_secret' => $_ENV['CLIENT_SECRET_LINKEDIN'],
                             'token' => $accessToken
                         ],
                         'headers' => [
