@@ -131,7 +131,6 @@ class EtudiantController
 	{
 		$idEtudiant = $this->id;
 		$etudiant = $this->etudiantModel->find($idEtudiant);
-		$etudiant->img = URLROOT . "/Public/" . $etudiant->img;
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			// Prepare Data
@@ -167,7 +166,6 @@ class EtudiantController
 				$_SESSION["user_data"] = $data;
 
 				$etudiant = $this->etudiantModel->find($idEtudiant);
-				$etudiant->img = URLROOT . "/Public/" . $etudiant->img;
 				$data = [
 					"nom" => $etudiant->nom,
 					"prenom" => $etudiant->prenom,
