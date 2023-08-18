@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="MAHA a modern educational platform" />
+    <meta name="description" content="MAHA is a modern educational platform" />
     <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <title><?= $formation->nomFormation ?> | <?= SITENAME ?></title>
     <!-- GOOGLE WEB FONT -->
@@ -98,7 +98,7 @@
                     <div class="container d-flex align-items-center flex-column">
                         <h1 class="fadeInUp"><span></span><?= $formation->nomFormation ?></h1>
                         <div class="formateur d-flex align-items-center gap-3">
-                            <a href="<?= URLROOT ?>/user/<?= $formation->slugFormateur ?>"><img src="<?= URLROOT ?>/public/<?= $formation->imgFormateur ?>" alt="image formateur" /></a>
+                            <a href="<?= URLROOT ?>/user/<?= $formation->slugFormateur ?>"><img src="<?= strpos($formation->imgFormateur, 'users') === 0 ? IMAGEROOT.'/'.$formation->imgFormateur : $formation->imgFormateur ?>" alt="image formateur" /></a>
                             <div class="d-flex flex-column align-items-start">
                                 <h4 class="formateur-name">
                                     <?= $formation->prenom . ' ' . $formation->nomFormateur ?>
@@ -164,7 +164,7 @@
                         <aside class="col-lg-5 col-xl-4" id="sidebar-course">
                             <div class="box_detail shadow">
                                 <figure id="show-preview" >
-                                    <a href="javascript:void(0)" class="video"><i style="color:#FFC107;" class="fa-solid fa-play fs-2"></i><img src="<?= URLROOT ?>/public/<?= $formation->imgFormation ?>" alt="course image" class="img-fluid"><span>Voir l'aperçu du cours</span></a>
+                                    <a href="javascript:void(0)" class="video"><i style="color:#FFC107;" class="fa-solid fa-play fs-2"></i><img src="<?= IMAGEROOT ?>/<?= $formation->imgFormation ?>" alt="course image" class="img-fluid"><span>Voir l'aperçu du cours</span></a>
                                 </figure>
                                 <div class="price-wrapper d-flex justify-content-between">
                                     <span class="price">$<?= $formation->prix ?></span>
