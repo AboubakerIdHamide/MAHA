@@ -2,7 +2,7 @@
 <html lang="fr">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Maha a modern educational site" />
     <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
@@ -15,17 +15,16 @@
     <link href="<?= CSSROOT ?>/bootstrap.min.css" rel="stylesheet" />
     <link href="<?= CSSROOT ?>/common.css" rel="stylesheet" />
     <link href="<?= CSSROOT ?>/index.css" rel="stylesheet" />
-    <!-- <link href="<?= CSSROOT ?>/style.css" rel="stylesheet" /> -->
     <link href="<?= CSSROOT ?>/vendors.css" rel="stylesheet" />
     <style>
         .hero_single.version_2 {
-            background: url(<?= $theme->landingImg ?>) center center no-repeat;
+            background: url(<?= IMAGEROOT ?>/banner_home.jpg) center center no-repeat;
         }
 
         @media (max-width: 575px) {
           #custom-search-input input[type="submit"] {
             text-indent: -999px;
-            background: #92278f url(<?= URLROOT ?>/images/home/search.svg) no-repeat center center;
+            background: #92278f url(<?= IMAGEROOT ?>/home/search.svg) no-repeat center center;
           }
         }
     </style>
@@ -38,7 +37,7 @@
                 <div data-loader="circle-side"></div>
             </div><!-- /Preload -->
             <div id="logo">
-                <a href="<?= URLROOT ?>"><img class="logo" src="<?= $theme->logo ?>" width="149" height="42" alt="logo Maha"></a>
+                <a href="<?= URLROOT ?>"><img class="logo" src="<?= LOGO ?>" width="149" height="42" alt="logo Maha"></a>
             </div>
             <ul id="top_menu">
                 <li><a href="javascript:void(0)" class="search-overlay-menu-btn">Search</a></li>
@@ -67,16 +66,16 @@
                     <li><span><a href="<?= URLROOT ?>">Accueil</a></span></li>
                     <li><span><a href="<?= URLROOT ?>/courses/search">Formations</a></span></li>
                     <li><span><a href="<?= URLROOT ?>/#contact-us">Contactez-nous</a></span></li>
-                    <?php if (!isset($_SESSION['user'])) : ?>
-                        <li class="d-lg-none"><a href="<?= URLROOT . "/user/login" ?>">Se Connecter</a></li>
-                    <?php endif ?>
-                    <?php if (isset($_SESSION['id_formateur'])) : ?>
-                        <li class="d-lg-none"><a href="<?= URLROOT . "/formateur/dashboard" ?>">Dashboard</a>
-                        </li>
-                    <?php endif ?>
-                    <?php if (isset($_SESSION['id_etudiant'])) : ?>
-                        <li class="d-lg-none"><a href="<?= URLROOT . "/etudiant/dashboard" ?>">Mes Cours</a>
-                        </li>
+                    <?php if (!session('user')->get()) : ?>
+                        <li class="hidden_desktop"><a href="<?= URLROOT . "/user/login" ?>" class="btn_1 rounded">Se Connecter</a></li>
+                    <?php else: ?>
+                        <?php if (session('user')->get()->type === 'formateur') : ?>
+                            <li class="hidden_desktop"><a href="<?= URLROOT . "/formateur/dashboard" ?>" class="btn_1 rounded">Dashboard</a>
+                            </li>
+                        <?php else: ?>
+                            <li class="hidden_desktop"><a href="<?= URLROOT . "/etudiant/dashboard" ?>" class="btn_1 rounded">Mes Cours</a>
+                            </li>
+                        <?php endif ?>
                     <?php endif ?>
                 </ul>
             </nav>
@@ -146,14 +145,13 @@
                                 </span>
                                 <span class="niveau d-flex align-items-center gap-2">
                                     <span><?= $formation->iconNiveau ?></span>
-                                    <!-- <?= $formation->nomNiveau ?> -->
                                 </span>
                                 <span class="likes d-flex align-items-center gap-2">
                                     <i class="fa-solid fa-heart" style="color: #e91e63"></i>
                                     <?= $formation->jaimes ?>
                                 </span>
                                 <a href="<?= URLROOT ?>/courses/<?= $formation->slug ?>">
-                                    <img src="<?= $formation->imgFormation ?>" class="img-fluid" alt="image formation" />
+                                    <img src="<?= IMAGEROOT ?>/<?= $formation->imgFormation ?>" class="img-fluid" alt="image formation" />
                                 </a>
                                 <div class="price">$<?= $formation->prix ?></div>
                                 <div class="preview"><span>Apercu de formation</span></div>
@@ -198,7 +196,7 @@
                         <a href="<?= URLROOT ?>/courses/search?categorie=<?= str_replace(' ', '+', strtolower($categorie->nom)) ?>" class="grid_item">
                             <figure class="block-reveal">
                                 <div class="block-horizzontal"></div>
-                                <img src="<?= $categorie->image ?>" class="img-fluid" alt="categorie image">
+                                <img src="<?= IMAGEROOT ?>/<?= $categorie->image ?>" class="img-fluid" alt="categorie image">
                                 <div class="info">
                                     <small><?= $categorie->formation_count ?> formations</small>
                                     <h3><?= $categorie->nom ?></h3>
@@ -235,7 +233,7 @@
                                 <?= $formateur->etudiants ?>
                             </span>
                             <a href="<?= URLROOT ?>/user/<?= $formateur->slug ?>">
-                                <img src="<?= $formateur->img ?>" class="img-fluid" alt="image formateur" />
+                                <img src="<?= IMAGEROOT ?>/<?= $formateur->img ?>" class="img-fluid" alt="image formateur" />
                             </a>
                         </figure>
                         <div class="wrapper text-center">
@@ -265,7 +263,7 @@
                                 <p class="text-dark">Un apprentissage qui vous ressemble des compétences pour aujourd'hui.</p>
                                 <a href="<?= URLROOT ?>/user/register" class="btn_1">Rejoignez maintenant</a>
                             </div>
-                           <img src="images/home/etudiant.png" alt="instructor illustration" class="img-fluid" />
+                           <img src="<?= IMAGEROOT ?>/home/etudiant.png" alt="instructor illustration" class="img-fluid" />
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -275,7 +273,7 @@
                                 <p class="text-dark">Nous vous offrons les outils et les compétences nécessaires pour enseigner ce que vous aimez.</p>
                                 <a href="<?= URLROOT ?>/user/register" class="btn_1">Commencez à enseigner</a>
                             </div>
-                           <img src="images/home/formateur.png" alt="instructor illustration" class="img-fluid" />
+                           <img src="<?= IMAGEROOT ?>/home/formateur.png" alt="instructor illustration" class="img-fluid" />
                         </div>
                     </div>
                     <!-- /grid_item -->
@@ -348,7 +346,7 @@
             <div class="container p-4">
                 <div class="row justify-content-between">
                     <div class="col-lg-5 col-md-12">
-                        <p><img src="<?= $theme->logo ?>" width="149" height="42" alt="maha logo"></p>
+                        <p><img src="LOGO" width="149" height="42" alt="maha logo"></p>
                         <p>
                             MAHA Est Un Site Internet De Formation En Ligne Qui Contient Des Cours Et Des Vidéos
                             d'apprentissage
