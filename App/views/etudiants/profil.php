@@ -42,7 +42,7 @@
                 <div class="avatar card p-2 border-0">
                     <div class="text-center">
                         <div class="avatar-container">
-                            <img id="" src="<?= $data['img'] ?>" alt="user image" class="rounded-pill w-50 h-50">
+                            <img src="<?= strpos($img, 'users') === 0 ? IMAGEROOT.'/'.$img : $img ?>" alt="user image" class="rounded-pill w-50 h-50">
                             <div class="mt-2">
                                 <input id="avatar" class="d-none" type="file" accept=".jpg, .jpeg, .png">
                                 <label class="btn btn-warning" for="avatar">
