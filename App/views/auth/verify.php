@@ -40,6 +40,11 @@
             <button class="btn_1 full-width" id="resend" type="button">Renvoyer</button>
         </div>
     </div>
+
+    <!-- Logout -->
+    <a href="<?= URLROOT ?>/user/logout" id="logout" class="btn_1 rounded"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+
+    <!-- Scripts -->
     <script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
     <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
     <script src="<?= JSROOT ?>/auth/forgot.js"></script>
