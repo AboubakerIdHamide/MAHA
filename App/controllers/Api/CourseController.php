@@ -1,22 +1,16 @@
 <?php
 
 use App\Controllers\Api\ApiController;
-use App\Models\Stocked;
 use App\Models\Formation;
-use App\Models\Inscription;
 use App\Libraries\Response;
 
 class courseController extends ApiController
 {
-    private $stockedModel;
     private $formationModel;
-    private $inscriptionModel;
 
     public function __construct()
     {
-        $this->stockedModel = new Stocked;
         $this->formationModel = new Formation;
-        $this->inscriptionModel = new Inscription;
         parent::__construct();
     }
 
@@ -62,11 +56,6 @@ class courseController extends ApiController
         $formations = $this->formationModel->filter($filterQuery, $offset, $sort);
         $totalFiltred = $this->formationModel->countFiltred($filterQuery);
         $totalPages = ceil($totalFiltred / 10);
-        
-        foreach ($formations as $formation) {
-            $formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
-            $formation->imgFormation = URLROOT . "/Public/" . $formation->imgFormation;
-        }
         
         $data = [
             'totalCourses' => (int) $totalFiltred,
