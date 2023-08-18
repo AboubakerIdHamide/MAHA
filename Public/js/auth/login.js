@@ -1,7 +1,5 @@
 $(function () {
-    const facebookLoginBtn = document.getElementById("facebook-login");
-    const googleLoginBtn = document.getElementById("google-login");
-    const loginTypeError = document.querySelector(".connection-error");
+    const URLROOT = 'http://localhost/MAHA';
 
     // Validate login form
     const $loginForm = $('#login-form');
@@ -16,7 +14,6 @@ $(function () {
                 required: true,
                 minlength: 10,
                 maxlength: 50,
-                passwordRequirements: true
             },
         },
         messages: {
@@ -28,7 +25,6 @@ $(function () {
                 required: "Le mot de passe est requis.",
                 minlength: "Le mot de passe doit comporter au moins {0} caractères.",
                 maxlength: "Le mot de passe ne doit pas dépasser {0} caractères.",
-                passwordRequirements: "Le mot de passe doit contenir au moins un caractère spécial, un chiffre et une lettre."
             },
         },
         errorPlacement: function(error, element){
@@ -43,97 +39,76 @@ $(function () {
         },
     });
 
-    //======== Google Auth =========
-    googleLoginBtn.addEventListener("click", ()=>{
-        google.accounts.id.initialize({
-            client_id: '778408900492-6dbjf9arq9mo3thm3l4fr4fid6sjcis6.apps.googleusercontent.com',
-            callback: handleCredentialResponse
-        });
-        google.accounts.id.prompt();
-    })
+    // On click hide all items except the clicked button and two radio buttons to choose between
+    function socialAuthManager(provider, otherButtonsToHide, providerRef) {
+        if($(`.user-types-${provider}`).length) {
+            const $errorType = $('#error-type');
+            const $checkedType = $('[name="type-user"]:checked');
+            if($checkedType.length === 0) {
+                $errorType.html(`
+                    <label id="type-error" class="error" for="type">S'il vous plaît sélectionner le type de compte.</label>
+                `)
+            }else{
+                $errorType.empty();
 
-    function handleCredentialResponse(response){
-        const {credential} = response;    
-        tokenSender(credential, "googleLogin");
-    }
+                const loginLink = providerRef.attr('href');
 
-    //======== Facebook Auth =========
-    function statusChangeCallback(response) {
-        if (response.status === 'connected') {
-            const { accessToken }=response?.authResponse;
-            tokenSender(accessToken, "facebookLogin");
-        } else {
-          loginTypeError.innerHTML = 'Veuillez vous connecter à cette application.';
-        }
-    }
-
-    function checkLoginState() {
-        FB.getLoginStatus(function(response) {
-            statusChangeCallback(response);
-        });
-    }
-
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId: '254302633937045',
-            cookie: true,
-            xfbml: true,
-            version: 'v17.0'
-        });
-
-        facebookLoginBtn.addEventListener('click', function() {
-          FB.login(checkLoginState);
-        });
-    };
-
-    (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-
-    //======== Helpers ======
-    function getxhr() {
-        try {
-            xhr = new XMLHttpRequest();
-        } catch (e) {
-            try {
-                xhr = new ActiveXObject("Microsoft.XMLHTTP");
-            } catch (e1) {
-                try {
-                    xhr = new ActiveXObject("Msxml2.XMLHTTP");
-                } catch (e2) {
-                    alert("Ajax n'est pas supporté par votre navigateur !");
-                }
+                $.post(`${URLROOT}/user/setUserType`, { user_type: $checkedType.first().val() }, function(data, status) {
+                    window.location.href = loginLink;
+                });
             }
+            return;
         }
-        return xhr;
+        const elementToToggle = `.user-types, .form-group, .divider, #btn-login, ${otherButtonsToHide}`;
+        $(elementToToggle).fadeOut();
+        providerRef.before(`
+            <div class="mb-2 user-types-${provider}">
+                <span class="back-icon"><i class="fa-solid fa-arrow-left"></i></span>
+                <label style="color: #999">Veuillez choisir entre les deux options suivantes:</label>
+                <div class="radio-tile-group">
+                    <div class="input-container w-50">
+                      <input id="etudiant" class="radio-button" type="radio" name="type-user" value="etudiant" />
+                      <div class="radio-tile">
+                        <div class="icon">
+                          <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <label for="drive" class="radio-tile-label">Etudiant</label>
+                      </div>
+                    </div>
+
+                    <div class="input-container w-50">
+                      <input id="formateur" class="radio-button" type="radio" name="type-user" value="formateur" />
+                      <div class="radio-tile">
+                        <div class="icon">
+                          <i class="fa-solid fa-chalkboard-user"></i>
+                        </div>
+                        <label for="fly" class="radio-tile-label">Formateur</label>
+                      </div>
+                    </div>
+                </div>
+                <small class="error-message d-inline-block text-center" id="error-type"></small>
+            </div>
+        `);
+
+        $('.back-icon').one('click', function () {
+            $(elementToToggle).fadeIn();
+            $(`.user-types-${provider}`).remove();
+        });
     }
 
-    function tokenSender(token, route){
-        xhr = getxhr();
-        xhr.open("POST", `http://localhost/maha/ajax/${route}`, true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.send(`token=${token}`);
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    let response = JSON.parse(xhr.responseText);
-                    if(response?.authorized){
-                        window.location=response?.url;
-                        loginTypeError.innerHTML=response?.message;
-                    }else{
-                        loginTypeError.innerHTML=response?.message;
-                    }
-                } else {
-                    alert("Erreur serveur!");
-                }
+    // SOCIAL AUTH
+    const $socialButtons = $('.social_bt');
+    $socialButtons.on('click', function(e){
+        e.preventDefault();
+        const providerName = $(this).attr('id');
+        const otherButtonsToHide = '#' + $socialButtons.map((i, element) => {
+            if(element.id !== providerName){
+                return element.id;   
             }
-        }
-    }
+        }).get().join(', #');
+
+        socialAuthManager(providerName, otherButtonsToHide, $(this));
+    });
 
     // Input field effect
     (function () {
