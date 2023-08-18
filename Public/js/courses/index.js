@@ -104,7 +104,7 @@ $(function(){
                                 ${course.jaimes}
                             </span>
                             <a href="${URLROOT}/courses/${course.slug}">
-                                <img src="${course.imgFormation}" class="img-fluid" alt="image formation">
+                                <img src="${URLROOT}/public/images/${course.imgFormation}" class="img-fluid" alt="image formation">
                             </a>
                             <div class="price">$${course.prix}</div>
                             <div class="preview"><span>Apercu de formation</span></div>
