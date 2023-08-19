@@ -3,6 +3,7 @@
 namespace App\Libraries;
 
 use App\Libraries\Database;
+use getID3\getID3;
 
 class Validator
 {
@@ -24,8 +25,6 @@ class Validator
                 $this->applyValidationRule($field, $singleRule);
             }
         }
-
-
 
         if (!empty($this->errors)) {
             if (explode('/', $_GET['url'])[0] !== "api") {
@@ -57,6 +56,16 @@ class Validator
             if (strlen($value) > $maxLength) {
                 $this->addError($field, 'The ' . $field . ' field cannot exceed ' . $maxLength . ' characters.');
             }
+        }elseif (strpos($rule, 'numeric_min:') === 0) {
+            $minValue = floatval(explode(':', $rule)[1]);
+            if (!is_numeric($value) || floatval($value) < $minValue) {
+                $this->addError($field, 'The ' . $field . ' field must be at least ' . $minValue . '.');
+            }
+        } elseif (strpos($rule, 'numeric_max:') === 0) {
+            $maxValue = floatval(explode(':', $rule)[1]);
+            if (!is_numeric($value) || floatval($value) > $maxValue) {
+                $this->addError($field, 'The ' . $field . ' field cannot exceed ' . $maxValue . '.');
+            }
         } elseif ($rule === 'alphanum') {
             if (!ctype_alnum($value)) {
                 $this->addError($field, 'The ' . $field . ' field must contain only alphanumeric characters.');
@@ -76,11 +85,11 @@ class Validator
                 $this->addError($field, 'The ' . $field . ' field must be a numeric value.');
             }
         } elseif (strpos($rule, 'size:') === 0) {
-            $fileSize = explode(':', $rule)[1];
-            $fileSizeInBytes = $value['size'];
+            $maxFileSizeMB = floatval(explode(':', $rule)[1]); // Maximum file size in MB
+            $maxFileSizeBytes = $maxFileSizeMB * 1024 * 1024; // Convert MB to bytes
 
-            if ($fileSizeInBytes > $fileSize) {
-                $this->addError($field, 'The ' . $field . ' field must be smaller than ' . $fileSize . ' bytes.');
+            if ($value['size'] > $maxFileSizeBytes) {
+                $this->addError($field, 'The ' . $field . ' field must be smaller than ' . $maxFileSizeMB . ' MB.');
             }
         } elseif ($rule === 'date') {
             $date = \DateTime::createFromFormat('Y-m-d', $value);
@@ -173,6 +182,25 @@ class Validator
       
             if ($isExist === false) {
                 $this->addError($field, "Les identifiants ne correspondent pas à nos enregistrements.");
+            }
+        } elseif ($rule === 'video') {
+            $allowedTypes = ['video/mp4', 'video/mov', 'video/avi', 'video/x-matroska'];
+            $fileType = $value['type'];
+
+            if (!in_array($fileType, $allowedTypes)) {
+                $this->addError($field, 'The ' . $field . ' field must be of allowed file types: (MP4, MOV, AVI, MKV).');
+            }
+        } elseif (strpos($rule, 'video_duration:') === 0) {
+            $durationInMinutes = intval(explode(':', $rule)[1]);
+            
+            $filename = $value['tmp_name'];
+            $getID3 = new \getID3;
+            $fileInfo = $getID3->analyze($filename);
+            $this->data['duration'] = $fileInfo['playtime_seconds'];
+            $maxDuration = $durationInMinutes * 60; 
+
+            if ($fileInfo && isset($fileInfo['playtime_seconds']) && $fileInfo['playtime_seconds'] > $maxDuration) {
+                $this->addError($field, 'The ' . $field . ' video duration must not exceed ' . $durationInMinutes . ' minutes.');
             }
         }
 
