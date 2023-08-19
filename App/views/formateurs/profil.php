@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8" />
@@ -45,19 +45,18 @@
                 <a href="<?= URLROOT ?>"><img class="logo" src="<?= LOGO ?>" width="149" height="42" alt="logo Maha"></a>
             </div>
             <ul id="top_menu">
-                 <li><a href="javascript:void(0)" class="search-overlay-menu-btn">Search</a></li>
-                <?php if (!isset($_SESSION['user'])) : ?>
-                <li class="hidden_tablet"><a href="<?= URLROOT . "/user/login" ?>" class="btn_1 rounded">Se Connecter</a></li>
+                <li><a href="javascript:void(0)" class="search-overlay-menu-btn">Search</a></li>
+                <?php if (!session('user')->get()) : ?>
+                    <li class="hidden_tablet"><a href="<?= URLROOT . "/user/login" ?>" class="btn_1 rounded">Se Connecter</a></li>
+                <?php else: ?>
+                    <?php if (session('user')->get()->type === 'formateur') : ?>
+                        <li class="hidden_tablet"><a href="<?= URLROOT . "/formateur/dashboard" ?>" class="btn_1 rounded">Dashboard</a>
+                        </li>
+                    <?php else: ?>
+                        <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiant/dashboard" ?>" class="btn_1 rounded">Mes Cours</a>
+                        </li>
+                    <?php endif ?>
                 <?php endif ?>
-                <?php if (isset($_SESSION['id_formateur'])) : ?>
-                <li class="hidden_tablet"><a href="<?= URLROOT . "/formateur/dashboard" ?>" class="btn_1 rounded">Dashboard</a>
-                </li>
-                <?php endif ?>
-                <?php if (isset($_SESSION['id_etudiant'])) : ?>
-                <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiant/dashboard" ?>" class="btn_1 rounded">Mes Cours</a>
-                </li>
-                <?php endif ?>
-
             </ul>
             <!-- /top_menu -->
             <a href="#menu" class="btn_mobile">
@@ -72,19 +71,17 @@
                     <li><span><a href="<?= URLROOT ?>">Accueil</a></span></li>
                     <li><span><a href="<?= URLROOT ?>/courses/search">Formations</a></span></li>
                     <li><span><a href="<?= URLROOT ?>/#contact-us">Contactez-nous</a></span></li>
-                    <?php if (!isset($_SESSION['user'])) : ?>
-                    <li><span><a href="<?= URLROOT ?>/user/register">S'inscrire</a></span></li>
-                    <?php endif ?>
-                    <?php if (!isset($_SESSION['user'])) : ?>
-                    <li class="d-lg-none"><a href="<?= URLROOT . "/user/login" ?>">Se Connecter</a></li>
-                    <?php endif ?>
-                    <?php if (isset($_SESSION['id_formateur'])) : ?>
-                    <li class="d-lg-none"><a href="<?= URLROOT . "/formateur/dashboard" ?>">Dashboard</a>
-                    </li>
-                    <?php endif ?>
-                    <?php if (isset($_SESSION['id_etudiant'])) : ?>
-                    <li class="d-lg-none"><a href="<?= URLROOT . "/etudiant/dashboard" ?>">Mes Cours</a>
-                    </li>
+                    <?php if (!session('user')->get()) : ?>
+                        <li><span><a href="<?= URLROOT ?>/user/register">S'inscrire</a></span></li>
+                        <li class="hidden_desktop"><a href="<?= URLROOT . "/user/login" ?>" class="btn_1 rounded">Se Connecter</a></li>
+                    <?php else: ?>
+                        <?php if (session('user')->get()->type === 'formateur') : ?>
+                            <li class="hidden_desktop"><a href="<?= URLROOT . "/formateur/dashboard" ?>" class="btn_1 rounded">Dashboard</a>
+                            </li>
+                        <?php else: ?>
+                            <li class="hidden_desktop"><a href="<?= URLROOT . "/etudiant/dashboard" ?>" class="btn_1 rounded">Mes Cours</a>
+                            </li>
+                        <?php endif ?>
                     <?php endif ?>
                 </ul>
             </nav>
@@ -115,7 +112,7 @@
                 <div class="row">
                     <aside class="col-lg-3" id="sidebar">
                         <div class="profile">
-                            <figure><img id="avatar-formateur" src="<?= URLROOT ?>/public/<?= $formateur->img ?>" alt="Formateur image" class="rounded-circle"></figure>
+                            <figure><img id="avatar-formateur" src="<?= strpos(session('user')->get()->img, 'users') === 0 ? IMAGEROOT.'/'.session('user')->get()->img : session('user')->get()->img ?>" alt="Formateur image" class="rounded-circle"></figure>
                             <ul>
                                 <li class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex flex-column-reverse align-items-center">
@@ -158,7 +155,7 @@
                             <div class="col-md-6 col-xl-4">
                                 <div class="course shadow">
                                     <div class="course-img">
-                                        <a href="<?= URLROOT ?>/courses/<?= $formation->slug ?>"><img class="w-100" src="<?= URLROOT ?>/public/<?= $formation->image ?>" alt="Course Img"></a><div class="course-category"><a href="course.html"><?= $formation->nomCategorie ?></a></div><a href="<?= URLROOT ?>/courses/<?= $formation->slug ?>" class="vs-btn">Consulté</a></div>
+                                        <a href="<?= URLROOT ?>/courses/<?= $formation->slug ?>"><img class="w-100" src="<?= IMAGEROOT ?>/<?= $formation->image ?>" alt="Course Img"></a><div class="course-category"><a href="course.html"><?= $formation->nomCategorie ?></a></div><a href="<?= URLROOT ?>/courses/<?= $formation->slug ?>" class="vs-btn">Consulté</a></div>
                                     <div class="course-content"><div class="course-top"><div class="course-review"><i class="fa fa-heart" style="color: #e83232"></i>(<?= $formation->jaimes ?>)</div><span class="course-price">$<?= $formation->prix ?></span></div><h3 class="h5 course-name"><a title="<?= $formation->nomFormation ?>" href="<?= URLROOT ?>/courses/<?= $formation->slug ?>"><?= $formation->nomFormation ?></a></h3><div class="course-teacher"><span class="text-inherit" >POUR <?= $formation->nomNiveau ?></span></div></div>
                                     <div class="course-meta"><span><i class="fa fa-users"></i><?= $formation->inscriptions ?> Etudiants</span> <span><i class="fa fa-clock"></i><?= explode(':', $formation->mass_horaire)[0] ?>h
                                     <?= explode(':', $formation->mass_horaire)[1] ?>m</span> <span><i class="fa fa-calendar-alt"></i><?= date("d/m/Y", strtotime($formation->date_creation)) ?></span></div>
