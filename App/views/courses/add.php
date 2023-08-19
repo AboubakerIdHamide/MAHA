@@ -1,133 +1,300 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
+        <title>Add formation | <?= SITENAME ?></title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
-    <!-- Style -->
-    <link rel="stylesheet" href="<?= CSSROOT ?>/addFormation.css" />
-    <title><?= SITENAME ?> | Ajouter Formation</title>
-</head>
+        <!-- Custom Fonts -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400,500,700%7CRoboto:400,500%7CRoboto:400,500&display=swap" />
 
-<body>
-    <?php require_once APPROOT . "/views/includes/dashBoardNav.php"; ?>
-    <div class="container">
-        <form action="" enctype="multipart/form-data" method="post" id="form">
-            <input type="hidden" name="JsonVideos" id="jsonVideos">
-            <div class="prog" id="prog_bar"></div>
-            <div class="main-form-heading">
-                <a href="<?= URLROOT ?>"><img class="logo" src="<?= $data['logo'] ?>" width="149" height="42" alt="logo Maha"></a>
+        <!-- Perfect Scrollbar -->
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/perfect-scrollbar.css" />
+
+        <!-- Material Design Icons -->
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/material-icons.css" />
+
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/fontawesome.css" />
+
+        <!-- Preloader -->
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/spinkit.css" />
+
+        <!-- App CSS -->
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/app.css" />
+
+        <!-- Quill Theme -->
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/quill.css" />
+
+        <!-- Nestable -->
+        <link rel="stylesheet"  href="<?= CSSROOT ?>/plugins/nestable.css">
+
+        <!-- Plyr CSS -->
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plyr.min.css" />
+        <style>
+            /* Chrome, Safari, Edge, Opera */
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+
+            /* Firefox */
+            input[type=number] {
+              -moz-appearance: textfield;
+            }
+        </style>    
+    </head>
+
+    <body class=" layout-fluid">
+
+        <div class="preloader">
+            <div class="sk-chase">
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
             </div>
 
-            <div class="field-container">
-                <div class="field-section-slyder" id="fieldSectionSlyder">
-                    <div class="field-section">
-                        <div class="field-box">
-                            <div class="input-field">
-                                <label for="nom">Nom De Formation :</label>
-                                <input type="text" id="nom" name="nom" value="<?= $data["nom_formation"] ?>">
-                                <span class="error" id="error_nom"><?= $data["error"] ?></span>
-                            </div>
-                            <div class="input-field">
-                                <label for="prix">Prix De Formation En $:</label>
-                                <input type="number" id="prix" name="prix" value="<?= $data["prix_formation"] ?>">
-                                <span class="error" id="error_prix"></span>
-                            </div>
-                        </div>
-                        <div class="field-box">
-                            <div class="input-field">
-                                <label for="niveau">Niveau De Formation :</label>
-                                <select name="niveau" id="niveau">
-                                    <option value="">Aucun</option>
-                                    <?php foreach ($data["niveaux"] as $niveau) : ?>
-                                        <option value="<?= $niveau->id_niveau ?>"><?= $niveau->nom ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                                <span class="error" id="error_niveau"><?php $data["error"] ?></span>
-                            </div>
-                            <div class="input-field">
-                                <label for="categorie">Catégorie De Formation :</label>
-                                <select name="categorie" id="categorie">
-                                    <option value="">Aucun</option>
-                                    <?php foreach ($data["categories"] as $categorie) : ?>
-                                        <option value="<?= $categorie->id_categorie ?>"><?= $categorie->nom ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                                <span class="error" id="error_categorie"><?php $data["error"] ?></span>
-                            </div>
-                        </div>
-                        <div class="field-box">
-                            <div class="input-field">
-                                <label for="language">Langue De Formation :</label>
-                                <select name="language" id="language">
-                                    <?php foreach ($data["langues"] as $langue) : ?>
-                                        <option value="<?= $langue->id_langue ?>"><?= $langue->nom ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                                <span class="error" id="error_language"><?php $data["error"] ?></span>
-                            </div>
-                            <div class="input-field">
-                                <label for="visibility">Visibilité de formation :</label>
-                                <select name="visibility" id="visibility">
-                                    <option value="public">Public</option>
-                                    <option value="private">Privé</option>
-                                </select>
-                                <span class="error" id="error_visibility"><?php $data["error"] ?></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field-section">
-                        <div class="field-box">
-                            <div class="input-field">
-                                <div class="image-uploader">
-                                    <input type="file" id="image" name="image">
-                                </div>
-                                <span class="error" id="error_image"></span>
-                            </div>
-                        </div>
-                        <div class="field-box">
-                            <div class="input-field">
-                                <label for="description">Description De Formation :</label>
-                                <div class="textarea-container">
-                                    <textarea name="description" id="description" placeholder="..."><?= $data["description"] ?></textarea>
-                                    <div class="length-textarea" id="txtLen">0/700</div>
-                                </div>
-                                <span class="error" id="error_description"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field-section">
-                        <div class="field-box">
-                            <div class="input-field">
-                                <div class="image-uploader for-video">
-                                    <input type="file" id="videos" name="videos" multiple>
-                                </div>
-                                <span class="error" id="error_videos"></span>
-                            </div>
-                        </div>
-                        <div class="field-box">
-                            <div class="input-field">
-                                <label for="videos">Télécharger des videos :</label>
-                                <div class="uploded-videos" id="uplodedVideosContainer">
+            <!-- <div class="sk-bounce">
+    <div class="sk-bounce-dot"></div>
+    <div class="sk-bounce-dot"></div>
+  </div> -->
 
+            <!-- More spinner examples at https://github.com/tobiasahlin/SpinKit/blob/master/examples.html -->
+        </div>
+
+        <!-- Header Layout -->
+        <div class="mdk-header-layout js-mdk-header-layout">
+            <!-- require navbar header -->
+            <?php require_once APPROOT . "/views/includes/formateur/navbar.php" ?>
+
+            <!-- Header Layout Content -->
+            <div class="mdk-header-layout__content">
+
+                <div data-push
+                     data-responsive-width="992px"
+                     class="mdk-drawer-layout js-mdk-drawer-layout">
+                    <div class="mdk-drawer-layout__content page ">
+                        <form id="add-course-form" method="POST" enctype="multipart/form-data">
+                        <div class="container-fluid page__container">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="instructor-dashboard.html">Home</a></li>
+                                <li class="breadcrumb-item"><a href="instructor-courses.html">Formations</a></li>
+                                <li class="breadcrumb-item active">Ajouter Formation</li>
+                            </ol>
+                            <div class="media align-items-center mb-headings">
+                                <div class="media-body">
+                                    <h1 class="h2">Ajouter Formation</h1>
+                                </div>
+                                <div class="media-right">
+                                    <button id="add-course" class="btn btn-success">AJOUTER</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div id="progressWrapper" class="my-3" style="display: none;">
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 0;background-color: rgba(57,68,77,.84)" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Basic Information</h4>
+                                        </div>
+                                        <div class="card-body">
+
+                                            <div class="form-group">
+                                                <label class="form-label"
+                                                       for="title">Titre</label>
+                                                <input type="text"
+                                                       id="title"
+                                                       name="nom" 
+                                                       class="form-control"
+                                                       placeholder="Ecrire un titre"
+                                                       >
+                                            </div>
+
+                                            <div class="form-group mb-0">
+                                                <label class="form-label">Description</label>
+                                                <div style="height: 150px;margin-bottom: 0"
+                                                     data-toggle="quill"
+                                                     data-quill-placeholder="..."
+                                                     data-quill-modules-toolbar='[["bold", "italic"], [ "blockquote", "code"], [{"list": "ordered"}, {"list": "bullet"}]]' id="editor-container">
+                                                </div>
+                                                <textarea id="description" name="description" class="d-none"></textarea>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Preview video</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="preview-wrapper d-none">
+                                                <video style="--plyr-color-main: #662d91;" id="player" playsinline controls>
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                                <div class="form-group my-3">
+                                                <label class="form-label"
+                                                       for="preview-name">Apercu nom</label>
+                                                <input type="text" class="form-control" id="preview-name" placeholder="nom Apercu" name="preview_name" />
+                                            </div>
+                                            </div>
+                                           <div class="custom-file">
+                                                <input type="file"
+                                                           id="preview-video"
+                                                           name="preview" 
+                                                           class="custom-file-input"
+                                                           accept="video/*">
+                                                <label for="preview-video"
+                                                           class="custom-file-label">Choose file</label>
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div><img src="<?= IMAGEROOT ?>/formations/formation_image_placeholder.jpg"
+                                                         alt="formation image"
+                                                         class="w-100"
+                                                         id="image-placeholder"
+                                                         ></div>
+                                        <div class="card-body">
+                                            <div class="custom-file">
+                                                <input type="file"
+                                                           id="formation_image"
+                                                           name="image" 
+                                                           class="custom-file-input"
+                                                           accept="image/*">
+                                                <label for="formation_image"
+                                                           class="custom-file-label">Choose file</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Meta</h4>
+                                            <p class="card-subtitle">Extra Options </p>
+                                        </div>
+
+                                        <div class="card-body"
+                                              action="#">
+                                            <div class="form-group">
+                                                <label class="form-label"
+                                                       for="category">Category</label>
+                                                <select name="id_categorie" id="category"
+                                                        class="custom-select form-control">
+                                                        <?php foreach($categories as $category) : ?>
+                                                            <option value="<?= $category->id_categorie ?>"><?= $category->nom ?></option>
+                                                        <?php endforeach ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label"
+                                                       for="price">Prix</label>
+                                                <input type="number"
+                                                       id="price"
+                                                       name="prix" 
+                                                       class="form-control"
+                                                       placeholder="Prix (min: 10$)"
+                                                       value="10">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label"
+                                                       for="level">Niveau</label>
+                                                <select name="id_niveau" id="level"
+                                                        class="custom-select form-control">
+                                                        <?php foreach($niveaux as $niveau) : ?>
+                                                            <option value="<?= $niveau->id_niveau ?>"><?= $niveau->nom ?></option>
+                                                        <?php endforeach ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label"
+                                                       for="language">Langue</label>
+                                                <select name="id_langue" id="language"
+                                                        class="custom-select form-control">
+                                                        <?php foreach($langues as $langue) : ?>
+                                                            <option value="<?= $langue->id_langue ?>"><?= $langue->nom ?></option>
+                                                        <?php endforeach ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label"
+                                                       for="scope">Visibilité</label>
+                                                <select name="etat" id="scope"
+                                                        class="custom-select form-control">
+                                                        <option value="public">Publique</option>
+                                                        <option value="private">Privé</option>
+                                                </select>
+                                            </div>
+                                            <div class="flex">
+                                            <label class="form-label" for="is_published">IS PUBLISHED</label><br>
+                                            <div class="custom-control custom-checkbox-toggle custom-control-inline mr-1">
+                                                <input type="checkbox" id="is_published" class="custom-control-input" name="is_published">
+                                                <label class="custom-control-label" for="is_published">NO</label>
+                                            </div>
+                                            <label class="form-label mb-0" for="is_published">YES</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        </form>
                     </div>
+
+                    <!-- require sidebar -->
+                    <?php require_once APPROOT . "/views/includes/formateur/sideNavbar.php" ?>
                 </div>
             </div>
-            <div class="form-buttons">
-                <button class="prev not-allowed" id="prev">Précédent</button>
-                <button class="next" id="next">Suivant</button>
-            </div>
-        </form>
-    </div>
-    <script src="<?= JSROOT ?>/addFormation.js"></script>
-    <script src="<?= JSROOT ?>/dashBoardNav.js"></script>
-</body>
+        </div>
 
+        <!-- Scripts -->
+        <!-- jQuery -->
+        <script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
+
+        <!-- Plyr -->
+        <script src="<?= JSROOT ?>/plugins/plyr.min.js"></script>
+
+        <!-- Bootstrap -->
+        <script src="<?= JSROOT ?>/plugins/popper.min.js"></script>
+
+        <!-- Perfect Scrollbar -->
+        <script src="<?= JSROOT ?>/plugins/perfect-scrollbar.min.js"></script>
+
+        <!-- MDK -->
+        <script src="<?= JSROOT ?>/plugins/dom-factory.js"></script>
+        <script src="<?= JSROOT ?>/plugins/material-design-kit.js"></script>
+
+        <!-- Jquery UI -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <!-- App JS -->
+        <script src="<?= JSROOT ?>/plugins/app.js"></script>
+
+        <!-- Highlight.js -->
+        <script src="<?= JSROOT ?>/plugins/hljs.js"></script>
+
+        <!-- Quill -->
+        <script src="<?= JSROOT ?>/plugins/quill.min.js"></script>
+
+        <!-- Bootstrap -->
+        <script src="<?= JSROOT ?>/plugins/bootstrap-4.min.js"></script>
+
+        <!-- Jquery Validation -->
+        <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
+
+        <script src="<?= JSROOT ?>/courses/add.js"></script>
+    </body>
 </html>
