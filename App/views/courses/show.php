@@ -245,8 +245,8 @@
 
         <!-- Popup Preview Video -->
         <div class="overlay-content">
-            <video style="--plyr-color-main: #662d91;" class="object-fit-cover" id="player" playsinline controls data-poster="<?= URLROOT ?>/public/<?= $formation->imgFormation ?>">
-                <source src="<?= URLROOT ?>/public/<?=$previewVideo->url ?>" type="video/mp4" />
+            <video style="--plyr-color-main: #662d91;" class="object-fit-cover" id="player" playsinline controls data-poster="<?= IMAGEROOT ?>/<?= $formation->imgFormation ?>">
+                <source src="<?= VIDEOROOT ?>/<?=$previewVideo->url ?>" type="video/mp4" />
             </video>
             <button id="closeBtn" class="d-flex align-items-center justify-content-center"><i class="fa-solid fa-xmark"></i></button>
         </div>
