@@ -188,8 +188,21 @@ html {
     line-height: 25px;
   }
   ul.mm-listview li a {
-    color: #555 !important;
+    color: #292a2d !important;
     display: block;
+  }
+  ul.mm-listview li .btn_1 {
+    margin: 2rem 3rem 0;
+    background-color: #e9b006;
+  }
+  ul.mm-listview li .btn_1:hover {
+    color: #f3f3f3 !important;
+    margin: 2rem 3rem 0;
+    background-color: #662d91;
+  }
+
+  .mm-listview>li:last-child:after {
+    border: none !important;
   }
 }
 
@@ -837,6 +850,12 @@ footer.fake-footer {
 
 @media (max-width: 767px) {
   .hidden_mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 991px) {
+  .hidden_desktop {
     display: none !important;
   }
 }

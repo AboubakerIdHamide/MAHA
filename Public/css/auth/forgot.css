@@ -320,3 +320,8 @@ a.btn_1.full-width,
   text-align: center;
 }
 
+#logout {
+  position: fixed;
+  right: 5px;
+  top: 20px;
+}
