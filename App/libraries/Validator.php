@@ -3,6 +3,7 @@
 namespace App\Libraries;
 
 use App\Libraries\Database;
+use App\Libraries\Response;
 use getID3\getID3;
 
 class Validator
@@ -10,7 +11,7 @@ class Validator
     private $data;
     private $errors;
 
-    public function __construct($data)
+    public function __construct($data = [])
     {
         $this->data = $data;
         $this->errors = [];
@@ -23,6 +24,7 @@ class Validator
 
             foreach ($rulesList as $singleRule) {
                 $this->applyValidationRule($field, $singleRule);
+                if(isset($this->errors[$field.'_error'])) break;
             }
         }
 
@@ -202,6 +204,25 @@ class Validator
             if ($fileInfo && isset($fileInfo['playtime_seconds']) && $fileInfo['playtime_seconds'] > $maxDuration) {
                 $this->addError($field, 'The ' . $field . ' video duration must not exceed ' . $durationInMinutes . ' minutes.');
             }
+        } elseif (strpos($rule, 'check:') === 0) {
+            $tableName = explode(':', $rule)[1]; // Your table name here;
+            $columnName = $field; 
+
+            // Check if formateur have a record in giving table
+            $query = "SELECT COUNT(*) FROM {$tableName} WHERE {$columnName} = :value AND id_formateur = :id_formateur";
+            $statement = Database::getConnection()->prepare($query);
+            $statement->bindValue(':value', $value);
+            $statement->bindValue(':id_formateur', session('user')->get()->id_formateur);
+            $statement->execute();
+            $count = $statement->fetchColumn();
+
+            if ($count < 1) {
+                $this->addError($field, "You don't have access to this ".substr($tableName, 0, -1).".");
+            }
+        } elseif ($rule === 'array') {
+            if(!is_array($value)){
+                $this->addError($field, 'The ' . $field . ' field must not be an array.');
+            }
         }
 
         // Add more validation rules as needed...
@@ -232,5 +253,26 @@ class Validator
             return $this->data;
         }
         return $this->data;
+    }
+
+    public function checkPermissionsFormateur($from, $join, $joinColumn, $condition)
+    {
+        $field = array_keys($condition)[0];
+
+        $query = "
+            SELECT 
+                COUNT(*)
+            FROM {$from}
+            JOIN {$join} USING ($joinColumn)
+            WHERE {$field} = :value AND id_formateur = :id_formateur
+        ";
+        $statement = Database::getConnection()->prepare($query);
+        $statement->bindValue(':value', $condition[$field]);
+        $statement->bindValue(':id_formateur', session('user')->get()->id_formateur);
+        $statement->execute();
+        $count = $statement->fetchColumn();
+        if($count < 1){
+            return Response::json(null, 403, "Insufficient permissions.");
+        }
     }
 }
