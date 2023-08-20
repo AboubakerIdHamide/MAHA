@@ -18,17 +18,10 @@ class Response
     {
         http_response_code($statusCode);
         header('Content-Type: application/json');
-        if ($messages  !== []) {
-            echo json_encode([
-                'status' => $statusCode,
-                'messages' => $messages,
-            ]);
-            exit;
-        }
-
         echo json_encode([
             'status' => $statusCode,
             'data' => $data,
+            'messages' => $messages,
         ]);
         exit;
     }
