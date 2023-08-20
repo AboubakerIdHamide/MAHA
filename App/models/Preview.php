@@ -69,7 +69,7 @@ class Preview
         return false;
     }
 
-    public function updatePreview($id_video, $id_formation)
+    public function update($id_video, $id_formation)
     {
         $query = $this->connect->prepare("
 			UPDATE apercus
