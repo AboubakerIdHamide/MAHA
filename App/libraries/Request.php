@@ -7,7 +7,6 @@ class Request
     private $method;
     private $uri;
     private $headers;
-    private $body;
     private $get;
     private $post;
     private $params;
@@ -16,10 +15,8 @@ class Request
     {
         $this->headers = $_SERVER;
         $this->uri = isset($_GET["url"]) ? explode("/", $_GET["url"]) : [null];
-        // $this->checkContentType();
         $this->setParams();
-        $this->method = $_SERVER['REQUEST_METHOD'];
-        $this->body = $this->getBody();
+        $this->method = $_POST['method'] ?? $_SERVER['REQUEST_METHOD'];
         $this->get = $_GET;
         $this->post = $_POST;
     }
@@ -27,15 +24,6 @@ class Request
     public function getMethod()
     {
         return $this->method;
-    }
-
-    private function checkContentType()
-    {
-        if ($this->uri[0] === "api") {
-            if (!isset($this->headers["CONTENT_TYPE"]) or $this->headers["CONTENT_TYPE"] !== "application/json") {
-                Response::json(null, 415, 'Content-Type must be application/json');
-            }
-        }
     }
 
     public function getUri()
@@ -46,18 +34,6 @@ class Request
     public function getHeaders()
     {
         return $this->headers;
-    }
-
-    private function getBody()
-    {
-        $body = json_decode(file_get_contents('php://input'), true);
-        if ($this->uri[0] === "api" && $this->method !== "DELETE" && $this->method !== "GET") {
-            if (!$body) {
-                Response::json(null, 400, 'Request body is not valid JSON');
-            }
-            return $body;
-        }
-        return [];
     }
 
     public function body($field)
