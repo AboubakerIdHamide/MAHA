@@ -169,7 +169,7 @@ class UserController
         return view("auth/login");
     }
 
-    public function revokeToken($provider, $accessToken)
+    private function revokeToken($provider, $accessToken)
     {
         $client = new Client();
         // Revoke token
