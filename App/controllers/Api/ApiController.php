@@ -13,7 +13,7 @@ use App\Libraries\Response;
     DELETE /api/resource/{id} // Delete a specific resource
 */
 
-class ApiController {
+class ApiController extends Api {
 	public function __construct()
     {
         $request = new Request;
