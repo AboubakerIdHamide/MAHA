@@ -1,5 +1,9 @@
 <?php
 
+use App\Libraries\Request;
+use App\Libraries\Response;
+use App\Libraries\Validator;
+
 use App\Models\Formation;
 use App\Models\Preview;
 use App\Models\Video;
@@ -9,20 +13,27 @@ use App\Models\Notification;
 class FormationController
 {
 	private $formationModel;
-	private $previewsModel;
+	private $previewModel;
 	private $videoModel;
 	private $stockedModel;
 	private $notificationModel;
 
 	public function __construct()
 	{
-		if (!isset($_SESSION['id_formateur'])) {
-			redirect('user/login');
-			return;
+		if (!auth()) {
+			return redirect('user/login');
+		}
+
+		if(session('user')->get()->type !== 'formateur'){
+			return view('errors/page_404');
+		}
+
+		if(!session('user')->get()->email_verified_at) {
+			return redirect('user/verify');
 		}
 
 		$this->formationModel = new Formation;
-		$this->previewsModel = new Preview;
+		$this->previewModel = new Preview;
 		$this->videoModel = new Video;
 		$this->stockedModel = new Stocked;
 		$this->notificationModel = new Notification;
@@ -96,7 +107,7 @@ class FormationController
 		return false;
 	}
 
-	public function addFormation()
+	public function old()
 	{
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$data = [
@@ -155,9 +166,9 @@ class FormationController
 			$data["categories"] = $this->stockedModel->getAllCategories();
 			$data["niveaux"] = $this->stockedModel->getAllLevels();
 			$data["langues"] = $this->stockedModel->getAllLangues();
-			$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['id_formateur']);
+			$data['nbrNotifications'] = $this->notificationModel->getNewNotificationsOfFormateur(session('user')->get()->id_formateur);
 			$data["logo"] = URLROOT . "/Public/" . $this->stockedModel->getThemeData()->logo;
-			return view("formation/addFormation", $data);
+			return view("courses/old", $data);
 		}
 	}
 
@@ -457,14 +468,14 @@ class FormationController
 
 	public function updatePreviewVideo($id_video)
 	{
-		$this->previewsModel->updatePreview($id_video, $_SESSION['id_formation']);
+		$this->previewModel->updatePreview($id_video, $_SESSION['id_formation']);
 		echo json_encode('Updated Well !!!');
 	}
 
 	public function insertPreviewVideo($id_video)
 	{
-		if (empty($this->previewsModel->getPreviewByFormation($_SESSION['id_formation']))) {
-			$this->previewsModel->insertPreviewVideo($id_video, $_SESSION['id_formation']);
+		if (empty($this->previewModel->getPreviewByFormation($_SESSION['id_formation']))) {
+			$this->previewModel->insertPreviewVideo($id_video, $_SESSION['id_formation']);
 			echo json_encode('Bien inseré !!!');
 		} else {
 			$this->updatePreviewVideo($id_video);
