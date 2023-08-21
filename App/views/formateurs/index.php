@@ -21,8 +21,8 @@
     <!-- Header -->
     <header>
         <span id="overlay"></span>
-        <div class="logo" data-user-name="<?= $_SESSION['user']->prenom ?>">
-            <img src="<?= $_SESSION['user']->img ?>" alt="avatar">
+        <div class="logo" data-user-name="<?= session('user')->get()->prenom ?>">
+            <img src="<?= strpos(session('user')->get()->img, 'users') === 0 ? IMAGEROOT.'/'.session('user')->get()->img : session('user')->get()->img ?>" alt="avatar formateur">
         </div>
         <nav>
             <div class="menu-i">
