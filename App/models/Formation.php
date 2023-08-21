@@ -37,19 +37,20 @@ class Formation
     public function create($formation)
     {
         $query = $this->connect->prepare("
-            INSERT INTO formations (id_niveau, id_formateur, id_categorie, nom, image, mass_horaire, prix, description, etat, id_langue) VALUES (:niveau_formation, :id_formateur, :categorie, :nom_formation, :img_formation, :mass_horaire, :prix_formation, :description, :etat_formation, :id_langue)
+            INSERT INTO formations (id_niveau, id_formateur, id_categorie, nom, image, mass_horaire, prix, description, etat, id_langue, is_published) VALUES (:id_niveau, :id_formateur, :id_categorie, :nom, :image, :mass_horaire, :prix, :description, :etat, :id_langue, :is_published)
         ");
 
-        $query->bindParam(":niveau_formation", $formation["niveau_formation"]);
-        $query->bindParam(":id_formateur", $formation["id_formateur"]);
-        $query->bindParam(":categorie", $formation["categorie"]);
-        $query->bindParam(":nom_formation", $formation["nom_formation"]);
-        $query->bindParam(":img_formation", $formation["img_formation"]);
-        $query->bindParam(":mass_horaire", $formation["masse_horaire"]);
-        $query->bindParam(":prix_formation", $formation["prix_formation"]);
-        $query->bindParam(":description", $formation["description"]);
-        $query->bindParam(":etat_formation", $formation["etat_formation"]);
-        $query->bindParam(":id_langue", $formation["id_langue"]);
+        $query->bindValue(":id_niveau", $formation["id_niveau"]);
+        $query->bindValue(":id_formateur", $formation["id_formateur"]);
+        $query->bindValue(":id_categorie", $formation["id_categorie"]);
+        $query->bindValue(":nom", $formation["nom"]);
+        $query->bindValue(":image", $formation["image"]);
+        $query->bindValue(":mass_horaire", $formation["masse_horaire"]);
+        $query->bindValue(":prix", $formation["prix"]);
+        $query->bindValue(":description", $formation["description"]);
+        $query->bindValue(":etat", $formation["etat"]);
+        $query->bindValue(":id_langue", $formation["id_langue"]);
+        $query->bindValue(":is_published", empty($formation["is_published"]) ? null : date('Y-m-d H:i:s'));
         $query->execute();
 
         $lastInsertId = $this->connect->lastInsertId();
@@ -146,12 +147,12 @@ class Formation
             JOIN formateurs f USING (id_formateur)
             JOIN categories c ON fore.id_categorie = c.id_categorie
             JOIN niveaux n ON fore.id_niveau = n.id_niveau
-            WHERE id_formateur = :id
+            WHERE id_formateur = :id_formateur
             AND etat = 'public'
             ORDER BY fore.date_creation DESC
         ");
 
-        $query->bindParam(":id", $id);
+        $query->bindParam(":id_formateur", $id);
         $query->execute();
 
         $formations = $query->fetchAll(\PDO::FETCH_OBJ);
