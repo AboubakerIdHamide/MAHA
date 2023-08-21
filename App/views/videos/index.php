@@ -1,163 +1,361 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
+        <title>Lessons | <?= SITENAME ?></title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
-    <title><?= SITENAME ?> | <?= $data["videos"][0]->nomFormation ?></title>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="<?= CSSROOT ?>/dashBoardNav.css" />
-    <link rel="stylesheet" href="<?= CSSROOT ?>/dashboard-formateur.css" />
-    <link rel="stylesheet" href="<?= CSSROOT ?>/videos.css" />
-    <link rel="stylesheet" href="<?= CSSROOT ?>/notifications.css" />
-</head>
+        <!-- Custom Fonts -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400,500,700%7CRoboto:400,500%7CRoboto:400,500&display=swap" />
 
-<body>
-    <!-- Header -->
-    <header>
-        <span id="overlay"></span>
-        <div class="logo" data-user-name="<?= $_SESSION['user']->prenom ?>">
-            <img src="<?= $_SESSION['user']->img ?>" alt="avatar">
-        </div>
-        <nav>
-            <div class="menu-i">
-                <span></span>
-                <span></span>
-                <span></span>
+        <!-- Perfect Scrollbar -->
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/perfect-scrollbar.css" />
+
+        <!-- Material Design Icons -->
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/material-icons.css" />
+
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/fontawesome.css" />
+
+        <!-- Preloader -->
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/spinkit.css" />
+
+        <!-- App CSS -->
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/app.css" />
+
+        <!-- Quill Theme -->
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/quill.css" />
+
+        <!-- Nestable -->
+        <link rel="stylesheet"  href="<?= CSSROOT ?>/plugins/nestable.css">
+
+        <!-- SweetAlert -->
+        <link rel="stylesheet"  href="<?= CSSROOT ?>/plugins/sweetalert.css">
+
+        <!-- Plyr CSS -->
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plyr.min.css" /> 
+
+        <!-- Custom Style -->
+        <link rel="stylesheet" href="<?= CSSROOT ?>/videos/index.css" />
+    </head>
+
+    <body class=" layout-fluid">
+
+        <div class="preloader">
+            <div class="sk-chase">
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
             </div>
 
-            <ul class="hide-menu">
-                <li id="notifications" class="justify-content-center">
-                    <a href="<?= URLROOT . '/formateur/notifications' ?>">
-                        <i style="font-size:25px;" class="fa-solid fa-bell position-relative">
-                            <?php if ($data['nbrNotifications']->totalNew != 0) : ?>
-                                <span style="font-size: 9px;" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger nbr-notifications">
-                                    <?= $data['nbrNotifications']->totalNew ?>
-                                </span>
-                            <?php endif ?>
-                        </i>
-                    </a>
-                </li>
-                <li id="addnews"><a href="<?= URLROOT . '/formateur/dashboard' ?>"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a></li>
-                <li id="paiment"><a href="<?= URLROOT . '/formateur/requestPayment' ?>"><i class=" far fa-credit-card"></i><span>Paiement</span></a></li>
-                <li id="statistics"><a href="<?= URLROOT . '/formateur/updateInfos' ?>"><i class="fas fa-user-gear"></i><span>Paramètre</span></a></li>
-                <li id="disconnect"><a href="<?= URLROOT . '/user/logout' ?>"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
-            </ul>
-        </nav>
-    </header>
-    <!-- end Header -->
-    <main class="container my-5 ps-md-5">
-        <div class="row mb-3 align-items-center ms-md-3 ms-xl-0 header">
-            <div class="col-2 col-md-2 col-lg-1">
-                <a href="<?= URLROOT ?>/formateur/dashboard"><i class="fas fa-chevron-left go-back rounded"></i></a>
-            </div>
-            <div class="col-6 col-md-7 col-lg-9">
-                <h1><?= $data["videos"][0]->nomFormation ?></h1>
-                <p><?= $data["videos"][0]->date_creation ?></p>
-                <span>Total videos (<?= count($data["videos"]) ?> videos) · <span class="badge bg-primary"><i class="fas fa-clock"></i> <?= $data["videos"][0]->masse_horaire ?></span></span>
-            </div>
-            <div class="col">
-                <a href="<?= URLROOT ?>/formation/addVideo/<?= $_SESSION['id_formation'] ?>" class="btn btn-primary">Add
-                    Video <i class="fa-solid fa-file-circle-plus"></i></a>
-            </div>
+            <!-- <div class="sk-bounce">
+    <div class="sk-bounce-dot"></div>
+    <div class="sk-bounce-dot"></div>
+  </div> -->
+
+            <!-- More spinner examples at https://github.com/tobiasahlin/SpinKit/blob/master/examples.html -->
         </div>
-        <?php flash('deteleVideo') ?>
-        <?php flash('updateVideo') ?>
-        <?php $order = 1 ?>
-        <hr />
-        <div class="row mb-3">
-            <?php flash("orderApplied") ?>
-            <div class="col">
-                <button class="btn btn-primary btn-sm order">Appliquer L'ordre <i class="fa-solid fa-check-to-slot"></i></button>
-            </div>
-        </div>
-        <?php foreach ($data["videos"] as $video) : ?>
-            <div class="row mb-3 p-2 video rounded">
-                <div class="col-12 col-md-6">
-                    <input style="width: 55px;text-align: center;" maxlength="3" type="text" class="order-video form-control d-inline-block" placeholder="<?= $order ?>" />
-                    <span class="video-name text-white"><?= $video->nomVideo ?></span>
-                    <span class="badge bg-secondary"><i class="fas fa-clock"></i> <?= $video->duree ?></span>
-                </div>
-                <input id="description-video" type="hidden" value="<?= $video->description ?>">
-                <input id="link-video" type="hidden" value="<?= $video->url ?>">
-                <div class="col-12 col-md-6">
-                    <div class="d-flex gap-1 justify-content-end">
-                        <a data-bs-custom-class="custom-tooltip" data-bs-title="Télécharger" data-bs-toggle="tooltip" data-bs-placement="top" href="<?= $video->url ?>" class="btn btn-warning btn-sm" download><i class="fa-solid fa-download"></i></a>
-                        <button id="<?= $video->id_video ?>" class="btn btn-info btn-sm edit" data-bs-toggle="modal" data-bs-target="#modifier"> <i class="fa-solid fa-pen-to-square" data-bs-custom-class="custom-tooltip" data-bs-title="Modifier" data-bs-toggle="tooltip" data-bs-placement="top"></i></button>
-                        <button id="<?= $video->id_video ?>" class="btn btn-primary btn-sm preview" <?php if ($video->is_preview == 1) echo 'disabled' ?>> <i class="fa-solid fa-video" data-bs-custom-class="custom-tooltip" data-bs-title="Apercu Video" data-bs-toggle="tooltip" data-bs-placement="top"></i></button>
-                        <button id="<?= $video->id_video ?>" class="btn btn-danger btn-sm delete" data-bs-toggle="modal" data-bs-target="#supprimer"> <i class="fa-solid fa-trash" data-bs-custom-class="custom-tooltip" data-bs-title="Supprimer" data-bs-toggle="tooltip" data-bs-placement="top"></i></button>
+
+        <!-- Header Layout -->
+        <div class="mdk-header-layout js-mdk-header-layout">
+            <!-- require navbar header -->
+            <?php require_once APPROOT . "/views/includes/formateur/navbar.php" ?>
+
+            <!-- Header Layout Content -->
+            <div class="mdk-header-layout__content">
+
+                <div data-push
+                     data-responsive-width="992px"
+                     class="mdk-drawer-layout js-mdk-drawer-layout">
+                    <div class="mdk-drawer-layout__content page ">
+                        <div class="container-fluid page__container">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="instructor-dashboard.html">Home</a></li>
+                                <li class="breadcrumb-item"><a href="instructor-courses.html">Formations</a></li>
+                                <li class="breadcrumb-item active">Videos</li>
+                            </ol>
+                            <div class="media align-items-center mb-headings">
+                                <div class="media-body">
+                                    <h1 class="h2"><?= $videos[0]->nomFormation ?></h1>
+                                </div>
+                                <div class="media-right">
+                                    <button id="add-course" data-target="#add-lesson" data-toggle="modal" class="btn btn-success">AJOUTER</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="nestable" data-id-formation="<?= $videos[0]->id_formation ?>"
+                                         id="nestable-handles-primary">
+                                        <ul class="nestable-list">
+                                            <?php foreach($videos as $video) : ?>
+                                            <li class="nestable-item nestable-item-handle"
+                                                data-id="<?= $video->id_video ?>">
+                                                <div class="nestable-handle"><i class="material-icons">menu</i></div>
+                                                <div class="nestable-content">
+                                                    <div class="media align-items-center">
+                                                        <div class="media-left">
+                                                            <img src="<?= IMAGEROOT ?>/<?= $video->thumbnail ?>"
+                                                                 alt="thumbnail video"
+                                                                 width="100"
+                                                                 class="rounded">
+                                                        </div>
+                                                        <div class="media-body">
+                                                            <h5 class="card-title h6 mb-0">
+                                                                <a data-url="<?= VIDEOROOT ?>/<?= $video->url ?>" href="javascript:void(0)" class="video-name"><?= $video->nomVideo ?></a>
+                                                            </h5>
+                                                            <small class="text-muted created-at">created <?= $video->created_at ?></small>
+                                                        </div>
+                                                        <div class="media-right d-flex gap-3 align-items-center">
+                                                            <?php if(!$video->is_preview) : ?>
+                                                                <button data-id-formation="<?= $videos[0]->id_formation ?>" data-id-video="<?= $video->id_video ?>" class="btn btn-white btn-sm set-preview-btn" data-toggle="tooltip" data-placement="top" title="Make it Preview"><i class="material-icons">play_circle_outline</i></button>
+                                                            <?php else: ?>
+                                                                <span data-id-formation="<?= $videos[0]->id_formation ?>" data-id-video="<?= $video->id_video ?>" class="badge badge-pill badge-light preview-badge">Preview</span>
+                                                            <?php endif ?>
+                                                            <div class="dropdown">
+                                                                <a href="#" class="dropdown-toggle text-muted" data-caret="false" data-toggle="dropdown" aria-expanded="false">
+                                                                    <i class="material-icons">more_vert</i>
+                                                                </a>
+                                                                <div class="dropdown-menu dropdown-menu-right" style="">
+                                                                    <a href="javascript:void(0)" data-video='<?= json_encode($video) ?>' data-target="#edit-lesson" data-toggle="modal" class="dropdown-item edit-lesson"><i class="material-icons">edit</i> Edit</a>
+                                                                    <div class="dropdown-divider"></div>
+                                                                    <a data-id="<?= $video->id_video ?>" class="dropdown-item text-danger delete-video" href="javascript:void(0)"><i class="material-icons">delete</i> Delete</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <?php endforeach ?>
+                                        </ul>
+                                    </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- require sidebar -->
+                    <?php require_once APPROOT . "/views/includes/formateur/sideNavbar.php" ?>
                 </div>
             </div>
-            <?php $order++; ?>
-        <?php endforeach; ?>
+        </div>
 
-    </main>
-
-    <!-- End Main -->
-
-    <section class="modifier">
-        <!-- Modal -->
-        <div class="modal fade" id="modifier" tabindex="-1" aria-labelledby="modifier" aria-hidden="true">
-            <div class="modal-dialog">
+        <!-- Add Lesson Modal -->
+        <div class="modal fade" id="add-lesson">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="modifier">Modification</h1>
-                        <small class="nom-video text-muted ms-3"></small>
-                        <button type="button" class="btn-close fermer" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-header bg-primary">
+                        <h4 class="modal-title text-white">Add Lesson</h4>
+                        <button type="button"
+                                class="close text-white"
+                                data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
-                        <div>
-                            <label class="form-label" for="mp4-video" style="font-weight: 600;">Aperçu</label>
-                            <video id="mp4-video" class="ratio ratio-16x9 rounded" src="" controls></video>
-                        </div>
-                        <div class="my-3">
-                            <label for="title" class="form-label" style="font-weight: 600;">Titre</label>
-                            <input type="text" class="form-control" id="title">
-                            <small class="error-title text-danger"></small>
-                        </div>
-                        <div>
-                            <label for="description" class="form-label" style="font-weight: 600;">Description</label>
-                            <textarea class="form-control" id="description" rows="3"></textarea>
-                            <small class="error-desc text-danger"></small>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" class="fermer">Fermer</button>
-                        <button id="apply-btn" type="button" class="btn btn-primary">Appliquer</button>
+                        <!-- video -->
+                        <div class="row mb-3 d-none preview-video">
+                            <div class="col">
+                                <video style="--plyr-color-main: #662d91;" id="player-1" playsinline controls>
+                                      Your browser does not support the video tag.
+                                </video>
+                            </div>
+                          </div>  
+                        <!-- endvideo -->
+                        <form id="create-lesson-form" action="<?= URLROOT ?>/api/videos" method="POST" enctype="multipart/form-data">
+                            <div class="form-group row">
+                                <label
+                                       class="col-form-label form-label col-md-3">Lesson:</label>
+                                <div class="col-md-9">
+                                    <div class="custom-file">
+                                                <input type="file"
+                                                    name="lesson_video" 
+                                                           id="add-lesson-video"
+                                                           accept="video/*" 
+                                                           class="custom-file-input video-input">
+                                                <label for="add-lesson-video"
+                                                           class="custom-file-label">Choose video</label>
+                                            </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="v-title-add"
+                                       class="col-form-label form-label col-md-3">Titre:</label>
+                                <div class="col-md-9">
+                                    <input id="v-title-add"
+                                           type="text"
+                                           name="v_title" 
+                                           class="form-control"
+                                           placeholder="Entrez titre" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="v-description-add"
+                                       class="col-form-label form-label col-md-3">Description:</label>
+                                <div class="col-md-9">
+                                   <div class="form-group">
+                                        <textarea class="form-control" name="v_description" id="v-description-add" rows="3" placeholder="Type here to reply to Matney ..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="form-group row mb-0">
+                                <div class="col-md-8 offset-md-3">
+                                    <button type="submit"
+                                            class="btn btn-success"
+                                            id="create-lesson-btn">Add</button>
+                                </div>
+                            </div>
+
+                            <!-- input hidden ID formation -->
+                            <input type="hidden" name="id_formation" value="<?= $videos[0]->id_formation ?>" />
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+        <!-- Add lesson EndModal -->
 
-
-    <section class="supprimer">
-        <!-- Modal -->
-        <div class="modal fade" id="supprimer" tabindex="-1" aria-labelledby="supprimer" aria-hidden="true">
-            <div class="modal-dialog">
+        <!-- Edit Lesson Modal -->
+       <div class="modal fade" id="edit-lesson">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="supprimer">Supression</h1>
-                        <small class="nom-video text-muted ms-3"></small>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-header bg-primary">
+                        <h4 class="modal-title text-white">Edit Lesson</h4>
+                        <button type="button"
+                                class="close text-white"
+                                data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
-                        <span style="font-weight: 600;">Etes-vous sûr que vous voulez supprimer cette video ?</span>
-                    </div>
-                    <div class="modal-footer">
-                        <!-- <form method="POST"> -->
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                        <button id="delete-video" type="button" class="btn btn-primary">Oui</button>
-                        <!-- </form> -->
+                        <!-- video -->
+                        <div class="row mb-3 d-none preview-video">
+                            <div class="col">
+                                <video style="--plyr-color-main: #662d91;" id="player-2" playsinline controls>
+                                      Your browser does not support the video tag.
+                                </video>
+                            </div>
+                          </div>  
+                        <!-- endvideo -->
+                        <form id="edit-lesson-form" method="POST" enctype="multipart/form-data">
+                            <div class="form-group row">
+                                <label
+                                       class="col-form-label form-label col-md-3">Lesson:</label>
+                                <div class="col-md-9">
+                                    <div class="custom-file">
+                                        <input type="file"
+                                                name="lesson_video" 
+                                                id="edit-lesson-video"
+                                                accept="video/*"
+                                                class="custom-file-input video-input">
+                                        <label for="edit-lesson-video"
+                                            class="custom-file-label">Choose video</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="v-title-edit"
+                                       class="col-form-label form-label col-md-3">Titre:</label>
+                                <div class="col-md-9">
+                                    <input id="v-title-edit"
+                                           type="text"
+                                           name="v_title" 
+                                           class="form-control"
+                                           placeholder="Entrez titre" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="v-description-edit"
+                                       class="col-form-label form-label col-md-3">Description:</label>
+                                <div class="col-md-9">
+                                   <div class="form-group">
+                                        <textarea class="form-control" name="v_description" id="v-description-edit" rows="3" placeholder="Type here to reply to Matney ..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="form-group row mb-0">
+                                <div class="col-md-8 offset-md-3">
+                                    <button type="submit"
+                                            class="btn btn-success"
+                                            id="edit-lesson-btn">Save</button>
+                                </div>
+                            </div>
+                            <!-- input hidden ID Lesson -->
+                            <input type="hidden" name="id_video" />
+                            <!-- PUT method -->
+                            <input type="hidden" name="method" value="PUT" />
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <?php require_once APPROOT . "/views/includes/footerDashboard.php"; ?>
+        <!-- Edit lesson EndModal -->
+
+        <!-- Popup Show Video -->
+        <div class="overlay-content">
+            <video style="--plyr-color-main: #662d91;" class="object-fit-cover" id="player-show" playsinline controls src="#">
+            </video>
+            <button id="closeBtn" class="d-flex align-items-center justify-content-center"><i class="material-icons">cancel</i></button>
+        </div>
+        <div id="overlay" class="hidden"></div>
+        <!-- End Popup -->
+
+        <!-- to-top Button -->
+        <span class="to-top-btn"><i class="material-icons">expand_less</i></span>
+
+        <!-- Scripts -->
+        <!-- jQuery -->
+        <script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
+
+        <!-- Plyr -->
+        <script src="<?= JSROOT ?>/plugins/plyr.min.js"></script>
+
+        <!-- Bootstrap -->
+        <script src="<?= JSROOT ?>/plugins/popper.min.js"></script>
+
+        <!-- Perfect Scrollbar -->
+        <script src="<?= JSROOT ?>/plugins/perfect-scrollbar.min.js"></script>
+
+        <!-- MDK -->
+        <script src="<?= JSROOT ?>/plugins/dom-factory.js"></script>
+        <script src="<?= JSROOT ?>/plugins/material-design-kit.js"></script>
+
+        <!-- Jquery UI -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <!-- App JS -->
+        <script src="<?= JSROOT ?>/plugins/app.js"></script>
+
+        <!-- Highlight.js -->
+        <script src="<?= JSROOT ?>/plugins/hljs.js"></script>
+
+        <!-- Nestable -->
+        <script src="<?= JSROOT ?>/plugins/jquery.nestable.js"></script>
+        <script src="<?= JSROOT ?>/plugins/nestable.js"></script>
+
+        <!-- Quill -->
+        <script src="<?= JSROOT ?>/plugins/quill.min.js"></script>
+
+        <!-- Bootstrap -->
+        <script src="<?= JSROOT ?>/plugins/bootstrap-4.min.js"></script>
+
+        <!-- Jquery Validation -->
+        <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
+
+        <!-- SweetAlert -->
+        <script src="<?= JSROOT ?>/plugins/sweetalert.min.js"></script>
+        
+        <script src="<?= JSROOT ?>/videos/index.js"></script>
+    </body>
+</html>
