@@ -6,6 +6,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+
 use App\Libraries\Database;
 
 class Video
@@ -20,19 +22,55 @@ class Video
 	public function create($video)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO videos(id_formation, nom, url, duree, description) VALUES (:formation, :nom, :url, SEC_TO_TIME(:duree), :description)
+			INSERT INTO videos(id_formation, nom, url, duree, description, thumbnail) VALUES (:id_formation, :nom, :url, SEC_TO_TIME(:duree), :description, :thumbnail)
 		");
 
-		$query->bindParam(':formation', $video['Idformation']);
-		$query->bindParam(':nom', $video['nomVideo']);
-		$query->bindParam(':url', $video['url']);
-		$query->bindParam(':duree', $video['duree']);
-		$query->bindParam(':description', $video['desc']);
+		$query->bindValue(':id_formation', $video['id_formation']);
+		$query->bindValue(':nom', $video['nom']);
+		$query->bindValue(':url', $video['url']);
+		$query->bindValue(':duree', $video['duration']);
+		$query->bindValue(':thumbnail', $video['thumbnail']);
+		$query->bindValue(':description', $video['description'] ?? 'Preview Formation');
 		$query->execute();
 
 		$lastInsertId = $this->connect->lastInsertId();
 		if ($lastInsertId > 0) {
 			return $lastInsertId;
+		}
+		return false;
+	}
+
+	public function find($id)
+	{
+		$query = $this->connect->prepare("
+			SELECT 
+				v.id_video,
+				f.id_formation,
+				v.nom AS nomVideo,
+				url,
+				duree,
+				v.description,
+				v.created_at,
+				date_creation,
+				f.nom AS nomFormation,
+				mass_horaire,
+				IF(a.id_video = v.id_video, 1, 0) AS is_preview,
+				ordre,
+				thumbnail
+			FROM videos v
+			LEFT JOIN apercus a ON v.id_video = a.id_video
+			JOIN formations f ON v.id_formation = f.id_formation
+			WHERE v.id_video = :id_video
+		");
+
+		$query->bindValue(':id_video', $id);
+		$query->execute();
+
+		$video = $query->fetch(\PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			$datetime = new Carbon($video->created_at);
+			$video->created_at = $datetime->diffForHumans();
+			return $video;
 		}
 		return false;
 	}
@@ -101,11 +139,13 @@ class Video
 				url,
 				duree,
 				v.description,
+				v.created_at,
 				date_creation,
 				f.nom AS nomFormation,
 				mass_horaire,
 				IF(a.id_video = v.id_video, 1, 0) AS is_preview,
-				ordre
+				ordre,
+				thumbnail
 			FROM videos v
 			LEFT JOIN apercus a ON v.id_video = a.id_video
 			JOIN formations f ON v.id_formation = f.id_formation
@@ -118,43 +158,59 @@ class Video
 
 		$videos = $query->fetchAll(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
+			foreach ($videos as $video) {
+				$datetime = new Carbon($video->created_at);
+				$video->created_at = $datetime->diffForHumans();
+			}
+			
 			return $videos;
 		}
 		return [];
 	}
 
-	public function update($video)
+	public function update($video, $id)
 	{
-		if (isset($video['description']) && isset($video['titre'])) {
-			$query = $this->connect->prepare("
-				UPDATE videos
-				SET description = :description,
-					nom = :titre
-				WHERE id_formation = :id_formation AND id_video = :id_video
-			");
-			$query->bindParam(':description', $video['description']);
-			$query->bindParam(':titre', $video['titre']);
-		} else {
-			if (isset($video['description'])) {
-				$query = $this->connect->prepare("
-					UPDATE videos
-					SET description = :description
-					WHERE id_formation = :id_formation AND id_video = :id_video
-				");
-				$query->bindParam(':description', $video['description']);
-			} else {
-				$query = $this->connect->prepare("
-					UPDATE videos
-					SET nom = :titre
-					WHERE id_formation = :id_formation AND id_video = :id_video
-				");
-				$query->bindParam(':titre', $video['titre']);
-			}
+		$columnsToUpdate = array_keys($video);
+		$updateFields = '';
+		foreach ($columnsToUpdate as $column) {
+			$updateFields .= "{$column} = :{$column}, ";
+		}
+		$updateFields = rtrim($updateFields, ', ');
+
+		$query = $this->connect->prepare("
+			UPDATE videos
+			SET {$updateFields}
+			WHERE id_video = :id_video
+		");
+
+		foreach ($video as $field => $value) {
+			$query->bindValue(":{$field}", $value);
 		}
 
-		$query->bindParam(':id_formation', $video['id_formation']);
-		$query->bindParam(':id_video', $video['id_video']);
+		$query->bindValue(':id_video', $id);
+
 		$query->execute();
+		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public function sortVideos($videos, $id_formation)
+	{
+		foreach ($videos as $order => $video) {
+			$query = $this->connect->prepare("
+				UPDATE videos
+				SET ordre = :order
+				WHERE id_formation = :id_formation AND id_video = :id_video
+			");
+
+			$query->bindValue(':id_formation', $id_formation);
+			$query->bindValue(':id_video', $video['id']);
+			$query->bindValue(':order', $order);
+			$query->execute();
+		}
+
 		if ($query->rowCount() > 0) {
 			return true;
 		}
