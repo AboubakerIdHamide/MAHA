@@ -1,0 +1,84 @@
+/* WebKit-based browsers (Chrome, Edge, Opera) */
+body::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar track */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #f5f6f7; /* Color of the scrollbar thumb */
+  border-radius: 8px;
+}
+
+/* Optional: Add styles for the scrollbar track */
+body::-webkit-scrollbar-track {
+  background-color: #39444d;
+}
+/* Video Modal */
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display:none;
+}
+
+.overlay-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 1000%);
+  width: 85%;
+  z-index: 9999;
+  transition: transform 0.4s ease-in-out;
+  padding: 6px;
+  background-color: #39444d;
+  border-radius: 8px;
+}
+
+#closeBtn {
+  border: none;
+  background-color: #39444d;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 50%;
+  position: absolute;
+  top: -15px;
+  color: #ffffff;
+  right: -15px;
+  font-size: 1.3rem;
+  transition: background-color 0.3s;
+}
+
+#closeBtn:hover {
+  background-color: color(srgb 0.60 0.12 0.12 / 1);
+}
+
+#closeBtn:focus {
+  border: none;
+  outline: none;
+}
+
+/* END MODAL VIDEO */
+.to-top-btn {
+  display: block;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 2;
+  text-align: center;
+  line-height: 1rem;
+  font-size: 3rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: #39444d;
+  cursor: pointer;
+  color: #f5f6f7;
+  transition: background-color .3s;
+}
+
+.to-top-btn:hover {
+  background-color: #1e1e1e;
+}
