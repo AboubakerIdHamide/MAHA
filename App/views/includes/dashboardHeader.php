@@ -1,8 +1,8 @@
 <!-- Header -->
 <header>
     <span id="overlay"></span>
-    <div class="logo" data-user-name="<?= $_SESSION['user']->prenom ?>">
-        <img src="<?= $_SESSION['user']->img ?>" alt="avatar">
+    <div class="logo" data-user-name="<?= session('user')->get()->prenom ?>">
+        <img src="<?= session('user')->get()->img ?>" alt="avatar">
     </div>
     <nav>
         <div class="menu-i">
