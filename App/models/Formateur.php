@@ -132,6 +132,7 @@ class Formateur
 				biographie,
 				balance,
 				code,
+				slug,
 				id_categorie,
 				img, 
 				email, 
