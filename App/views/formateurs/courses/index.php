@@ -39,7 +39,11 @@
         <link rel="stylesheet" href="<?= CSSROOT ?>/plyr.min.css" /> 
 
         <!-- Custom Style -->
-        <link rel="stylesheet" href="<?= CSSROOT ?>/videos/index.css" />
+        <style>
+            label.sort {
+                cursor: pointer;
+            }
+        </style>
     </head>
 
     <body class=" layout-fluid">
@@ -73,7 +77,7 @@
 
                         <div class="container-fluid page__container">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="instructor-dashboard.html">Home</a></li>
+                                <li class="breadcrumb-item"><a href="<?= URLROOT ?>/formateur">Home</a></li>
                                 <li class="breadcrumb-item active">Formations</li>
                             </ol>
 
@@ -81,15 +85,15 @@
                                 <div class="flex mb-2 mb-sm-0">
                                     <h1 class="h2">Manage Courses</h1>
                                 </div>
-                                <a href="instructor-quiz-edit.html"
+                                <a href="<?= URLROOT ?>/courses/add"
                                    class="btn btn-success">Add course</a>
                             </div>
 
                             <div class="card card-body border-left-3 border-left-primary navbar-shadow mb-4">
-                                <form action="#">
+                                <form method="GET" id="filter-form">
                                     <div class="d-flex flex-wrap2 align-items-center mb-headings">
                                         <div class="dropdown">
-                                            <a href="#"
+                                            <a href="javascript:void(0)"
                                                data-toggle="dropdown"
                                                class="btn btn-white"><i class="material-icons mr-sm-2">tune</i> <span class="d-none d-sm-block">Filters</span></a>
                                             <div class="dropdown-menu">
@@ -97,163 +101,56 @@
                                                     <div class="form-group">
                                                         <label for="custom-select"
                                                                class="form-label">Category</label><br>
-                                                        <select id="custom-select"
+                                                        <select name="categorie" id="categories"
                                                                 class="form-control custom-select"
                                                                 style="width: 200px;">
-                                                            <option selected>All categories</option>
-                                                            <option value="1">Vue.js</option>
-                                                            <option value="2">Node.js</option>
-                                                            <option value="3">GitHub</option>
+                                                            <option value="all" selected>All categories</option>
+                                                            <?php foreach($categories as $categorie) : ?>
+                                                            <option <?= isset($_GET['categorie']) && $_GET['categorie'] === $categorie->nom ? 'selected' : '' ?> value="<?= $categorie->nom ?>"><?= $categorie->nom ?></option>
+                                                            <?php endforeach ?>
                                                         </select>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label for="published01"
-                                                               class="form-label">Published</label><br>
-                                                        <select id="published01"
-                                                                class="form-control custom-select"
-                                                                style="width: 200px;">
-                                                            <option selected>Published courses</option>
-                                                            <option value="1">Draft courses</option>
-                                                            <option value="3">All courses</option>
-                                                        </select>
-                                                    </div>
-                                                    <a href="#">Clear filters</a>
+                                                    <button type="button" id="clearFilters" class="btn btn-link btn-sm">Clear filters</button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="flex search-form ml-3 search-form--light">
                                             <input type="text"
+                                                    name="q"
+                                                    value="<?= $_GET["q"] ?? '' ?>" 
                                                    class="form-control"
                                                    placeholder="Search courses"
-                                                   id="searchSample02">
+                                                   />
                                             <button class="btn"
-                                                    type="button"
-                                                    role="button"><i class="material-icons">search</i></button>
+                                                    type="submit"
+                                                    ><i class="material-icons">search</i></button>
                                         </div>
                                     </div>
 
                                     <div class="d-flex flex-column flex-sm-row align-items-sm-center"
                                          style="white-space: nowrap;">
-                                        <small class="flex text-muted text-uppercase mr-3 mb-2 mb-sm-0">Displaying 4 out of 10 courses</small>
+                                        <small id="display" class="flex text-muted text-uppercase mr-3 mb-2 mb-sm-0"></small>
                                         <div class="w-auto ml-sm-auto table d-flex align-items-center mb-0">
                                             <small class="text-muted text-uppercase mr-3 d-none d-sm-block">Sort by</small>
-                                            <a href="#"
-                                               class="sort desc small text-uppercase">Course</a>
-                                            <a href="#"
-                                               class="sort small text-uppercase ml-2">Earnings</a>
-                                            <a href="#"
-                                               class="sort small text-uppercase ml-2">Sales</a>
+                                            <label class="mb-0 sort small text-uppercase" for="sort-nom">Course</label>
+                                            <input type="radio" value="nom" name="sort" id="sort-nom" class="d-none" />
+                                            <label class="mb-0 sort small text-uppercase ml-2" for="sort-sales">Sales</label>
+                                            <input type="radio" value="sales" name="sort" id="sort-sales" class="d-none" />
+                                            <label class="mb-0 sort small text-uppercase ml-2" for="sort-likes">Likes</label>
+                                            <input type="radio" value="likes" name="sort" id="sort-likes" class="d-none" />
+                                            <label class="mb-0 sort small text-uppercase ml-2" for="sort-newest">Newest</label>
+                                            <input type="radio" value="newest" name="sort" id="sort-newest" class="d-none" />
                                         </div>
                                     </div>
                                 </form>
                             </div>
-
-                            <div class="alert alert-light alert-dismissible border-1 border-left-3 border-left-warning"
-                                 role="alert">
-                                <button type="button"
-                                        class="close"
-                                        data-dismiss="alert"
-                                        aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                <div class="text-black-70">Ohh no! No courses to display. Add some courses.</div>
-                            </div>
-
-                            <div class="row">
-                                <?php foreach($formations as $formation) : ?>
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-body">
-
-                                            <div class="d-flex flex-column flex-sm-row">
-                                                <a href="<?= URLROOT ?>/courses/<?= $formation->id_formation ?>/videos"
-                                                   class="avatar avatar-lg avatar-4by3 mb-3 w-xs-plus-down-100 mr-sm-3">
-                                                    <img src="<?= IMAGEROOT ?>/<?= $formation->image ?>"
-                                                         alt="Image formation"
-                                                         class="avatar-img rounded">
-                                                </a>
-                                                <div class="flex"
-                                                     style="min-width: 200px;">
-                                                    <h5 class="card-title text-base m-0"><strong><?= $formation->nomCategorie ?></strong></h5>
-                                                    <h4 class="card-title mb-1"><a href="<?= URLROOT ?>/courses/<?= $formation->id_formation ?>/videos"><?= $formation->nomFormation ?></a></h4>
-                                                    <p class="text-black-70 text-truncate"><?= $formation->description ?></p>
-                                                    <div class="d-flex align-items-end">
-                                                        <div class="d-flex flex flex-column mr-3">
-                                                            <div class="d-flex align-items-center py-1 border-bottom">
-                                                                <small class="text-black-70 mr-2">&dollar; <?= $formation->prix ?></small>
-                                                                <small class="text-black-50">34 SALES</small>
-                                                            </div>
-                                                            <div class="d-flex align-items-center py-1">
-                                                                <small class="text-muted mr-2"><?= $formation->nomCategorie ?></small>
-                                                                <small class="text-muted"><?= $formation->nomNiveau ?></small>
-                                                            </div>
-                                                        </div>
-                                                        <div class="text-center">
-                                                            <a href="#"
-                                                               class="btn btn-sm btn-white">Edit</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="card__options dropdown right-0 pr-2">
-                                            <a href="#"
-                                               class="dropdown-toggle text-muted"
-                                               data-caret="false"
-                                               data-toggle="dropdown">
-                                                <i class="material-icons">more_vert</i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item"
-                                                   href="#">Edit course</a>
-                                                <a class="dropdown-item"
-                                                   href="#">Course Insights</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item text-danger"
-                                                   href="#">Delete course</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <?php endforeach ?>
+                            <div id="alert"></div>
+                            <div class="row" id="courses">
+                                <!-- COURSES -->
                             </div>
 
                             <!-- Pagination -->
-                            <ul class="pagination justify-content-center pagination-sm">
-                                <li class="page-item disabled">
-                                    <a class="page-link"
-                                       href="#"
-                                       aria-label="Previous">
-                                        <span aria-hidden="true"
-                                              class="material-icons">chevron_left</span>
-                                        <span>Prev</span>
-                                    </a>
-                                </li>
-                                <li class="page-item active">
-                                    <a class="page-link"
-                                       href="#"
-                                       aria-label="1">
-                                        <span>1</span>
-                                    </a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link"
-                                       href="#"
-                                       aria-label="1">
-                                        <span>2</span>
-                                    </a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link"
-                                       href="#"
-                                       aria-label="Next">
-                                        <span>Next</span>
-                                        <span aria-hidden="true"
-                                              class="material-icons">chevron_right</span>
-                                    </a>
-                                </li>
-                            </ul>
+                            <ul class="pagination justify-content-center pagination-sm" id="pagination"></ul>
                         </div>
 
                     </div>
@@ -305,6 +202,6 @@
         <!-- SweetAlert -->
         <script src="<?= JSROOT ?>/plugins/sweetalert.min.js"></script>
         
-       <!--  <script src="<?= JSROOT ?>/videos/index.js"></script> -->
+        <script src="<?= JSROOT ?>/formateurs/courses/index.js"></script>
     </body>
 </html>

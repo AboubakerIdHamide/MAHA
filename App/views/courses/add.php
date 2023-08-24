@@ -83,8 +83,8 @@
                         <form id="add-course-form" method="POST" enctype="multipart/form-data">
                         <div class="container-fluid page__container">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="instructor-dashboard.html">Home</a></li>
-                                <li class="breadcrumb-item"><a href="instructor-courses.html">Formations</a></li>
+                                <li class="breadcrumb-item"><a href="<?= URLROOT ?>/formateur">Home</a></li>
+                                <li class="breadcrumb-item"><a href="<?= URLROOT ?>/courses">Formations</a></li>
                                 <li class="breadcrumb-item active">Ajouter Formation</li>
                             </ol>
                             <div class="media align-items-center mb-headings">
