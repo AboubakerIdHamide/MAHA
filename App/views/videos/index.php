@@ -75,8 +75,8 @@
                     <div class="mdk-drawer-layout__content page ">
                         <div class="container-fluid page__container">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="instructor-dashboard.html">Home</a></li>
-                                <li class="breadcrumb-item"><a href="instructor-courses.html">Formations</a></li>
+                                <li class="breadcrumb-item"><a href="<?= URLROOT ?>/formateur">Home</a></li>
+                                <li class="breadcrumb-item"><a href="<?= URLROOT ?>/courses">Formations</a></li>
                                 <li class="breadcrumb-item active">Videos</li>
                             </ol>
                             <div class="media align-items-center mb-headings">
