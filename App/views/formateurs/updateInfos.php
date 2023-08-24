@@ -21,8 +21,8 @@
     <!-- Header -->
     <header>
         <span id="overlay"></span>
-        <div class="logo" data-user-name="<?= $_SESSION['user']->prenom ?>">
-            <img src="<?= $_SESSION['user']->img ?>" alt="avatar">
+        <div class="logo" data-user-name="<?= session('user')->get()->prenom ?>">
+            <img src="<?= strpos(session('user')->get()->img, 'users') === 0 ? IMAGEROOT.'/'.session('user')->get()->img : session('user')->get()->img ?>" alt="avatar formateur">
         </div>
         <nav>
             <div class="menu-i">
@@ -35,9 +35,9 @@
                 <li id="notifications" class="justify-content-center">
                     <a href="<?= URLROOT . '/formateur/notifications' ?>">
                         <i style="font-size:25px;" class="fa-solid fa-bell position-relative">
-                            <?php if ($data['nbrNotifications']->totalNew != 0) : ?>
+                            <?php if ($nbrNotifications->totalNew != 0) : ?>
                                 <span style="font-size: 9px;" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger nbr-notifications">
-                                    <?= $data['nbrNotifications']->totalNew ?>
+                                    <?= $nbrNotifications->totalNew ?>
                                 </span>
                             <?php endif ?>
                         </i>
@@ -70,7 +70,7 @@
                 <div class="avatar card p-2 border-0">
                     <div class="text-center">
                         <div class="avatar-container">
-                            <img id="avatar-profil" src="<?= $data['img'] ?>" alt="user image">
+                            <img id="avatar-profil" src="<?= strpos($img, 'users') === 0 ? IMAGEROOT.'/'.$img : $img ?>" alt="image formateur">
                             <div class="mt-2">
                                 <input id="avatar" class="d-none" type="file" accept=".jpg, .jpeg, .png">
                                 <label class="btn btn-warning" for="avatar">
@@ -79,9 +79,9 @@
                                 <small id="error-img-avatar" class="error text-danger"></small>
                             </div>
                         </div>
-                        <h5 class="mt-2 nom-prenom" id='nom-prenom-aff'><?= $data['nom'] ?>
-                            <?= $data['prenom'] ?></h5>
-                        <p class="speciality-display" id='cat-aff'><?= $data['categorie'] ?></p>
+                        <h5 class="mt-2 nom-prenom" id='nom-prenom-aff'><?= $nom ?>
+                            <?= $prenom ?></h5>
+                        <p class="speciality-display" id='cat-aff'><?= $categorie ?></p>
                         <span class="type-account badge rounded-pill text-bg-info"><i class="fa-solid fa-person-chalkboard"></i> Formateur</span>
                     </div>
                 </div>
@@ -96,25 +96,25 @@
                             <div class="col-md-6 col-12">
                                 <label for="nom" class="form-label">Nom</label>
                                 <div class="input-group flex-nowrap">
-                                    <input type="text" class="form-control" aria-label="nom" aria-describedby="addon-wrapping" value="<?= $data['nom'] ?>" disabled id="nom">
+                                    <input type="text" class="form-control" aria-label="nom" aria-describedby="addon-wrapping" value="<?= $nom ?>" disabled id="nom">
                                     <span class="input-group-text" id="nom-icon"><i class="fa-solid fa-pen-to-square"></i></span>
                                 </div>
-                                <small id="error-nom" class="error text-danger"><?= $data['nom_err'] ?></small>
+                                <small id="error-nom" class="error text-danger"><?= $nom_err ?></small>
                             </div>
                             <div class="col mt-3 mt-md-0">
                                 <label for="prenom" class="form-label">Prénom</label>
                                 <div class="input-group flex-nowrap">
-                                    <input value="<?= $data['prenom'] ?>" type="text" class="form-control" aria-label="prenom" aria-describedby="addon-wrapping" id="prenom" disabled>
+                                    <input value="<?= $prenom ?>" type="text" class="form-control" aria-label="prenom" aria-describedby="addon-wrapping" id="prenom" disabled>
                                     <span class="input-group-text" id="prenom-icon"><i class="fa-solid fa-pen-to-square"></i></span>
                                 </div>
-                                <small id="error-prenom" class="error text-danger"><?= $data['prenom_err'] ?></small>
+                                <small id="error-prenom" class="error text-danger"><?= $prenom_err ?></small>
                             </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col">
                                 <label for="email" class="form-label">Email</label>
                                 <div class="input-group flex-nowrap">
-                                    <input type="email" class="form-control" id="email" value="<?= $data['email'] ?>" disabled>
+                                    <input type="email" class="form-control" id="email" value="<?= $email ?>" disabled>
                                 </div>
                                 <small class="error text-danger" id="error-email"></small>
                             </div>
@@ -123,10 +123,10 @@
                             <div class="col">
                                 <label for="tele" class="form-label">Numéro Téléphone</label>
                                 <div class="input-group flex-nowrap">
-                                    <input value="<?= $data['tel'] ?>" type="text" class="form-control" aria-label="Numero Telephone" aria-describedby="addon-wrapping" id="tele" disabled>
+                                    <input value="<?= $tel ?>" type="text" class="form-control" aria-label="Numero Telephone" aria-describedby="addon-wrapping" id="tele" disabled>
                                     <span class="input-group-text" id="phone-icon"><i class="fa-solid fa-pen-to-square"></i></span>
                                 </div>
-                                <small class="error text-danger" id="error-tele"><?= $data['tel_err'] ?></small>
+                                <small class="error text-danger" id="error-tele"><?= $tel_err ?></small>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -155,21 +155,21 @@
                                 <select id="spec" class="form-select" aria-label="Default select example">
                                     <?php
                                     foreach ($data["categories"] as $categorie) {
-                                        if ($categorie->id_categorie == $data['specId']) {
+                                        if ($categorie->id_categorie == $specId) {
                                             echo '<option selected value="' . $categorie->id_categorie . '">' . $categorie->nom . '</option>';
                                         } else {
                                             echo '<option value="' . $categorie->id_categorie . '">' . $categorie->nom . '</option>';
                                         }
                                     } ?>
                                 </select>
-                                <small class="error text-danger" id="error-spec"><?= $data['specId_err'] ?></small>
+                                <small class="error text-danger" id="error-spec"><?= $specId_err ?></small>
                             </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col">
                                 <label for="bio" class="form-label d-flex justify-content-between bio-icon" id="bio-icon">Biographie<i class="fa-solid fa-pen-to-square"></i></label>
-                                <textarea id="bio" class="form-control" rows="3" disabled><?= $data['bio'] ?></textarea>
-                                <small id="error-bio" class="error text-danger"><?= $data['bio_err'] ?></small>
+                                <textarea id="bio" class="form-control" rows="3" disabled><?= $bio ?></textarea>
+                                <small id="error-bio" class="error text-danger"><?= $bio_err ?></small>
                             </div>
                         </div>
                         <div class="row mt-3">
