@@ -6,6 +6,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+
 use App\Libraries\Database;
 
 class Formation
@@ -60,30 +62,28 @@ class Formation
         return false;
     }
 
-    public function update($formation)
+    public function update($formation, $id)
     {
+        $columnsToUpdate = array_keys($formation);
+        $updateFields = '';
+        foreach ($columnsToUpdate as $column) {
+            $updateFields .= "{$column} = :{$column}, ";
+        }
+        $updateFields = rtrim($updateFields, ', ');
+
         $query = $this->connect->prepare("
-            UPDATE formations 
-            SET id_niveau=:niveau_formation,
-                id_categorie=:categorie,
-                nom=:nom_formation,
-                prix=:prix_formation,
-                description=:description,
-                id_langue=:langue,
-                etat=:etat_formation
-            WHERE id_formation=:id
+            UPDATE formations
+            SET {$updateFields}
+            WHERE id_formation = :id_formation
         ");
 
-        $query->bindParam(":niveau_formation", $formation["niveauFormation"]);
-        $query->bindParam(":langue", $formation["langue"]);
-        $query->bindParam(":categorie", $formation["categorie"]);
-        $query->bindParam(":nom_formation", $formation["titre"]);
-        $query->bindParam(":prix_formation", $formation["prix"]);
-        $query->bindParam(":description", $formation["description"]);
-        $query->bindParam(":etat_formation", $formation["visibility"]);
-        $query->bindParam(":id", $formation["id_formation"]);
-        $query->execute();
+        foreach ($formation as $field => $value) {
+            $query->bindValue(":{$field}", $value);
+        }
 
+        $query->bindValue(':id_formation', $id);
+
+        $query->execute();
         if ($query->rowCount() > 0) {
             return true;
         }
@@ -94,7 +94,7 @@ class Formation
     {
         $query = $this->connect->prepare("
             DELETE FROM formations 
-            WHERE id_formation=:id;
+            WHERE id_formation=:id
         ");
 
         $query->bindParam(":id", $id);
@@ -360,31 +360,37 @@ class Formation
     {
         $query = $this->connect->prepare("
             SELECT 
-                formations.id_formation,
-                formations.image AS imgFormation,
-                formations.mass_horaire,
-                categories.nom AS nomCategorie,
-                formations.nom AS nomFormation,
-                formations.prix,
-                formations.description,
-                formations.jaimes,
-                formateurs.id_formateur,
-                formateurs.nom AS nomFormateur,
-                formateurs.prenom,
-                formateurs.id_categorie AS categorie,
-                formateurs.img AS imgFormateur,
-                date(formations.date_creation) AS date_creation,
-                formations.id_niveau AS niveau,
-                formations.id_langue AS langue,
-                langues.nom AS nomLangue,
-                niveaux.nom AS nomNiveau,
-                niveaux.icon AS iconNiveau
-            FROM formations, formateurs, categories, langues, niveaux
-            WHERE formations.id_formateur = formateurs.id_formateur
-            AND categories.id_categorie = formations.id_categorie
-            AND formations.id_langue = langues.id_langue
-            AND formations.id_niveau = niveaux.id_niveau
-            AND formations.id_formation = :id
+                f.id_formation,
+                f.image AS imgFormation,
+                f.mass_horaire,
+                c.nom AS nomCategorie,
+                f.nom AS nomFormation,
+                f.prix,
+                f.description,
+                f.jaimes,
+                f.etat,
+                f.is_published,
+                ft.id_formateur,
+                ft.nom AS nomFormateur,
+                ft.prenom,
+                ft.id_categorie AS categorie,
+                ft.img AS imgFormateur,
+                DATE(f.date_creation) AS date_creation,
+                f.id_niveau AS niveau,
+                f.id_langue AS langue,
+                l.nom AS nomLangue,
+                n.nom AS nomNiveau,
+                n.icon AS iconNiveau,
+                v.url,
+                v.nom AS nomVideo
+            FROM formations AS f
+            JOIN formateurs AS ft ON f.id_formateur = ft.id_formateur
+            JOIN categories AS c ON f.id_categorie = c.id_categorie
+            JOIN langues AS l ON f.id_langue = l.id_langue
+            JOIN niveaux AS n ON f.id_niveau = n.id_niveau
+            JOIN videos AS v ON f.id_formation = v.id_formation
+            JOIN apercus AS a ON v.id_video = a.id_video
+            WHERE f.id_formation = :id
         ");
 
         $query->bindParam(":id", $id);
@@ -956,16 +962,19 @@ class Formation
         return false;
     }
 
-    public function filter($filter, $offset = 1, $sort)
+    public function filter($filter, $offset, $sort, $id_formateur = null)
     {
         $query = $this->connect->prepare("
             SELECT
                 fore.id_formation,
                 fore.slug,
                 fore.image AS imgFormation,
-                mass_horaire,
+                IF(TIME_FORMAT(mass_horaire, '%H') > 0, 
+                    CONCAT(TIME_FORMAT(mass_horaire, '%H'), 'H ', TIME_FORMAT(mass_horaire, '%i'), 'Min'), 
+                    TIME_FORMAT(mass_horaire, '%iMin')
+                ) AS mass_horaire,
                 fore.nom AS nomFormation,
-                fore.date_creation,
+                DATE_FORMAT(fore.date_creation, '%d/%m/%Y %H:%i') AS date_creation,
                 prix,
                 jaimes,
                 description,
@@ -994,12 +1003,14 @@ class Formation
                 LEFT JOIN inscriptions i ON f.id_formation = i.id_formation
                 GROUP BY f.id_formation
             ) AS insc ON fore.id_formation = insc.id_formation
-            WHERE fore.etat = 'public'
+            WHERE
             {$filter}
-            ORDER BY insc.total_inscriptions {$sort} DESC
+            {$id_formateur}
+            ORDER BY insc.total_inscriptions DESC {$sort}
             LIMIT {$offset}, 10
         ");
 
+        // print_r2($query);
         $query->execute();
 
         $formations = $query->fetchAll(\PDO::FETCH_OBJ);
@@ -1009,7 +1020,7 @@ class Formation
         return [];
     }
 
-    public function countFiltred($filter)
+    public function countFiltred($filter, $id_formateur = null)
     {
         $query = $this->connect->prepare("
             SELECT
@@ -1019,8 +1030,9 @@ class Formation
             JOIN categories c ON fore.id_categorie = c.id_categorie
             JOIN langues l ON fore.id_langue = l.id_langue
             JOIN niveaux n ON fore.id_niveau = n.id_niveau
-            WHERE fore.etat = 'public'
+            WHERE 
             {$filter}
+            {$id_formateur}
         ");
 
         $query->execute();
