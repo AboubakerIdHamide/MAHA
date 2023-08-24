@@ -34,7 +34,7 @@ class Preview
         return false;
     }
 
-    public function getPreviewByFormation($id_formation)
+    public function getPreviewOfFormation($id_formation)
     {
         $query = $this->connect->prepare("
             SELECT * 
