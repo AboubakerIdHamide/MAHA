@@ -1,4 +1,5 @@
-Public/images/formations/videos
-Public/images/formations/images
-Public/images/categories
-Public/images/userImage
+public/images/formations
+public/images/users
+public/images/categories
+public/images/videos
+public/videos

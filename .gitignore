@@ -2,6 +2,8 @@
 vendor/
 Public/images/formations
 Public/images/categories
-Public/images/userImage
+Public/images/users
+Public/images/videos/
+Public/videos/
 FakerController.php
 .env
