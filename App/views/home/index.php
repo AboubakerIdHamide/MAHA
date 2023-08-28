@@ -13,7 +13,7 @@
     <!-- GOOGLE WEB FONT -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- BASE CSS -->
-    <link href="<?= CSSROOT ?>/bootstrap.min.css" rel="stylesheet" />
+    <link href="<?= CSSROOT ?>/plugins/bootstrap.min.css" rel="stylesheet" />
     <link href="<?= CSSROOT ?>/common.css" rel="stylesheet" />
     <link href="<?= CSSROOT ?>/index.css" rel="stylesheet" />
     <link href="<?= CSSROOT ?>/vendors.css" rel="stylesheet" />

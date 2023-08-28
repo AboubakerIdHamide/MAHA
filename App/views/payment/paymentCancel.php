@@ -39,7 +39,7 @@
                 au Cours</a>
         </div>
     </div>
-    <script src="<?= JSROOT ?>/lottie.min.js"></script>
+    <script src="<?= JSROOT ?>/plugins/lottie.min.js"></script>
     <script>
     var animation = bodymovin.loadAnimation({
         container: document.getElementById('animContainer'),

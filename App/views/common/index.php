@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="<?= CSSROOT ?>/dashBoardNav.css" />
     <link rel="stylesheet" href="<?= CSSROOT ?>/etudiantFormation.css" />
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/bootstrap.min.css" />
     <link rel="stylesheet" href="<?= CSSROOT ?>/notifications.css" />
 
 </head>

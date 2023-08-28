@@ -11,7 +11,7 @@
     <!-- Plyr CSS -->
     <link rel="stylesheet" href="<?= CSSROOT ?>/plyr.min.css" />
     <!-- BASE CSS -->
-    <link href="<?= CSSROOT ?>/bootstrap.min.css" rel="stylesheet" />
+    <link href="<?= CSSROOT ?>/plugins/bootstrap.min.css" rel="stylesheet" />
     <link href="<?= CSSROOT ?>/courses/show.css" rel="stylesheet" />
     <link href="<?= CSSROOT ?>/common.css" rel="stylesheet" />
     <link href="<?= CSSROOT ?>/vendors.css" rel="stylesheet" />

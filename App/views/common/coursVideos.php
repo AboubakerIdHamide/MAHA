@@ -9,7 +9,7 @@
     <!-- FontAwesome -->
     <link href="<?= CSSROOT ?>/icons/all.min.css" rel="stylesheet" />
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/bootstrap.min.css" />
     <!-- Custom Styles -->
     <link rel="stylesheet" href="<?= CSSROOT ?>/cours-details-paid.css" />
 </head>

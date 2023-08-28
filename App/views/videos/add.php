@@ -7,7 +7,7 @@
     <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/bootstrap.min.css" />
     <!-- FontAwesome -->
     <link href="<?= CSSROOT ?>/icons/all.min.css" rel="stylesheet" />
     <!-- Custom Styles -->

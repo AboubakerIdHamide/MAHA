@@ -12,7 +12,7 @@
     <!-- Font Icons -->
     <link href="<?= CSSROOT ?>/icons/all.min.css" rel="stylesheet" />
     <!-- Styles -->
-    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/bootstrap.min.css" />
     <link rel="stylesheet" href="<?= CSSROOT ?>/auth/forgot.css" />
 </head>
 

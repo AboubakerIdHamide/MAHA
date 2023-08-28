@@ -9,7 +9,7 @@
     <!-- Font Awesome -->
     <link href="<?= CSSROOT ?>/icons/all.min.css" rel="stylesheet" />
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/bootstrap.min.css" />
     <!-- Custom Styles -->
     <link rel="stylesheet" href="<?= CSSROOT ?>/dashBoardNav.css" />
     <link rel="stylesheet" href="<?= CSSROOT ?>/dashboard-formateur.css" />
