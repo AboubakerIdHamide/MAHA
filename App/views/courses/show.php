@@ -9,7 +9,7 @@
     <!-- GOOGLE WEB FONT -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <!-- Plyr CSS -->
-    <link rel="stylesheet" href="<?= CSSROOT ?>/plyr.min.css" />
+    <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/plyr.min.css" />
     <!-- BASE CSS -->
     <link href="<?= CSSROOT ?>/plugins/bootstrap.min.css" rel="stylesheet" />
     <link href="<?= CSSROOT ?>/courses/show.css" rel="stylesheet" />

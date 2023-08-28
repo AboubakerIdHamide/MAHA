@@ -33,7 +33,7 @@
         <link rel="stylesheet"  href="<?= CSSROOT ?>/plugins/nestable.css">
 
         <!-- Plyr CSS -->
-        <link rel="stylesheet" href="<?= CSSROOT ?>/plyr.min.css" />
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/plyr.min.css" />
         <style>
             /* Chrome, Safari, Edge, Opera */
             input::-webkit-outer-spin-button,

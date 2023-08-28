@@ -35,7 +35,7 @@
         <link rel="stylesheet"  href="<?= CSSROOT ?>/plugins/sweetalert.css">
 
         <!-- Plyr CSS -->
-        <link rel="stylesheet" href="<?= CSSROOT ?>/plyr.min.css" /> 
+        <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/plyr.min.css" /> 
 
         <!-- Custom Style -->
         <link rel="stylesheet" href="<?= CSSROOT ?>/videos/index.css" />
