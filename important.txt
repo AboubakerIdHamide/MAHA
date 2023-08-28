@@ -1,5 +1,9 @@
+# Folders must create : 
 public/images/formations
 public/images/users
 public/images/categories
 public/images/videos
 public/videos
+
+# If you want to extract thumbnail from a video, Installing FFmpeg :
+# - https://phoenixnap.com/kb/ffmpeg-windows

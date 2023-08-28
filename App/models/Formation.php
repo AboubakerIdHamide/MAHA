@@ -198,8 +198,8 @@ class Formation
             AND id_formation=:fId
         ");
 
-        $query->bindParam(':eId', $etudiant_id);
-        $query->bindParam(':fId', $formation_id);
+        $query->bindValue(':eId', $etudiant_id);
+        $query->bindValue(':fId', $formation_id);
         $query->execute();
 
         if ($query->rowCount() > 0) {
@@ -989,7 +989,7 @@ class Formation
                 n.id_niveau,
                 n.nom AS nomNiveau,
                 n.icon AS iconNiveau,
-                insc.total_inscriptions
+                IF(insc.total_inscriptions IS NULL, 0, insc.total_inscriptions) AS total_inscriptions
             FROM formations fore
             JOIN formateurs f ON fore.id_formateur = f.id_formateur
             JOIN categories c ON fore.id_categorie = c.id_categorie
@@ -1001,6 +1001,7 @@ class Formation
                     COUNT(i.id_formation) AS total_inscriptions
                 FROM formations f
                 LEFT JOIN inscriptions i ON f.id_formation = i.id_formation
+                WHERE i.payment_state = 'approved'
                 GROUP BY f.id_formation
             ) AS insc ON fore.id_formation = insc.id_formation
             WHERE

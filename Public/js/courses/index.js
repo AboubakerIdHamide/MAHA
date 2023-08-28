@@ -117,8 +117,7 @@ $(function(){
                         <ul>
                             <li>
                                 <i class="fa-solid fa-clock"></i>
-                                ${course.mass_horaire.split(':')[0]}h
-                                ${course.mass_horaire.split(':')[1]}min
+                                ${course.mass_horaire}
                             </li>
                             <li><i class="fa-solid fa-user"></i> ${course.total_inscriptions}</li>
                             <li><a href="${URLROOT}/PaymentPaypal/makePayment/${course.id_formation}">Acheter</a></li>

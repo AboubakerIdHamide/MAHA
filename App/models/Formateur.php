@@ -97,8 +97,8 @@ class Formateur
 	public function create($formateur, $verificationToken = '', $expiry = 120)
 	{
 		$query = $this->connect->prepare("
-			INSERT INTO formateurs(nom, prenom, email, mot_de_passe, code, expiration_token_at, verification_token, img, email_verified_at) 
-			VALUES (:nom, :prenom, :email, :password, :code_formateur, :expiry, :token, :img, :email_verified_at)
+			INSERT INTO formateurs(nom, prenom, email, mot_de_passe, code, expiration_token_at, verification_token, img, email_verified_at, id_categorie) 
+			VALUES (:nom, :prenom, :email, :password, :code_formateur, :expiry, :token, :img, :email_verified_at, :id_categorie)
 		");
 
 		$query->bindValue(':nom', $formateur['nom'] ?? '');
@@ -110,6 +110,7 @@ class Formateur
 		$query->bindValue(':token', $verificationToken);
 		$query->bindValue(':img', $formateur['img'] ?? null);
 		$query->bindValue(':email_verified_at', $formateur['verified'] ?? null);
+		$query->bindValue(':id_categorie', $formateur['id_categorie'] ?? null);
 
 		$query->execute();
 
