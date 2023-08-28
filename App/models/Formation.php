@@ -233,7 +233,10 @@ class Formation
                 fore.id_formation,
                 fore.slug,
                 fore.image AS imgFormation,
-                mass_horaire,
+                IF(TIME_FORMAT(mass_horaire, '%H') > 0, 
+                    CONCAT(TIME_FORMAT(mass_horaire, '%H'), 'H ', TIME_FORMAT(mass_horaire, '%i'), 'Min'), 
+                    TIME_FORMAT(mass_horaire, '%iMin')
+                ) AS mass_horaire,
                 fore.nom AS nomFormation,
                 fore.date_creation,
                 COUNT(id_inscription) AS total_inscriptions,

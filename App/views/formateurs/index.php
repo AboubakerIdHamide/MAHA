@@ -1,4 +1,3 @@
-<?php //print_r2($formations) ?>
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
     <head>
@@ -16,9 +15,6 @@
 
         <!-- Material Design Icons -->
         <link rel="stylesheet" href="<?= CSSROOT ?>/icons/material-icons.css" />
-
-        <!-- Font Awesome Icons -->
-        <link rel="stylesheet" href="<?= CSSROOT ?>/icons/fontawesome.css" />
 
         <!-- Preloader -->
         <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/spinkit.css" />
@@ -74,7 +70,7 @@
                                                 <h4 class="card-title">Earnings</h4>
                                                 <p class="card-subtitle">Last 7 Days</p>
                                             </div>
-                                            <a href="instructor-earnings.html"
+                                            <a href="<?= URLROOT ?>/formateur/earnings"
                                                class="btn btn-sm btn-primary"><i class="material-icons">trending_up</i></a>
                                         </div>
                                         <div class="card-body py-0">
@@ -88,16 +84,16 @@
                                                 <h4 class="card-title">Transactions</h4>
                                                 <p class="card-subtitle">Latest Transactions</p>
                                             </div>
-                                            <a href="instructor-statement.html"
+                                            <a href="<?= URLROOT ?>/formateur/transactions"
                                                class="btn btn-sm btn-primary"><i class="material-icons">receipt</i></a>
                                         </div>
                                         <div data-toggle="lists"
                                              data-lists-values='[
-            "js-lists-values-course", 
-            "js-lists-values-document",
-            "js-lists-values-amount",
-            "js-lists-values-date"
-          ]'
+                                                "js-lists-values-course", 
+                                                "js-lists-values-document",
+                                                "js-lists-values-amount",
+                                                "js-lists-values-date"
+                                              ]'
                                              data-lists-sort-by="js-lists-values-date"
                                              data-lists-sort-desc="true"
                                              class="table-responsive">
@@ -121,115 +117,34 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="list">
-
+                                                    <?php foreach($latestTransactions as $transaction) : ?>
                                                     <tr>
                                                         <td>
                                                             <div class="media align-items-center">
-                                                                <a href="instructor-course-edit.html"
+                                                                <a href="<?= URLROOT ?>/courses/edit/<?= $transaction->id_formation ?>"
                                                                    class="avatar avatar-4by3 avatar-sm mr-3">
-                                                                    <img src="assets/images/vuejs.png"
+                                                                    <img src="<?= IMAGEROOT ?>/<?= $transaction->image ?>"
                                                                          alt="course"
                                                                          class="avatar-img rounded">
                                                                 </a>
                                                                 <div class="media-body">
                                                                     <a class="text-body js-lists-values-course"
-                                                                       href="instructor-course-edit.html"><strong>Angular Routing In-Depth</strong></a><br>
+                                                                       href="<?= URLROOT ?>/courses/edit/<?= $transaction->id_formation ?>"><strong class="d-block text-truncate" style="width: 220px"><?= $transaction->nom ?></strong></a>
                                                                     <small class="text-muted mr-1">
                                                                         Invoice
                                                                         <a href="instructor-invoice.html"
                                                                            style="color: inherit;"
-                                                                           class="js-lists-values-document">#8734</a> -
-                                                                        &dollar;<span class="js-lists-values-amount">89</span> USD
+                                                                           class="js-lists-values-document">#<?= $transaction->id_inscription ?></a> -
+                                                                        &dollar;<span class="js-lists-values-amount"><?= $transaction->prix ?></span> USD
                                                                     </small>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td class="text-right">
-                                                            <small class="text-muted text-uppercase js-lists-values-date">12 Nov 2018</small>
+                                                            <small class="text-muted text-uppercase js-lists-values-date"><?= $transaction->date_inscription ?></small>
                                                         </td>
                                                     </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <div class="media align-items-center">
-                                                                <a href="instructor-course-edit.html"
-                                                                   class="avatar avatar-4by3 avatar-sm mr-3">
-                                                                    <img src="assets/images/vuejs.png"
-                                                                         alt="course"
-                                                                         class="avatar-img rounded">
-                                                                </a>
-                                                                <div class="media-body">
-                                                                    <a class="text-body js-lists-values-course"
-                                                                       href="instructor-course-edit.html"><strong>Angular Unit Testing</strong></a><br>
-                                                                    <small class="text-muted mr-1">
-                                                                        Invoice
-                                                                        <a href="instructor-invoice.html"
-                                                                           style="color: inherit;"
-                                                                           class="js-lists-values-document">#8735</a> -
-                                                                        &dollar;<span class="js-lists-values-amount">89</span> USD
-                                                                    </small>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-right">
-                                                            <small class="text-muted text-uppercase js-lists-values-date">13 Nov 2018</small>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <div class="media align-items-center">
-                                                                <a href="instructor-course-edit.html"
-                                                                   class="avatar avatar-4by3 avatar-sm mr-3">
-                                                                    <img src="assets/images/github.png"
-                                                                         alt="course"
-                                                                         class="avatar-img rounded">
-                                                                </a>
-                                                                <div class="media-body">
-                                                                    <a class="text-body js-lists-values-course"
-                                                                       href="instructor-course-edit.html"><strong>Introduction to TypeScript</strong></a><br>
-                                                                    <small class="text-muted mr-1">
-                                                                        Invoice
-                                                                        <a href="instructor-invoice.html"
-                                                                           style="color: inherit;"
-                                                                           class="js-lists-values-document">#8736</a> -
-                                                                        &dollar;<span class="js-lists-values-amount">89</span> USD
-                                                                    </small>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-right">
-                                                            <small class="text-muted text-uppercase js-lists-values-date">14 Nov 2018</small>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <div class="media align-items-center">
-                                                                <a href="instructor-course-edit.html"
-                                                                   class="avatar avatar-4by3 avatar-sm mr-3">
-                                                                    <img src="assets/images/gulp.png"
-                                                                         alt="course"
-                                                                         class="avatar-img rounded">
-                                                                </a>
-                                                                <div class="media-body">
-                                                                    <a class="text-body js-lists-values-course"
-                                                                       href="instructor-course-edit.html"><strong>Learn Angular Fundamentals</strong></a><br>
-                                                                    <small class="text-muted mr-1">
-                                                                        Invoice
-                                                                        <a href="instructor-invoice.html"
-                                                                           style="color: inherit;"
-                                                                           class="js-lists-values-document">#8737</a> -
-                                                                        &dollar;<span class="js-lists-values-amount">89</span> USD
-                                                                    </small>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-right">
-                                                            <small class="text-muted text-uppercase js-lists-values-date">15 Nov 2018</small>
-                                                        </td>
-                                                    </tr>
-
+                                                    <?php endforeach ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -243,61 +158,24 @@
                                                 <p class="card-subtitle">by course</p>
                                             </div>
                                             <a class="btn btn-sm btn-primary"
-                                               href="instructor-earnings.html">Earnings</a>
+                                               href="<?= URLROOT ?>/formateur/earnings">Earnings</a>
                                         </div>
                                         <ul class="list-group list-group-fit mb-0">
+                                            <?php foreach($salesToday as $sale): ?>
                                             <li class="list-group-item">
                                                 <div class="media align-items-center">
                                                     <div class="media-body">
-                                                        <a href="instructor-course-edit.html"
-                                                           class="text-body"><strong>Basics of HTML</strong></a>
+                                                        <a href="<?= URLROOT ?>/courses/edit/<?= $sale->id_formation ?>"
+                                                           class="text-body"><strong><?= $sale->nom ?></strong></a>
                                                     </div>
                                                     <div class="media-right">
                                                         <div class="text-center">
-                                                            <span class="badge badge-pill badge-primary">15</span>
+                                                            <span class="badge badge-pill badge-primary"><?= $sale->numberSales ?></span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li class="list-group-item">
-                                                <div class="media align-items-center">
-                                                    <div class="media-body">
-                                                        <a href="instructor-course-edit.html"
-                                                           class="text-body"><strong>Angular in Steps</strong></a>
-                                                    </div>
-                                                    <div class="media-right">
-                                                        <div class="text-center">
-                                                            <span class="badge badge-pill badge-success">50</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <div class="media align-items-center">
-                                                    <div class="media-body">
-                                                        <a href="instructor-course-edit.html"
-                                                           class="text-body"><strong>Bootstrap Foundations</strong></a>
-                                                    </div>
-                                                    <div class="media-right">
-                                                        <div class="text-center">
-                                                            <span class="badge badge-pill badge-warning">14</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <div class="media align-items-center">
-                                                    <div class="media-body">
-                                                        <a href="instructor-course-edit.html"
-                                                           class="text-body"><strong>GitHub Basics</strong></a>
-                                                    </div>
-                                                    <div class="media-right">
-                                                        <div class="text-center">
-                                                            <span class="badge badge-pill  badge-danger ">14</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
+                                            <?php endforeach ?>
                                         </ul>
                                     </div>
                                     <div class="card">
@@ -319,7 +197,7 @@
                                                 <div class="media-left">
                                                     <a href="#"
                                                        class="avatar avatar-sm">
-                                                        <img src="assets/images/people/110/guy-9.jpg"
+                                                        <img src="<?= IMAGEROOT ?>/users/default.png"
                                                              alt="Guy"
                                                              class="avatar-img rounded-circle">
                                                     </a>
@@ -340,7 +218,7 @@
                                                 <div class="media-left">
                                                     <a href="#"
                                                        class="avatar avatar-sm">
-                                                        <img src="assets/images/people/110/guy-6.jpg"
+                                                        <img src="<?= IMAGEROOT ?>/users/default.png"
                                                              alt="Guy"
                                                              class="avatar-img rounded-circle">
                                                     </a>
@@ -422,52 +300,16 @@
         <!-- App JS -->
         <script src="<?= JSROOT ?>/plugins/app.js"></script>
 
+        <script src="<?= JSROOT ?>/plugins/list.min.js"></script>
+        <script src="<?= JSROOT ?>/plugins/list.js"></script>
+
         <!-- Bootstrap -->
         <script src="<?= JSROOT ?>/plugins/bootstrap-4.min.js"></script>
         
         <script src="<?= JSROOT ?>/plugins/apexcharts.min.js"></script>
-
         <script>
-            // const options = {
-            //     // Rounded Bar
-            //     barRoundness: 1.2
-            // };
-
-            // const data = {
-            //     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            //     datasets: [{
-            //         label: "Sales",
-            //         data: [25, 20, 30, 22, 17, 10, 18, 26, 28, 26, 20, 32],
-            //         barPercentage: 0.5,
-            //         barThickness: 20
-            //     }]
-            // };
-              const options = {
-                  series: [{
-                  data: [400, 430, 448, 470, 540, 580, 690]
-                }],
-                  chart: {
-                    toolbar: {
-                      show: false
-                    },
-                  type: 'bar',
-                  height: 350
-                },
-                plotOptions: {
-                  bar: {
-                    borderRadius: 4,
-                    horizontal: true,
-                  }
-                },
-                dataLabels: {
-                  enabled: false
-                },
-                xaxis: {
-                  categories: ["18/08", "19/08", "20/08", "21/08", "22/08", "23/08", "24/08"],
-                }
-                };
-            const chart = new ApexCharts(document.querySelector("#salesChart"), options);
-            chart.render();
+            const data = JSON.parse(`<?= $inscriptions ?>`);
         </script>
+        <script src="<?= JSROOT ?>/formateurs/index.js"></script>
     </body>
 </html>

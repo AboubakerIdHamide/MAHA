@@ -9,8 +9,12 @@ use App\Models\Commentaire;
 use App\Models\Notification;
 use App\Models\requestPayment;
 
+use App\Libraries\Request;
+use App\Libraries\Response;
+
 class FormateurController
 {
+	private $id_formateur;
 	private $fomateurModel;
 	private $formationModel;
 	private $videoModel;
@@ -34,6 +38,11 @@ class FormateurController
 			return redirect('user/verify');
 		}
 
+		if(!session('user')->get()->is_all_info_present){
+			return redirect('user/continue');
+		}
+
+		$this->id_formateur = session('user')->get()->id_formateur;
 		$this->fomateurModel = new Formateur;
 		$this->formationModel = new Formation;
 		$this->videoModel = new Video;
@@ -46,23 +55,64 @@ class FormateurController
 
 	public function index()
 	{
-		if($_SESSION['user']->is_all_info_present){
-			if (isset($_SESSION['id_formation'])) unset($_SESSION['id_formation']);
-			$categories = $this->stockedModel->getAllCategories();
-			$langues = $this->stockedModel->getAllLangues();
-			$niveaux = $this->stockedModel->getAllLevels();
-			$balance = $this->fomateurModel->whereEmail($_SESSION['user']->email)->balance;
-			$data = [
-				'balance' => $balance,
-				'categories' => $categories,
-				'langues' => $langues,
-				'niveaux' => $niveaux,
-				'nbrNotifications' => $this->_getNotifications()
-			];
+		$data = [
+			'inscriptions' => json_encode($this->inscriptionModel->getLast7DaysRevenus($this->id_formateur)),
+			'latestTransactions' => $this->inscriptionModel->getLatestTransactions($this->id_formateur),
+			'salesToday' => $this->inscriptionModel->getSalesToday($this->id_formateur)
+		];
 
-			return view('formateurs/index', $data);
+		return view('formateurs/index', $data);
+	}
+
+	public function earnings()
+	{
+		return view('formateurs/earnings');
+	}
+
+	public function getEarnings()
+	{
+		$request = new Request;
+		if($request->getMethod() !== 'GET'){
+			return Response::json(null, 405, "Method Not Allowed");
 		}
-		return redirect('user/continue');
+
+		$years = [];
+		for($i = date('Y'); $i >= date('Y') - 5;$i--) array_push($years, $i);
+
+		if(!in_array($request->get('year'), $years)) Response::json(null, 400);
+
+		$earnings = $this->inscriptionModel->getEarningsThisYear($this->id_formateur, date("{$request->get('year')}-01-01"));
+		return Response::json($earnings);
+	}
+
+	public function getSalesOfAllTime()
+	{
+		$request = new Request;
+		if($request->getMethod() !== 'GET'){
+			return Response::json(null, 405, "Method Not Allowed");
+		}
+		
+		$total = $this->inscriptionModel->countAllCoursesThatHaveSubscribers($this->id_formateur);
+		$totalPages = ceil($total / 4);
+
+        $page = htmlspecialchars(strip_tags($request->get('page')));
+        if(!isset($page) || $page < 1 || $page > $totalPages) $page = 1;
+
+        $offset = ($page - 1) * 4;	
+        $formationsRevenue = $this->inscriptionModel->getSalesOfAllTime($this->id_formateur, $offset);
+        $totalRevenue = $this->inscriptionModel->getTotalRevenueFormateur($this->id_formateur);
+        
+        $data = [
+        	'formationsRevenue' => $formationsRevenue,
+        	'totalRevenue' => $totalRevenue,
+        	'totalCourses' => (int) $total,
+            'totalPages' => $totalPages == 0 ? 1 : $totalPages,
+            'currentPage' => (int) $page,
+            'nextPage' => $page < $totalPages ? $page + 1 : $totalPages,
+            'prevPage' => $page - 1 === 0 ? null : $page - 1,
+        ];
+
+        return Response::json($data);
 	}
 
 	public function requestPayment()
