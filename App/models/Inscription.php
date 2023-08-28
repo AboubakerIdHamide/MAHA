@@ -438,4 +438,212 @@ class Inscription
         }
         return [];
     }
+
+    public function getLast7DaysRevenus($id_formateur)
+    {
+        $query = $this->connect->prepare("
+            SELECT
+                DATE_FORMAT(date_list.date_to_check, '%d/%m') AS date_inscription,
+                IFNULL(TRUNCATE(SUM(i.prix), 2), 0) AS montantTotal,
+                COUNT(i.id_formation) AS nbrFormation
+            FROM (
+                SELECT CURDATE() - INTERVAL n DAY AS date_to_check
+                FROM (
+                    SELECT 0 AS n UNION ALL SELECT 1 UNION ALL SELECT 2
+                    UNION ALL SELECT 3 UNION ALL SELECT 4
+                    UNION ALL SELECT 5 UNION ALL SELECT 6
+                ) numbers
+                WHERE n BETWEEN 0 AND 6
+            ) date_list
+            LEFT JOIN (
+                SELECT 
+                    id_formateur,
+                    id_formation,
+                    prix,
+                    DATE(date_inscription) AS date_inscription
+                FROM inscriptions
+                WHERE id_formateur = :id_formateur
+            ) AS i ON date_list.date_to_check = i.date_inscription
+            GROUP BY date_list.date_to_check
+            ORDER BY date_list.date_to_check
+        ");
+
+        $query->execute(['id_formateur' => $id_formateur]);
+        $inscriptions = $query->fetchAll(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            $earning = [];
+            $last7Days = [];
+
+            foreach ($inscriptions as $inscription) {
+                array_push($earning, $inscription->montantTotal);
+                array_push($last7Days, $inscription->date_inscription);
+            }
+
+            return [
+                "earning" => $earning,
+                "last7Days" => $last7Days
+            ];
+        }
+        return [];
+    }
+
+    public function getLatestTransactions($id_formateur)
+    {
+        $query = $this->connect->prepare("
+            SELECT
+                nom,
+                i.id_formation,
+                UPPER(DATE_FORMAT(date_inscription, '%d %b %Y')) AS date_inscription,
+                i.prix,
+                id_inscription,
+                image
+            FROM inscriptions i
+            JOIN formations AS f USING(id_formation)
+            WHERE i.id_formateur = :id_formateur
+            ORDER BY date_inscription DESC
+            LIMIT 4
+        ");
+
+        $query->execute(['id_formateur' => $id_formateur]);
+        $transactions = $query->fetchAll(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $transactions;
+        }
+        return [];
+    }
+
+    public function getSalesToday($id_formateur)
+    {
+        $query = $this->connect->prepare("
+            SELECT
+                nom,
+                i.id_formation,
+                COUNT(i.id_formation) AS numberSales
+            FROM inscriptions i
+            JOIN formations AS f USING(id_formation)
+            WHERE i.id_formateur = :id_formateur AND DATE(date_inscription) = CURDATE()
+            GROUP BY id_formation
+            ORDER BY numberSales DESC
+        ");
+
+        $query->execute(['id_formateur' => $id_formateur]);
+        $sales = $query->fetchAll(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $sales;
+        }
+        return [];
+    }
+
+    public function getEarningsThisYear($id_formateur, $year)
+    {
+        $query = $this->connect->prepare("
+            SELECT
+                MONTHNAME(date_list.date_to_check) AS mois,
+                IFNULL(TRUNCATE(SUM(i.prix), 2), 0) AS montantTotal
+            FROM (
+                SELECT 
+                    :fist_year_day + INTERVAL n MONTH AS date_to_check
+                FROM (
+                  SELECT 0 AS n UNION ALL SELECT 1 UNION ALL SELECT 2
+                  UNION ALL SELECT 3 UNION ALL SELECT 4
+                  UNION ALL SELECT 5 UNION ALL SELECT 6
+                  UNION ALL SELECT 7 UNION ALL SELECT 8
+                  UNION ALL SELECT 9 UNION ALL SELECT 10
+                  UNION ALL SELECT 11
+                ) numbers
+                WHERE n BETWEEN 0 AND 11
+            ) date_list
+            LEFT JOIN (
+                SELECT 
+                    prix,
+                    date_inscription
+                FROM inscriptions
+                WHERE id_formateur = :id_formateur
+            ) AS i ON DATE_FORMAT(date_list.date_to_check, '%Y-%m') = DATE_FORMAT(i.date_inscription, '%Y-%m')
+            GROUP BY date_list.date_to_check
+        ");
+
+        $query->execute([
+            'fist_year_day' => $year,
+            'id_formateur' => $id_formateur
+        ]);
+
+        $earnings = $query->fetchAll(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            $revenus = [];
+            $months = [];
+
+            foreach ($earnings as $earning) {
+                array_push($months, $earning->mois);
+                array_push($revenus, $earning->montantTotal);
+            }
+
+            return [
+                'earning' => $revenus,
+                'months' => $months
+            ];
+        }
+        return [];
+    }
+
+    public function countAllCoursesThatHaveSubscribers($id_formateur)
+    {
+        $query = $this->connect->prepare("
+            SELECT
+                COUNT(DISTINCT id_formation) AS totalFormations
+            FROM inscriptions 
+            WHERE id_formateur = :id_formateur
+            GROUP BY id_formateur
+        ");
+
+        $query->execute(['id_formateur' => $id_formateur]);
+        $total = $query->fetch(\PDO::FETCH_OBJ)->totalFormations;
+        if ($query->rowCount() > 0) {
+            return $total; 
+        }
+        return false;
+    }
+
+    public function getSalesOfAllTime($id_formateur, $offset = 0)
+    {
+        $query = $this->connect->prepare("
+            SELECT
+                i.id_formation,
+                nom,
+                image,
+                COUNT(i.id_formation) AS sales,
+                TRUNCATE(SUM(i.prix), 2) AS revenue,
+                TRUNCATE(SUM(i.prix) * (SELECT platform_pourcentage FROM admins) / 100, 2) AS fees
+            FROM inscriptions i
+            JOIN formations AS f USING(id_formation)
+            WHERE i.id_formateur = :id_formateur
+            GROUP BY id_formation
+            ORDER BY sales DESC
+            LIMIT {$offset}, 4
+        ");
+
+        $query->execute(['id_formateur' => $id_formateur]);
+        $sales = $query->fetchAll(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $sales;
+        }
+        return [];
+    }
+
+    public function getTotalRevenueFormateur($id_formateur)
+    {
+        $query = $this->connect->prepare("
+            SELECT
+                TRUNCATE(SUM(prix), 2) AS totalRevenue
+            FROM inscriptions 
+            WHERE id_formateur = :id_formateur
+        ");
+
+        $query->execute(['id_formateur' => $id_formateur]);
+        $total = $query->fetch(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $total;
+        }
+        return false;
+    }
 }
