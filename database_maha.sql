@@ -971,3 +971,56 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2023-08-27 13:50:34
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `group_formation_by_duration`()
+LANGUAGE SQL
+NOT DETERMINISTIC
+CONTAINS SQL
+SQL SECURITY DEFINER
+COMMENT ''
+BEGIN
+  -- 'extraShort' => "'00' AND '01:00:59'",
+  -- 'short' => "'01:00:00' AND '03:00:59'", 
+  -- 'medium' => "'03:00:00' AND '06:00:59'",
+  -- 'long' => "'06:00:00' AND '17:00:59'",
+  -- 'extraLong' => "'17:00:00' AND '800:00'"
+  
+  SELECT
+    '0 à 1 Heure' AS label,
+    'extraShort' AS `value`,
+    COUNT(*) AS total_formations
+  FROM formations f
+  WHERE etat = 'public'
+  AND mass_horaire BETWEEN '00' AND '01:00:59'
+  UNION
+  SELECT
+    '1 à 3 Heures' AS label,
+    'short' AS `value`,
+    COUNT(*)
+  FROM formations f
+  WHERE mass_horaire BETWEEN '01:00:00' AND '03:00:59'
+  UNION
+  SELECT
+    '3 à 6 Heures' AS label,
+    'medium' AS `value`,
+    COUNT(*)
+  FROM formations f
+  WHERE etat = 'public'
+  AND mass_horaire BETWEEN '03:00:00' AND '06:00:59'
+  UNION
+  SELECT
+    '6 à 17 Heures' AS label,
+    'long' AS `value`,
+    COUNT(*)
+  FROM formations f
+  WHERE etat = 'public'
+  AND mass_horaire BETWEEN '06:00:00' AND '17:00:59'
+  UNION
+  SELECT
+    'Plus de 17 Heures' AS label,
+    'extraLong' AS `value`,
+    COUNT(*)
+  FROM formations f
+  WHERE etat = 'public'
+  AND mass_horaire >= '17:00:00';
+END
