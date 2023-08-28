@@ -3,15 +3,16 @@
 namespace App\Seeders;
 
 use App\Models\Inscription;
+use App\Models\Formation;
 
 class InscriptionSeeder extends Seed {
 
-	private function definition($id_formation, $id_etudiant, $id_formateur)
+	private function definition($etudiant, $formation, $formateur)
 	{
         $data = [
-		    'id_formation' => $id_formation, 
-		    'id_etudiant' => $id_etudiant, 
-		    'id_formateur' => $id_formateur, 
+		    'id_formation' => $formation, 
+		    'id_etudiant' => $etudiant, 
+		    'id_formateur' => $formateur, 
 		    'date_inscription' => $this->faker->dateTimeThisYear()->format('Y-m-d H:i:s'),
 		    'prix' => $this->faker->randomFloat(2, 10, 100), 
 		    'transaction_info' => json_encode(['info' => 'paypal info']),
@@ -24,13 +25,30 @@ class InscriptionSeeder extends Seed {
 		return $inscription->create($data);
 	}
 
-	public function seed($records = 1, $id_formation, $etudiants, $id_formateur)
+	private function setLike($id_formation, $id_etudiant)
 	{
+		$formation = new Formation;
+		$formation->setLike($id_etudiant, $id_formation);
+	}
 
-		foreach ($etudiants as $id_etudiant) {
-			$this->definition($id_formation, $id_etudiant, $id_formateur);	
+	public function seed($etudiants, $formations)
+	{
+		$inscriptions = [];
+
+		foreach ($etudiants as $etudiant) {
+			foreach ($formations as $formation => $formateur) {
+				array_push($inscriptions, $this->definition($etudiant, $formation, $formateur));
+
+				if(rand(1, 10) < 6){
+					$this->setLike($formation, $etudiant);
+				}
+
+				if(rand(1, 10) < 6){
+					break;
+				}
+			}
 		}
-
-		return [];
+		
+		return $inscriptions;
 	}
 }

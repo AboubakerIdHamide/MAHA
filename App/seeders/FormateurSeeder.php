@@ -12,13 +12,11 @@ class FormateurSeeder extends Seed {
 		    'nom' => $this->faker->lastName,
 		    'prenom' => $this->faker->firstName,
 		    'email' => $this->faker->safeEmail(),
-		    'tel' => $this->faker->regexify('^06[0-9]{8}$'),
-		    'mdp' => password_hash('DIMAbarca123@@@', PASSWORD_DEFAULT),
-		    'img' => $this->getRandomImage(200, 200),
-		    'bio' => $this->faker->paragraph,
-		    'pmail' => $this->faker->safeEmail(),
-		    'specId' => $this->faker->numberBetween(1, 12),
+		    'password' => password_hash('DIMAbarca123@@@', PASSWORD_DEFAULT),
 		    'code_formateur' => strtoupper($this->faker->uuid()),
+		    'img' => $this->getRandomImage(200, 200, 'users', 'formateur'),
+		    'verified' => date('Y-m-d H:i:s'),
+		    'id_categorie' => $this->faker->numberBetween(1, 10),
 		];
 
 		$formateur = new Formateur;
@@ -29,8 +27,13 @@ class FormateurSeeder extends Seed {
 	public function seed($records = 1)
 	{
 		$formateurs = [];
+		
 		for($i = $records; $i > 0 ;$i--){
 			array_push($formateurs, $this->definition());
+
+			if($i % 5 === 0) {
+				sleep(1);
+			}
 		}
 
 		return $formateurs;

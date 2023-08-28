@@ -14,15 +14,21 @@ class CategorieSeeder extends Seed {
 		];
 
 		$categorie = new Stocked;
-		$categorie->insertCategorie($data);
+		return $categorie->insertCategorie($data);
 	}
 
-	public function seed($records = 1)
+	public function seed($records = 10)
 	{
+		$categories = [];
+
 		for($i = $records; $i > 0 ;$i--){
-			$this->definition();
+			array_push($categories, $this->definition());
+
+			if($i % 5 === 0) {
+				sleep(1);
+			}
 		}
 
-		return [];
+		return $categories;
 	}
 }
