@@ -165,8 +165,7 @@
                             <ul>
                                 <li>
                                     <i class="fa-solid fa-clock"></i>
-                                    <?= explode(':', $formation->mass_horaire)[0] ?>h
-                                    <?= explode(':', $formation->mass_horaire)[1]?>min
+                                    <?= $formation->mass_horaire ?>
                                 </li>
                                 <li><i class="fa-solid fa-users"></i> <?= $formation->total_inscriptions ?></li>
                                 <li><a class="buy" href="<?= URLROOT ?>/PaymentPaypal/makePayment/<?= $formation->id_formation ?>">Acheter</a></li>
