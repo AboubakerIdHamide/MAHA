@@ -16,7 +16,7 @@
     <link href="<?= CSSROOT ?>/common.css" rel="stylesheet" />
     <link href="<?= CSSROOT ?>/vendors.css" rel="stylesheet" />
     <!-- Font Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <link href="<?= CSSROOT ?>/icons/elegant-icons.css" rel="stylesheet" />
     <style>
         #hero_in.courses:before {
             background: url(<?= URLROOT ?>/public/<?= $formation->imgFormation ?>) center center no-repeat;

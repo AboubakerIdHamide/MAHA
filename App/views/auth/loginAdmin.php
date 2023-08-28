@@ -10,7 +10,7 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
     <!-- Font Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <link href="<?= CSSROOT ?>/icons/all.min.css" rel="stylesheet" />
     <!-- Style -->
     <link rel="stylesheet" href="<?= CSSROOT ?>/mahaAlert.css" />
     <link rel="stylesheet" href="<?= CSSROOT ?>/login.css" />

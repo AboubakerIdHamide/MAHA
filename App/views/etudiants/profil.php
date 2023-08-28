@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <title><?= SITENAME ?> | Paramètre</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <link href="<?= CSSROOT ?>/icons/all.min.css" rel="stylesheet" />
     <!-- BootStrap -->
     <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.quartz.min.css" />
     <link rel="stylesheet" href="<?= CSSROOT ?>/dashBoardNav.css" />

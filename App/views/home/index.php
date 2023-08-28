@@ -8,7 +8,8 @@
     <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <title>Cours en ligne - Apprenez ce que vous voulez, à votre rythme | <?= SITENAME ?></title>
     <!-- Font Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <link href="<?= CSSROOT ?>/icons/elegant-icons.css" rel="stylesheet" />
+    <link href="<?= CSSROOT ?>/icons/all.min.css" rel="stylesheet" />
     <!-- GOOGLE WEB FONT -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- BASE CSS -->

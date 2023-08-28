@@ -8,7 +8,7 @@
     <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
     <title><?= SITENAME ?> | Notifications</title>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <link href="<?= CSSROOT ?>/icons/all.min.css" rel="stylesheet" />
     <!-- Custom Styles -->
     <link rel="stylesheet" href="<?= CSSROOT ?>/dashBoardNav.css" />
     <link rel="stylesheet" href="<?= CSSROOT ?>/etudiantFormation.css" />

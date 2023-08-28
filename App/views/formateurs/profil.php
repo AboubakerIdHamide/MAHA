@@ -16,7 +16,8 @@
     <link href="<?= CSSROOT ?>/vendors.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/quill.snow.css" /> 
     <!-- font awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <link href="<?= CSSROOT ?>/icons/all.min.css" rel="stylesheet" />
+    <link href="<?= CSSROOT ?>/icons/elegant-icons.css" rel="stylesheet" />
     <style>
     #hero_in.general::before {
         background: url(<?= URLROOT ?>/public/<?= $formateur->img ?>) center center no-repeat;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
     <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <link href="<?= CSSROOT ?>/icons/all.min.css" rel="stylesheet" />
     <!-- Custom Styles -->
     <link rel="stylesheet" href="<?= CSSROOT ?>/addVideo.css" />
     <link rel="stylesheet" href="<?= CSSROOT ?>/dashBoardNav.css" />

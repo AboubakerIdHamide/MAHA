@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?= SITENAME ?> | Formations</title>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <link href="<?= CSSROOT ?>/icons/all.min.css" rel="stylesheet" />
     <!-- Bootstrap -->
     <link rel="stylesheet" href="<?= CSSROOT ?>/bootstrap.min.css" />
     <!-- Custom Styles -->
