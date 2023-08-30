@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" type="image/x-icon" href="<?= IMAGEROOT ?>/favicon.ico" />
-        <title>Formateur | <?= SITENAME ?></title>
+        <title>Dashboard | <?= SITENAME ?></title>
 
         <!-- Custom Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400,500,700%7CRoboto:400,500%7CRoboto:400,500&display=swap" />
@@ -22,7 +22,7 @@
         <!-- App CSS -->
         <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/app.css" />
 
-        <!-- Plyr CSS -->
+        <!-- Apexchart CSS -->
         <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/apexcharts.css" /> 
 
     </head>
@@ -54,11 +54,13 @@
 
             <!-- Header Layout Content -->
             <div class="mdk-header-layout__content">
-                <div class="mdk-drawer-layout__content page ">
+                <div data-push
+                     data-responsive-width="992px"
+                     class="mdk-drawer-layout js-mdk-drawer-layout">
                     <div class="mdk-drawer-layout__content page ">
                         <div class="container-fluid page__container">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="instructor-dashboard.html">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
                                 <li class="breadcrumb-item active">Dashboard</li>
                             </ol>
                             <h1 class="h2">Dashboard</h1>
@@ -132,9 +134,8 @@
                                                                        href="<?= URLROOT ?>/courses/edit/<?= $transaction->id_formation ?>"><strong class="d-block text-truncate" style="width: 220px"><?= $transaction->nom ?></strong></a>
                                                                     <small class="text-muted mr-1">
                                                                         Invoice
-                                                                        <a href="instructor-invoice.html"
-                                                                           style="color: inherit;"
-                                                                           class="js-lists-values-document">#<?= $transaction->id_inscription ?></a> -
+                                                                        <span
+                                                                           class="js-lists-values-document">#<?= $transaction->id_inscription ?></span> -
                                                                         &dollar;<span class="js-lists-values-amount"><?= $transaction->prix ?></span> USD
                                                                     </small>
                                                                 </div>
@@ -161,6 +162,9 @@
                                                href="<?= URLROOT ?>/formateur/earnings">Earnings</a>
                                         </div>
                                         <ul class="list-group list-group-fit mb-0">
+                                            <?php if(count($salesToday) === 0) : ?>
+                                                <div class="alert alert-info mb-0 rounded-0 d-flex align-items-center"><i class="material-icons mr-2">info</i> <span>Nothing sold today.</span></div>
+                                            <?php endif ?>
                                             <?php foreach($salesToday as $sale): ?>
                                             <li class="list-group-item">
                                                 <div class="media align-items-center">
@@ -204,7 +208,7 @@
                                                 </div>
                                                 <div class="media-body d-flex flex-column">
                                                     <div class="d-flex align-items-center">
-                                                        <a href="instructor-profile.html"
+                                                        <a href="#"
                                                            class="text-body"><strong>Laza Bogdan</strong></a>
                                                         <small class="ml-auto text-muted">27 min ago</small><br>
                                                     </div>
@@ -225,7 +229,7 @@
                                                 </div>
                                                 <div class="media-body">
                                                     <div class="d-flex align-items-center">
-                                                        <a href="instructor-profile.html"
+                                                        <a href="#"
                                                            class="text-body"><strong>FrontendMatter</strong></a>
                                                         <small class="ml-auto text-muted">just now</small>
                                                     </div>
@@ -271,13 +275,11 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
+                    <!-- require sidebar -->
+                    <?php require_once APPROOT . "/views/includes/formateur/sideNavbar.php" ?>
                 </div>
-                <!-- require sidebar -->
-                <?php require_once APPROOT . "/views/includes/formateur/sideNavbar.php" ?>
             </div>
-        </div>
         </div>
 
         <!-- Scripts -->
