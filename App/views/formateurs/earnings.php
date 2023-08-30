@@ -22,7 +22,7 @@
         <!-- App CSS -->
         <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/app.css" />
 
-        <!-- Plyr CSS -->
+        <!-- ApexChart CSS -->
         <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/apexcharts.css" /> 
 
     </head>
@@ -54,68 +54,71 @@
 
             <!-- Header Layout Content -->
             <div class="mdk-header-layout__content">
-                <div class="mdk-drawer-layout__content page ">
-                    <div class="container-fluid page__container">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="instructor-dashboard.html">Home</a></li>
-                                <li class="breadcrumb-item active">Earnings</li>
-                            </ol>
-                            <h1 class="h2">Earnings</h1>
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex form-inline">
-                                        <div class="form-group mr-12pt">
-                                            <select id="select-year" class="custom-select">
-                                                <?php for($i = date('Y'); $i >= date('Y') - 5;$i--): ?>
-                                                <option value="<?= $i ?>"><?= $i ?></option>
-                                                <?php endfor ?>
-                                            </select>
+                <div data-push
+                     data-responsive-width="992px"
+                     class="mdk-drawer-layout js-mdk-drawer-layout">
+                    <div class="mdk-drawer-layout__content page ">
+                        <div class="container-fluid page__container">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="<?= URLROOT ?>/formateur">Home</a></li>
+                                    <li class="breadcrumb-item active">Earnings</li>
+                                </ol>
+                                <h1 class="h2">Earnings</h1>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex form-inline">
+                                            <div class="form-group mr-12pt">
+                                                <select id="select-year" class="custom-select">
+                                                    <?php for($i = date('Y'); $i >= date('Y') - 5;$i--): ?>
+                                                    <option value="<?= $i ?>"><?= $i ?></option>
+                                                    <?php endfor ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="chart-legend m-0 justify-content-start"
+                                                     id="earningsChartLegend"></div>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <div class="chart-legend m-0 justify-content-start"
-                                                 id="earningsChartLegend"></div>
-                                        </div>
+                                        <div id="earningChart" class="chart"></div>
                                     </div>
-                                    <div id="earningChart" class="chart"></div>
                                 </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="card-title">Total <span class="text-primary" id="total-revenue"></span></h5>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-nowrap m-0">
-                                        <thead class="thead-light">
-                                            <tr class="text-uppercase small">
-                                                <th>
-                                                    Course
-                                                </th>
-                                                <th class="text-center"
-                                                    style="width:130px">
-                                                    Fees
-                                                </th>
-                                                <th class="text-center"
-                                                    style="width:130px">
-                                                    Revenue
-                                                </th>
-                                            </tr>
-                                        </thead>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Total <span class="text-primary" id="total-revenue"></span></h5>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-nowrap m-0">
+                                            <thead class="thead-light">
+                                                <tr class="text-uppercase small">
+                                                    <th>
+                                                        Course
+                                                    </th>
+                                                    <th class="text-center"
+                                                        style="width:130px">
+                                                        Fees
+                                                    </th>
+                                                    <th class="text-center"
+                                                        style="width:130px">
+                                                        Revenue
+                                                    </th>
+                                                </tr>
+                                            </thead>
 
-                                        <tbody id="sales">
-                                            <!-- Sales -->
-                                        </tbody>
-                                    </table>
+                                            <tbody id="sales">
+                                                <!-- Sales -->
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
+                                <!-- Pagination -->
+                                <ul class="pagination justify-content-center pagination-sm" id="pagination">
+                                </ul>
                             </div>
-                            <!-- Pagination -->
-                            <ul class="pagination justify-content-center pagination-sm" id="pagination">
-                            </ul>
-                        </div>
+                    </div>
+                    <!-- require sidebar -->
+                    <?php require_once APPROOT . "/views/includes/formateur/sideNavbar.php" ?>
                 </div>
-                <!-- require sidebar -->
-                <?php require_once APPROOT . "/views/includes/formateur/sideNavbar.php" ?>
             </div>
-        </div>
         </div>
 
         <!-- Scripts -->
@@ -137,9 +140,6 @@
 
         <!-- App JS -->
         <script src="<?= JSROOT ?>/plugins/app.js"></script>
-
-        <script src="<?= JSROOT ?>/plugins/list.min.js"></script>
-        <script src="<?= JSROOT ?>/plugins/list.js"></script>
 
         <!-- Bootstrap -->
         <script src="<?= JSROOT ?>/plugins/bootstrap-4.min.js"></script>
