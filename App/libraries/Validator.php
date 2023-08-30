@@ -94,10 +94,10 @@ class Validator
                 $this->addError($field, 'The ' . $field . ' field must be smaller than ' . $maxFileSizeMB . ' MB.');
             }
         } elseif ($rule === 'date') {
-            $date = \DateTime::createFromFormat('Y-m-d', $value);
+            $date = date_create($value);
 
-            if (!$date || $date->format('Y-m-d') !== $value) {
-                $this->addError($field, 'The ' . $field . ' field must be a valid date (YYYY-MM-DD).');
+            if (!$date) {
+                $this->addError($field, 'The ' . $field . ' field must be a valid date.');
             }
         } elseif ($rule === 'time') {
             if (!preg_match('/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/', $value)) {
