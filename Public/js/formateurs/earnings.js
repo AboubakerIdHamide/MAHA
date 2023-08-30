@@ -56,13 +56,26 @@ $(function(){
             dataLabels: {
                 enabled: false,
             },
+            tooltip : {
+                style: {
+                    fontFamily: 'Oswald', 
+                },
+            },
             xaxis: {
                 categories: data.months,
+                labels: {
+                    style: {
+                      fontFamily: 'Oswald', 
+                    },
+                }
             },
             yaxis: {
                 labels: {
                     formatter: function (val) {
                         return val + "$";
+                    },
+                    style: {
+                      fontFamily: 'Oswald', 
                     },
                 }
             }
@@ -168,11 +181,13 @@ $(function(){
 
 		$('li.page-item').click(function(){
 			const page = parseInt($(this).data('page'));
-			const currentPage = getParam('page') ? getParam('page') : 1; 
-			if(currentPage !== page){
-				setParams('page', page);
-				getSalesOfAllTime(page);
-			}
+            if(page != getParam('page')) {
+                const currentPage = getParam('page') ? getParam('page') : 1; 
+                if(currentPage !== page){
+                    setParams('page', page);
+                    getSalesOfAllTime(page);
+                }
+            }
 		});
     }
 

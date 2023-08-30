@@ -19,13 +19,26 @@ $(function () {
         dataLabels: {
             enabled: false,
         },
+        tooltip : {
+            style: {
+                fontFamily: 'Oswald', 
+            },
+        },
         xaxis: {
             categories: data.last7Days,
+            labels : {
+                style: {
+                    fontFamily: 'Oswald', 
+                },
+            },
         },
         yaxis: {
             labels: {
                 formatter: function (val) {
                     return val + "$";
+                },
+                style: {
+                    fontFamily: 'Oswald', 
                 },
             }
         }
