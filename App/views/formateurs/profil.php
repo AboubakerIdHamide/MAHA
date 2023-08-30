@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -34,70 +33,12 @@
     }
     </style>
 </head>
-
 <body>
     <div id="page" class="theia-exception">
         <!-- header -->
-        <header class="header menu_2">
-            <div id="preloader">
-                <div data-loader="circle-side"></div>
-            </div><!-- /Preload -->
-            <div id="logo">
-                <a href="<?= URLROOT ?>"><img class="logo" src="<?= LOGO ?>" width="149" height="42" alt="logo Maha"></a>
-            </div>
-            <ul id="top_menu">
-                <li><a href="javascript:void(0)" class="search-overlay-menu-btn">Search</a></li>
-                <?php if (!session('user')->get()) : ?>
-                    <li class="hidden_tablet"><a href="<?= URLROOT . "/user/login" ?>" class="btn_1 rounded">Se Connecter</a></li>
-                <?php else: ?>
-                    <?php if (session('user')->get()->type === 'formateur') : ?>
-                        <li class="hidden_tablet"><a href="<?= URLROOT . "/formateur/dashboard" ?>" class="btn_1 rounded">Dashboard</a>
-                        </li>
-                    <?php else: ?>
-                        <li class="hidden_tablet"><a href="<?= URLROOT . "/etudiant/dashboard" ?>" class="btn_1 rounded">Mes Cours</a>
-                        </li>
-                    <?php endif ?>
-                <?php endif ?>
-            </ul>
-            <!-- /top_menu -->
-            <a href="#menu" class="btn_mobile">
-                <div class="hamburger hamburger--spin" id="hamburger">
-                    <div class="hamburger-box">
-                        <div class="hamburger-inner"></div>
-                    </div>
-                </div>
-            </a>
-            <nav id="menu" class="main-menu">
-                <ul>
-                    <li><span><a href="<?= URLROOT ?>">Accueil</a></span></li>
-                    <li><span><a href="<?= URLROOT ?>/courses/search">Formations</a></span></li>
-                    <li><span><a href="<?= URLROOT ?>/#contact-us">Contactez-nous</a></span></li>
-                    <?php if (!session('user')->get()) : ?>
-                        <li><span><a href="<?= URLROOT ?>/user/register">S'inscrire</a></span></li>
-                        <li class="hidden_desktop"><a href="<?= URLROOT . "/user/login" ?>" class="btn_1 rounded">Se Connecter</a></li>
-                    <?php else: ?>
-                        <?php if (session('user')->get()->type === 'formateur') : ?>
-                            <li class="hidden_desktop"><a href="<?= URLROOT . "/formateur/dashboard" ?>" class="btn_1 rounded">Dashboard</a>
-                            </li>
-                        <?php else: ?>
-                            <li class="hidden_desktop"><a href="<?= URLROOT . "/etudiant/dashboard" ?>" class="btn_1 rounded">Mes Cours</a>
-                            </li>
-                        <?php endif ?>
-                    <?php endif ?>
-                </ul>
-            </nav>
-            <!-- Search Menu -->
-            <div class="search-overlay-menu">
-                <span class="search-overlay-close"><span class="closebt"><i class="fa-solid fa-xmark"></i></span></span>
-                <form role="search" id="searchform" method="GET" action="<?= URLROOT ?>/courses/search">
-                    <input id="input-search" name="q" type="text" placeholder="Search..." />
-                    <button type="submit"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                </form>
-            </div><!-- End Search Menu -->
-        </header>
+        <?php require_once APPROOT . "/views/includes/public/header.php" ?>
         <!-- /header -->
-
+        <!-- main -->
         <main>
             <section id="hero_in" class="general">
                 <div class="wrapper">
@@ -113,7 +54,7 @@
                 <div class="row">
                     <aside class="col-lg-3" id="sidebar">
                         <div class="profile">
-                            <figure><img id="avatar-formateur" src="<?= strpos(session('user')->get()->img, 'users') === 0 ? IMAGEROOT.'/'.session('user')->get()->img : session('user')->get()->img ?>" alt="Formateur image" class="rounded-circle"></figure>
+                            <figure><img id="avatar-formateur" src="<?= strpos($formateur->img, 'users') === 0 ? IMAGEROOT.'/'.$formateur->img : $formateur->img ?>" alt="Formateur image" class="rounded-circle"></figure>
                             <ul>
                                 <li class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex flex-column-reverse align-items-center">
@@ -158,8 +99,7 @@
                                     <div class="course-img">
                                         <a href="<?= URLROOT ?>/courses/<?= $formation->slug ?>"><img class="w-100" src="<?= IMAGEROOT ?>/<?= $formation->image ?>" alt="Course Img"></a><div class="course-category"><a href="course.html"><?= $formation->nomCategorie ?></a></div><a href="<?= URLROOT ?>/courses/<?= $formation->slug ?>" class="vs-btn">Consulté</a></div>
                                     <div class="course-content"><div class="course-top"><div class="course-review"><i class="fa fa-heart" style="color: #e83232"></i>(<?= $formation->jaimes ?>)</div><span class="course-price">$<?= $formation->prix ?></span></div><h3 class="h5 course-name"><a title="<?= $formation->nomFormation ?>" href="<?= URLROOT ?>/courses/<?= $formation->slug ?>"><?= $formation->nomFormation ?></a></h3><div class="course-teacher"><span class="text-inherit" >POUR <?= $formation->nomNiveau ?></span></div></div>
-                                    <div class="course-meta"><span><i class="fa fa-users"></i><?= $formation->inscriptions ?> Etudiants</span> <span><i class="fa fa-clock"></i><?= explode(':', $formation->mass_horaire)[0] ?>h
-                                    <?= explode(':', $formation->mass_horaire)[1] ?>m</span> <span><i class="fa fa-calendar-alt"></i><?= date("d/m/Y", strtotime($formation->date_creation)) ?></span></div>
+                                    <div class="course-meta"><span><i class="fa fa-users"></i><?= $formation->inscriptions ?> Etudiants</span> <span><i class="fa fa-clock"></i><?= $formation->mass_horaire ?></span> <span><i class="fa fa-calendar-alt"></i><?= date("d/m/Y", strtotime($formation->date_creation)) ?></span></div>
                                 </div>
                             </div>
                             <?php endforeach ?>
@@ -177,49 +117,10 @@
             <!-- /container -->
         </main>
         <!--/main-->
-
         <!-- footer -->
-        <footer>
-            <div class="container p-4">
-                <div class="row justify-content-between">
-                    <div class="col-lg-4 col-md-12">
-                        <p><img src="<?= LOGO ?>" width="149" height="42" alt="maha logo"></p>
-                        <p>
-                            MAHA Est Un Site Internet De Formation En Ligne Qui Contient Des Cours Et Des Vidéos
-                            d'apprentissage
-                            Dans Plusieur Domains Tels Que Le Web Development, E-commerce, Digital Marketing ...
-                        </p>
-                    </div>
-                    <div class="col-lg-4 col-md-6 ml-lg-auto">
-                        <h5>Liens utiles</h5>
-                        <ul class="links">
-                            <li><a href="<?= URLROOT ?>">Accueil</a></li>
-                            <li><a href="<?= URLROOT ?>/courses/search">Formations</a></li>
-                            <li><a href="<?= URLROOT ?>/#contact-us">Contactez-Nous</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <h5>En contact avec nous</h5>
-                        <ul class="contacts">
-                            <li><a href="tel://0524345057"><i class="fa-solid fa-mobile"></i> (+212) 524 34 50 57</a>
-                            </li>
-                            <li><a href="mailto:mahateamisgi@gmail.com"><i class="fa-solid fa-envelope"></i> mahateamisgi@gmail.com</a></li>
-                            <li><a href="mailto:mahateamisgi@gmail.com"><i class="fa-solid fa-location-dot"></i> Boulevard de Mohammedia</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!--/row-->
-                <hr>
-                <div class="row">
-                    <div class="col">
-                        <div id="copy">© Copyright <strong><span>MAHA</span></strong>. All Rights Reserved (2023)</div>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <?php require_once APPROOT . "/views/includes/public/footer.php" ?>
         <!--/footer-->
     </div>
-    <!-- page -->
 
     <!-- SCRIPTS -->
     <script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
