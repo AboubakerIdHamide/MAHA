@@ -21,18 +21,6 @@
                     <img class="logo" src="<?= LOGO ?>" width="149" height="42" alt="logo Maha">
                 </a>
 
-                <ul class="nav navbar-nav navbar-nav-stats d-none d-md-flex flex-nowrap">
-                    <li class="nav-item">
-                        <div class="nav-stats">$591 <small>GROSS</small></div>
-                    </li>
-                    <li class="nav-item">
-                        <div class="nav-stats">$31 <small>TAXES</small></div>
-                    </li>
-                    <li class="nav-item mr-3">
-                        <div class="nav-stats">$560 <small>NET</small></div>
-                    </li>
-                </ul>
-
                 <!-- Search -->
                 <form class="search-form d-none d-md-flex">
                     <input type="text"
@@ -177,17 +165,18 @@
                     <li class="nav-item dropdown ml-1 ml-md-3">
                         <a class="nav-link dropdown-toggle"
                            data-toggle="dropdown"
-                           href="#"
+                           href="javasript:void(0)"
                            role="button"><img src="<?= strpos(session('user')->get()->img, 'users') === 0 ? IMAGEROOT.'/'.session('user')->get()->img : session('user')->get()->img ?>"
                                  alt="Avatar Formateur"
                                  class="rounded-circle"
                                  width="40"></a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item"
-                               href="instructor-account-edit.html">
+                               href="<?= URLROOT ?>/formateur/edit">
                                 <i class="material-icons">edit</i> Edit Account
                             </a>
                             <a class="dropdown-item"
+                                target="_blank"
                                href="<?= URLROOT ?>/user/<?= session('user')->get()->slug ?>">
                                 <i class="material-icons">person</i> Public Profile
                             </a>
