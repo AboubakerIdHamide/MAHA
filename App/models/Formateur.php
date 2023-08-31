@@ -132,6 +132,7 @@ class Formateur
 				paypalMail,
 				biographie,
 				balance,
+				specialite,
 				code,
 				slug,
 				id_categorie,
@@ -387,7 +388,7 @@ class Formateur
 			FROM inscriptions i
 			JOIN formations f USING (id_formation)
 			WHERE i.id_formateur = :id
-			AND f.etat = 'public'
+			AND f.etat = 'public' AND payment_state = 'approved'
 		");
 
 		$query->bindParam(':id', $id);
@@ -525,6 +526,26 @@ class Formateur
 		$query->execute();
 
 		if ($query->rowCount() > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public function checkEmailBeforeUpdate($currentEmail, $wishEmail)
+	{
+		$query = $this->connect->prepare("
+			SELECT 
+				COUNT(email) AS email
+			FROM formateurs 
+			WHERE email != :currentEmail AND email = :wishEmail
+		");
+
+		$query->bindValue(":currentEmail", $currentEmail);
+		$query->bindValue(":wishEmail", $wishEmail);
+		$query->execute();
+
+		$email = $query->fetch(\PDO::FETCH_OBJ)->email;
+		if ($email) {
 			return true;
 		}
 		return false;

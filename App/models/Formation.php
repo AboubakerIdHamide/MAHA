@@ -136,7 +136,10 @@ class Formation
                 fore.image,
                 fore.slug,
                 DATE(fore.date_creation) AS date_creation,
-                mass_horaire,
+                IF(TIME_FORMAT(mass_horaire, '%H') > 0, 
+                    CONCAT(TIME_FORMAT(mass_horaire, '%H'), 'H ', TIME_FORMAT(mass_horaire, '%i'), 'Min'), 
+                    TIME_FORMAT(mass_horaire, '%iMin')
+                ) AS mass_horaire,
                 prix,
                 description,
                 jaimes,
@@ -497,7 +500,7 @@ class Formation
             AND (
                 formations.nom LIKE '%:q%' 
                 OR formations.description LIKE '%:q%'
-            );
+            )
         ");
 
         $query->bindParam(":categorie", $categorie);

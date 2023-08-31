@@ -46,10 +46,11 @@ class Inscription
         $query = $this->connect->prepare("
             SELECT 
                 COUNT(*) AS total_apprenants 
-            FROM inscriptions 
-            WHERE id_formateur = :id_formateur 
-            AND id_formation = :id_formation 
-            AND payment_state = 'approved'
+            FROM inscriptions i
+            JOIN formations AS f ON i.id_formation = f.id_formation
+            WHERE i.id_formateur = :id_formateur 
+            AND i.id_formation = :id_formation 
+            AND payment_state = 'approved' AND etat = 'public'
         ");
 
         $query->bindParam(":id_formateur", $id_formateur);
@@ -487,7 +488,7 @@ class Inscription
         return [];
     }
 
-    public function getLatestTransactions($id_formateur)
+    public function getTransactions($id_formateur, $offset = 0, $sort = 'date_inscription DESC', $filter = '')
     {
         $query = $this->connect->prepare("
             SELECT
@@ -499,9 +500,11 @@ class Inscription
                 image
             FROM inscriptions i
             JOIN formations AS f USING(id_formation)
-            WHERE i.id_formateur = :id_formateur
-            ORDER BY date_inscription DESC
-            LIMIT 4
+            WHERE i.id_formateur = :id_formateur 
+            AND payment_state = 'approved'
+            {$filter}
+            ORDER BY {$sort}
+            LIMIT {$offset}, 4
         ");
 
         $query->execute(['id_formateur' => $id_formateur]);
@@ -510,6 +513,25 @@ class Inscription
             return $transactions;
         }
         return [];
+    }
+
+    public function countTransactionsOfFormateur($id_formateur, $filter)
+    {
+        $query = $this->connect->prepare("
+            SELECT
+                COUNT(i.id_formation) AS totalTransations
+            FROM inscriptions i
+            JOIN formations AS f USING(id_formation)
+            WHERE i.id_formateur = :id_formateur AND payment_state = 'approved'
+            {$filter}
+        ");
+
+        $query->execute(['id_formateur' => $id_formateur]);
+        $total = $query->fetch(\PDO::FETCH_OBJ)->totalTransations;
+        if ($query->rowCount() > 0) {
+            return $total; 
+        }
+        return 0;
     }
 
     public function getSalesToday($id_formateur)
@@ -601,7 +623,7 @@ class Inscription
         if ($query->rowCount() > 0) {
             return $total; 
         }
-        return false;
+        return 0;
     }
 
     public function getSalesOfAllTime($id_formateur, $offset = 0)
@@ -644,6 +666,6 @@ class Inscription
         if ($query->rowCount() > 0) {
             return $total;
         }
-        return false;
+        return 0;
     }
 }
