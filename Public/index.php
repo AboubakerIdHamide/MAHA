@@ -1,8 +1,9 @@
 <?php
 
-use App\Libraries\Response;
-
 session_start();
+
+use App\Libraries\Response;
+use App\Libraries\ErrorHandler;
 
 // Composer autoload => composer dumpautoload
 require_once '../vendor/autoload.php';
@@ -143,5 +144,8 @@ class Router
         }
     }
 }
+
+set_exception_handler([ErrorHandler::class, 'handleException']);
+set_error_handler([ErrorHandler::class, 'handleError']);
 
 $init = new Router;
