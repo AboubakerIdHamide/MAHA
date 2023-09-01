@@ -21,7 +21,7 @@ require_once '../App/helpers/date.php';
 require_once '../App/helpers/auth.php';
 require_once '../App/helpers/session.php';
 require_once '../App/helpers/uploader.php';
-
+require_once '../App/helpers/paginator.php';
 
 /*
  * Router File
