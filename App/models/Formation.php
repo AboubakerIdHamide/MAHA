@@ -968,7 +968,7 @@ class Formation
         return false;
     }
 
-    public function filter($filter, $offset, $sort, $id_formateur = null)
+    public function filter($offset, $sort, $filter, $id_formateur = null)
     {
         $query = $this->connect->prepare("
             SELECT
@@ -1017,7 +1017,6 @@ class Formation
             LIMIT {$offset}, 10
         ");
 
-        // print_r2($query);
         $query->execute();
 
         $formations = $query->fetchAll(\PDO::FETCH_OBJ);

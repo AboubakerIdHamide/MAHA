@@ -35,10 +35,10 @@ $(function () {
                 `);
             },
             success: function ({data}) {
-                const { courses, totalCourses, currentPage, nextPage, totalPages, prevPage } = data;
-                renderCourses(courses, totalCourses, currentPage, nextPage);
-                renderPagination(totalPages, currentPage, nextPage, prevPage, totalCourses);
-                $display.text(`Displaying ${courses.length} out of ${totalCourses} courses`);
+                const { courses, totalRecords, currentPage, nextPage, totalPages, prevPage } = data;
+                renderCourses(courses, totalRecords, currentPage, nextPage);
+                renderPagination(totalPages, currentPage, nextPage, prevPage, totalRecords);
+                $display.text(`Displaying ${courses.length} out of ${totalRecords} courses`);
             },
             fail: function(){
                 $courses.empty().append(`
@@ -55,10 +55,10 @@ $(function () {
 
     fetch();
 
-    function renderCourses(courses, totalCourses, currentPage, nextPage) {
+    function renderCourses(courses, totalRecords, currentPage, nextPage) {
     	$courses.empty();
     	$('#alert').empty();
-        if(totalCourses === 0){
+        if(totalRecords === 0){
             $('#alert').html(`
                <div class="alert alert-light alert-dismissible border-1 border-left-3 border-left-warning">
                     <button type="button"
@@ -164,9 +164,9 @@ $(function () {
         });
     }
 
-    function renderPagination(totalPages, currentPage, nextPage, prevPage, totalCourses){
+    function renderPagination(totalPages, currentPage, nextPage, prevPage, totalRecords){
     	$pagination.empty();
-    	if(totalCourses === 0){
+    	if(totalRecords === 0){
     		return;
     	}
     	$pagination.append(`

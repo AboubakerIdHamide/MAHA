@@ -64,20 +64,11 @@ class CourseController extends ApiController
             $sort = ','.$sorts[$sort];
         }
 
-        $page = htmlspecialchars(strip_tags($request->get('page')));
-        if(!isset($page) || $page < 1) $page = 1;
-        $offset = ($page - 1) * 10;
-        $formations = $this->formationModel->filter($filterQuery, $offset, $sort);
         $totalFiltred = $this->formationModel->countFiltred($filterQuery);
-        $totalPages = ceil($totalFiltred / 10);
-        
-        return [
-            'totalCourses' => (int) $totalFiltred,
-            'totalPages' => $totalPages == 0 ? 1 : $totalPages,
-            'currentPage' => (int) $page,
-            'nextPage' => $page < $totalPages ? $page + 1 : $totalPages,
-            'courses' => $formations,
-        ];
+        return paginator($totalFiltred, 10, 'courses', $this->formationModel, 'filter', [
+            'sort' => $sort,
+            'filter' => $filterQuery,
+        ]);
     }
 
     private function formateurCourses($request)
@@ -105,22 +96,12 @@ class CourseController extends ApiController
 
         $id_formateur = 'AND f.id_formateur = "'.session('user')->get()->id_formateur.'"';
         $totalFiltred = $this->formationModel->countFiltred($filterQuery, $id_formateur);
-        $totalPages = ceil($totalFiltred / 10);
-
-        $page = htmlspecialchars(strip_tags($request->get('page')));
-        if(!isset($page) || $page < 1 || $page > $totalPages) $page = 1;
-
-        $offset = ($page - 1) * 10;
-        $formations = $this->formationModel->filter($filterQuery, $offset, $sort, $id_formateur);
-
-        return [
-            'totalCourses' => (int) $totalFiltred,
-            'totalPages' => $totalPages == 0 ? 1 : $totalPages,
-            'currentPage' => (int) $page,
-            'nextPage' => $page + 1 > $totalPages ? null : $page + 1,
-            'prevPage' => $page - 1 === 0 ? null : $page - 1,
-            'courses' => $formations,
-        ];
+        
+        return paginator($totalFiltred, 10, 'courses', $this->formationModel, 'filter', [
+            'sort' => $sort,
+            'filter' => $filterQuery,
+            'id_formateur' => $id_formateur
+        ]);
     }
 
     public function update($request, $id_formation)

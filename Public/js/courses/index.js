@@ -49,8 +49,8 @@ $(function(){
                 }
             },
             success: function ({data}) {
-                const { courses, totalCourses, currentPage, nextPage, totalPages } = data;
-                renderCourses(courses, totalCourses, currentPage, nextPage);
+                const { courses, totalRecords, currentPage, nextPage, totalPages } = data;
+                renderCourses(courses, totalRecords, currentPage, nextPage);
                 addLoadMoreBtn(nextPage, currentPage, totalPages);
             },
             fail: function(){
@@ -67,17 +67,17 @@ $(function(){
         });
     }
 
-    function renderCourses(courses, totalCourses, currentPage, nextPage) {
+    function renderCourses(courses, totalRecords, currentPage, nextPage) {
         if(currentPage === 1) {
             $courses.html('');
             $('.hero-section').html(`
                 <h3 class="text-center text-white">
-                    ${totalCourses} résultats ${getParam('q') ? `pour “${getParam('q')}”` : ''}
+                    ${totalRecords} résultats ${getParam('q') ? `pour “${getParam('q')}”` : ''}
                 </h3>
             `)
         }
 
-        if(totalCourses === 0){
+        if(totalRecords === 0){
             $courses.append(`
                 <div class="col-12">
                     <div class="alert alert-warning text-center">Nous sommes désolés, nous n’avons trouvé aucun résultat.</div>
