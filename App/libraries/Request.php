@@ -10,6 +10,7 @@ class Request
     private $get;
     private $post;
     private $params;
+    private $files;
 
     public function __construct()
     {
@@ -19,6 +20,7 @@ class Request
         $this->method = $_POST['method'] ?? $_SERVER['REQUEST_METHOD'];
         $this->get = $_GET;
         $this->post = $_POST;
+        $this->files = $_FILES;
     }
 
     public function getMethod()
@@ -36,14 +38,6 @@ class Request
         return $this->headers;
     }
 
-    public function body($field)
-    {
-        if (array_key_exists($field, $this->body)) {
-            return $this->body[$field];
-        }
-        return "";
-    }
-
     public function get($field)
     {
         if (array_key_exists($field, $this->get)) {
@@ -56,6 +50,16 @@ class Request
     {
         if (array_key_exists($field, $this->post)) {
             return $this->post[$field];
+        }
+        return "";
+    }
+
+    public function file($field)
+    {
+        if (array_key_exists($field, $this->files)) {
+            if($this->files[$field]['error'] === UPLOAD_ERR_OK){
+                return $this->files[$field];
+            }
         }
         return "";
     }
