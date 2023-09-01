@@ -11,18 +11,19 @@ class Response
         401: Unauthorized
         403: Forbidden
         404: Not Found
-        500: Internal Server Error 
+        405: Method Not Allowed
+        422: Unprocessable Content
+        500: Internal Server Error
     */
 
     public static function json($data = [], $statusCode = 200, $messages = [])
     {
         http_response_code($statusCode);
         header('Content-Type: application/json');
-        echo json_encode([
+        exit(json_encode([
             'status' => $statusCode,
             'data' => $data,
             'messages' => $messages,
-        ]);
-        exit;
+        ]));
     }
 }
