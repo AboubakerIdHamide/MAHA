@@ -201,7 +201,7 @@
                                                 <div class="media-left">
                                                     <a href="#"
                                                        class="avatar avatar-sm">
-                                                        <img src="<?= IMAGEROOT ?>/users/default.png"
+                                                        <img src="<?= IMAGEROOT ?>/users/avatars/default.png"
                                                              alt="Guy"
                                                              class="avatar-img rounded-circle">
                                                     </a>
@@ -222,7 +222,7 @@
                                                 <div class="media-left">
                                                     <a href="#"
                                                        class="avatar avatar-sm">
-                                                        <img src="<?= IMAGEROOT ?>/users/default.png"
+                                                        <img src="<?= IMAGEROOT ?>/users/avatars/default.png"
                                                              alt="Guy"
                                                              class="avatar-img rounded-circle">
                                                     </a>
