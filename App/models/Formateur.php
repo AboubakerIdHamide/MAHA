@@ -78,7 +78,12 @@ class Formateur
 				c.nom AS nomCategorie,
 				c.id_categorie,
 				email,
-				tel
+				tel,
+				background_img,
+				specialite,
+				facebook_profil,
+				twitter_profil,
+				linkedin_profil
 			FROM formateurs f, categories c
 			WHERE f.id_categorie = c.id_categorie 
 			AND f.slug = :slug

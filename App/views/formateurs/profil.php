@@ -19,7 +19,7 @@
     <link href="<?= CSSROOT ?>/icons/elegant-icons.css" rel="stylesheet" />
     <style>
     #hero_in.general::before {
-        background: url(<?= URLROOT ?>/public/<?= $formateur->img ?>) center center no-repeat;
+        background: url(<?= IMAGEROOT ?>/<?= $formateur->background_img ?>) center center no-repeat;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -46,6 +46,7 @@
                         <h1 class="fadeInUp">
                             <span></span><?= $formateur->prenom . ' ' . $formateur->nomFormateur ?>
                         </h1>
+                        <h3 style="color: #eee">(<?= $formateur->specialite ?>)</h3>
                     </div>
                 </div>
             </section>
@@ -54,7 +55,14 @@
                 <div class="row">
                     <aside class="col-lg-3" id="sidebar">
                         <div class="profile">
-                            <figure><img id="avatar-formateur" src="<?= strpos($formateur->img, 'users') === 0 ? IMAGEROOT.'/'.$formateur->img : $formateur->img ?>" alt="Formateur image" class="rounded-circle"></figure>
+                            <figure><img id="avatar-formateur" src="<?= strpos($formateur->img, 'users') === 0 ? IMAGEROOT.'/'.$formateur->img : $formateur->img ?>" alt="Formateur avatar" class="rounded-circle"></figure>
+                            <ul class="d-flex fs-5">
+                                <?= $formateur->linkedin_profil ? "<li class='flex-fill text-center'><a target='_blank' href='{$formateur->linkedin_profil}'><i class='fa-brands fa-linkedin'></i></a></li>" : "" ?>
+
+                                <?= $formateur->facebook_profil ? "<li class='flex-fill text-center'><a target='_blank' href='{$formateur->facebook_profil}'><i class='fa-brands fa-facebook'></i></a></li>" : "" ?>
+
+                                <?= $formateur->twitter_profil ? "<li class='flex-fill text-center'><a target='_blank' href='{$formateur->twitter_profil}'><i class='fa-brands fa-twitter'></i></a></li>" : "" ?>
+                            </ul>
                             <ul>
                                 <li class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex flex-column-reverse align-items-center">
@@ -66,7 +74,7 @@
                                         <span class="fw-bolder fs-4"><?= $numberFormations ?></span>
                                     </div>
                                 </li>
-                                <li>
+                                <li id="email">
                                     <div class="text-center">
                                         <i class="fa-solid fa-envelope"></i> <a class="text-muted" href="mailto:<?= $formateur->email ?>"><?= $formateur->email ?></a>
                                     </div>
@@ -92,6 +100,7 @@
                                 <p><?= $formateur->biographie ?></p>
                             </div>
                         </div>
+                        <hr style="background-color: #662d91;height: 5px;margin: 50px auto;width: 200px" />
                         <div class="row">
                             <?php foreach ($formations as $formation) : ?>
                             <div class="col-md-6 col-xl-4">

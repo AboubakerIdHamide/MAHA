@@ -23,7 +23,7 @@
   font-weight: 500;
 }
 
-.profile ul li:last-child {
+.profile ul li#email {
   border-bottom: 2px solid #ffc107;
 }
 
