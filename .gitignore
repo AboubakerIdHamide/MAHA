@@ -2,7 +2,10 @@
 vendor/
 Public/images/formations
 Public/images/categories
-Public/images/users
+Public/images/users/avatars
+!/public/images/users/avatars/default.png
+Public/images/users/backgrounds
+!/public/images/users/backgrounds/default.jpg
 Public/images/videos
 Public/videos/
 .env
