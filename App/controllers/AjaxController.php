@@ -9,7 +9,7 @@ use App\Models\Commentaire;
 
 class AjaxController
 {
-    private $fomateurModel;
+    private $formateurModel;
     private $etudiantModel;
     private $formationModel;
     private $videoModel;
@@ -18,7 +18,7 @@ class AjaxController
 
     public function __construct()
     {
-        $this->fomateurModel = new Formateur;
+        $this->formateurModel = new Formateur;
         $this->etudiantModel = new Etudiant;
         $this->formationModel = new Formation;
         $this->videoModel = new Video;
@@ -40,7 +40,7 @@ class AjaxController
                 $isThisEmailNew = false;
             }
 
-            if ($this->fomateurModel->whereEmail($request->post('email'))) {
+            if ($this->formateurModel->whereEmail($request->post('email'))) {
                 $isThisEmailNew = false;
             }
 
@@ -49,54 +49,6 @@ class AjaxController
         }
 
         return App\Libraries\Response::json(null, 405, "Method Not Allowed");
-    }
-
-    public function checkPaypalEmail()
-    {
-        $data = [
-            "thereIsError" => false,
-            "error" => "",
-        ];
-
-        if (isset($_POST["pmail"])) {
-            if (!empty($this->fomateurModel->wherePaypal($_POST["pmail"]))) {
-                $data["thereIsError"] = true;
-                $data["error"] = "Adresse e-mail de Paypal déjà utilisée";
-            }
-        }
-
-        echo json_encode($data);
-    }
-
-    public function getMyFormations($nomFormation = '')
-    {
-        $formations = $this->formationModel->getFormationsOfFormateur($_SESSION['id_formateur'], $nomFormation);
-
-        // don't forget to add Zipfile (Ressourses)
-        foreach ($formations as $formation) {
-            $formation->apprenants = $this->inscriptionModel->countApprenantsOfFormation($_SESSION['id_formateur'], $formation->id_formation);
-        }
-
-        echo json_encode($formations);
-    }
-
-    public function deleteFormation()
-    {
-        if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            if (isset($_POST['formations'])) {
-                foreach ($_POST['formations'] as $id_formation) {
-                    $videos = $this->videoModel->getVideosOfFormation($id_formation);
-                    $this->formationModel->delete($id_formation);
-                    if (!empty($videos)) {
-                        foreach ($videos as $video) {
-                            $this->videoModel->delete($video->id_video);
-                            unlink($video->url);
-                        }
-                    }
-                }
-                echo json_encode('Formation supprimé avec succès !!!');
-            }
-        }
     }
 
     public function likeToformation()
@@ -156,156 +108,9 @@ class AjaxController
         }
     }
 
-    public function uploadVideo()
-    {
-        if (isset($_FILES['file'])) {
-            $errors = "";
-            $path = 'images/formations/videos/';
-            $file_name = $_FILES['file']['name'];
-            $file_size = $_FILES['file']['size'];
-            $file_tmp = $_FILES['file']['tmp_name'];
-            $file_type = $_FILES['file']['type'];
-            $new_file_name = substr(number_format(time() * rand(), 0, '', ''), 0, 5) . "_" . strtolower(preg_replace('/\s+/', '_', $file_name));
-            $upload_path = $path . $new_file_name;
-            if ($file_size > 41943040) {
-                $errors = 'Très grande taille de fichier';
-                return null;
-            } else {
-                move_uploaded_file($file_tmp, $upload_path);
-            }
-
-            if (empty($errors)) {
-                echo json_encode(["videoPath" => $upload_path]);
-                return null;
-            } else {
-                echo json_encode(["error" => $errors]);
-                return null;
-            }
-        }
-    }
-
     public function checkMontant()
     {
-        if (isset($_SESSION['id_formateur'])) {
-            echo json_encode($this->fomateurModel->getBalance($_SESSION['id_formateur']));
-        }
-    }
-
-    public function googleLogin()
-    {
-        $url = "";
-        $token = $_POST['token'];
-        $verificationUrl = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=" . $token;
-        $response = file_get_contents($verificationUrl);
-
-        if ($response !== false) {
-            $data = json_decode($response, true);
-
-            if (isset($data['aud']) && $data['aud'] === '778408900492-6dbjf9arq9mo3thm3l4fr4fid6sjcis6.apps.googleusercontent.com') {
-                $email = $data['email'];
-
-                // Shecking If That User Exists
-                $user = $this->etudiantModel->whereEmail($email);
-                if (empty($user)) {
-                    $user = $this->fomateurModel->whereEmail($email);
-                    if (!empty($user)) {
-                        $user->type = "formateur";
-                        $url = $this->createUserSessions($user);
-                        echo json_encode([
-                            "authorized" => true,
-                            "message" => "rediriger ...",
-                            "url" => $url
-                        ]);
-                    } else {
-                        echo json_encode([
-                            "authorized" => false,
-                            "message" => "Aucun utilisateur avec cette adresse e-mail !"
-                        ]);
-                    }
-                } else {
-                    $user->type = "etudiant";
-                    $url = $this->createUserSessions($user);
-                    echo json_encode([
-                        "authorized" => true,
-                        "message" => "rediriger ...",
-                        "url" => $url
-                    ]);
-                }
-            } else {
-                echo json_encode([
-                    "authorized" => false,
-                    "message" => "Utilisateur non autorisé"
-                ]);
-            }
-        } else {
-            echo json_encode([
-                "authorized" => false,
-                "message" => "Erreur serveur"
-            ]);
-        }
-    }
-
-    public function facebookLogin()
-    {
-        $url = "";
-        $token = $_POST['token'];
-        $verificationUrl = "https://graph.facebook.com/v17.0/me?access_token=" . $token . "&fields=id,email";
-        $response = file_get_contents($verificationUrl);
-
-        if ($response !== false) {
-            $data = json_decode($response, true);
-            $email = $data['email'];
-
-            // Shecking If That User Exists
-            $user = $this->etudiantModel->whereEmail($email);
-            if (empty($user)) {
-                $user = $this->fomateurModel->whereEmail($email);
-                if (!empty($user)) {
-                    $user->type = "formateur";
-                    $url = $this->createUserSessions($user);
-                    echo json_encode([
-                        "authorized" => true,
-                        "message" => "rediriger ...",
-                        "url" => $url
-                    ]);
-                } else {
-                    echo json_encode([
-                        "authorized" => false,
-                        "message" => "Aucun utilisateur avec cet adresse e-mail"
-                    ]);
-                }
-            } else {
-                $user->type = "etudiant";
-                $url = $this->createUserSessions($user);
-                echo json_encode([
-                    "authorized" => true,
-                    "message" => "rediriger ...",
-                    "url" => $url
-                ]);
-            }
-        } else {
-            echo json_encode([
-                "authorized" => false,
-                "message" => "Erreur Serveur"
-            ]);
-        }
-    }
-
-    public function createUserSessions($user)
-    {
-        if ($user->type === 'formateur') {
-            $_SESSION['id_formateur'] = $user->id_formateur;
-            $_SESSION['user'] = $user;
-            // setting up the image link
-            $_SESSION['user']->img = URLROOT . "/Public/" . $_SESSION['user']->img;
-            return URLROOT . '/formateurs/dashboard';
-        } else {
-            $_SESSION['id_etudiant'] = $user->id_etudiant;
-            $_SESSION['user'] = $user;
-            // setting up the image link
-            $_SESSION['user']->img = URLROOT . "/Public/" . $_SESSION['user']->img;
-            return URLROOT . '/etudiants/dashboard';
-        }
+        // Code Check Balance Formateur Here (Before Making request money)
     }
 
     public function joinCourse($code = null)
