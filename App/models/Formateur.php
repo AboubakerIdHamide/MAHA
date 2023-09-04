@@ -56,7 +56,7 @@ class Formateur
 			OR f.prenom LIKE CONCAT('%', :q,'%')
 		");
 
-		$query->bindParam(':q', $q);
+		$query->bindValue(':q', $q);
 		$query->execute();
 
 		$formateurs = $query->fetchAll(\PDO::FETCH_OBJ);
@@ -84,7 +84,7 @@ class Formateur
 			AND f.slug = :slug
 		");
 
-		$query->bindParam(':slug', $slug);
+		$query->bindValue(':slug', $slug);
 		$query->execute();
 
 		$formateur = $query->fetch(\PDO::FETCH_OBJ);
@@ -121,6 +121,68 @@ class Formateur
 		return false;
 	}
 
+	public function formateur($id_formateur)
+	{
+		$query = $this->connect->prepare("
+			SELECT 
+				id_formateur,
+				nom,
+				tel,
+				date_creation,
+				paypalMail,
+				biographie,
+				balance,
+				specialite,
+				code,
+				slug,
+				id_categorie,
+				img, 
+				email, 
+				prenom,
+				code,
+				is_all_info_present,
+				email_verified_at,
+				'formateur' AS `type`,
+				background_img,
+				facebook_profil,
+				twitter_profil,
+				linkedin_profil
+			FROM formateurs
+			WHERE id_formateur = :id_formateur
+		");
+
+		$query->bindValue(':id_formateur', $id_formateur);
+		$query->execute();
+
+		$formateur = $query->fetch(\PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			$formateur->facebook_profil = explode(".com/", $formateur->facebook_profil)[1];
+			$formateur->twitter_profil = explode(".com/", $formateur->twitter_profil)[1];
+			$formateur->linkedin_profil = explode(".com/", $formateur->linkedin_profil)[1];
+			return $formateur;
+		}
+		return false;
+	}
+
+	public function select($id_formateur, $selectedFields)
+	{
+		$query = $this->connect->prepare("
+			SELECT 
+				".implode(', ', $selectedFields)."
+			FROM formateurs
+			WHERE id_formateur = :id_formateur
+		");
+
+		$query->bindValue(':id_formateur', $id_formateur);
+		$query->execute();
+
+		$formateur = $query->fetch(\PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $formateur;
+		}
+		return false;
+	}
+
 	public function whereEmail($email)
 	{
 		$query = $this->connect->prepare("
@@ -147,7 +209,7 @@ class Formateur
 			WHERE email = :email
 		");
 
-		$query->bindParam(':email', $email);
+		$query->bindValue(':email', $email);
 		$query->execute();
 
 		$formateur = $query->fetch(\PDO::FETCH_OBJ);
@@ -176,7 +238,7 @@ class Formateur
 			FROM formateurs 
 			WHERE paypalMail = :pmail
 		");
-		$query->bindParam(':pmail', $paypalEmail);
+		$query->bindValue(':pmail', $paypalEmail);
 		$query->execute();
 
 		$formateur = $query->fetch(\PDO::FETCH_OBJ);
@@ -209,24 +271,9 @@ class Formateur
         $query->execute();
 
 		if ($query->rowCount() > 0) {
-			return true;
-		}
-		return false;
-	}
-
-	public function updateImage($image, $id)
-	{
-		$query = $this->connect->prepare("
-			UPDATE formateurs
-			SET img = :image
-			WHERE id_formateur = :id
-		");
-
-		$query->bindParam(':image', $img);
-		$query->bindParam(':id', $id);
-		$query->execute();
-
-		if ($query->rowCount() > 0) {
+			if(in_array('img', array_keys($data)) || in_array('background_img', array_keys($data))){
+				return $this->select($id, ['img', 'background_img']);
+			}
 			return true;
 		}
 		return false;
@@ -241,7 +288,7 @@ class Formateur
 			WHERE id_formateur = :id
 		");
 
-		$query->bindParam(':id', $id);
+		$query->bindValue(':id', $id);
 		$query->execute();
 		$password = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
@@ -264,14 +311,14 @@ class Formateur
 			WHERE id_formateur = :id_formateur
 		");
 
-		$query->bindParam(':nom_formateur', $formateur['nom_formateur']);
-		$query->bindParam(':prenom_formateur', $formateur['prenom_formateur']);
-		$query->bindParam(':email_formateur', $formateur['email_formateur']);
-		$query->bindParam(':tel_formateur', $formateur['tel_formateur']);
-		$query->bindParam(':paypalMail', $formateur['paypalMail']);
-		$query->bindParam(':specialiteId', $formateur['specialiteId']);
-		$query->bindParam(':biographie', $formateur['biographie']);
-		$query->bindParam(':id_formateur', $formateur['id_formateur']);
+		$query->bindValue(':nom_formateur', $formateur['nom_formateur']);
+		$query->bindValue(':prenom_formateur', $formateur['prenom_formateur']);
+		$query->bindValue(':email_formateur', $formateur['email_formateur']);
+		$query->bindValue(':tel_formateur', $formateur['tel_formateur']);
+		$query->bindValue(':paypalMail', $formateur['paypalMail']);
+		$query->bindValue(':specialiteId', $formateur['specialiteId']);
+		$query->bindValue(':biographie', $formateur['biographie']);
+		$query->bindValue(':id_formateur', $formateur['id_formateur']);
 		$query->execute();
 
 		if ($query->rowCount() > 0) {
@@ -288,8 +335,8 @@ class Formateur
 			WHERE email = :email
 		");
 
-		$query->bindParam(':email', $formateur['email']);
-		$query->bindParam(':mdp', $formateur['mdp']);
+		$query->bindValue(':email', $formateur['email']);
+		$query->bindValue(':mdp', $formateur['mdp']);
 		$query->execute();
 
 		if ($query->rowCount() > 0) {
@@ -305,7 +352,7 @@ class Formateur
 			WHERE id_formateur = :id
 		");
 
-		$query->bindParam(':id', $id);
+		$query->bindValue(':id', $id);
 		$query->execute();
 
 		if ($query->rowCount() > 0) {
@@ -332,7 +379,7 @@ class Formateur
 			AND f.id_formateur = :id
 		");
 
-		$query->bindParam(':id', $id);
+		$query->bindValue(':id', $id);
 		$query->execute();
 
 		$formateur = $query->fetch(\PDO::FETCH_OBJ);
@@ -351,7 +398,7 @@ class Formateur
 			WHERE id_formateur = :id
 		");
 
-		$query->bindParam(':id', $id);
+		$query->bindValue(':id', $id);
 		$query->execute();
 
 		$numFormations = $query->fetch(\PDO::FETCH_OBJ)->numFormations;
@@ -370,7 +417,7 @@ class Formateur
 			WHERE id_formateur = :id
 		");
 
-		$query->bindParam(':id', $id);
+		$query->bindValue(':id', $id);
 		$query->execute();
 
 		$inscriptions = $query->fetch(\PDO::FETCH_OBJ)->inscriptions;
@@ -391,7 +438,7 @@ class Formateur
 			AND f.etat = 'public' AND payment_state = 'approved'
 		");
 
-		$query->bindParam(':id', $id);
+		$query->bindValue(':id', $id);
 		$query->execute();
 
 		$inscriptions = $query->fetch(\PDO::FETCH_OBJ)->inscriptions;
@@ -409,8 +456,8 @@ class Formateur
 			WHERE id_formateur = :id
 		");
 
-		$query->bindParam(':balance', $balance);
-		$query->bindParam(':id', $id);
+		$query->bindValue(':balance', $balance);
+		$query->bindValue(':id', $id);
 		$query->execute();
 
 		if ($query->rowCount() > 0) {
@@ -428,7 +475,7 @@ class Formateur
 			WHERE id_formateur = :id
 		");
 
-		$query->bindParam(':id', $id);
+		$query->bindValue(':id', $id);
 		$query->execute();
 
 		$formateur = $query->fetch(\PDO::FETCH_OBJ);
@@ -472,8 +519,8 @@ class Formateur
 			WHERE id_formateur = :id
 		");
 
-		$query->bindParam(':code', $code_formateur);
-		$query->bindParam(':id', $id);
+		$query->bindValue(':code', $code_formateur);
+		$query->bindValue(':id', $id);
 		$query->execute();
 
 		if ($query->rowCount() > 0) {
@@ -526,26 +573,6 @@ class Formateur
 		$query->execute();
 
 		if ($query->rowCount() > 0) {
-			return true;
-		}
-		return false;
-	}
-
-	public function checkEmailBeforeUpdate($currentEmail, $wishEmail)
-	{
-		$query = $this->connect->prepare("
-			SELECT 
-				COUNT(email) AS email
-			FROM formateurs 
-			WHERE email != :currentEmail AND email = :wishEmail
-		");
-
-		$query->bindValue(":currentEmail", $currentEmail);
-		$query->bindValue(":wishEmail", $wishEmail);
-		$query->execute();
-
-		$email = $query->fetch(\PDO::FETCH_OBJ)->email;
-		if ($email) {
 			return true;
 		}
 		return false;

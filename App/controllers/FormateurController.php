@@ -11,11 +11,12 @@ use App\Models\requestPayment;
 
 use App\Libraries\Request;
 use App\Libraries\Response;
+use App\Libraries\Validator;
 
 class FormateurController
 {
 	private $id_formateur;
-	private $fomateurModel;
+	private $formateurModel;
 	private $formationModel;
 	private $videoModel;
 	private $inscriptionModel;
@@ -43,7 +44,7 @@ class FormateurController
 		}
 
 		$this->id_formateur = session('user')->get()->id_formateur;
-		$this->fomateurModel = new Formateur;
+		$this->formateurModel = new Formateur;
 		$this->formationModel = new Formation;
 		$this->videoModel = new Video;
 		$this->inscriptionModel = new Inscription;
@@ -57,7 +58,7 @@ class FormateurController
 	{
 		$data = [
 			'inscriptions' => json_encode($this->inscriptionModel->getLast7DaysRevenus($this->id_formateur)),
-			'latestTransactions' => $this->inscriptionModel->getLatestTransactions($this->id_formateur),
+			'latestTransactions' => $this->inscriptionModel->getTransactions($this->id_formateur),
 			'salesToday' => $this->inscriptionModel->getSalesToday($this->id_formateur)
 		];
 
@@ -76,7 +77,7 @@ class FormateurController
 			return Response::json(null, 405, "Method Not Allowed");
 		}
 
-		$years = [];
+		$years = []; // Generate last 5 years.
 		for($i = date('Y'); $i >= date('Y') - 5;$i--) array_push($years, $i);
 
 		if(!in_array($request->get('year'), $years)) Response::json(null, 400);
@@ -115,379 +116,403 @@ class FormateurController
         return Response::json($data);
 	}
 
-	public function requestPayment()
+	public function transactions()
 	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$requestInfo = json_decode($_POST['data']);
-			if ($this->checkBalance($requestInfo)) {
-				// placer la demande
-				$this->requestPaymentModel->insertRequestPayment($_SESSION['user']->id_formateur, $requestInfo->montant);
-				echo json_encode("votre demande a été mis avec success");
-			}
-		} else {
-			return view('formateurs/requestPayment', ['nbrNotifications' => $this->_getNotifications()]);
+		return view('formateurs/transactions');
+	}
+
+	public function getTransactionsInSpecificDates()
+	{
+		$request = new Request;
+		if($request->getMethod() !== 'GET'){
+			return Response::json(null, 405, "Method Not Allowed");
 		}
+
+		$validator = new Validator([
+            'start' => strip_tags(trim($request->get('start'))),
+            'end' => strip_tags(trim($request->get('end'))),
+        ]);
+
+        $validator->validate([
+            'start' => 'date',
+            'end' => 'date'
+        ]);
+
+        $dates = $validator->validated();
+
+        // Check if dates are not emty, because they aren't required.
+        if($dates['end'] && $dates['start']){
+        	foreach ($dates as $key => $date) {
+       			$isoDateTime = new DateTime($date);
+				$dates[$key] = $isoDateTime->format("Y-m-d");
+       		}
+
+       		$filter = "AND DATE(date_inscription) BETWEEN '{$dates['start']}' AND '{$dates['end']}'";
+        }else{
+        	$filter = "AND DATE(date_inscription) BETWEEN '".date('Y-m-d')."' - INTERVAL 1 YEAR AND '".date('Y-m-d')."'";
+        }
+        
+        $total = $this->inscriptionModel->countTransactionsOfFormateur($this->id_formateur, $filter);
+		$totalPages = ceil($total / 4);
+
+        $page = htmlspecialchars(strip_tags($request->get('page')));
+        if(!isset($page) || $page < 1 || $page > $totalPages) $page = 1;
+
+        $offset = ($page - 1) * 4;	
+
+        $sort = htmlspecialchars(strip_tags($request->get('sort')));
+        $sorts = ['amount' => 'i.prix DESC', 'course' => 'nom ASC'];
+
+        if(array_key_exists($sort, $sorts)){
+            $sort = $sorts[$sort];
+        }else{
+        	$sort = 'date_inscription DESC';
+        }
+
+        $transactions = $this->inscriptionModel->getTransactions($this->id_formateur, $offset, $sort, $filter);
+
+        $data = [
+        	'transactions' => $transactions,
+        	'totalTransactions' => (int) $total,
+            'totalPages' => $totalPages == 0 ? 1 : $totalPages,
+            'currentPage' => (int) $page,
+            'nextPage' => $page < $totalPages ? $page + 1 : $totalPages,
+            'prevPage' => $page - 1 === 0 ? null : $page - 1,
+        ];
+		return Response::json($data);
 	}
 
-	private function checkBalance($requestInfo)
+	public function edit()
 	{
-		if ($requestInfo->paypalEmail == $_SESSION['user']->paypalMail) {
-			if ($requestInfo->montant >= 10) {
-				$formateur_balance = $this->fomateurModel->whereEmail($_SESSION['user']->email)->balance;
-				if ($requestInfo->montant <= $formateur_balance)
-					return true;
-				return false;
-			}
-		}
-	}
-
-	public function getPaymentsHistory()
-	{
-		echo json_encode($this->requestPaymentModel->getRequestsOfFormateur($_SESSION['user']->id_formateur));
-	}
-
-	public function deleteRequest($id_req)
-	{
-		$this->requestPaymentModel->deleteRequest($id_req);
-		echo json_encode('Demande supprimée avec succès !!');
-	}
-
-	public function getAllNotifications()
-	{
-		echo json_encode($this->notificationModel->getNotificationsOfFormateur($_SESSION['user']->id_formateur));
-	}
-
-	private function _getNotifications()
-	{
-		return $this->notificationModel->getNewNotificationsOfFormateur($_SESSION['user']->id_formateur);
-	}
-
-	public function notifications()
-	{
-		return view('common/index', ['nbrNotifications' => $this->_getNotifications()]);
-	}
-
-	public function setStateToSeen($id_notification)
-	{
-		$this->notificationModel->setStateToSeen($id_notification);
-		echo json_encode('Terminée !!');
-	}
-
-	public function deleteSeenNotifications()
-	{
-		$this->notificationModel->deleteSeenNotifications();
-		echo json_encode('Terminée !!');
-	}
-
-	// Update Profil 
-	public function updateInfos()
-	{
-		$formateur = $this->fomateurModel->find($_SESSION['user']->id_formateur);
-		// $formateur->img = URLROOT . "/Public/" . $formateur->img;
-		$categories = $this->stockedModel->getAllCategories();
-
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			// Prepare Data
+		$request = new Request;
+		if($request->getMethod() === 'GET'){
 			$data = [
-				"id" => $_SESSION['user']->id_formateur,
-				"nom" => trim($_POST["nom"]),
-				"prenom" => trim($_POST["prenom"]),
-				"tel" => trim($_POST["tel"]),
-				"specId" => trim($_POST["specialite"]),
-				"bio" => trim($_POST["biographie"]),
-				"c_mdp" => trim($_POST["c_mdp"]),
-				"n_mdp" => trim($_POST["n_mdp"]),
-				"nom_err" => "",
-				"prenom_err" => "",
-				"tel_err" => "",
-				"specId_err" => "",
-				"bio_err" => "",
-				"c_mdp_err" => "",
-				"n_mdp_err" => "",
-				"thereIsError" => false,
+				'formateur' => $this->formateurModel->formateur($this->id_formateur),
+				'categories' => $this->stockedModel->getAllCategories(),
 			];
 
+			return view('formateurs/edit-profil', $data);
+		}
 
-			// Validate Data
-			$data = $this->validateMDP($data);
-			$data = $this->validateDataUpdate($data);
-
-			// Checking If There Is An Error
-			if ($data["thereIsError"] == true) {
-				echo json_encode($data);
-			} else {
-				// Hashing Password
-				$data["n_mdp"] = password_hash($data["n_mdp"], PASSWORD_DEFAULT);
-
-				$this->fomateurModel->update($data);
-
-				$_SESSION["user_data"] = $data;
-
-				$formateur = $this->fomateurModel->find($_SESSION['user']->id_formateur);
-				$formateur->img = URLROOT . "/Public/" . $formateur->img;
-
-				$data = [
-					"nom" => $formateur->nomFormateur,
-					"prenom" => $formateur->prenom,
-					"email" => $formateur->email,
-					"tel" => $formateur->tel,
-					"img" => $formateur->img,
-					'categorie' => $formateur->nomCategorie,
-					"specId" => $formateur->id_categorie,
-					"bio" => $formateur->biographie,
-					"nom_err" => "",
-					"prenom_err" => "",
-					"img_err" => "",
-					"tel_err" => "",
-					"specId_err" => "",
-					"bio_err" => "",
-					"c_mdp_err" => "",
-					"n_mdp_err" => "",
-				];
-
-				echo json_encode($data);
+		$tabs = ["AccountTab", "PublicTab", "PrivateTab", "SocialTab"];
+		if($request->getMethod() === 'PUT'){
+			if(!in_array($request->post("tab"), $tabs)){
+				return Response::json(null, 400);
 			}
-		} else {
-			$data = [
-				"nom" => $formateur->nomFormateur,
-				"prenom" => $formateur->prenom,
-				"email" => $formateur->email,
-				"tel" => $formateur->tel,
-				"img" => $formateur->img,
-				'categorie' => $formateur->nomCategorie,
-				"specId" => $formateur->id_categorie,
-				"bio" => $formateur->biographie,
-				"nom_err" => "",
-				"prenom_err" => "",
-				"img_err" => "",
-				"tel_err" => "",
-				"specId_err" => "",
-				"bio_err" => "",
-				"c_mdp_err" => "",
-				"n_mdp_err" => "",
-				"categories" => $categories,
-				"nbrNotifications" => $this->_getNotifications()
-			];
-			return view("formateurs/updateInfos", $data);
+
+			return $this->{"edit".$request->post('tab')}($request);
 		}
+
+		return Response::json(null, 405, "Method Not Allowed");
 	}
 
-	private function validateDataUpdate($data)
+	private function strip_critical_tags($text)
+    {
+        $dom = new DOMDocument();
+        $dom->loadHTML($text);
+        $tags_to_remove = ['script', 'style', 'iframe', 'link', 'video', 'img'];
+        foreach($tags_to_remove as $tag){
+            $element = $dom->getElementsByTagName($tag);
+            foreach($element as $item){
+                $item->parentNode->removeChild($item);
+            }
+        }
+
+        $body = $dom->getElementsByTagName('body')->item(0);
+        $cleanedHtml = '';
+
+        if ($body) {
+            foreach ($body->childNodes as $childNode) {
+                $cleanedHtml .= $dom->saveHTML($childNode);
+            }
+        }
+        return $cleanedHtml; 
+    }
+
+    private function editAccountTab($request)
+    {
+    	$validator = new Validator([
+            'nom' => strip_tags(trim($request->post("nom"))),
+            'prenom' => strip_tags(trim($request->post("prenom"))),
+        ]);
+
+        $validator->validate([
+            'nom' => 'required|min:3|max:15|alpha',
+            'prenom' => 'required|min:3|max:15|alpha',
+        ]);
+
+        $updatedData = $validator->validated();
+
+        // update avatar
+        if($request->file('image')){
+        	unset($validator);
+
+        	$validator = new Validator([
+            	'img' => $request->file("image"),
+	        ]);
+
+	        $validator->validate([
+	            'img' => 'size:5|image',
+	        ]);
+
+	        $oldAvatar = $this->formateurModel->select($this->id_formateur, ['img']);
+
+	        if($oldAvatar !== 'users/avatars/default.png'){
+	        	unlink('images/'.$oldAvatar->img);
+	        }
+
+	        $updatedData['img'] = uploader($request->file("image"), 'images/users/avatars');
+	        $_SESSION['user']->img = $updatedData['img'];
+        }
+
+        // update phone number
+        if($request->post('tel')){
+        	unset($validator);
+
+        	$validator = new Validator([
+            	'tel' => trim($request->post("tel")),
+	        ]);
+
+	        $validator->validate([
+	            'tel' => 'min:8|max:20',
+	        ]);
+
+	        $updatedData['tel'] = $request->post('tel');
+        }
+
+        // update paypal email
+        if($request->post('paypalMail')){
+        	unset($validator);
+
+        	$validator = new Validator([
+            	'paypalMail' => strip_tags(trim($request->post("paypalMail"))),
+	        ]);
+
+	        $validator->validate([
+	            'paypalMail' => 'email|max:100',
+	        ]);
+
+	        $updatedData['paypalMail'] = $request->post('paypalMail');	
+        }
+
+        if($formateur = $this->formateurModel->update($updatedData, $this->id_formateur)){
+        	return Response::json($formateur, 200, 'Updated successfuly.');
+        }
+        return Response::json(null, 500, "Coudn't update your account, please try again later.");
+    }
+
+    public function refreshCode()
 	{
-		// Validate Nom & Prenom
-		if (strlen($data["nom"]) < 3) {
-			$data["thereIsError"] = true;
-			$data["nom_err"] = "Le nom doit comporter au moins 3 caractères";
-		}
-		if (strlen($data["prenom"]) < 3) {
-			$data["thereIsError"] = true;
-			$data["prenom_err"] = "Le prenom doit comporter au moins 3 caractères";
-		}
-		if (strlen($data["nom"]) > 30) {
-			$data["thereIsError"] = true;
-			$data["nom_err"] = "Le nom doit comporter au maximum 30 caractères";
-		}
-		if (strlen($data["prenom"]) > 30) {
-			$data["thereIsError"] = true;
-			$data["prenom_err"] = "Le prenom doit comporter au maximum 30 caractères";
+		$request = new Request;
+		if ($request->getMethod() === 'PUT') {
+			$code = strtoupper(bin2hex(random_bytes(20)));
+            while ($this->formateurModel->isCodeExist($code)) {
+                $code = strtoupper(bin2hex(random_bytes(20)));      
+            }
+			if($this->formateurModel->update(['code' => $code], $this->id_formateur)){
+        		return Response::json($code, 200, "Your code updated successfuly.");
+	        }
+	        return Response::json(null, 500, "Coudn't update your account, please try again later.");
 		}
 
-		// Validate Tele
-		if (!preg_match_all("/^((06|07)\d{8})+$/", $data["tel"])) {
-			$data["thereIsError"] = true;
-			$data["tel_err"] = "Le numéro de telephone que vous saisi est invalide";
-		}
-
-		// Validate Password
-		if (preg_match_all("/[!@#$%^&*()\-__+.]/", $data["n_mdp"])) {
-			if (preg_match_all("/\d/", $data["n_mdp"])) {
-				if (!preg_match_all("/[a-zA-Z]/", $data["n_mdp"])) {
-					$data["thereIsError"] = true;
-					$data["n_mdp_err"] = "Le mot de passe doit contenir au moins une lettre";
-				}
-			} else {
-				$data["thereIsError"] = true;
-				$data["n_mdp_err"] = "Le mot de passe doit contenir au moins un chiffres";
-			}
-		} else {
-			$data["thereIsError"] = true;
-			$data["n_mdp_err"] = "Le mot de passe doit contient au moin un caractère spécial";
-		}
-		if (strlen($data["n_mdp"]) > 50) {
-			$data["thereIsError"] = true;
-			$data["n_mdp_err"] = "Le mot de passe doit comporter au maximum 50 caractères";
-		}
-		if (strlen($data["n_mdp"]) < 10) {
-			$data["thereIsError"] = true;
-			$data["n_mdp_err"] = "Le mot de passe doit comporter au moins 10 caractères";
-		}
-
-		// Validate Biography
-		if (strlen($data["bio"]) > 500) {
-			$data["thereIsError"] = true;
-			$data["bio_err"] = "La Biographie doit comporter au maximum 500 caractères";
-		}
-		if (strlen($data["bio"]) < 130) {
-			$data["thereIsError"] = true;
-			$data["bio_err"] = "Le résumé doit avoir au moins 130 caractères";
-		}
-
-		// Validate Specialité
-		if (empty($this->stockedModel->getCategorieById($data["specId"]))) {
-			$data["thereIsError"] = true;
-			$data["specId_err"] = "Spécialité Invalide";
-		}
-
-		return $data;
+		return Response::json(null, 405, "Method Not Allowed");
 	}
 
-	public function validateMDP($data)
-	{
-		if (!(password_verify($data["c_mdp"], $this->fomateurModel->getPassword($data['id'])->mdp))) {
-			$data["thereIsError"] = true;
-			$data["c_mdp_err"] = "Mot de passe incorrect !";
-		}
-		return $data;
-	}
+    private function editPublicTab($request)
+    {
+    	$validator = new Validator([
+            'id_categorie' => strip_tags(trim($request->post("categorie"))),
+            'specialite' => strip_tags(trim($request->post("speciality"))),
+            'biographie' => $this->strip_critical_tags($request->post("biography")),
+        ]);
 
-	public function changeImg()
-	{
-		$formateur = $this->fomateurModel->find($_SESSION['user']->id_formateur);
-		$formateur->img = URLROOT . "/Public/" . $formateur->img;
+        $validator->validate([
+            'biographie' => 'required|min:15|max:700',
+            'id_categorie' => 'required|numeric|exists:categories',
+            'specialite' => 'required|min:3|max:30',
+        ]);
 
-		$data = [];
-		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-			$data['img'] = $_FILES["img"];
-			$data['img_err'] = "";
-			$data['thereIsError'] = false;
+        $updatedData = $validator->validated();
+        unset($updatedData['type']);
 
-			$data['email'] = $formateur->email;
+        // update background
+        if($request->file('background')){
+        	unset($validator);
 
-			// Upload The Image In Our Server
-			$data = $this->uploadImage($data);
+        	$validator = new Validator([
+            	'img' => $request->file("background"),
+	        ]);
 
-			// Checking If There Is An Error
-			if ($data["thereIsError"] == true) {
-				echo json_encode($data);
-			} else {
-				// Delete The Old Image
-				if ($data["img"] != "images/default.jpg") {
-					unlink($formateur['img']);
-				}
+	        $validator->validate([
+	            'img' => 'size:10|image',
+	        ]);
 
-				$this->fomateurModel->updateImage($data["img"], $_SESSION['user']->id_formateur);
+	        $oldBackground = $this->formateurModel->select($this->id_formateur, ['background_img']);
 
-				$_SESSION["user_data"] = $data;
+	        if($oldBackground !== 'users/background/default.png'){
+	        	unlink('images/'.$oldBackground->background_img);
+	        }
 
-				// $infos = $this->fomateurModel->getFormateurById($_SESSION['user']->id_formateur);
-				$formateur->img = URLROOT . "/Public/" . $data['img'];
-				$data = [
-					"img" => $formateur->img,
-				];
-				echo json_encode($data);
-			}
-		} else {
-			$data = [
-				"nom" => $formateur->nom,
-				"prenom" => $formateur->prenom,
-				"email" => $formateur->email,
-				"tel" => $formateur->tel,
-				"img" => $formateur->img,
-				"specId" => $formateur->id_categorie,
-				"bio" => $formateur->biographie,
-				"nom_err" => "",
-				"prenom_err" => "",
-				"email_err" => "",
-				"img_err" => "",
-				"tel_err" => "",
-				"specId_err" => "",
-				"bio_err" => "",
-			];
-			return view("formateur/updateInfos", $data);
-		}
-	}
+	        $updatedData['background_img'] = uploader($request->file("background"), 'images/users/backgrounds');
+	        $_SESSION['user']->background_img = $updatedData['background_img'];
+        }
 
-	private  function uploadImage($data)
-	{
-		$file = $data["img"]; // Image Array
-		$fileName = $file["name"]; // name
-		$fileTmpName = $file["tmp_name"]; // location
-		$fileError = $file["error"]; // error
+        if($formateur = $this->formateurModel->update($updatedData, $this->id_formateur)){
+        	return Response::json($formateur, 200, 'Updated successfuly.');
+        }
+        return Response::json(null, 500, "Coudn't update your account, please try again later.");
+    }
 
-		if (!empty($fileTmpName)) {
-			$fileExt = explode(".", $fileName);
-			$fileRealExt = strtolower(end($fileExt));
-			$allowed = array("jpg", "jpeg", "png");
+	public function editPrivateTab($request)
+    {
+    	$validator = new Validator([
+            'cmdp' => $request->post("cmdp"),
+            'password' => $request->post("mdp"),
+            'password_confirmation' => $request->post("vmdp"),
+        ]);
+
+        $validator->validate([
+            'cmdp' => 'required|check_password:formateurs',
+            'password' => 'required|confirm|min:10|max:50',
+        ]);
 
 
-			if (in_array($fileRealExt, $allowed)) {
-				if ($fileError === 0) {
-					$fileNameNew = substr(number_format(time() * rand(), 0, '', ''), 0, 5) . "." . $fileRealExt;
-					$fileDestination = 'images/userImage/' . $fileNameNew;
-					move_uploaded_file($fileTmpName, $fileDestination);
-					$data["img"] = $fileDestination;
-				} else {
-					$data["thereIsError"] = true;
-					$data["img_err"] = "Une erreur s'est produite lors du téléchargement de votre image ";
-				}
-			} else {
-				$data["thereIsError"] = true;
-				$data["img_err"] = "Vous ne pouvez pas télécharger ce fichier. (uniquement jpg, jpeg, png, ico sont autorisé)";
-			}
-		} else {
-			$data["img"] = 'images/default.jpg';
-		}
+        if($this->formateurModel->update(['mot_de_passe' => $validator->validated()['password']], $this->id_formateur)){
+        	return Response::json(null, 200, 'Updated successfuly.');
+        }
+        return Response::json(null, 500, "Coudn't update your password, please try again later.");
+    }
 
-		return $data;
-	}
+    public function changeEmail()
+    {
+    	$request = new Request;
+    	if ($request->getMethod() === 'PUT') {
+			$validator = new Validator([
+            	'email' => strip_tags(trim($request->post("email"))),
+	        ]);
 
-	private function _isFormateurHaveThisFormation($idFormation)
-	{
-		return (bool) $this->formationModel->getFormation($idFormation, $_SESSION['user']->id_formateur);
-	}
+	        $validator->validate([
+	            'email' => 'email|max:100|unique:formateurs',
+	        ]);			
 
-	public function coursVideos($id_etudiant = "", $idFormation = "")
-	{
-		if ($this->_isFormateurHaveThisFormation($idFormation)) {
-			// preparing data 
-			$data = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, $id_etudiant, $_SESSION['user']->id_formateur);
-			$data->imgFormateur = URLROOT . "/Public/" . $data->imgFormateur;
-			$data->image = URLROOT . "/Public/" . $data->image;
-			$data->imgEtudiant = URLROOT . "/Public/" . $data->imgEtudiant;
-			$data->formationCategorie = $this->stockedModel->getCategorieById($data->formationCategorie)->nom;
-			$data->formateurCategorie = $this->stockedModel->getCategorieById($data->formateurCategorie)->nom;
-			$data->langue = $this->stockedModel->getLangueById($data->langue)->nom;
-			$niveau = $this->stockedModel->getLevelById($data->niveau);
-			$data->niveau = $niveau->nom;
-			$data->niveauIcon = $niveau->icon;
-			$data->apprenants = $this->inscriptionModel->countApprenantsOfFormation($data->id_formateur, $data->id_formation);
-			$data->videos = $this->videoModel->getVideosOfFormation($idFormation);
-			$data->liked = $this->formationModel->isLikedBefore($data->id_etudiant, $data->id_formation);
+	        $token = bin2hex(random_bytes(16));
+            $this->formateurModel->updateToken(session('user')->get()->email, hash('sha256', $token), 30);
+	        session('new_email')->set($validator->validated()['email']);
 
-			foreach ($data->videos as $video) {
-				// settingUp Video Link
-				$video->url = URLROOT . "/Public/" . $video->url;
-				$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video, $_SESSION['user']->id_formateur, $id_etudiant);
-				// settingUp User image Link for comment
-				foreach ($video->comments as $comment) {
-					$comment->img = URLROOT . "/Public/" . $comment->img;
-				}
-			}
-			// loading the view
-			return view("formateur/coursVideos", $data);
-		} else
-			die("Une erreur s'est produite !!!");
-	}
+            try {
+                $mail = new App\Libraries\Mail;
+                $mail->to(session('new_email')->get())
+                ->subject("Vérification d'adresse e-mail")
+                ->body(null, 'verify-email.php', [
+                    '::tokenLink',
+                    '::expirationTime',
+                ],
+                [
+                    URLROOT."/formateur/confirmEmail/?token=".$token,
+                    '30 minutes',
+                ])->attach(['images/MAHA.png' => 'logo'])
+                ->send();
 
-	public function subscriptionCode()
-	{
-		$data = ['nbrNotifications' => $this->_getNotifications()];
-
-		// refresh code
-		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-			$data['code_formateur'] = $this->fomateurModel->refreshCode($_SESSION['user']->id_formateur);
+                return Response::json(null, 200, "Nous avons envoyé votre lien de vérification par e-mail.");
+            } catch (Exception $e) {
+                // echo json_encode($mail->ErrorInfo);
+                return Response::json(null, 500, "L'email n'a pas pu être envoyé.");
+            }
 		}
 
-		return view("formateurs/subscriptionCode", $data);
-	}
+		return Response::json(null, 405, "Method Not Allowed");	
+    }
+
+    public function confirmEmail()
+    {
+    	$request = new Request;
+    	if($request->getMethod() !== 'GET'){
+    		return Response::json(null, 405, "Method Not Allowed");
+    	}
+
+    	if(!$request->get('token')){
+            return view('errors/page_404');
+        }
+
+		$statement = App\Libraries\Database::getConnection()->prepare("
+            SELECT
+                verification_token,
+                expiration_token_at
+            FROM formateurs
+            WHERE verification_token = :token
+        ");
+
+        $statement->execute([
+            "token" => hash('sha256', $request->get('token')),
+        ]);
+
+        $formateur = $statement->fetch(\PDO::FETCH_OBJ);
+        if(!$formateur) {
+            return view('errors/page_404');
+        }
+
+        if(strtotime($formateur->expiration_token_at) < time()) {
+            return view('errors/token_expired');
+        }
+
+        $this->formateurModel->update(["email" => session('new_email')->get()], $this->id_formateur);
+        $_SESSION['user']->email = session('new_email')->get();
+        session('email')->remove();
+        flash("emailChanged", '<i class="material-icons text-success mr-3">check_circle</i><div class="text-body">You\'re email changed successfuly</div>', "alert alert-light border-1 border-left-3 border-left-success d-flex");
+        return redirect('formateur/edit');
+    }
+
+    public function editSocialTab($request)
+    {
+    	// update Facebook
+    	if($request->post('facebook')){
+        	$validator = new Validator([
+            	'facebook' => str_replace(' ', '', $request->post("facebook")),
+	        ]);
+
+	        $validator->validate([
+	            'facebook' => 'min:5|max:50',
+	        ]);
+
+	        $updatedData["facebook_profil"] = "https://www.facebook.com/".$validator->validated()['facebook'];
+        }
+
+        // update Twitter
+        if($request->post('twitter')){
+        	unset($validator);
+
+        	$validator = new Validator([
+            	'twitter' => str_replace(' ', '', $request->post("twitter")),
+	        ]);
+
+	        $validator->validate([
+	            'twitter' => 'min:5|max:50',
+	        ]);
+
+	        $updatedData['twitter_profil'] = "https://www.twitter.com/".$validator->validated()['twitter'];
+        }
+
+        // update LinkedIn
+        if($request->post('linkedin')){
+        	unset($validator);
+
+        	$validator = new Validator([
+            	'linkedin' => str_replace(' ', '', $request->post("linkedin")),
+	        ]);
+
+	        $validator->validate([
+	            'linkedin' => 'min:5|max:50',
+	        ]);
+
+	        $updatedData['linkedin_profil'] = "https://www.linkedin.com/".$validator->validated()['linkedin'];
+        }
+
+        if(isset($updatedData)) {
+        	if($formateur = $this->formateurModel->update($updatedData, $this->id_formateur)){
+	        	return Response::json(null, 200, 'Updated successfuly.');
+	        }
+	        return Response::json(null, 500, "Coudn't update your account, please try again later.");
+        }
+        return Response::json(null, 400, "You must provide a social profil link (facebook, linkedin, twitter).");
+    }
 }
