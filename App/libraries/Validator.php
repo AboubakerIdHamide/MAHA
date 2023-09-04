@@ -36,7 +36,7 @@ class Validator
                     exit;
                 }
             }
-            return Response::json(null, 400, $this->errors);
+            return Response::json(null, 412, $this->errors);
         }
     }
 
@@ -222,6 +222,17 @@ class Validator
         } elseif ($rule === 'array') {
             if(!is_array($value)){
                 $this->addError($field, 'The ' . $field . ' field must not be an array.');
+            }
+        } elseif (strpos($rule, 'check_password:') === 0) {
+            $table = explode(":", $rule)[1];
+            $column = "id_".substr($table, 0, -1);
+            $query = "SELECT mot_de_passe FROM {$table} WHERE {$column} = :id";
+            $statement = Database::getConnection()->prepare($query);
+            $statement->bindParam(':id', session('user')->get()->{$column});
+            $statement->execute();
+            $hashed_password = $statement->fetchColumn();
+            if(!password_verify($value, $hashed_password ?? '')) {
+                $this->addError($field, 'The current password is not correct.');
             }
         }
 
