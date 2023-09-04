@@ -276,9 +276,8 @@ class UserController
 
             $token = bin2hex(random_bytes(16));
             $this->{session('user')->get()->type.'Model'}->updateToken(session('user')->get()->email, hash('sha256', $token));
-            session('token')->set($token);
 
-            sleep(13);
+            sleep(12);
 
             try {
                 $mail = new App\Libraries\Mail;
@@ -289,7 +288,7 @@ class UserController
                     '::expirationTime',
                 ],
                 [
-                    URLROOT."/user/confirm/?token=".session('token')->get(),
+                    URLROOT."/user/confirm/?token=".$token,
                     '2 heures',
                 ])->attach(['images/MAHA.png' => 'logo'])
                 ->send();
@@ -608,7 +607,7 @@ class UserController
 
                     $validator->validate([
                         'biographie' => 'required|min:15|max:700',
-                        'id_categorie' => 'required|numeric',
+                        'id_categorie' => 'required|numeric|exists:categories',
                         'specialite' => 'required|min:3|max:30',
                     ], 'formateurs/continue');
 
