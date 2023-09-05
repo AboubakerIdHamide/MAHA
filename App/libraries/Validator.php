@@ -234,6 +234,12 @@ class Validator
             if(!password_verify($value, $hashed_password ?? '')) {
                 $this->addError($field, 'The current password is not correct.');
             }
+        } elseif (strpos($rule, 'file:') === 0) {
+            $fileType = explode(':', $rule)[1];
+
+            if($fileType !== $value['type']){
+                $this->addError($field, "Only file type `$fileType` allowed.");
+            }
         }
 
         // Add more validation rules as needed...
