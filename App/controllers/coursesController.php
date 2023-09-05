@@ -1,9 +1,5 @@
 <?php
 
-use FFMpeg\FFMpeg;
-use FFMpeg\Coordinate\TimeCode;
-use Intervention\Image\ImageManagerStatic as Image;
-
 use App\Models\Stocked;
 use App\Models\Preview;
 use App\Models\Formation;
@@ -89,14 +85,6 @@ class coursesController
 			return view("courses/show", $data);
         }
 
-        if(!auth()){
-        	return view('errors/page_404');
-        }
-
-        if(session('user')->get()->type !== 'formateur'){
-           return view('errors/page_404');
-        }
-
         return view('formateurs/courses/index', ['categories' => $this->stockedModel->getAllCategories()]);
     }
 
@@ -111,66 +99,6 @@ class coursesController
         }
 
         $request = new Request;
-        if ($request->getMethod() === 'POST') {
-            $validator = new Validator([
-                'nom' => strip_tags(trim($request->post('nom'))),
-                'description' => $this->strip_critical_tags($request->post("description")),
-                'prix' => strip_tags(trim($request->post('prix'))),
-                'etat' => strip_tags(trim($request->post('etat'))),
-                'id_categorie' => strip_tags(trim($request->post('id_categorie'))),
-                'id_niveau' => strip_tags(trim($request->post('id_niveau'))),
-                'id_langue' => strip_tags(trim($request->post('id_langue'))),
-                'preview' => $_FILES['preview'] ?? '',
-                'image' => $_FILES['image'] ?? ''
-            ]);
-
-            // Optional: preview_name and is_published
-            $validator->validate([
-                'nom' => 'required|min:3|max:80',
-                'description' => 'required|min:15|max:700',
-                'prix' => 'required|numeric|numeric_min:10|numeric_max:1000',
-                'etat' => 'required|in_array:public,private',
-                'id_categorie' => 'required|exists:categories',
-                'id_niveau' => 'required|exists:niveaux',
-                'id_langue' => 'required|exists:langues',
-                'preview' => 'required|size:1024|video|video_duration:50',
-                'image' => 'required|size:5|image'
-            ]);
-
-            $formation = $validator->validated();
-            unset($formation['type']);
-            $formation['image'] = uploader($_FILES['image'], 'images/formations');
-            $formation['masse_horaire'] = $formation['duration'];
-            $formation['id_formateur'] = session('user')->get()->id_formateur;
-            $formation['is_published'] = $request->post('is_published');
-
-            // Create formation
-            $id_formation = $this->formationModel->create($formation);
-
-            // Create Video
-            $video = [];
-            $video['id_formation'] = $id_formation;
-            $preview_name = strip_tags(trim($request->post('preview_name')));
-
-            if(strlen($preview_name) === 0 || strlen($preview_name) > 80){
-                $video['nom'] = $_FILES['preview']['name'];
-            }else{
-                $video['nom'] = $preview_name;
-            }
-
-            $video['url'] = uploader($_FILES['preview'], "videos/formations");
-            $video['duration'] = $formation['duration'];
-
-
-            $video['thumbnail'] = $this->getThumbnail('videos/'.$video['url']);
-            $id_video = $this->videoModel->create($video);
-
-            // Create Preview
-            $this->previewModel->insertPreviewVideo($id_video, $id_formation);
-            
-            return Response::json(['id_formation' => $id_formation], 201);
-        }
-
         if($request->getMethod() !== 'GET'){
             return Response::json(null, 405, "Method Not Allowed");
         }
@@ -296,29 +224,5 @@ class coursesController
             return Response::json(null, 200, 'Updated successfuly.');
         }
         return Response::json(null, 500, "Coudn't update the preview, please try again later.");
-    }
-
-    private function getThumbnail($video)
-    {
-        $ffmpeg = FFMpeg::create([
-            'ffmpeg.binaries'  => 'c:\ffmpeg\bin\ffmpeg.exe',
-            'ffprobe.binaries' => 'c:\ffmpeg\bin\ffprobe.exe' 
-        ]);
-
-        $video = $ffmpeg->open($video);
-
-        $thumbnailPath = 'videos/'.generateUniqueName(uniqid()).'.jpg';
-        $frame = $video->frame(TimeCode::fromSeconds(5))->save('images/'.$thumbnailPath);
-
-        $img = Image::make('images/'.$thumbnailPath);
-
-        // resize image instance
-        $img->resize(500, 500, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
-
-        imagejpeg($img->getCore(), 'images/'.$thumbnailPath, 50);
-        return $thumbnailPath;
     }
 }

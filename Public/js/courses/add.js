@@ -8,7 +8,7 @@ $(function(){
     $.validator.addMethod('allowedTypes', function(value, element, allowedTypes) {
 	    const file = element.files[0];
 	    if (!file) {
-	    	return false;
+	    	return true;
 	    }
 
 	    return allowedTypes.indexOf(file.type) !== -1;
@@ -18,7 +18,7 @@ $(function(){
   	$.validator.addMethod('maxFileSize', function(value, element, maxSizeMB) {
 	    const file = element.files[0];
 	    if (!file) {
-	      return false;
+	      return true;
 	    }
 
     	const maxSizeBytes = maxSizeMB * 1024 * 1024;
@@ -60,17 +60,16 @@ $(function(){
 
 	// add course form 
     const $addCourseForm = $('#add-course-form');
-
     const $addCousesBtn = $('#add-course');
 
-    //id_formateur, mass_horaire, description
     $addCourseForm.validate({
     	ignore: [],
-        // debug: true,
         errorElement: "div",
-        // onfocusout: false,
-        // focusInvalid: false,
         rules: {
+            attached : {
+                allowedTypes: ['application/zip'],
+                maxFileSize: 50,
+            },
         	nom: {
         		required: true,
         		minlength: 3,
@@ -92,6 +91,10 @@ $(function(){
             	required: true,
                 allowedTypes: ['image/jpeg', 'image/png', 'image/gif'],
                 maxFileSize: 5,
+            },
+            background: {
+                allowedTypes: ['image/jpeg', 'image/png', 'image/gif'],
+                maxFileSize: 10,
             },
             etat: {
                 required: true,
@@ -127,7 +130,11 @@ $(function(){
             }
 
             if($(element).attr('id') === 'formation_image'){
-            	$('#image-placeholder').prop('src', `${URLROOT}/public/images/formations/formation_image_placeholder.jpg`);
+                $('#image-placeholder').html(`<i class="material-icons text-muted-light md-36" style="height: 250px;line-height: 250px">photo</i>`);
+            }
+
+            if($(element).attr('id') === 'background'){
+                $('#background-placeholder').html(`<i class="material-icons text-muted-light md-36" style="height: 250px;line-height: 250px">photo</i>`);
             }
         },
         unhighlight: function(element) {
@@ -141,7 +148,12 @@ $(function(){
             
             if($(element).attr('id') === 'formation_image'){
             	const blobURL = URL.createObjectURL($(element).prop('files')[0]);
-            	$('#image-placeholder').prop('src', blobURL);
+            	$('#image-placeholder').html(`<img src="${blobURL}" alt="image formation" class="img-fluid" />`);
+            }
+
+            if($(element).attr('id') === 'background' && $(element).prop('files')[0]){
+                const blobURL = URL.createObjectURL($(element).prop('files')[0]);
+                $('#background-placeholder').html(`<img src="${blobURL}" alt="background formation" class="img-fluid" />`);
             }
         },
         submitHandler: function(form){
@@ -152,15 +164,12 @@ $(function(){
         	// Display the progress bar
 		    progressWrapper.show();
 		    // loading button
-		    $addCousesBtn
-		    	.addClass('is-loading')
-		    	.addClass('is-loading-sm')
-		    	.prop('disabled', true);
+		    $addCousesBtn.addClass('is-loading is-loading-sm').prop('disabled', true);
 		    // Disable all inputs within the form.
 		    $('#add-course-form :input').prop('disabled', true);
 
 		    $.ajax({
-		      url: `${URLROOT}/courses/add`, 
+		      url: `${URLROOT}/api/courses`, 
 		      type: 'POST',
 		      data: formData,
 		      processData: false,
@@ -176,15 +185,14 @@ $(function(){
 		        });
 		        return xhr;
 		      },
-		      success: function({status, data}) {
-		      	if(status === 201){
-		      		window.location.href = `${URLROOT}/courses/${data.id_formation}/videos`;
-		      	}
+		      success: function({data}) {
+		      	window.location.href = `${URLROOT}/courses/${data.id_formation}/videos`;
 
 		        progressWrapper.hide(); // Hide the progress bar
 		      },
-		      error: function(response) {
-		        alert('Failed to submit the form.');
+		      error: function({responseJSON: {messages}}) {
+		        // alert(messages);
+                console.log(messages);
 		        progressWrapper.hide(); // Hide the progress bar
 		      },
 		    });
@@ -199,5 +207,5 @@ $(function(){
         $('#description').val(quill.container.firstChild.innerHTML).valid();
     });
 
-    $('#formation_image').change(function(){$(this).blur()});
+    $('#formation_image, #background').change(function(){$(this).blur()});
 });

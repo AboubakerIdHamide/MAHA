@@ -3,6 +3,7 @@ public/images/formations
 public/images/categories
 public/images/videos
 public/videos
+public/files/formations
 
 # Add default images.
 

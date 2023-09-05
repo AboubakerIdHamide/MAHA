@@ -20,7 +20,7 @@
     <link href="<?= CSSROOT ?>/icons/all.min.css" rel="stylesheet" />
     <style>
         #hero_in.courses:before {
-            background: url(<?= URLROOT ?>/public/<?= $formation->imgFormation ?>) center center no-repeat;
+            background: url(<?= IMAGEROOT ?>/<?= $formation->bgImg ?>) center center no-repeat;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;

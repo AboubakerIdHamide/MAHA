@@ -161,14 +161,49 @@
                                             </div>                                            
                                         </div>
                                     </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Attached File</h4>
+                                        </div>
+                                        <div class="card-body">
+                                           <div class="custom-file">
+                                                <input type="file"
+                                                           id="attached-file"
+                                                           name="attached" 
+                                                           class="custom-file-input"
+                                                           accept="application/zip" 
+                                                           />
+                                                <label for="attached-file"
+                                                           class="custom-file-label">Choose file</label>
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Background Image</h4>
+                                        </div>
+                                        <div id="background-placeholder" style="background-color: #39444d" class="d-flex justify-content-center align-items-center w-100 mb-2">
+                                            <i class="material-icons text-muted-light md-36" style="height: 250px;line-height: 250px">photo</i>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="custom-file">
+                                                <input type="file"
+                                                       id="background"
+                                                       name="background" 
+                                                       class="custom-file-input"
+                                                       accept="image/*" 
+                                                />
+                                                <label for="background"
+                                                           class="custom-file-label">Choose file</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div> 
                                 <div class="col-md-4">
                                     <div class="card">
-                                        <div><img src="<?= IMAGEROOT ?>/formations/formation_image_placeholder.jpg"
-                                                         alt="formation image"
-                                                         class="w-100"
-                                                         id="image-placeholder"
-                                                         ></div>
+                                         <div id="image-placeholder" style="background-color: #39444d" class="d-flex justify-content-center align-items-center w-100 mb-2">
+                                            <i class="material-icons text-muted-light md-36" style="height: 250px;line-height: 250px">photo</i>
+                                        </div>
                                         <div class="card-body">
                                             <div class="custom-file">
                                                 <input type="file"

@@ -1,7 +1,15 @@
 <?php
 
 use App\Controllers\Api\ApiController;
+
+use FFMpeg\FFMpeg;
+use FFMpeg\Coordinate\TimeCode;
+use Intervention\Image\ImageManagerStatic as Image;
+
 use App\Models\Formation;
+use App\Models\Video;
+use App\Models\Preview;
+
 use App\Libraries\Response;
 use App\Libraries\Validator;
 
@@ -102,6 +110,106 @@ class CourseController extends ApiController
             'filter' => $filterQuery,
             'id_formateur' => $id_formateur
         ]);
+    }
+
+    public function store($request)
+    {
+        if(!auth()){
+            return Response::json(null, 401);
+        }
+
+        if(session('user')->get()->type !== 'formateur'){
+           return Response::json(null, 403); 
+        }
+
+        $validator = new Validator([
+            'nom' => strip_tags(trim($request->post('nom'))),
+            'description' => $this->strip_critical_tags($request->post("description")),
+            'prix' => strip_tags(trim($request->post('prix'))),
+            'etat' => strip_tags(trim($request->post('etat'))),
+            'id_categorie' => strip_tags(trim($request->post('id_categorie'))),
+            'id_niveau' => strip_tags(trim($request->post('id_niveau'))),
+            'id_langue' => strip_tags(trim($request->post('id_langue'))),
+            'preview' => $request->file('preview'),
+            'image' => $request->file('image')
+        ]);
+
+        $validator->validate([
+            'nom' => 'required|min:3|max:80',
+            'description' => 'required|min:15|max:700',
+            'prix' => 'required|numeric|numeric_min:10|numeric_max:1000',
+            'etat' => 'required|in_array:public,private',
+            'id_categorie' => 'required|exists:categories',
+            'id_niveau' => 'required|exists:niveaux',
+            'id_langue' => 'required|exists:langues',
+            'preview' => 'required|size:1024|video|video_duration:50',
+            'image' => 'required|size:5|image'
+        ]);
+
+        $formation = $validator->validated();
+        unset($formation['type']);
+        $formation['image'] = uploader($request->file('image'), 'images/formations');
+        $formation['masse_horaire'] = $formation['duration'];
+        $formation['id_formateur'] = session('user')->get()->id_formateur;
+        $formation['is_published'] = $request->post('is_published');
+
+        // background
+        if($request->file('background')){
+            unset($validator);
+
+            $validator = new Validator([
+                'background_img' => $request->file("background"),
+            ]);
+
+            $validator->validate([
+                'background_img' => 'size:10|image',
+            ]);
+
+            $formation['background_img'] = uploader($request->file("background"), 'images/formations');
+        }
+
+        // attached file
+        if($request->file('attached')){
+            unset($validator);
+
+            $validator = new Validator([
+                'fichier_attache' => $request->file("attached"),
+            ]);
+
+            $validator->validate([
+                'fichier_attache' => 'size:50',
+            ]);
+
+            $formation['fichier_attache'] = uploader($request->file("attached"), 'files/formations');
+        }
+
+        // Create formation
+        $id_formation = $this->formationModel->create($formation);
+
+        // Create Video
+        $video = [];
+        $video['id_formation'] = $id_formation;
+        $preview_name = strip_tags(trim($request->post('preview_name')));
+
+        if(strlen($preview_name) === 0 || strlen($preview_name) > 80){
+            $video['nom'] = $request->file('image')['name'];
+        }else{
+            $video['nom'] = $preview_name;
+        }
+
+        $video['url'] = uploader($request->file('preview'), "videos");
+        $video['duration'] = $formation['duration'];
+
+
+        $video['thumbnail'] = $this->getThumbnail('videos/'.$video['url']);
+        $videoModel = new Video;
+        $id_video = $videoModel->create($video);
+
+        // Create Preview
+        $previewModel = new Preview;
+        $previewModel->insertPreviewVideo($id_video, $id_formation);
+        
+        return Response::json(['id_formation' => $id_formation], 201);
     }
 
     public function update($request, $id_formation)
@@ -234,5 +342,29 @@ class CourseController extends ApiController
             }
         }
         return $cleanedHtml; 
+    }
+
+    private function getThumbnail($video)
+    {
+        $ffmpeg = FFMpeg::create([
+            'ffmpeg.binaries'  => 'c:\ffmpeg\bin\ffmpeg.exe',
+            'ffprobe.binaries' => 'c:\ffmpeg\bin\ffprobe.exe' 
+        ]);
+
+        $video = $ffmpeg->open($video);
+
+        $thumbnailPath = 'videos/'.generateUniqueName(uniqid()).'.jpg';
+        $frame = $video->frame(TimeCode::fromSeconds(5))->save('images/'.$thumbnailPath);
+
+        $img = Image::make('images/'.$thumbnailPath);
+
+        // resize image instance
+        $img->resize(500, 500, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+
+        imagejpeg($img->getCore(), 'images/'.$thumbnailPath, 50);
+        return $thumbnailPath;
     }
 }

@@ -39,7 +39,7 @@ class Formation
     public function create($formation)
     {
         $query = $this->connect->prepare("
-            INSERT INTO formations (id_niveau, id_formateur, id_categorie, nom, image, mass_horaire, prix, description, etat, id_langue, is_published) VALUES (:id_niveau, :id_formateur, :id_categorie, :nom, :image, :mass_horaire, :prix, :description, :etat, :id_langue, :is_published)
+            INSERT INTO formations (id_niveau, id_formateur, id_categorie, nom, image, mass_horaire, prix, description, etat, id_langue, is_published, background_img, fichier_attache) VALUES (:id_niveau, :id_formateur, :id_categorie, :nom, :image, SEC_TO_TIME(:mass_horaire), :prix, :description, :etat, :id_langue, :is_published, :background_img, :fichier_attache)
         ");
 
         $query->bindValue(":id_niveau", $formation["id_niveau"]);
@@ -53,6 +53,8 @@ class Formation
         $query->bindValue(":etat", $formation["etat"]);
         $query->bindValue(":id_langue", $formation["id_langue"]);
         $query->bindValue(":is_published", empty($formation["is_published"]) ? null : date('Y-m-d H:i:s'));
+        $query->bindValue(":background_img", $formation["background_img"] ?? null);
+        $query->bindValue(":fichier_attache", $formation["fichier_attache"] ?? null);
         $query->execute();
 
         $lastInsertId = $this->connect->lastInsertId();
@@ -97,31 +99,11 @@ class Formation
             WHERE id_formation=:id
         ");
 
-        $query->bindParam(":id", $id);
+        $query->bindValue(":id", $id);
         $query->execute();
 
         if ($query->rowCount() > 0) {
             return true;
-        }
-        return false;
-    }
-
-    public function getFormation($id_formation, $id_formateur)
-    {
-        $query = $this->connect->prepare("
-            SELECT * 
-            FROM formations 
-            WHERE id_formation=:id_formation 
-            AND id_formateur=:id_formateur
-        ");
-
-        $query->bindParam(":id_formation", $id_formation);
-        $query->bindParam(":id_formateur", $id_formateur);
-        $query->execute();
-
-        $formation = $query->fetch(\PDO::FETCH_OBJ);
-        if ($query->rowCount() > 0) {
-            return $formation;
         }
         return false;
     }
@@ -155,7 +137,7 @@ class Formation
             ORDER BY fore.date_creation DESC
         ");
 
-        $query->bindParam(":id_formateur", $id);
+        $query->bindValue(":id_formateur", $id);
         $query->execute();
 
         $formations = $query->fetchAll(\PDO::FETCH_OBJ);
@@ -182,8 +164,8 @@ class Formation
                 INSERT INTO jaimes(id_etudiant, id_formation) VALUES (:eId,:fId)
             ");
         }
-        $query->bindParam(':eId', $etudiant_id);
-        $query->bindParam(':fId', $formation_id);
+        $query->bindValue(':eId', $etudiant_id);
+        $query->bindValue(':fId', $formation_id);
         $query->execute();
 
         if ($query->rowCount() > 0) {
@@ -219,7 +201,7 @@ class Formation
             WHERE  id_formation=:id
         ");
 
-        $query->bindParam(':id', $id);
+        $query->bindValue(':id', $id);
         $query->execute();
 
         $jaimes = $query->fetch(\PDO::FETCH_OBJ)->jaimes;
@@ -310,7 +292,7 @@ class Formation
             AND f.nom LIKE CONCAT('%', :nomFormateur, '%')
         ");
 
-        $query->bindParam(":nomFormateur", $nomFormateur);
+        $query->bindValue(":nomFormateur", $nomFormateur);
         $query->execute();
 
         $formations = $query->fetchAll(\PDO::FETCH_OBJ);
@@ -352,7 +334,7 @@ class Formation
             AND fore.nom LIKE CONCAT('%', :q, '%')
         ");
 
-        $query->bindParam(":nom", $nom);
+        $query->bindValue(":nom", $nom);
         $query->execute();
 
         $formations = $query->fetchAll(\PDO::FETCH_OBJ);
@@ -399,7 +381,7 @@ class Formation
             WHERE f.id_formation = :id
         ");
 
-        $query->bindParam(":id", $id);
+        $query->bindValue(":id", $id);
         $query->execute();
 
         $formation = $query->fetch(\PDO::FETCH_OBJ);
@@ -407,47 +389,6 @@ class Formation
             return $formation;
         }
         return false;
-    }
-
-    public function getPublic($offset = 0)
-    {
-        $query = $this->connect->prepare("
-            SELECT
-                fore.id_formation,
-                image AS imgFormation,
-                mass_horaire,
-                fore.nom AS nomFormation,
-                fore.date_creation,
-                prix,
-                description,
-                jaimes,
-                description,
-                f.id_formateur,
-                f.nom AS nomFormateur,
-                f.prenom,
-                f.img AS imgFormateur,
-                c.id_categorie,
-                c.nom AS nomCategorie,
-                l.id_langue,
-                l.nom AS nomLangue,
-                n.id_niveau,
-                n.nom AS nomNiveau
-            FROM formations fore
-            JOIN formateurs f ON fore.id_formateur = f.id_formateur
-            JOIN categories c ON fore.id_categorie = c.id_categorie
-            JOIN langues l ON fore.id_langue = l.id_langue
-            JOIN niveaux n ON fore.id_niveau = n.id_niveau
-            WHERE fore.etat = 'public'
-            ORDER BY fore.jaimes DESC
-            LIMIT {$offset}, 10
-        ");
-
-        $query->execute();
-        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
-        if ($query->rowCount() > 0) {
-            return $formations;
-        }
-        return [];
     }
 
     public function all()
@@ -488,141 +429,6 @@ class Formation
         return [];
     }
 
-    public function countFormationsFilter($categorie, $q)
-    {
-        $query = $this->connect->prepare("
-            SELECT 
-                COUNT(id_formation) AS numbFormations
-            FROM formations, categories
-            WHERE categories.id_categorie = formations.id_categorie
-            AND categories.nom = :categorie
-            AND formations.etat = 'public'
-            AND (
-                formations.nom LIKE '%:q%' 
-                OR formations.description LIKE '%:q%'
-            )
-        ");
-
-        $query->bindParam(":categorie", $categorie);
-        $query->bindParam(":q", $q);
-        $query->execute();
-
-        $numbFormations = $query->fetch(\PDO::FETCH_OBJ)->numbFormations;
-        if ($query->rowCount() > 0) {
-            return $numbFormations;
-        }
-        return 0;
-    }
-
-    public function getFormationsByFilter($categorie, $q, $offset)
-    {
-        $query = $this->connect->prepare("
-            SELECT 
-                formations.id_formation,
-                formations.image AS imgFormation,
-                formations.mass_horaire,
-                categories.nom AS nomCategorie,
-                formations.nom AS nomFormation,
-                formations.prix,
-                formations.description,
-                formations.jaimes,
-                formateurs.id_formateur,
-                formateurs.nom AS nomFormateur,
-                formateurs.prenom,
-                formateurs.img AS imgFormateur
-            FROM formations, formateurs, categories
-            WHERE formations.id_formateur = formateurs.id_formateur
-            AND categories.id_categorie = formations.id_categorie
-            AND categories.nom = :categorie
-            AND formations.etat = 'public'
-            AND (
-                formations.nom LIKE '%:q%' 
-                OR formations.description LIKE '%:q%'
-            )
-            LIMIT {$offset}, 10
-        ");
-
-        $query->bindParam(":categorie", $categorie);
-        $query->bindParam(":q", $q);
-        $query->execute();
-
-        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
-        if ($query->rowCount() > 0) {
-            return $formations;
-        }
-        return [];
-    }
-
-    public function countFormationsSearched($q)
-    {
-
-        $query = $this->connect->prepare("
-            SELECT 
-                COUNT(formations.id_formation) AS numbFormations
-            FROM formations, formateurs, categories
-            WHERE formations.id_formateur = formateurs.id_formateur
-            AND categories.id_categorie = formations.id_categorie
-            AND formations.etat = 'public'
-            AND (
-                categories.nom LIKE '%:q%'
-                OR formateurs.nom LIKE '%:q%'
-                OR formations.description LIKE '%:q%'
-                OR formations.nom LIKE '%:q%'
-                OR formateurs.prenom LIKE '%:q%'
-            )
-        ");
-
-        $query->bindParam(":q", $q);
-        $query->execute();
-
-        $numbFormations = $query->fetch(\PDO::FETCH_OBJ)->numbFormations;
-        if ($query->rowCount() > 0) {
-            return $numbFormations;
-        }
-        return 0;
-    }
-
-    public function getFormationsSearched($q, $offset)
-    {
-        $query = $this->connect->prepare("
-            SELECT 
-                formations.id_formation,
-                formations.image AS imgFormation,
-                formations.mass_horaire,
-                categories.nom AS nomCategorie,
-                formations.nom AS nomFormation,
-                formations.prix,
-                formations.description,
-                formations.jaimes,
-                formateurs.id_formateur,
-                formateurs.nom AS nomFormateur,
-                formateurs.prenom,
-                formateurs.img AS imgFormateur
-            FROM formations, formateurs, categories
-            WHERE formations.id_formateur = formateurs.id_formateur
-            AND categories.id_categorie = formations.id_categorie
-            AND formations.etat = 'public'
-            AND (
-                categories.nom LIKE '%:q%'
-                OR formateurs.nom LIKE '%:q%'
-                OR formations.description LIKE '%:q%'
-                OR formations.nom LIKE '%:q%'
-                OR formateurs.prenom LIKE '%:q%'
-            )
-            LIMIT {$offset}, 10
-        ");
-
-        $query->bindParam(":q", $q);
-        $query->execute();
-
-        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
-
-        if ($query->rowCount() > 0) {
-            return $formations;
-        }
-        return [];
-    }
-
     public function mostLiked($offset)
     {
         $query = $this->connect->prepare("
@@ -653,250 +459,6 @@ class Formation
             return $formations;
         }
         return [];
-    }
-
-    public function mostBought($offset)
-    {
-        $query = $this->connect->prepare("
-            SELECT 
-                formations.id_formation,
-                formations.image AS imgFormation,
-                formations.mass_horaire,
-                categories.nom AS nomCategorie,
-                formations.nom AS nomFormation,
-                formations.prix,
-                formations.description,
-                formations.jaimes,
-                formateurs.id_formateur,
-                formateurs.nom AS nomFormateur,
-                formateurs.prenom,
-                formateurs.img AS imgFormateur
-            FROM formations, formateurs, categories
-            WHERE formations.id_formateur = formateurs.id_formateur
-            AND categories.id_categorie = formations.id_categorie
-            AND formations.etat = 'public'
-            ORDER BY 'numbAcht' DESC
-            LIMIT  {$offset}, 10
-        ");
-
-        $query->execute();
-        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
-        if ($query->rowCount() > 0) {
-            return $formations;
-        }
-        return [];
-    }
-
-    public function countByLangue($id)
-    {
-        $query = $this->connect->prepare("
-            SELECT 
-                COUNT(id_formation) AS numbFormations
-            FROM formations
-            WHERE id_langue = :id
-        ");
-
-        $query->bindParam(":id", $id);
-        $query->execute();
-
-        $numbFormations = $query->fetch(\PDO::FETCH_OBJ)->numbFormations;
-        if ($query->rowCount() > 0) {
-            return $numbFormations;
-        }
-        return 0;
-    }
-
-    public function getByLangue($id, $offset)
-    {
-        $query = $this->connect->prepare("
-            SELECT 
-                id_formation,
-                f.id_formateur,
-                f.img AS imgFormateur,
-                fo.image AS imgFormation,
-                f.nom AS nomFormateur,
-                fo.nom AS nomFormation,
-                prix,
-                mass_horaire,
-                description,
-                jaimes,
-                id_langue,
-                id_niveau,
-                fo.id_categorie,
-                fichier_attache,
-                etat,
-                c.nom AS nomCategorie
-            FROM formations fo
-            JOIN formateurs f USING (id_formateur)
-            JOIN categories c ON fo.id_categorie = c.id_categorie
-            WHERE id_langue = :id          
-            LIMIT {$offset}, 10
-        ");
-
-        $query->bindParam(":id", $id);
-        $query->execute();
-
-        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
-        if ($query->rowCount() > 0) {
-            return $formations;
-        }
-        return [];
-    }
-
-    public function countByNiveau($id)
-    {
-        $query = $this->connect->prepare("
-            SELECT 
-                COUNT(id_formation) AS numbFormations
-            FROM formations
-            WHERE id_niveau = :id
-        ");
-
-        $query->bindParam(":id", $id);
-        $query->execute();
-
-        $numbFormations = $query->fetch(\PDO::FETCH_OBJ)->numbFormations;
-        if ($query->rowCount() > 0) {
-            return $numbFormations;
-        }
-        return 0;
-    }
-
-    public function getByNiveau($id, $offset)
-    {
-        $query = $this->connect->prepare("
-            SELECT 
-                id_formation,
-                f.id_formateur,
-                f.img AS imgFormateur,
-                fo.image AS imgFormation,
-                f.nom AS nomFormateur,
-                fo.nom AS nomFormation,
-                prix,
-                mass_horaire,
-                description,
-                jaimes,
-                id_langue,
-                id_niveau,
-                fo.id_categorie,
-                fichier_attache,
-                etat,
-                c.nom AS nomCategorie
-            FROM formations fo
-            JOIN formateurs f USING (id_formateur)
-            JOIN categories c ON fo.id_categorie = c.id_categorie
-            WHERE id_niveau = :id
-            LIMIT {$offset}, 10
-        ");
-
-        $query->bindParam(":id", $id);
-        $query->execute();
-
-        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
-        if ($query->rowCount() > 0) {
-            return $formations;
-        }
-        return [];
-    }
-
-    public function countByDuration($debut, $fin)
-    {
-        $query = $this->connect->prepare("
-            SELECT 
-                COUNT(id_formation) AS numbFormations
-            FROM formations
-            WHERE mass_horaire 
-            BETWEEN TIME(CONCAT('0', :debut, ':00:00')) 
-            AND TIME(CONCAT('0', :fin, ':00:00'))
-        ");
-
-        $query->bindParam(":debut", $debut);
-        $query->bindParam(":fin", $fin);
-        $query->execute();
-
-        $numbFormations = $query->fetch(\PDO::FETCH_OBJ)->numbFormations;
-        if ($query->rowCount() > 0) {
-            return $numbFormations;
-        }
-        return 0;
-    }
-
-    public function getByDuration($debut, $fin, $offset)
-    {
-        $query = $this->connect->prepare("
-            SELECT 
-                id_formation,
-                f.id_formateur,
-                f.img AS imgFormateur,
-                fo.image AS imgFormation,
-                f.nom AS nomFormateur,
-                fo.nom AS nomFormation,
-                prix,
-                mass_horaire,
-                description,
-                jaimes,
-                id_langue,
-                id_niveau,
-                fo.id_categorie,
-                fichier_attache,
-                etat,
-                c.nom AS nomCategorie
-            FROM formations fo
-            JOIN formateurs f USING (id_formateur)
-            JOIN categories c ON fo.id_categorie = c.id_categorie
-            WHERE mass_horaire 
-            BETWEEN TIME(CONCAT('0', :debut, ':00:00')) 
-            AND TIME(CONCAT('0', :fin, ':00:00'))
-            LIMIT {$offset}, 10
-        ");
-
-        $query->bindParam(":debut", $debut);
-        $query->bindParam(":fin", $fin);
-        $query->execute();
-
-        $formations = $query->fetchAll(\PDO::FETCH_OBJ);
-        if ($query->rowCount() > 0) {
-            return $formations;
-        }
-        return [];
-    }
-
-    public function updateFile($formation)
-    {
-        $query = $this->connect->prepare("
-            UPDATE formations 
-            SET fichier_attache = :filePath
-            WHERE id_formation = :id
-        ");
-
-        $query->execute([
-            'filePath' => $formation['path'], 
-            'id' => $formation['id']
-        ]);
-
-        if ($query->rowCount() > 0) {
-            return true;
-        }
-        return false;
-    }
-
-    public function updateImage($formation)
-    {
-        $query = $this->connect->prepare("
-            UPDATE formations 
-            SET image = :filePath
-            WHERE id_formation = :id
-        ");
-
-        $query->execute([
-            'filePath' => $formation['path'], 
-            'id' => $formation['id']
-        ]);
-
-        if ($query->rowCount() > 0) {
-            return true;
-        }
-        return false;
     }
 
     public function join($code)
@@ -948,7 +510,8 @@ class Formation
                 f.id_langue AS langue,
                 l.nom AS nomLangue,
                 n.nom AS nomNiveau,
-                n.icon AS iconNiveau
+                n.icon AS iconNiveau,
+                f.background_img AS bgImg
             FROM formations f
             JOIN formateurs fo ON f.id_formateur = fo.id_formateur
             JOIN categories cf ON cf.id_categorie = f.id_categorie
@@ -958,7 +521,7 @@ class Formation
             WHERE f.slug = :slug
         ");
 
-        $query->bindParam(":slug", $slug);
+        $query->bindValue(":slug", $slug);
         $query->execute();
 
         $formation = $query->fetch(\PDO::FETCH_OBJ);
@@ -1127,4 +690,23 @@ class Formation
         }
         return [];
     }
-}     
+
+    public function select($id_formation, $selectedFields)
+    {
+        $query = $this->connect->prepare("
+            SELECT 
+                ".implode(', ', $selectedFields)."
+            FROM formations
+            WHERE id_formation = :id_formation
+        ");
+
+        $query->bindValue(':id_formation', $id_formation);
+        $query->execute();
+
+        $formation = $query->fetch(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $formation;
+        }
+        return false;
+    }
+}
