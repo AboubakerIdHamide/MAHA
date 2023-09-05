@@ -177,7 +177,7 @@ class CourseController extends ApiController
             ]);
 
             $validator->validate([
-                'fichier_attache' => 'size:50',
+                'fichier_attache' => 'size:50|file:application/zip',
             ]);
 
             $formation['fichier_attache'] = uploader($request->file("attached"), 'files/formations');
@@ -250,44 +250,82 @@ class CourseController extends ApiController
 
         $video = [];
 
-        // updating preview video is optional, but...
-        if(isset($_FILES['preview'])){
-            if($_FILES['preview']['error'] === 0){
-                $validator = new Validator([
-                    'preview' => $_FILES['preview']
-                ]);
+        // update background
+        if($request->file('background')){
+            unset($validator);
 
-                $validator->validate([
-                    'preview' => 'size:1024|video|video_duration:50',
-                ]);
+            $validator = new Validator([
+                'background_img' => $request->file("background"),
+            ]);
 
-                $video['url'] = uploader($_FILES['preview'], "videos/formations");
-                $video['thumbnail'] = $this->getThumbnail('videos/'.$video['url']);
+            $validator->validate([
+                'background_img' => 'size:10|image',
+            ]);
 
-                $id_video = $this->previewModel->getPreviewOfFormation($id_formation)->id_video;
-                $oldVideo = $this->videoModel->find($id_video);
-                // Remove old files (video and thumbnail)
-                unlink('videos/'.$oldVideo->url);
-                unlink('images/'.$oldVideo->thumbnail);
-                unset($oldVideo);
-                $this->videoModel->update($video, $id_video);
+            $oldBackground = $this->formationModel->select($id_formation, ['background_img']);
+            if($oldBackground->background_img){
+                unlink('images/'.$oldBackground->background_img);
             }
+            $formation['background_img'] = uploader($request->file("background"), 'images/formations');
         }
 
-        // updating formation's image is optional, but...
-        if(isset($_FILES['image'])){
-            if($_FILES['image']['error'] === 0){
-                $validator = new Validator([
-                    'image' => $_FILES['image']
-                ]);
+        // update attached file
+        if($request->file('attached')){
+            unset($validator);
 
-                $validator->validate([
-                    'image' => 'required|size:5|image',
-                ]);
+            $validator = new Validator([
+                'fichier_attache' => $request->file("attached"),
+            ]);
 
-                unlink('images/'.$this->formationModel->find($id_formation)->imgFormation);
-                $formation['image'] = uploader($_FILES['image'], 'images/formations');
+            $validator->validate([
+                'fichier_attache' => 'size:50|file:application/zip',
+            ]);
+
+            $oldFile = $this->formationModel->select($id_formation, ['fichier_attache']);
+            if($oldFile->fichier_attache){
+                unlink('files/'.$oldFile->fichier_attache);
             }
+            $formation['fichier_attache'] = uploader($request->file("attached"), 'files/formations');
+        }
+
+        // update preview
+        if($request->file('preview')){
+            unset($validator);
+
+            $validator = new Validator([
+                'preview' => $request->file('preview')
+            ]);
+
+            $validator->validate([
+                'preview' => 'size:1024|video|video_duration:50',
+            ]);
+
+            $video['url'] = uploader($request->file('preview'), "videos/formations");
+            $video['thumbnail'] = $this->getThumbnail('videos/'.$video['url']);
+
+            $id_video = $this->previewModel->getPreviewOfFormation($id_formation)->id_video;
+            $oldVideo = $this->videoModel->find($id_video);
+            // Remove old files (video and thumbnail)
+            unlink('videos/'.$oldVideo->url);
+            unlink('images/'.$oldVideo->thumbnail);
+            unset($oldVideo);
+            $this->videoModel->update($video, $id_video);
+        }
+
+        // update image
+        if($request->file('image')){
+            unset($validator);
+
+            $validator = new Validator([
+                'image' => $request->file('image')
+            ]);
+
+            $validator->validate([
+                'image' => 'required|size:5|image',
+            ]);
+
+            unlink('images/'.$this->formationModel->select($id_formation, ['image'])->image);
+            $formation['image'] = uploader($request->file('image'), 'images/formations');
         }
 
         // update formation

@@ -113,7 +113,7 @@ class coursesController
     public function edit($id_formation = null)
     {
         if(!auth()){
-            return Response::json(null, 401);
+            return redirect('user/login');
         }
 
         if(session('user')->get()->type !== 'formateur'){
@@ -139,6 +139,41 @@ class coursesController
         $langues = $this->stockedModel->getAllLangues();
 
         return view('courses/edit', compact('formation', 'categories', 'niveaux', 'langues')); 
+    }
+
+    public function removeAttachedFile($id_formation)
+    {
+        if(!auth()){
+            return Response::json(null, 401);
+        }
+
+        if(session('user')->get()->type !== 'formateur'){
+           return Response::json(null, 403); 
+        }
+
+        $request = new Request;
+        if($request->getMethod() !== "DELETE"){
+            return Response::json(null, 405, "Method Not Allowed");
+        }
+
+        $validator = new Validator([
+            'id_formation' => strip_tags(trim($id_formation)),
+        ]);
+
+        $validator->validate([
+            'id_formation' => 'required|exists:formations|check:formations',
+        ]);
+
+        $file = $this->formationModel->select($id_formation, ['fichier_attache']);
+        if(!$file->fichier_attache){
+            return Response::json(null, 400);
+        }
+
+        unlink('files/'.$file->fichier_attache);
+        if($this->formationModel->setColumnToNull('fichier_attache', 'formations', 'id_formation', $id_formation)){
+            return Response::json(null, 200, "Remove successfuly.");
+        }
+        return Response::json(null, 500, "Something went wrong.");
     }
 
     private function strip_critical_tags($text)

@@ -1,4 +1,3 @@
-<?php //print_r2($formation) ?>
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
     <head>
@@ -49,7 +48,7 @@
         </style>    
     </head>
 
-    <body class=" layout-fluid">
+    <body class="layout-fluid">
 
         <div class="preloader">
             <div class="sk-chase">
@@ -76,7 +75,6 @@
 
             <!-- Header Layout Content -->
             <div class="mdk-header-layout__content">
-
                 <div data-push
                      data-responsive-width="992px"
                      class="mdk-drawer-layout js-mdk-drawer-layout">
@@ -93,7 +91,10 @@
                                     <h1 class="h2">Modifier Formation</h1>
                                 </div>
                                 <div class="media-right">
-                                    <button id="edit-course" class="btn btn-success">MODIFIER</button>
+                                    <a target="_blank" class="btn btn-secondary" href="<?= URLROOT ?>/courses/<?= $formation->slug ?>">
+                                        <i class="material-icons mr-2">remove_red_eye</i> Live preview
+                                    </a>
+                                    <button id="edit-course" class="btn btn-success"><i class="material-icons mr-2">edit</i> MODIFIER</button>
                                 </div>
                             </div>
                             <div class="row">
@@ -143,13 +144,13 @@
                                         <div class="card-header">
                                             <h4 class="card-title">Preview video</h4>
                                         </div>
+                                        <div class="preview-wrapper">
+                                            <video width="200" src="<?= VIDEOROOT ?>/<?= $formation->url ?>" style="--plyr-color-main: #39444d;" id="player" playsinline controls>
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
                                         <div class="card-body">
-                                            <div class="preview-wrapper">
-                                                <video src="<?= VIDEOROOT ?>/<?= $formation->url ?>" style="--plyr-color-main: #662d91;" id="player" playsinline controls>
-                                                    Your browser does not support the video tag.
-                                                </video>
-                                            </div>
-                                           <div class="custom-file mt-3">
+                                           <div class="custom-file">
                                                 <input type="file"
                                                            id="preview-video"
                                                            name="preview" 
@@ -157,24 +158,48 @@
                                                            accept="video/*">
                                                 <label for="preview-video"
                                                            class="custom-file-label">Choose file</label>
-                                            </div>                                            
+                                            </div>                                      
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Background Image</h4>
+                                        </div>
+                                        <div id="background-placeholder" style="background-color: #39444d" class="d-flex justify-content-center align-items-center w-100 mb-2">
+                                            <?php if($formation->bgImg): ?>
+                                                <img src="<?= IMAGEROOT ?>/<?= $formation->bgImg ?>" alt="background formation" class="img-fluid" />
+                                            <?php else: ?>
+                                                <i class="material-icons text-muted-light md-36" style="height: 250px;line-height: 250px">photo</i>
+                                            <?php endif ?>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="custom-file">
+                                                <input type="file"
+                                                       id="formation_background"
+                                                       name="background" 
+                                                       class="custom-file-input"
+                                                       accept="image/*" 
+                                                />
+                                                <label for="formation_background"
+                                                           class="custom-file-label">Choose file</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div> 
                                 <div class="col-md-4">
                                     <div class="card">
                                         <div><img src="<?= IMAGEROOT ?>/<?= $formation->imgFormation ?>"
-                                                         alt="formation image"
-                                                         class="w-100"
-                                                         id="image-placeholder"
-                                                         ></div>
+                                                 alt="formation image"
+                                                 class="w-100"
+                                                 id="image"
+                                                 /></div>
                                         <div class="card-body">
                                             <div class="custom-file">
                                                 <input type="file"
-                                                           id="formation_image"
-                                                           name="image" 
-                                                           class="custom-file-input"
-                                                           accept="image/*">
+                                                       id="formation_image"
+                                                       name="image" 
+                                                       class="custom-file-input"
+                                                       accept="image/*" />
                                                 <label for="formation_image"
                                                            class="custom-file-label">Choose file</label>
                                             </div>
@@ -218,6 +243,33 @@
                                                             <option <?= $formation->nomNiveau === $niveau->nom ? 'selected' : '' ?> value="<?= $niveau->id_niveau ?>"><?= $niveau->nom ?></option>
                                                         <?php endforeach ?>
                                                 </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label"
+                                                       for="attached-file">Attached File</label>
+                                                <div>
+                                                    <?php if($formation->fichier_attache): ?>
+                                                    <div id="file-wrapper" class="mb-2 rounded d-flex align-items-center justify-content-between px-2" style="height: 50px;background-color: #eee">
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="material-icons mr-1">file_present</i>
+                                                            <span>attached_file.zip</span>
+                                                        </div>
+                                                        <div>
+                                                            <a style="color:inherit;" href="<?= URLROOT ?>/public/files/<?= $formation->fichier_attache ?>" download><i style="cursor: pointer;" class="material-icons mr-1">file_download</i></a>
+                                                            <i data-id="<?= $formation->id_formation ?>" id="remove-file" style="cursor: pointer;" class="material-icons">clear</i>
+                                                        </div>
+                                                    </div>
+                                                    <?php endif ?>
+                                                    <div class="custom-file">
+                                                        <input type="file"
+                                                           id="attached-file"
+                                                           name="attached" 
+                                                           class="custom-file-input"
+                                                           accept="application/zip" />
+                                                        <label for="attached-file"
+                                                               class="custom-file-label">Choose file</label>
+                                                    </div>
+                                                </div>  
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label"
@@ -279,12 +331,6 @@
         <script src="<?= JSROOT ?>/plugins/dom-factory.js"></script>
         <script src="<?= JSROOT ?>/plugins/material-design-kit.js"></script>
 
-        <!-- Jquery UI -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-        <!-- App JS -->
-        <script src="<?= JSROOT ?>/plugins/app.js"></script>
-
         <!-- Highlight.js -->
         <script src="<?= JSROOT ?>/plugins/hljs.js"></script>
 
@@ -293,6 +339,9 @@
 
         <!-- Bootstrap -->
         <script src="<?= JSROOT ?>/plugins/bootstrap-4.min.js"></script>
+
+        <!-- App JS -->
+        <script src="<?= JSROOT ?>/plugins/app.js"></script>
 
         <!-- Jquery Validation -->
         <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>

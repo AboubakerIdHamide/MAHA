@@ -36,7 +36,6 @@ $(function(){
     }, function(time){return `La durée maximale est de ${time} minutes.`});
 
     // ====================== END =======================================
-
     $('#preview-video').change(function (event) {
         const file = event.target.files[0];
         const fileName = file.name;
@@ -59,13 +58,13 @@ $(function(){
     });
 
 	// add course form 
-    const $addCourseForm = $('#edit-course-form');
+    const $editCourseForm = $('#edit-course-form');
 
     const $editCousesBtn = $('#edit-course');
+    let currentValues = $editCourseForm.serialize();
 
-    //id_formateur, mass_horaire, description
-    $addCourseForm.validate({
-    	// ignore: [],
+    $editCourseForm.validate({
+    	ignore: [],
         // debug: true,
         errorElement: "div",
         // onfocusout: false,
@@ -100,6 +99,19 @@ $(function(){
                 },
                 allowedTypes: ['image/jpeg', 'image/png', 'image/gif'],
                 maxFileSize: 5,
+            },
+            background: {
+                required : {
+                    depends: function(element) {
+                        return $(element).val().trim().length > 0;
+                    }
+                },
+                allowedTypes: ['image/jpeg', 'image/png', 'image/gif'],
+                maxFileSize: 10,
+            },
+            attached : {
+                allowedTypes: ['application/zip'],
+                maxFileSize: 50,
             },
             etat: {
                 required: true,
@@ -140,26 +152,36 @@ $(function(){
             		.css({borderColor: '#f0f1f2'});
             }
 
-            if($(element).attr('id') === 'formation_image'){
-                if($(element).prop('files').length > 0){
-                    const blobURL = URL.createObjectURL($(element).prop('files')[0]);
-                    $('#image-placeholder').prop('src', blobURL);
-                }
+            if($(element).attr('id') === 'formation_image' && $(element).prop('files')[0]){
+                const blobURL = URL.createObjectURL($(element).prop('files')[0]);
+                $('#image').prop('src', blobURL);
+            }
+
+            if($(element).attr('id') === 'formation_background' && $(element).prop('files')[0]){
+                const blobURL = URL.createObjectURL($(element).prop('files')[0]);
+                $('#background-placeholder').html(`<img src="${blobURL}" alt="background formation" class="img-fluid" />`);
             }
         },
         submitHandler: function(form){
+            const newValues = $(form).serialize();
+            console.log({currentValues, newValues})
+            if(currentValues === newValues){
+                if($('input[type="file"]').filter((i, file) => file.value).length === 0){
+                    return;
+                }
+            }
+
+            currentValues = newValues
         	const progressWrapper = $('#progressWrapper');
   			const progressBar = $('.progress-bar');
         	const formData = new FormData(form);
         	$(form).serializeArray().forEach((field) => formData.append(field.name, field.value))
         	formData.append('method', 'PUT');
+            $('input[type="file"]').val('');
             // Display the progress bar
 		    progressWrapper.show();
 		    // loading button
-		    $editCousesBtn
-		    	.addClass('is-loading')
-		    	.addClass('is-loading-sm')
-		    	.prop('disabled', true);
+		    $editCousesBtn.addClass('is-loading is-loading-sm').prop('disabled', true);
 		    // Disable all inputs within the form.
 		    $('#edit-course-form :input').prop('disabled', true);
 
@@ -182,24 +204,24 @@ $(function(){
 		      },
 		      success: function({messages}) {
 		      	$('#message').html(`
-                    <div class="alert alert-dismissible bg-success text-white border-0 fade show" role="alert">
-                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                      <strong>${messages}</strong>
+                    <div class="alert alert-light border-1 border-left-3 border-left-success d-flex justify-content-between">
+                        <div class="d-flex">
+                            <i class="material-icons text-success mr-3">check_circle</i>
+                            <div class="text-body">${messages}</div>
+                        </div>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                           <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                 `);
 		      },
-		      error: function(response) {
-		        alert('Failed to submit the form.');
+		      error: function({responseJSON: {messages}}) {
+                alert(messages);
 		      },
               complete: function(){
                 progressWrapper.hide(); // Hide the progress bar
                 $('#edit-course-form :input').prop('disabled', false);
-                $editCousesBtn
-                .removeClass('is-loading')
-                .removeClass('is-loading-sm')
-                .prop('disabled', false);
+                $editCousesBtn.removeClass('is-loading is-loading-sm').prop('disabled', false);
               }
 		    });
         }
@@ -209,9 +231,32 @@ $(function(){
         theme: 'snow' 
     });
 
+    // update hidden textarea (description)
     quill.on('text-change', function(delta, oldDelta, source) {
         $('#description').val(quill.container.firstChild.innerHTML).valid();
     });
 
-    $('#formation_image').change(function(){$(this).blur()});
+    // remove Attached
+    $('#remove-file').click(function(){
+        $.ajax({
+          url: `${URLROOT}/courses/removeAttachedFile/${$(this).data('id')}`, 
+          type: 'POST',
+          data: {method: "DELETE"},
+          success: function({messages}) {
+            $('#file-wrapper').addClass('justify-content-center')
+            .removeClass('justify-content-between')
+            .css({backgroundColor: '#66bb6a'})
+            .html(`
+                <div class="text-white">
+                  <i class="material-icons">check_circle</i>
+                </div>
+            `);
+          },
+          error: function({responseJSON: {messages}}) {
+            alert(messages);
+          }
+        });
+    });
+
+    $('#formation_image, #formation_background').change(function(){$(this).blur()});
 });

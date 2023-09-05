@@ -370,7 +370,10 @@ class Formation
                 n.nom AS nomNiveau,
                 n.icon AS iconNiveau,
                 v.url,
-                v.nom AS nomVideo
+                v.nom AS nomVideo,
+                f.background_img AS bgImg,
+                fichier_attache,
+                f.slug
             FROM formations AS f
             JOIN formateurs AS ft ON f.id_formateur = ft.id_formateur
             JOIN categories AS c ON f.id_categorie = c.id_categorie
@@ -691,7 +694,7 @@ class Formation
         return [];
     }
 
-    public function select($id_formation, $selectedFields)
+    public function select($id_formation,Array $selectedFields)
     {
         $query = $this->connect->prepare("
             SELECT 
@@ -706,6 +709,23 @@ class Formation
         $formation = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $formation;
+        }
+        return false;
+    }
+
+    public function setColumnToNull($columnName, $table, $column_id, $id)
+    {
+        $query = $this->connect->prepare("
+            UPDATE {$table}
+            SET {$columnName} = NULL
+            WHERE {$column_id} = :id
+        ");
+
+        $query->bindValue(':id', $id);
+
+        $query->execute();
+        if ($query->rowCount() > 0) {
+            return true;
         }
         return false;
     }
