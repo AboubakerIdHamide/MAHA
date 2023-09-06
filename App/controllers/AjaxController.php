@@ -112,46 +112,4 @@ class AjaxController
     {
         // Code Check Balance Formateur Here (Before Making request money)
     }
-
-    public function joinCourse($code = null)
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (is_null($code)) {
-                echo json_encode("le code de la formation est obligatoire.");
-                http_response_code(400);
-                exit;
-            }
-
-            $formations = $this->formationModel->join($code);
-            if ($formations) {
-                foreach ($formations as $formation) {
-                    $inscription = $this->inscriptionModel->checkIfAlready($_SESSION['id_etudiant'], $formation->id_formation);
-                    if (empty($inscription)) {
-                        $inscriptionData = [
-                            "id_formation" => $formation->id_formation,
-                            "id_etudiant" => $_SESSION['id_etudiant'],
-                            "id_formateur" => $formation->id_formateur,
-                            "prix" => $formation->prix,
-                            "transaction_info" => 0,
-                            "payment_id" => 0,
-                            "payment_state" => 'approved',
-                            "date_inscription" => date('Y-m-d H:i:s'),
-                            "approval_url" => 0
-                        ];
-
-                        $this->inscriptionModel->create($inscriptionData);
-                        http_response_code(201);
-                    }
-                }
-
-                flash("joined", "Vous avez rejoindre toutes les formations de formateur <strong>{$formations[0]->nom} {$formations[0]->prenom}</strong>.");
-            } else {
-                echo json_encode("ce code est invalid.");
-                http_response_code(404);
-            }
-        } else {
-            redirect();
-            exit;
-        }
-    }
 }

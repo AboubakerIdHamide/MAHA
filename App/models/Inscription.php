@@ -99,7 +99,7 @@ class Inscription
         return false;
     }
 
-    public function getInscriptionsOfEtudiant($id)
+    public function getFormationsOfEtudiant($offset, $numberRecordsPerPage, $id)
     {
         $query = $this->connect->prepare("
             SELECT 
@@ -115,13 +115,18 @@ class Inscription
                 f.img AS imgFormateur,
                 f.nom AS nomFormateur,
                 f.prenom AS prenomFormateur,
-                jaimes
+                jaimes,
+                n.nom AS nomNiveau,
+                l.nom AS nomLangue
             FROM inscriptions i
             JOIN etudiants e ON i.id_etudiant = e.id_etudiant
             JOIN formateurs f ON i.id_formateur = f.id_formateur
             JOIN formations fore ON i.id_formation = fore.id_formation
             JOIN categories c ON fore.id_categorie = c.id_categorie
+            JOIN langues l ON fore.id_langue = l.id_langue
+            JOIN niveaux n ON fore.id_niveau = n.id_niveau
             WHERE e.id_etudiant=:id AND payment_state = 'approved'
+            LIMIT {$offset}, {$numberRecordsPerPage}
         ");
 
         $query->bindParam(":id", $id);
@@ -227,7 +232,7 @@ class Inscription
 
         $inscriptions = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
-            return $inscriptions;
+            return true;
         }
         return false;
     }

@@ -464,7 +464,7 @@ class Formation
         return [];
     }
 
-    public function join($code)
+    public function getPrivateFormations($code)
     {
         $query = $this->connect->prepare("
             SELECT 
@@ -473,13 +473,13 @@ class Formation
                 f.nom,
                 prenom,
                 prix
-            FROM formateurs f
-            JOIN formations USING (id_formateur)
-            WHERE BINARY code = :code
+            FROM formations 
+            JOIN formateurs AS f USING (id_formateur)
+            WHERE BINARY `code` = :code AND etat = 'private'
         ");
 
         $query->execute([
-            'code' => htmlspecialchars($code)
+            'code' => $code
         ]);
 
         $formations = $query->fetchAll(\PDO::FETCH_OBJ);

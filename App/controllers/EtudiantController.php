@@ -5,19 +5,19 @@ use App\Models\Formation;
 use App\Models\Video;
 use App\Models\Inscription;
 use App\Models\Stocked;
-use App\Models\Commentaire;
-use App\Models\Notification;
+
+use App\Libraries\Response;
+use App\Libraries\Request;
+use App\Libraries\Validator;
 
 class EtudiantController
 {
+	private $id_etudiant;
 	private $etudiantModel;
 	private $formationModel;
 	private $videoModel;
 	private $inscriptionModel;
 	private $stockedModel;
-	private $commentModel;
-	private $notificationModel;
-	private $id;
 
 
 	public function __construct()
@@ -39,61 +39,67 @@ class EtudiantController
 		$this->videoModel = new Video;
 		$this->inscriptionModel = new Inscription;
 		$this->stockedModel = new Stocked;
-		$this->commentModel = new Commentaire;
-		$this->notificationModel = new Notification;
-		$this->id = session('user')->get()->id_etudiant;
+		$this->id_etudiant = session('user')->get()->id_etudiant;
 	}
 
 	public function index()
 	{
-		// preparing data
-		$data["inscriptions"] = $this->inscriptionModel->getInscriptionsOfEtudiant(session('user')->get()->id_etudiant);
-		foreach ($data["inscriptions"] as $inscription) {
-			$inscription->imgFormateur = URLROOT . "/Public/" . $inscription->imgFormateur;
-			$inscription->image = URLROOT . "/Public/" . $inscription->image;
-			$inscription->apprenants = $this->inscriptionModel->countApprenantsOfFormation($inscription->id_formateur, $inscription->id_formation);
-			$inscription->liked = $this->formationModel->isLikedBefore($inscription->id_etudiant, $inscription->id_formation);
-		}
-		$data['nbrNotifications'] = $this->_getNotifications();
-		// loading the view
-		return view("etudiants/index", $data);
+		return view("etudiants/index");
 	}
 
-	public function coursVideos($idFormateur = "", $idFormation = "")
+	public function inscriptions()
 	{
-		if (empty($idFormateur) || empty($idFormation)) {
-			return redirect("etudiant");
-		}
-		// preparing data
-		$formation = $this->inscriptionModel->getInscriptionOfOneFormation($idFormation, session('user')->get()->id_etudiant, $idFormateur);
-		$formation->imgFormateur = URLROOT . "/Public/" . $formation->imgFormateur;
-		$formation->image = URLROOT . "/Public/" . $formation->image;
-		$formation->imgEtudiant = URLROOT . "/Public/" . $formation->imgEtudiant;
-		$formation->formationCategorie = $this->stockedModel->getCategorieById($formation->formationCategorie)->nom;
-		$formation->formateurCategorie = $this->stockedModel->getCategorieById($formation->formateurCategorie)->nom;
-		$formation->langue = $this->stockedModel->getLangueById($formation->langue)->nom;
-		$niveau = $this->stockedModel->getLevelById($formation->niveau);
-		$formation->niveau = $niveau->nom;
-		$formation->niveauIcon = $niveau->icon;
-		$formation->apprenants = $this->inscriptionModel->countApprenantsOfFormation($idFormateur, $idFormation);
-		$formation->videos = $this->videoModel->getVideosOfFormation($idFormation);
-		$formation->liked = $this->formationModel->isLikedBefore(session('user')->get()->id_etudiant, $idFormation);
-
-		foreach ($formation->videos as $video) {
-			// settingUp Video Link
-			$video->url = URLROOT . "/Public/" . $video->url;
-			$video->comments = $this->commentModel->getCommentaireByVideoId($video->id_video, $idFormateur, session('user')->get()->id_etudiant);
-			$video->watched = $this->videoModel->watchedBefore(session('user')->get()->id_etudiant, $video->id_video);
-			$video->bookmarked = $this->videoModel->isBookmarked(session('user')->get()->id_etudiant, $video->id_video);
-			// settingUp User image Link for comment
-			foreach ($video->comments as $comment) {
-				$comment->img = URLROOT . "/Public/" . $comment->img;
-			}
+		$request = new Request;
+		if($request->getMethod() !== 'GET'){
+			return Response::json(null, 405, "Method Not Allowed");
 		}
 
-		// loading the view
-		return view("common/coursVideos", $formation);
+		$totalInscriptions = $this->inscriptionModel->countInscriptionsOfEtudiant($this->id_etudiant);
+		$formations = paginator($totalInscriptions, 4, 'my_courses', $this->inscriptionModel, 'getFormationsOfEtudiant', ['id' => $this->id_etudiant]);
+		return Response::json($formations);
 	}
+
+	public function joinCourse($code = null)
+    {
+    	$request = new Request;
+		if($request->getMethod() !== 'POST'){
+			return Response::json(null, 405, "Method Not Allowed");
+		}
+
+		$validator = new Validator([
+			'code' => strip_tags(trim($request->post('code')))
+		]);
+
+		$validator->validate([
+			'code' => 'required|min:30|max:60|alphanum|exists:formateurs'
+		]);
+
+		$formations = $this->formationModel->getPrivateFormations($validator->validated()["code"]);
+		if(!$formations){
+			return Response::json(null, 400, "Sorry! this instractor doesn't have any courses yet.");
+		}
+
+        foreach ($formations as $formation) {
+            $inscription = $this->inscriptionModel->checkIfAlready($this->id_etudiant, $formation->id_formation);
+            if (!$inscription) {
+                $inscriptionData = [
+                    "id_formation" => $formation->id_formation,
+                    "id_etudiant" => $this->id_etudiant,
+                    "id_formateur" => $formation->id_formateur,
+                    "prix" => $formation->prix,
+                    "transaction_info" => 0,
+                    "payment_id" => 0,
+                    "payment_state" => 'approved',
+                    "date_inscription" => date('Y-m-d H:i:s'),
+                    "approval_url" => 0
+                ];
+
+                $this->inscriptionModel->create($inscriptionData);
+            }
+        }
+
+        return Response::json(null, 200, "Congrats! vous avez rejoindre toutes les formations de formateur <strong>{$formations[0]->nom} {$formations[0]->prenom}</strong>.");
+    }
 
 	public function watchedVideos()
 	{
@@ -123,262 +129,5 @@ class EtudiantController
 
 		// loading the view
 		return view("etudiants/videoCards", $data);
-	}
-
-	// Update Profil 
-
-	public function updateInfos()
-	{
-		$idEtudiant = $this->id;
-		$etudiant = $this->etudiantModel->find($idEtudiant);
-
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			// Prepare Data
-			$data = [
-				"id" => $idEtudiant,
-				"nom" => trim($_POST["nom"]),
-				"prenom" => trim($_POST["prenom"]),
-				"tel" => trim($_POST["tel"]),
-				"c_mdp" => trim($_POST["c_mdp"]),
-				"n_mdp" => trim($_POST["n_mdp"]),
-				"nom_err" => "",
-				"prenom_err" => "",
-				"tel_err" => "",
-				"c_mdp_err" => "",
-				"n_mdp_err" => "",
-				"thereIsError" => false,
-			];
-
-
-			// Validate Data
-			$data = $this->validateMDP($data);
-			$data = $this->validateDataUpdate($data);
-
-			// Checking If There Is An Error
-			if ($data["thereIsError"] == true) {
-				echo json_encode($data);
-			} else {
-				// Hashing Password
-				$data["n_mdp"] = password_hash($data["n_mdp"], PASSWORD_DEFAULT);
-
-				$this->etudiantModel->update($data);
-
-				$_SESSION["user_data"] = $data;
-
-				$etudiant = $this->etudiantModel->find($idEtudiant);
-				$data = [
-					"nom" => $etudiant->nom,
-					"prenom" => $etudiant->prenom,
-					"email" => $etudiant->email,
-					"tel" => $etudiant->tel,
-					"img" => $etudiant->img,
-					"nom_err" => "",
-					"prenom_err" => "",
-					"img_err" => "",
-					"tel_err" => "",
-					"c_mdp_err" => "",
-					"n_mdp_err" => "",
-				];
-				echo json_encode($data);
-			}
-		} else {
-			$data = [
-				"nom" => $etudiant->nom,
-				"prenom" => $etudiant->prenom,
-				"email" => $etudiant->email,
-				"tel" => $etudiant->tel,
-				"img" => $etudiant->img,
-				"nom_err" => "",
-				"prenom_err" => "",
-				"img_err" => "",
-				"tel_err" => "",
-				"c_mdp_err" => "",
-				"n_mdp_err" => "",
-			];
-
-			$data["nbrNotifications"] = $this->_getNotifications();
-
-			return view("etudiants/profil", $data);
-		}
-	}
-
-	private function validateDataUpdate($data)
-	{
-		// Validate Nom & Prenom
-		if (strlen($data["nom"]) < 3) {
-			$data["thereIsError"] = true;
-			$data["nom_err"] = "Le nom doit comporter au moins 3 caractères";
-		}
-		if (strlen($data["prenom"]) < 3) {
-			$data["thereIsError"] = true;
-			$data["prenom_err"] = "Le prenom doit comporter au moins 3 caractères";
-		}
-		if (strlen($data["nom"]) > 30) {
-			$data["thereIsError"] = true;
-			$data["nom_err"] = "Le nom doit comporter au maximum 30 caractères";
-		}
-		if (strlen($data["prenom"]) > 30) {
-			$data["thereIsError"] = true;
-			$data["prenom_err"] = "Le prenom doit comporter au maximum 30 caractères";
-		}
-
-		// Validate Tele
-		if (!preg_match_all("/^((06|07)\d{8})+$/", $data["tel"])) {
-			$data["thereIsError"] = true;
-			$data["tel_err"] = "Le numéro de telephone que vous saisi est invalide";
-		}
-
-		// Validate Password
-		if (preg_match_all("/[!@#$%^&*()\-__+.]/", $data["n_mdp"])) {
-			if (preg_match_all("/\d/", $data["n_mdp"])) {
-				if (!preg_match_all("/[a-zA-Z]/", $data["n_mdp"])) {
-					$data["thereIsError"] = true;
-					$data["n_mdp_err"] = "Le mot de passe doit contenir au moins une lettre";
-				}
-			} else {
-				$data["thereIsError"] = true;
-				$data["n_mdp_err"] = "Le mot de passe doit contenir au moins un chiffres";
-			}
-		} else {
-			$data["thereIsError"] = true;
-			$data["n_mdp_err"] = "Le mot de passe doit contient au moin un caractère spécial";
-		}
-		if (strlen($data["n_mdp"]) > 50) {
-			$data["thereIsError"] = true;
-			$data["n_mdp_err"] = "Le mot de passe doit comporter au maximum 50 caractères";
-		}
-		if (strlen($data["n_mdp"]) < 10) {
-			$data["thereIsError"] = true;
-			$data["n_mdp_err"] = "Le mot de passe doit comporter au moins 10 caractères";
-		}
-
-		return $data;
-	}
-
-	public function validateMDP($data)
-	{
-		$data['mdpDb'] = $this->etudiantModel->getPassword($data['id'])->mdp;
-
-		if (!(password_verify($data["c_mdp"], $data['mdpDb']))) {
-			$data["thereIsError"] = true;
-			$data["c_mdp_err"] = "Mot de passe incorrect !";
-		}
-		return $data;
-	}
-
-	public function changeImg()
-	{
-		$idEtudiant = $this->id;
-		$etudiant = $this->etudiantModel->find($idEtudiant);
-		$etudiant->img = URLROOT . "/Public/" . $etudiant->img;
-
-		$data = [];
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$data['img'] = $_FILES["img"];
-			$data['img_err'] = "";
-			$data['thereIsError'] = false;
-
-			$data['email'] = $etudiant->email;
-
-			// Upload The Image In Our Server
-			$data = $this->uploadImage($data);
-
-			// Checking If There Is An Error
-			if ($data["thereIsError"] == true) {
-				echo json_encode($data);
-			} else {
-				// Delete The Old Image
-				if ($data["img"] != "images/default.jpg") {
-					unlink($etudiant->img);
-				}
-
-				$this->etudiantModel->updateImage($data["img"], $idEtudiant);
-
-				$_SESSION["user_data"] = $data;
-
-				$etudiant->img = URLROOT . "/Public/" . $data["img"];
-				$data = [
-					"img" => $etudiant->img,
-				];
-				echo json_encode($data);
-			}
-		} else {
-			$data = [
-				"nom" => $etudiant->nom,
-				"prenom" => $etudiant->prenom,
-				"email" => $etudiant->email,
-				"tel" => $etudiant->tel,
-				"img" => $etudiant->img,
-				"nom_err" => "",
-				"prenom_err" => "",
-				"email_err" => "",
-				"img_err" => "",
-				"tel_err" => "",
-			];
-			return view("etudiants/updateInfos", $data);
-		}
-	}
-
-	private  function uploadImage($data)
-	{
-		$file = $data["img"]; // Image Array
-		$fileName = $file["name"]; // name
-		$fileTmpName = $file["tmp_name"]; // location
-		$fileError = $file["error"]; // error
-
-		if (!empty($fileTmpName)) {
-			$fileExt = explode(".", $fileName);
-			$fileRealExt = strtolower(end($fileExt));
-			$allowed = array("jpg", "jpeg", "png");
-
-
-			if (in_array($fileRealExt, $allowed)) {
-				if ($fileError === 0) {
-					$fileNameNew = substr(number_format(time() * rand(), 0, '', ''), 0, 5) . "." . $fileRealExt;
-					$fileDestination = 'images/userImage/' . $fileNameNew;
-					move_uploaded_file($fileTmpName, $fileDestination);
-					$data["img"] = $fileDestination;
-				} else {
-					$data["thereIsError"] = true;
-					$data["img_err"] = "Une erreur s'est produite lors du téléchargement de votre image !";
-				}
-			} else {
-				$data["thereIsError"] = true;
-				$data["img_err"] = "Vous ne pouvez pas télécharger ce fichier. (uniquement jpg, jpeg, png, ico sont autorisé)";
-			}
-		} else {
-			$data["img"] = 'images/default.jpg';
-		}
-
-		return $data;
-	}
-
-	public function getAllNotifications()
-	{
-		$notifications = $this->notificationModel->getNotificationsOfEtudiant(session('user')->get()->id_etudiant);
-		echo json_encode($notifications);
-	}
-
-	private function _getNotifications()
-	{
-		return $this->notificationModel->getNewNotificationsOfEtudiant(session('user')->get()->id_etudiant);
-	}
-
-	public function notifications()
-	{
-		$data = ['nbrNotifications' => $this->_getNotifications()];
-		return view('common/index', $data);
-	}
-
-	public function setStateToSeen($id_notification)
-	{
-		$this->notificationModel->setStateToSeen($id_notification);
-		echo json_encode('Terminée !!');
-	}
-
-	public function deleteSeenNotifications()
-	{
-		$this->notificationModel->deleteSeenNotifications();
-		echo json_encode('Terminée !!');
 	}
 }
