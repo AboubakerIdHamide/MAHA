@@ -9,7 +9,7 @@ function paginator($totalRecords, $numberRecordsPerPage, $recordsName, $model, $
 
 	$offset = ($page - 1) * $numberRecordsPerPage;
 
-	$records = call_user_func_array([$model, $method], array_merge([$offset], $params));
+	$records = call_user_func_array([$model, $method], array_merge([$offset, $numberRecordsPerPage], $params));
 
 	return [
 		'totalRecords' => (int) $totalRecords,
