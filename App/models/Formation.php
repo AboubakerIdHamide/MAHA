@@ -147,25 +147,25 @@ class Formation
         return [];
     }
 
-    public function setLike($etudiant_id, $formation_id)
+    public function toggleLike($id_etudiant, $id_formation)
     {
-        // like or dislike
-        $liked = $this->isLikedBefore($etudiant_id, $formation_id);
+        // toggleLike
+        $liked = $this->isLikedBefore($id_etudiant, $id_formation);
         if ($liked) {
-            // dislike
+            // remove like
             $query = $this->connect->prepare("
                 DELETE FROM jaimes 
                 WHERE id_etudiant=:eId 
                 AND id_formation=:fId
             ");
         } else {
-            // like
+            // add like
             $query = $this->connect->prepare("
                 INSERT INTO jaimes(id_etudiant, id_formation) VALUES (:eId,:fId)
             ");
         }
-        $query->bindValue(':eId', $etudiant_id);
-        $query->bindValue(':fId', $formation_id);
+        $query->bindValue(':eId', $id_etudiant);
+        $query->bindValue(':fId', $id_formation);
         $query->execute();
 
         if ($query->rowCount() > 0) {
@@ -174,7 +174,7 @@ class Formation
         return false;
     }
 
-    public function isLikedBefore($etudiant_id, $formation_id)
+    public function isLikedBefore($id_etudiant, $id_formation)
     {
         $query = $this->connect->prepare("
             SELECT * 
@@ -183,8 +183,8 @@ class Formation
             AND id_formation=:fId
         ");
 
-        $query->bindValue(':eId', $etudiant_id);
-        $query->bindValue(':fId', $formation_id);
+        $query->bindValue(':eId', $id_etudiant);
+        $query->bindValue(':fId', $id_formation);
         $query->execute();
 
         if ($query->rowCount() > 0) {
@@ -193,18 +193,18 @@ class Formation
         return false;
     }
 
-    public function getLikes($id)
+    public function getLikes($id_formation)
     {
         $query = $this->connect->prepare("
             SELECT jaimes 
             FROM formations 
-            WHERE  id_formation=:id
+            WHERE  id_formation=:id_formation
         ");
 
-        $query->bindValue(':id', $id);
+        $query->bindValue(':id_formation', $id_formation);
         $query->execute();
 
-        $jaimes = $query->fetch(\PDO::FETCH_OBJ)->jaimes;
+        $jaimes = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             return $jaimes;
         }
@@ -534,7 +534,7 @@ class Formation
         return false;
     }
 
-    public function filter($offset, $sort, $filter, $id_formateur = null)
+    public function filter($offset, $numberRecordsPerPage, $sort, $filter, $id_formateur = null)
     {
         $query = $this->connect->prepare("
             SELECT
@@ -580,7 +580,7 @@ class Formation
             {$filter}
             {$id_formateur}
             ORDER BY insc.total_inscriptions DESC {$sort}
-            LIMIT {$offset}, 10
+            LIMIT {$offset}, {$numberRecordsPerPage}
         ");
 
         $query->execute();

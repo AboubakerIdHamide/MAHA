@@ -59,7 +59,7 @@ class EtudiantController
 		return Response::json($formations);
 	}
 
-	public function joinCourse($code = null)
+	public function joinCourse()
     {
     	$request = new Request;
 		if($request->getMethod() !== 'POST'){
@@ -101,33 +101,74 @@ class EtudiantController
         return Response::json(null, 200, "Congrats! vous avez rejoindre toutes les formations de formateur <strong>{$formations[0]->nom} {$formations[0]->prenom}</strong>.");
     }
 
-	public function watchedVideos()
-	{
-		// Preparing Data
-		$data["videos"] = $this->videoModel->getWatchedVideos(session('user')->get()->id_etudiant);
-		foreach ($data["videos"] as $video) {
-			// settingUp Video Link
-			$video->url = URLROOT . "/Public/" . $video->url;
+    public function formation($id_formation = null)
+    {
+    	$request = new Request;
+		if($request->getMethod() !== 'GET'){
+			return Response::json(null, 405, "Method Not Allowed");
 		}
 
-		$data["nbrNotifications"] = $this->_getNotifications();
-
-		// loading the view
-		return view("etudiants/videoCards", $data);
-	}
-
-	public function bookmarkedVideos()
-	{
-		// Preparing Data
-		$data["videos"] = $this->videoModel->getBookmarkedVideos(session('user')->get()->id_etudiant);
-		foreach ($data["videos"] as $video) {
-			// settingUp Video Link
-			$video->url = URLROOT . "/Public/" . $video->url;
+		if(is_null($id_formation) || !is_numeric($id_formation)){
+			return view("errors/page_404");
 		}
 
-		$data["nbrNotifications"] = $this->_getNotifications();
+		$formation = $this->inscriptionModel->getMyCourse($this->id_etudiant, $id_formation);
+		if(!$formation){
+			return view("errors/page_404");
+		}
 
-		// loading the view
-		return view("etudiants/videoCards", $data);
-	}
+		$videos = $this->videoModel->getVideosOfFormation($id_formation);
+		return view('etudiants/formation', compact('formation', 'videos'));
+    }
+
+    public function toggleLikeFormation($id_formation = null)
+    {
+    	$request = new Request;
+		if($request->getMethod() !== 'POST'){
+			return Response::json(null, 405, "Method Not Allowed");
+		}
+
+		$validator = new Validator([
+			'id_formation' => strip_tags(trim($id_formation))
+		]);
+
+		$validator->validate([
+			'id_formation' => 'required|numeric|exists:formations|check_etudiant:inscriptions'
+		]);
+
+		$this->formationModel->toggleLike($this->id_etudiant, $id_formation);
+        $newLikes = $this->formationModel->getLikes($id_formation);
+        return Response::json($newLikes);
+    }
+
+    public function toggleBookmarkVideo($id_video = null)
+    {
+    	$request = new Request;
+		if($request->getMethod() !== 'POST'){
+			return Response::json(null, 405, "Method Not Allowed");
+		}
+
+		$validator = new Validator([
+			'id_video' => strip_tags(trim($id_video))
+		]);
+
+		$validator->validate([
+			'id_video' => 'required|numeric|exists:videos'
+		]);
+
+		$relationship = [
+			"from" => "inscriptions",
+			"join" => "videos",
+			"using" => "id_formation",
+			"where" => [
+				"id_video" => $id_video,
+				"id_etudiant" => $this->id_etudiant,
+			]
+		];
+
+		$validator->checkPermissions($relationship);
+
+        $response = $this->videoModel->toggleBookmark($this->id_etudiant, $id_video);
+        return Response::json($response);
+    }
 }

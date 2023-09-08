@@ -75,26 +75,6 @@ class Video
 		return false;
 	}
 
-	public function getVideo($idFormation, $idVideo)
-	{
-		$query = $this->connect->prepare("
-			SELECT * 
-			FROM videos 
-			WHERE id_formation = :id_formation 
-			AND id_video = :id_video
-		");
-
-		$query->bindParam(':id_formation', $idFormation);
-		$query->bindParam(':id_video', $idVideo);
-		$query->execute();
-
-		$video = $query->fetch(\PDO::FETCH_OBJ);
-		if ($query->rowCount() > 0) {
-			return $video;
-		}
-		return false;
-	}
-
 	public function countMassHorraire($id_formation)
 	{
 		$query = $this->connect->prepare("
@@ -145,9 +125,11 @@ class Video
 				mass_horaire,
 				IF(a.id_video = v.id_video, 1, 0) AS is_preview,
 				ordre,
-				thumbnail
+				thumbnail,
+				IF(b.id_video = v.id_video, 1, 0) AS is_bookmarked
 			FROM videos v
 			LEFT JOIN apercus a ON v.id_video = a.id_video
+			LEFT JOIN bookmarks b ON v.id_video = b.id_video
 			JOIN formations f ON v.id_formation = f.id_formation
 			WHERE f.id_formation = :id_formation
 			ORDER BY ordre
@@ -161,6 +143,8 @@ class Video
 			foreach ($videos as $video) {
 				$datetime = new Carbon($video->created_at);
 				$video->created_at = $datetime->diffForHumans();
+				$duree = explode(":", $video->duree);
+				$video->duree = $duree[1].":".$duree[2];
 			}
 			
 			return $videos;
@@ -262,76 +246,49 @@ class Video
 		return false;
 	}
 
-	public function getWatchedVideos($etudiant_id)
+	public function toggleBookmark($id_etudiant, $id_video)
 	{
-		$query = $this->connect->prepare("
-			SELECT 
-				f.id_formation,
-				f.nom AS nomFormation,
-				f.id_formateur,
-				vi.id_video,
-				vi.nom AS nomVideo,
-				url,
-				vi.description
-			FROM vus v
-			JOIN videos vi ON v.id_video = vi.id_video 
-			JOIN formations f ON vi.id_formation = f.id_formation
-			WHERE v.id_etudiant=:id_etudiant
-		");
-
-		$query->bindParam(':id_etudiant', $etudiant_id);
-		$query->execute();
-
-		$videos = $query->fetchAll(\PDO::FETCH_OBJ);
-		if ($query->rowCount() > 0) {
-			return $videos;
-		}
-		return [];
-	}
-
-	public function setBookmark($etudiant_id, $video_id)
-	{
-		// watch or unwatch
-		$bookmarked = $this->isBookmarked($etudiant_id, $video_id);
-		if ($bookmarked) {
-			// watch
+		// toggle bookmark
+		$isBookmarked = $this->isBookmarked($id_etudiant, $id_video);
+		if ($isBookmarked) {
+			// remove bookmark
 			$query = $this->connect->prepare("
 				DELETE FROM bookmarks 
 				WHERE id_etudiant=:eId 
 				AND id_video=:vId
 			");
-		} else {
-			// unwatch
+		}else{
+			// add book mark
 			$query = $this->connect->prepare("
 				INSERT INTO bookmarks(id_etudiant, id_video) VALUES (:eId,:vId)
 			");
 		}
-		$query->bindParam(':eId', $etudiant_id);
-		$query->bindParam(':vId', $video_id);
+
+		$query->bindParam(':eId', $id_etudiant);
+		$query->bindParam(':vId', $id_video);
 		$query->execute();
+
 		if ($query->rowCount() > 0) {
-			return true;
+			return ["id_video" => (int) $id_video, "isBookmarked" => !$isBookmarked];
 		}
 		return false;
 	}
 
-	public function isBookmarked($etudiant_id, $video_id)
+	private function isBookmarked($id_etudiant, $id_video)
 	{
 		$query = $this->connect->prepare("
-			SELECT * 
+			SELECT COUNT(*) AS isBookmarked
 			FROM bookmarks 
 			WHERE id_etudiant=:eId 
 			AND id_video=:vId
 		");
 
-		$query->bindParam(':eId', $etudiant_id);
-		$query->bindParam(':vId', $video_id);
+		$query->bindParam(':eId', $id_etudiant);
+		$query->bindParam(':vId', $id_video);
 		$query->execute();
 		
-		if ($query->rowCount() > 0) {
-			return true;
-		}
-		return false;
+		$isBookmarked = $query->fetch(\PDO::FETCH_OBJ)->isBookmarked;
+		return (bool) $isBookmarked;
 	}
 
 	public function getBookmarkedVideos($etudiant_id)
@@ -377,43 +334,6 @@ class Video
 		return false;
 	}
 
-	public function updateVideoId($dataVideo)
-	{
-		if (isset($dataVideo['description']) && isset($dataVideo['titre'])) {
-			$query = $this->connect->prepare("
-				UPDATE videos
-				SET description = :description,
-					nom = :titre
-				WHERE id_video = :id_video
-			");
-			$query->bindParam(':description', $dataVideo['description']);
-			$query->bindParam(':titre', $dataVideo['titre']);
-		} else {
-			if (isset($dataVideo['description'])) {
-				$query = $this->connect->prepare("
-					UPDATE videos
-					SET description = :description
-					WHERE id_video = :id_video
-				");
-				$query->bindParam(':description', $dataVideo['description']);
-			} else {
-				$query = $this->connect->prepare("
-					UPDATE videos
-					SET nom = :titre
-					WHERE id_video = :id_video
-				");
-				$query->bindParam(':titre', $dataVideo['titre']);
-			}
-		}
-
-		$query->bindParam(':id_video', $dataVideo['id_video']);
-		$query->execute();
-		if ($query->rowCount() > 0) {
-			return true;
-		}
-		return false;
-	}
-
 	public function getVideosOfFormationPublic($id_formation)
 	{
 		$query = $this->connect->prepare("
@@ -453,26 +373,5 @@ class Video
 			return $numberVideos;
 		}
 		return 0;
-	}
-
-	public function getFormateurOfVideo($videoId)
-	{
-		$query = $this->connect->prepare("
-			SELECT 
-				id_formateur
-			FROM videos
-			JOIN formations USING (id_formation)
-			JOIN formateurs USING (id_formateur)
-			WHERE id_video = :id_video
-		");
-
-		$query->bindParam(':id_video', $videoId);
-		$query->execute();
-
-		$formateur = $query->fetch(\PDO::FETCH_OBJ);
-		if ($query->rowCount() > 0) {
-			return $formateur;
-		}
-		return false;
 	}
 }

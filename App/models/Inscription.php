@@ -104,28 +104,20 @@ class Inscription
         $query = $this->connect->prepare("
             SELECT 
                 i.id_formation,
-                i.id_formateur,
-                i.id_etudiant,
                 mass_horaire,
                 fore.image,
                 c.nom AS nomCategorie,
-                fore.prix,
                 fore.nom AS nomFormation,
                 description,
-                f.img AS imgFormateur,
-                f.nom AS nomFormateur,
-                f.prenom AS prenomFormateur,
                 jaimes,
                 n.nom AS nomNiveau,
                 l.nom AS nomLangue
             FROM inscriptions i
-            JOIN etudiants e ON i.id_etudiant = e.id_etudiant
-            JOIN formateurs f ON i.id_formateur = f.id_formateur
             JOIN formations fore ON i.id_formation = fore.id_formation
             JOIN categories c ON fore.id_categorie = c.id_categorie
             JOIN langues l ON fore.id_langue = l.id_langue
             JOIN niveaux n ON fore.id_niveau = n.id_niveau
-            WHERE e.id_etudiant=:id AND payment_state = 'approved'
+            WHERE id_etudiant = :id AND payment_state = 'approved'
             LIMIT {$offset}, {$numberRecordsPerPage}
         ");
 
@@ -137,49 +129,6 @@ class Inscription
             return $inscriptions;
         }
         return [];
-    }
-
-    public function getInscriptionOfOneFormation($id_formation, $id_etudiant, $id_formateur)
-    {
-        $query = $this->connect->prepare("
-            SELECT
-                f.id_formateur,
-                f.nom AS nomFormateur,
-                f.prenom AS prenomFormateur,
-                f.img AS imgFormateur,
-                f.id_categorie AS formateurCategorie,
-                fo.id_formation,
-                fo.nom AS nomFormation, 
-                fo.id_categorie AS formationCategorie,
-                mass_horaire,
-                image,
-                fichier_attache,
-                jaimes,
-                e.id_etudiant,
-                e.nom AS nomEtudiant,
-                e.prenom AS prenomEtudiant,
-                e.img AS imgEtudiant,
-                id_langue AS langue,
-                id_niveau AS niveau
-            FROM inscriptions i
-            JOIN etudiants e USING(id_etudiant)
-            JOIN formateurs f USING(id_formateur)
-            JOIN formations fo USING(id_formation)
-            WHERE i.id_formation = :id_formation 
-            AND i.id_etudiant = :id_etudiant 
-            AND i.id_formateur = :id_formateur
-            AND i.payment_state = 'approved'
-        ");
-        $query->bindParam(':id_formation', $id_formation);
-        $query->bindParam(':id_etudiant', $id_etudiant);
-        $query->bindParam(':id_formateur', $id_formateur);
-        $query->execute();
-
-        $inscription = $query->fetch(\PDO::FETCH_OBJ);
-        if ($query->rowCount() > 0) {
-            return $inscription;
-        }
-        return false;
     }
 
     public function getFormationsOfStudent($id_etudiant)
@@ -672,5 +621,48 @@ class Inscription
             return $total;
         }
         return 0;
+    }
+
+    public function getMyCourse($id_etudiant, $id_formation)
+    {
+        $query = $this->connect->prepare("
+            SELECT
+                fore.id_formation,
+                fore.image,
+                fore.nom AS nomFormation,
+                IF(TIME_FORMAT(mass_horaire, '%H') > 0, 
+                    CONCAT(TIME_FORMAT(mass_horaire, '%H'), 'H ', TIME_FORMAT(mass_horaire, '%i'), 'Min'), 
+                    TIME_FORMAT(mass_horaire, '%iMin')
+                ) AS mass_horaire,
+                fichier_attache,
+                description,
+                f.img AS imgFormateur,
+                f.nom AS nomFormateur,
+                f.prenom AS prenomFormateur,
+                jaimes,
+                n.nom AS nomNiveau,
+                a.id_video,
+                j.id_etudiant AS isLiked
+            FROM inscriptions i
+            JOIN formateurs f ON i.id_formateur = f.id_formateur
+            JOIN formations fore ON i.id_formation = fore.id_formation
+            JOIN niveaux n ON fore.id_niveau = n.id_niveau
+            JOIN apercus a ON i.id_formation = a.id_formation
+            LEFT JOIN jaimes j ON i.id_etudiant = j.id_etudiant AND i.id_formation = j.id_formation
+            WHERE i.id_etudiant = :id_etudiant
+            AND payment_state = 'approved'
+            AND i.id_formation = :id_formation
+        ");
+
+        $query->execute([
+            'id_etudiant' => $id_etudiant,
+            'id_formation' => $id_formation
+        ]);
+
+        $formation = $query->fetch(\PDO::FETCH_OBJ);
+        if ($query->rowCount() > 0) {
+            return $formation;
+        }
+        return false;
     }
 }

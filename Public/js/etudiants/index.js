@@ -57,12 +57,12 @@ $(function () {
                 <div class="col-12 col-sm-6">
                 	<div class="card">
                 		<div class="card-header text-center">
-	                        <h4 class="card-title text-truncate mb-0"><a href="#">${course.nomFormation}</a></h4>
+	                        <h4 class="card-title text-truncate mb-0"><a href="${URLROOT}/etudiant/formation/${course.id_formation}">${course.nomFormation}</a></h4>
 	                        <div class="rating">
 	                            ${course.jaimes} <i class="material-icons text-danger">favorite</i>
 	                        </div>
 	                    </div>
-	                    <a href="#">
+	                    <a href="${URLROOT}/etudiant/formation/${course.id_formation}">
 	                        <img src="${URLROOT}/public/images/${course.image}"
 	                             alt="image formation"
 	                             style="width:100%;">
