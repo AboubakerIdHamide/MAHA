@@ -5,7 +5,5 @@ public/images/videos
 public/videos
 public/files/formations
 
-# Add default images.
-
 # If you want to extract thumbnail from a video, Installing FFmpeg :
 # - https://phoenixnap.com/kb/ffmpeg-windows

@@ -86,7 +86,7 @@ class Inscription
             SELECT 
                 COUNT(*) AS total_inscription
             FROM inscriptions
-            WHERE id_etudiant = :id
+            WHERE id_etudiant = :id AND payment_state = 'approved'
         ");
 
         $query->bindParam(':id', $id);
@@ -347,7 +347,7 @@ class Inscription
         }
         return [];
     }
-    
+
     public function top5BestSellersLastYear()
     {
         $query = $this->connect->prepare("
@@ -483,7 +483,7 @@ class Inscription
         $query->execute(['id_formateur' => $id_formateur]);
         $total = $query->fetch(\PDO::FETCH_OBJ)->totalTransations;
         if ($query->rowCount() > 0) {
-            return $total; 
+            return $total;
         }
         return 0;
     }
@@ -575,7 +575,7 @@ class Inscription
         $query->execute(['id_formateur' => $id_formateur]);
         $total = $query->fetch(\PDO::FETCH_OBJ)->totalFormations;
         if ($query->rowCount() > 0) {
-            return $total; 
+            return $total;
         }
         return 0;
     }

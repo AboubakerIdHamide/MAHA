@@ -4,17 +4,18 @@ namespace App\Seeders;
 
 use App\Models\Etudiant;
 
-class EtudiantSeeder extends Seed {
+class EtudiantSeeder extends Seed
+{
 
 	private function definition()
 	{
-       $data = [
-		    'nom' => $this->faker->lastName,
-		    'prenom' => $this->faker->firstName,
-		    'email' => $this->faker->safeEmail(),
-		    'password' => password_hash('DIMAbarca123@@@', PASSWORD_DEFAULT),
-		    'img' => $this->getRandomImage(200, 200, 'users', 'etudiant'),
-		    'verified' => date('Y-m-d H:i:s')
+		$data = [
+			'nom' => $this->faker->lastName(),
+			'prenom' => $this->faker->firstName(),
+			'email' => $this->faker->safeEmail(),
+			'password' => password_hash('DIMAbarca123@@@', PASSWORD_DEFAULT),
+			'img' => $this->getRandomImage(200, 200, 'users/avatars', 'etudiant'),
+			'verified' => date('Y-m-d H:i:s')
 		];
 
 		$etudiant = new Etudiant;
@@ -26,10 +27,10 @@ class EtudiantSeeder extends Seed {
 	{
 		$etudiants = [];
 
-		for($i = $records; $i > 0 ;$i--){
+		for ($i = $records; $i > 0; $i--) {
 			array_push($etudiants, $this->definition());
 
-			if($i % 5 === 0) {
+			if ($i % 5 === 0) {
 				sleep(1);
 			}
 		}
