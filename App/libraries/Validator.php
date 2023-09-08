@@ -205,7 +205,7 @@ class Validator
                 $this->addError($field, 'The ' . $field . ' video duration must not exceed ' . $durationInMinutes . ' minutes.');
             }
         } elseif (strpos($rule, 'check:') === 0) {
-            $tableName = explode(':', $rule)[1]; // Your table name here;
+            $tableName = explode(':', $rule)[1]; 
             $columnName = $field; 
 
             // Check if formateur have a record in giving table
@@ -239,6 +239,21 @@ class Validator
 
             if($fileType !== $value['type']){
                 $this->addError($field, "Only file type `$fileType` allowed.");
+            }
+        } elseif (strpos($rule, 'check_etudiant:') === 0) {
+            $tableName = explode(':', $rule)[1]; 
+            $columnName = $field; 
+
+            // Check if etudiant have a record in giving table
+            $query = "SELECT COUNT(*) FROM {$tableName} WHERE {$columnName} = :value AND id_etudiant = :id_etudiant";
+            $statement = Database::getConnection()->prepare($query);
+            $statement->bindValue(':value', $value);
+            $statement->bindValue(':id_etudiant', session('user')->get()->id_etudiant);
+            $statement->execute();
+            $count = $statement->fetchColumn();
+
+            if ($count < 1) {
+                $this->addError($field, "You don't have access to this ".substr($tableName, 0, -1).".");
             }
         }
 
@@ -275,7 +290,6 @@ class Validator
     public function checkPermissionsFormateur($from, $join, $joinColumn, $condition)
     {
         $field = array_keys($condition)[0];
-
         $query = "
             SELECT 
                 COUNT(*)
@@ -288,6 +302,29 @@ class Validator
         $statement->bindValue(':id_formateur', session('user')->get()->id_formateur);
         $statement->execute();
         $count = $statement->fetchColumn();
+        if($count < 1){
+            return Response::json(null, 403, "Insufficient permissions.");
+        }
+    }
+
+    public function checkPermissions(Array $relationship)
+    {
+        extract($relationship);
+        $columns = array_keys($where);
+        foreach($columns as $key => $column) $columns[$key] = "$column = :$column";
+
+        $query = "
+            SELECT 
+                COUNT(*)
+            FROM {$from}
+            JOIN {$join} USING ($using)
+            WHERE ".implode(' AND ', $columns);
+
+        $statement = Database::getConnection()->prepare($query);
+        foreach ($where as $column => $value) $statement->bindValue(":$column", $value);
+        $statement->execute();
+        $count = $statement->fetchColumn();
+
         if($count < 1){
             return Response::json(null, 403, "Insufficient permissions.");
         }
