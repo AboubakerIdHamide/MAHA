@@ -12,6 +12,7 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/bootstrap.min.css" />
     <!-- Font Icons -->
+    <link href="<?= CSSROOT ?>/icons/elegant-icons.css" rel="stylesheet" />
     <link href="<?= CSSROOT ?>/icons/all.min.css" rel="stylesheet" />
     <!-- Style -->
     <link rel="stylesheet" href="<?= CSSROOT ?>/formateurs/continue.css" />
