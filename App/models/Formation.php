@@ -150,8 +150,8 @@ class Formation
     public function toggleLike($id_etudiant, $id_formation)
     {
         // toggleLike
-        $liked = $this->isLikedBefore($id_etudiant, $id_formation);
-        if ($liked) {
+        $isLiked = $this->isLiked($id_etudiant, $id_formation);
+        if ($isLiked) {
             // remove like
             $query = $this->connect->prepare("
                 DELETE FROM jaimes 
@@ -169,15 +169,15 @@ class Formation
         $query->execute();
 
         if ($query->rowCount() > 0) {
-            return true;
+            return ["isLiked" => !$isLiked];
         }
-        return false;
+        return [];
     }
 
-    public function isLikedBefore($id_etudiant, $id_formation)
+    public function isLiked($id_etudiant, $id_formation)
     {
         $query = $this->connect->prepare("
-            SELECT * 
+            SELECT COUNT(*) AS isLiked
             FROM jaimes 
             WHERE id_etudiant=:eId 
             AND id_formation=:fId
@@ -187,10 +187,8 @@ class Formation
         $query->bindValue(':fId', $id_formation);
         $query->execute();
 
-        if ($query->rowCount() > 0) {
-            return true;
-        }
-        return false;
+        $isLiked = $query->fetch(\PDO::FETCH_OBJ)->isLiked;
+		return (bool) $isLiked;
     }
 
     public function getLikes($id_formation)
@@ -204,11 +202,11 @@ class Formation
         $query->bindValue(':id_formation', $id_formation);
         $query->execute();
 
-        $jaimes = $query->fetch(\PDO::FETCH_OBJ);
+        $jaimes = $query->fetch(\PDO::FETCH_ASSOC);
         if ($query->rowCount() > 0) {
             return $jaimes;
         }
-        return 0;
+        return [];
     }
 
     public function getPopularCourses()
