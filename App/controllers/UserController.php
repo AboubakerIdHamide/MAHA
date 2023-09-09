@@ -612,6 +612,7 @@ class UserController
                     ], 'formateurs/continue');
 
                     $data = $validator->validated();
+                    unset($data["type"]);
                     $data['is_all_info_present'] = true;
 
                     if($this->formateurModel->update($data, session('user')->get()->id_formateur)){
