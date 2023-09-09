@@ -639,6 +639,7 @@ class Inscription
                 f.img AS imgFormateur,
                 f.nom AS nomFormateur,
                 f.prenom AS prenomFormateur,
+                f.id_formateur,
                 jaimes,
                 n.nom AS nomNiveau,
                 a.id_video,

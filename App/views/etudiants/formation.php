@@ -1,4 +1,4 @@
-<?php //print_r2($videos) ?>
+<?php //print_r2($formation) ?>
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
     <head>
@@ -32,6 +32,7 @@
         <style>
             .video {
                 cursor: pointer;
+                transition: .3s background-color;
             }   
 
             .video:hover {
@@ -87,13 +88,14 @@
                                             </video>
                                         </div>
                                         <div class="card-body">
-                                            <div id="video-nom" class="text-center">
+                                            <h5 id="video-nom" class="text-center d-block">
                                                 <?= $videos[0]->nomVideo ?>
-                                            </div>
+                                            </h5>
                                             <hr />
-                                            <div id="video-description">
+                                            <div id="video-description" class="text-truncate">
                                                 <?= $videos[0]->description ?>
                                             </div>
+                                            <a id="btn-read" href="javascript:void(0)">more</a>
                                         </div>
                                     </div>
                                 </div>
@@ -151,7 +153,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body">
-                                            <button class="btn btn-info btn-block">
+                                            <button data-toggle="modal" data-target="#ask-formateur-modal" data-video="<?= $videos[0]->id_video ?>" id="ask-formateur" class="btn btn-info btn-block">
                                                 <i class="material-icons mr-2">message</i> Ask me
                                             </button>
                                         </div>
@@ -196,6 +198,28 @@
             </div>
         </div>
 
+        <!-- Ask Formateur Modal -->
+        <div class="modal fade" id="ask-formateur-modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div id="alert" class="text-center mb-0"></div>
+                    <form method="POST" id="ask-form">
+                        <div class="modal-body pb-0">
+                            <div class="form-group">
+                                <input name="nom_video" class="form-control mb-2" id="video-mention" value="@<?= $videos[0]->nomVideo ?>" readonly />
+                                <textarea placeholder="Ask your instractor" name="message" class="form-control" cols="30" rows="5"></textarea>
+                            </div>
+                            <input type="hidden" name="to" value="<?= $formation->id_formateur ?>" />
+                        </div>
+                        <div class="modal-footer pt-0">
+                            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal" id="close-modal">Close</button>
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="material-icons mr-2">send</i> Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- // End Ask Formateur Modal -->
 
         <!-- Scripts -->
         <!-- jQuery -->
@@ -219,6 +243,9 @@
 
         <!-- Plyr -->
         <script src="<?= JSROOT ?>/plugins/plyr.min.js"></script>
+
+        <!-- Jquery Validator -->
+        <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
 
         <script src="<?= JSROOT ?>/etudiants/formation.js"></script>
     </body>

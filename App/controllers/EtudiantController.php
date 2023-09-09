@@ -136,9 +136,9 @@ class EtudiantController
 			'id_formation' => 'required|numeric|exists:formations|check_etudiant:inscriptions'
 		]);
 
-		$this->formationModel->toggleLike($this->id_etudiant, $id_formation);
+		$isLiked = $this->formationModel->toggleLike($this->id_etudiant, $id_formation);
         $newLikes = $this->formationModel->getLikes($id_formation);
-        return Response::json($newLikes);
+        return Response::json(array_merge($newLikes, $isLiked));
     }
 
     public function toggleBookmarkVideo($id_video = null)
