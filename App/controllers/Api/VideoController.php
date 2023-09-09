@@ -46,7 +46,7 @@ class VideoController extends ApiController
 
         $video = $validator->validated();
         unset($video['type']);
-        $video['url'] = uploader($_FILES['lesson_video'], "videos/formations");
+        $video['url'] = uploader($_FILES['lesson_video'], "videos");
         $video['thumbnail'] = $this->getThumbnail('videos/'.$video['url']);
         $id_video = $this->videoModel->create($video);
         $video = $this->videoModel->find($id_video);
@@ -85,7 +85,7 @@ class VideoController extends ApiController
             		'url' => 'size:1024|video|video_duration:50',
         		]);
 
-        		$video['url'] = uploader($_FILES['lesson_video'], "videos/formations");
+        		$video['url'] = uploader($_FILES['lesson_video'], "videos");
         		$video['thumbnail'] = $this->getThumbnail('videos/'.$video['url']);
 
         		$oldVideo = $this->videoModel->find($id);
