@@ -374,4 +374,31 @@ class Video
 		}
 		return 0;
 	}
+
+	public function getMyBookmarks($id_etudiant)
+	{
+		$query = $this->connect->prepare("
+			SELECT 
+				id_formation,
+				nom,
+				url,
+				IF(TIME_FORMAT(duree, '%H') > 0, 
+                    CONCAT(TIME_FORMAT(duree, '%H'), 'H ', TIME_FORMAT(duree, '%i'), 'Min'), 
+                    TIME_FORMAT(duree, '%i Min')
+                ) AS duree,
+				thumbnail
+			FROM bookmarks
+			JOIN videos USING (id_video)
+			WHERE id_etudiant = :id_etudiant
+		");
+
+		$query->bindParam(':id_etudiant', $id_etudiant);
+		$query->execute();
+
+		$boomarks = $query->fetchAll(\PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $boomarks;
+		}
+		return [];
+	}
 }

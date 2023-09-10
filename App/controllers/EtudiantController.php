@@ -121,6 +121,12 @@ class EtudiantController
 		return view('etudiants/formation', compact('formation', 'videos'));
     }
 
+	public function bookmarks()
+	{
+		$bookmarks = $this->videoModel->getMyBookmarks($this->id_etudiant);
+		return view("etudiants/bookmarks", compact('bookmarks'));
+	}
+
     public function toggleLikeFormation($id_formation = null)
     {
     	$request = new Request;
