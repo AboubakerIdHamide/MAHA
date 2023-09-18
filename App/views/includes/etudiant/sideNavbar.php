@@ -17,7 +17,7 @@
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">bookmark</i> Mes Bookmarks
                         </a>
                     </li>
-                    <li class="sidebar-menu-item <?= parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) === '/maha/etudiant/transactions' ? 'active' : '' ?>">
+                    <li class="sidebar-menu-item <?= parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) === '/maha/etudiant/messages' ? 'active' : '' ?>">
                         <a class="sidebar-menu-button"
                            href="<?= URLROOT ?>/etudiant/messages">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">message</i> Messages

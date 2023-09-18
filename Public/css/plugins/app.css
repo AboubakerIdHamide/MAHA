@@ -28156,7 +28156,7 @@ div.page-heading {
 }
 
 .w-100 {
-    width: 100%!important;
+    /* width: 100%!important; */
 }
 
 .w-auto {
@@ -30502,7 +30502,7 @@ code.django .hljs-template-tag {
     width: 280px
 }
 
-[dir=ltr] .message__aside {
+/* [dir=ltr] .message__aside {
     margin-right: 1rem
 }
 
@@ -30530,7 +30530,7 @@ code.django .hljs-template-tag {
 
 [dir=rtl] .message:nth-child(2n) .message__body {
     margin-right: auto
-}
+} */
 
 .messages-toggle {
     position: absolute;

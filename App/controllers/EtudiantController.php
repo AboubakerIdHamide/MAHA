@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\Etudiant;
 use App\Models\Formation;
 use App\Models\Video;
 use App\Models\Inscription;
-use App\Models\Stocked;
+use App\Models\Formateur;
+use App\Models\Message;
 
 use App\Libraries\Response;
 use App\Libraries\Request;
@@ -13,11 +13,10 @@ use App\Libraries\Validator;
 class EtudiantController
 {
 	private $id_etudiant;
-	private $etudiantModel;
 	private $formationModel;
 	private $videoModel;
 	private $inscriptionModel;
-	private $stockedModel;
+	private $messageModel;
 
 
 	public function __construct()
@@ -34,11 +33,9 @@ class EtudiantController
 			return redirect('user/verify');
 		}
 
-		$this->etudiantModel = new Etudiant;
 		$this->formationModel = new Formation;
 		$this->videoModel = new Video;
 		$this->inscriptionModel = new Inscription;
-		$this->stockedModel = new Stocked;
 		$this->id_etudiant = session('user')->get()->id_etudiant;
 	}
 
@@ -176,5 +173,34 @@ class EtudiantController
 
         $response = $this->videoModel->toggleBookmark($this->id_etudiant, $id_video);
         return Response::json($response);
+    }
+
+	public function messages($slug = null)
+    {
+		$messageModel = new Message;
+		$conversations = $messageModel->conversations($slug, $this->id_etudiant);
+		$myFormateurs = $messageModel->myFormateurs($this->id_etudiant);
+		$slugs = [];
+		foreach($myFormateurs as $formateur) array_push($slugs, $formateur->slug);
+		
+		// Prevent getting conversations that user not allowed to
+		if($slug && !in_array($slug, $slugs)){
+			return Response::json(null, 403, "Something went wrong!");
+		}
+
+		// Match video name with its formation
+		foreach ($conversations as $conversation) {
+			if (preg_match('/@([^@]+)@/', $conversation->message, $matches)) {
+				$nomVideo = $matches[1];
+				if($video = $this->videoModel->whereNom($nomVideo)){
+					$conversation->message = preg_replace('/@([^@]+)@/', "<div class=\"pb-2\"><a target=\"_blank\" href=\"".URLROOT."/etudiant/formation/{$video->id_formation}\">{$nomVideo}</a></div>", $conversation->message, 1);
+				}
+			}
+		}
+
+		$formateurModel = new Formateur;
+		$formateur = $formateurModel->whereSlug($slug);
+		
+        return view('etudiants/messages', compact('conversations', 'formateur', 'myFormateurs'));
     }
 }

@@ -83,7 +83,9 @@ class Formateur
 				specialite,
 				facebook_profil,
 				twitter_profil,
-				linkedin_profil
+				linkedin_profil,
+				is_active,
+				slug
 			FROM formateurs f, categories c
 			WHERE f.id_categorie = c.id_categorie 
 			AND f.slug = :slug
@@ -504,32 +506,6 @@ class Formateur
 		$code = $query->fetch(\PDO::FETCH_OBJ);
 		if ($code) {
 			return true;
-		}
-		return false;
-	}
-
-	public function refreshCode($id){
-		$isValideCode = false;
-		$code_formateur="";
-
-		// Generate formateur code & if the code already used generate other one
-		while (!$isValideCode) {
-			$code_formateur = bin2hex(random_bytes(20));
-			$isValideCode = $this->isValideCode($code_formateur);
-		}
-
-		$query = $this->connect->prepare("
-			UPDATE formateurs 
-			SET code = :code
-			WHERE id_formateur = :id
-		");
-
-		$query->bindValue(':code', $code_formateur);
-		$query->bindValue(':id', $id);
-		$query->execute();
-
-		if ($query->rowCount() > 0) {
-			return $code_formateur;
 		}
 		return false;
 	}

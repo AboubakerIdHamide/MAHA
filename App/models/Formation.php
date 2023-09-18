@@ -6,8 +6,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-
 use App\Libraries\Database;
 
 class Formation

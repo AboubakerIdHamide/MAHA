@@ -401,4 +401,23 @@ class Video
 		}
 		return [];
 	}
+
+	public function whereNom($nom)
+	{
+		$query = $this->connect->prepare("
+			SELECT 
+				id_formation
+			FROM videos 
+			WHERE nom LIKE CONCAT('%', :nom, '%')
+		");
+
+		$query->bindValue(':nom', $nom);
+		$query->execute();
+
+		$video = $query->fetch(\PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $video;
+		}
+		return false;
+	}
 }
