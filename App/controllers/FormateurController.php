@@ -1,13 +1,8 @@
 <?php
 
 use App\Models\Formateur;
-use App\Models\Formation;
-use App\Models\Video;
 use App\Models\Inscription;
 use App\Models\Stocked;
-use App\Models\Commentaire;
-use App\Models\Notification;
-use App\Models\requestPayment;
 
 use App\Libraries\Request;
 use App\Libraries\Response;
@@ -17,13 +12,8 @@ class FormateurController
 {
 	private $id_formateur;
 	private $formateurModel;
-	private $formationModel;
-	private $videoModel;
 	private $inscriptionModel;
 	private $stockedModel;
-	private $commentModel;
-	private $notificationModel;
-	private $requestPaymentModel;
 
 	public function __construct()
 	{
@@ -45,13 +35,8 @@ class FormateurController
 
 		$this->id_formateur = session('user')->get()->id_formateur;
 		$this->formateurModel = new Formateur;
-		$this->formationModel = new Formation;
-		$this->videoModel = new Video;
 		$this->inscriptionModel = new Inscription;
 		$this->stockedModel = new Stocked;
-		$this->commentModel = new Commentaire;
-		$this->notificationModel = new Notification;
-		$this->requestPaymentModel = new requestPayment;
 	}
 
 	public function index()
@@ -200,13 +185,13 @@ class FormateurController
 				return Response::json(null, 400);
 			}
 
-			return $this->{"edit".$request->post('tab')}($request);
+			return $this->{"_edit".$request->post('tab')}($request);
 		}
 
 		return Response::json(null, 405, "Method Not Allowed");
 	}
 
-	private function strip_critical_tags($text)
+	private function _strip_critical_tags($text)
     {
         $dom = new DOMDocument();
         $dom->loadHTML($text);
@@ -229,7 +214,7 @@ class FormateurController
         return $cleanedHtml; 
     }
 
-    private function editAccountTab($request)
+    private function _editAccountTab($request)
     {
     	$validator = new Validator([
             'nom' => strip_tags(trim($request->post("nom"))),
@@ -318,12 +303,12 @@ class FormateurController
 		return Response::json(null, 405, "Method Not Allowed");
 	}
 
-    private function editPublicTab($request)
+    private function _editPublicTab($request)
     {
     	$validator = new Validator([
             'id_categorie' => strip_tags(trim($request->post("categorie"))),
             'specialite' => strip_tags(trim($request->post("speciality"))),
-            'biographie' => $this->strip_critical_tags($request->post("biography")),
+            'biographie' => $this->_strip_critical_tags($request->post("biography")),
         ]);
 
         $validator->validate([
@@ -363,7 +348,7 @@ class FormateurController
         return Response::json(null, 500, "Coudn't update your account, please try again later.");
     }
 
-	public function editPrivateTab($request)
+	private function _editPrivateTab($request)
     {
     	$validator = new Validator([
             'cmdp' => $request->post("cmdp"),
@@ -392,7 +377,7 @@ class FormateurController
 	        ]);
 
 	        $validator->validate([
-	            'email' => 'email|max:100|unique:formateurs',
+	            'email' => 'email|max:100|unique:formateurs|unique:etudiants',
 	        ]);			
 
 	        $token = bin2hex(random_bytes(16));
@@ -462,7 +447,7 @@ class FormateurController
         return redirect('formateur/edit');
     }
 
-    public function editSocialTab($request)
+    private function _editSocialTab($request)
     {
     	// update Facebook
     	if($request->post('facebook')){
