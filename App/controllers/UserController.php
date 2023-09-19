@@ -1,6 +1,5 @@
 <?php
 
-
 use PHPMailer\PHPMailer\Exception;
 
 use Hybridauth\Hybridauth;
@@ -22,6 +21,7 @@ class UserController
     private $etudiantModel;
     private $stockedModel;
     private $formationModel;
+    private $inscriptionModel;
 
     public function __construct()
     {
@@ -83,7 +83,7 @@ class UserController
 
             $credentials = $validator->validated(); 
             $user = $this->{$credentials['type'].'Model'}->whereEmail($credentials['email']);
-            return $this->createUserSession($user);
+            return $this->_createUserSession($user);
         }
 
         $providers = ['LinkedIn', 'Google', 'Twitter'];
@@ -129,7 +129,7 @@ class UserController
             $adapter = $hybridauth->authenticate(session('provider')->get());
             $userProfile = $adapter->getUserProfile();
             $token = $adapter->getAccessToken();
-            $this->revokeToken(session('provider')->get(), $token['access_token']);
+            $this->_revokeToken(session('provider')->get(), $token['access_token']);
             $adapter->disconnect();
 
             $formateur = $this->formateurModel->whereEmail($userProfile->email);
@@ -169,7 +169,7 @@ class UserController
         return view("auth/login");
     }
 
-    private function revokeToken($provider, $accessToken)
+    private function _revokeToken($provider, $accessToken)
     {
         $client = new Client();
         // Revoke token
@@ -205,7 +205,7 @@ class UserController
             } else {
                 // print_r2("Token revocation failed.");
             }
-        } catch (ClientException $e) {
+        } catch (Exception $e) {
             // print_r2($e->getMessage);
         }
     }
@@ -550,9 +550,10 @@ class UserController
         return Response::json(null, 405, "Method Not Allowed");
     }
 
-    private function createUserSession($user)
+    private function _createUserSession($user)
     {
         session('user')->set($user);
+        $this->{$user->type.'Model'}->update(['is_active' => true], $user->{'id_'.$user->type});
         if ($user->type === 'formateur') {
             if($user->is_all_info_present) {
                 return redirect('formateur');
@@ -562,7 +563,7 @@ class UserController
         return redirect('etudiant');
     }
 
-    private function strip_critical_tags($text)
+    private function _strip_critical_tags($text)
     {
         $dom = new DOMDocument();
         $dom->loadHTML($text);
@@ -600,7 +601,7 @@ class UserController
             if(session('user')->get()->is_all_info_present == false) {
                 if($request->getMethod() === 'POST') {
                     $validator = new Validator([
-                        'biographie' => $this->strip_critical_tags($request->post("biography")),
+                        'biographie' => $this->_strip_critical_tags($request->post("biography")),
                         'id_categorie' => strip_tags(trim($request->post("categorie"))),
                         'specialite' => strip_tags(trim($request->post("speciality"))),
                     ]);
@@ -652,7 +653,7 @@ class UserController
 
             try {
                 $mail = new App\Libraries\Mail;
-                $mail->to(MAIL_FROM_ADDRESS)
+                $mail->to($_ENV['MAIL_FROM_ADDRESS'])
                 ->subject("CONTACT US : $name ($email)")
                 ->body($message)
                 ->send();
@@ -669,6 +670,7 @@ class UserController
 
     public function logout()
     {    
+        $this->{session('user')->get()->type.'Model'}->update(['is_active' => 0], session('user')->get()->{'id_'.session('user')->get()->type});
         session()->flush();
         return redirect('user/login');
     }
