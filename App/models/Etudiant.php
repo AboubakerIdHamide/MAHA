@@ -89,7 +89,6 @@ class Etudiant
 			SELECT
 				id_etudiant,
 				nom,
-				tel,
 				date_creation,
 				img, 
 				email, 
@@ -128,26 +127,52 @@ class Etudiant
 		return false;
 	}
 
-	public function update($etudiant)
+	public function update($data, $id)
+	{
+		$sql = "UPDATE etudiants SET ";
+        
+        $updates = [];
+        foreach ($data as $field => $value) {
+            $updates[] = "$field = :$field";
+        }
+        
+        $sql .= implode(', ', $updates);
+        $sql .= " WHERE id_etudiant = :id";
+        
+        $query = $this->connect->prepare($sql);
+        
+        foreach ($data as $field => $value) {
+            $query->bindValue(":$field", $value);
+        }
+
+
+        $query->bindValue(':id', $id);
+        $query->execute();
+
+		if ($query->rowCount() > 0) {
+			if(in_array('img', array_keys($data))){
+				return $this->select($id, ['img']);
+			}
+			return true;
+		}
+		return false;
+	}
+
+	public function select($id_etudiant, $selectedFields)
 	{
 		$query = $this->connect->prepare("
-			UPDATE etudiants
-			SET nom = :nom,
-				prenom = :prenom, 
-				mot_de_passe = :mdp, 
-				tel = :tel
-			WHERE id_etudiant = :id
+			SELECT 
+				".implode(', ', $selectedFields)."
+			FROM etudiants
+			WHERE id_etudiant = :id_etudiant
 		");
 
-		$query->bindParam(':nom', $etudiant['nom']);
-		$query->bindParam(':prenom', $etudiant['prenom']);
-		$query->bindParam(':tel', $etudiant['tel']);
-		$query->bindParam(':mdp', $etudiant['n_mdp']);
-		$query->bindParam(':id', $etudiant['id']);
-
+		$query->bindValue(':id_etudiant', $id_etudiant);
 		$query->execute();
+
+		$etudiant = $query->fetch(\PDO::FETCH_OBJ);
 		if ($query->rowCount() > 0) {
-			return true;
+			return $etudiant;
 		}
 		return false;
 	}
@@ -197,8 +222,7 @@ class Etudiant
 				nom,
 				prenom,
 				img,
-				email,
-				tel
+				email
 			FROM etudiants
 			WHERE id_etudiant = :id;
 		");
@@ -253,16 +277,18 @@ class Etudiant
 		return false;
 	}
 
-	public function updateToken($email, $token)
+	public function updateToken($email, $token, $expiry = 120)
 	{
 		$query = $this->connect->prepare("
 			UPDATE etudiants
-			SET verification_token = :token
+			SET verification_token = :token,
+				expiration_token_at = :expiry
 			WHERE email = :email
 		");
 
 		$query->bindValue(':token', $token);
 		$query->bindValue(':email', $email);
+		$query->bindValue(':expiry', date('Y-m-d H:i:s',  time() + 60 * $expiry));
 		$query->execute();
 
 		if ($query->rowCount() > 0) {
