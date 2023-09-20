@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
 	<meta charset="UTF-8">
@@ -36,13 +36,12 @@
 			vos besoins
 			et améliorera votre productivité et votre efficacité.</h6>
 		<div class="text-center">
-			<a href="<?= URLROOT . '/etudiant/dashboard' ?>" class="btn btn-success mt-3">Mes
-				Cours</a>
+			<a href="<?= URLROOT ?>/etudiant/formation/<?= $id_formation ?>" class="btn btn-success mt-3">Accéder à la formation</a>
 		</div>
 	</div>
 	<script src="<?= JSROOT ?>/plugins/lottie.min.js"></script>
 	<script>
-		var animation = bodymovin.loadAnimation({
+		const animation = bodymovin.loadAnimation({
 			container: document.getElementById('animContainer'),
 			renderer: 'svg',
 			loop: false,

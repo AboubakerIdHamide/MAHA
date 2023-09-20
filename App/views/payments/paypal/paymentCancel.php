@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -34,14 +34,12 @@
         <h6 class="text-center text-white">Nous sommes désolé d'apprendre que votre achat a été annulé.
         </h6>
         <div class="text-center">
-            <a href="<?= URLROOT . '/pageFormation/coursDetails/' . $data['idFormation'] ?>"
-                class="btn btn-primary mt-3">Retour
-                au Cours</a>
+            <a href="<?= URLROOT ?>/courses/<?= $slug ?>" class="btn btn-primary mt-3">Retour au Cours</a>
         </div>
     </div>
     <script src="<?= JSROOT ?>/plugins/lottie.min.js"></script>
     <script>
-    var animation = bodymovin.loadAnimation({
+    const animation = bodymovin.loadAnimation({
         container: document.getElementById('animContainer'),
         renderer: 'svg',
         loop: false,

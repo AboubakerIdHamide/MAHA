@@ -20,7 +20,7 @@
     <link href="<?= CSSROOT ?>/icons/all.min.css" rel="stylesheet" />
     <style>
         #hero_in.courses:before {
-            background: url(<?= IMAGEROOT ?>/<?= $formation->bgImg ?>) center center no-repeat;
+            background: url('<?= IMAGEROOT ?>/<?= $formation->bgImg ?>') center center no-repeat;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
@@ -117,7 +117,7 @@
                                     </div>
                                     <?php endif ?>
                                 </div>
-                                <a href="<?= URLROOT ?>/PaymentPaypal/makePayment/<?= $formation->id_formation ?>" class="btn_1 full-width">Acheter dès maintenant</a>
+                                <a href="<?= URLROOT ?>/paypal/payment/<?= $formation->id_formation ?>" class="btn_1 full-width">Acheter dès maintenant</a>
                                 <div id="list_feat">
                                     <ul>
                                         <li><i class="fa-solid fa-clock"></i> <?= explode(':', $formation->mass_horaire)[0] ?>h

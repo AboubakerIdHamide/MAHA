@@ -5,7 +5,7 @@ use App\Models\Formation;
 use App\Models\Inscription;
 use App\Models\Formateur;
 
-class PaymentPaypalController
+class PaypalController
 {
 	private $access_token;
 	private $username;
@@ -16,9 +16,8 @@ class PaymentPaypalController
 
 	public function __construct()
 	{
-		if (!isset($_SESSION['id_etudiant'])) {
-			redirect('user/login');
-			exit;
+		if (!session('user')->get()->type === 'etudiant') {
+			return redirect('user/login');
 		}
 
 		$this->formationModel = new Formation;
@@ -27,11 +26,11 @@ class PaymentPaypalController
 		$settings = $this->adminModel->getProfitAndPaypalToken();
 		$this->username = $settings->username_paypal;
 		$this->password = $settings->password_paypal;
-		$this->access_token = $this->getAccessToken();
+		$this->access_token = $this->_getAccessToken();
 	}
 
 
-	public function getAccessToken()
+	private function _getAccessToken()
 	{
 
 		$client = new \GuzzleHttp\Client();
@@ -60,37 +59,31 @@ class PaymentPaypalController
 	}
 
 
-	public function makePayment($idFormation = null)
+	public function payment($id_formation = null)
 	{
-		if ($idFormation === null || !is_numeric($idFormation)) {
-			redirect('pageFormation/coursDetails/' . $idFormation);
-			exit;
+		$formation = $this->formationModel->select($id_formation, [
+			'id_formation', 
+			'prix',
+			'nom',
+			'id_formateur'
+		]);
+
+		if (!$formation) {
+			// cette formation n'existe pas
+			return view('errors/page_404');
 		}
 
-
-
-		$formation = $this->formationModel->find($idFormation);
-		if (empty($formation)) {
-			// cette formation n'existe pas redirect to URLROOT
-			redirect();
-			exit;
-		}
-
-
-
-		$inscription = $this->inscriptionModel->checkIfAlready($_SESSION['id_etudiant'], $idFormation);
-		if (!empty($inscription)) {
-			if ($inscription->payment_state == "approved") {
+		$inscription = $this->inscriptionModel->checkIfAlready(session('user')->get()->id_etudiant, $id_formation);
+		if ($inscription) {
+			if ($inscription->payment_state === "approved") {
 				// vous etes deja inscrit dans cette formation
-				redirect('etudiant/dashboard');
-				exit;
-			} else {
-				// redirect to paypal page to make payment, because the order already created
-				header('location: ' . $inscription->approval_url);
-				exit;
+				return redirect('etudiant/formation/'.$id_formation);	
 			}
-		}
 
+			// redirect to paypal page to make payment, because the order already created
+			header('location: ' . $inscription->approval_url);
+			exit;
+		}
 
 		$client = new \GuzzleHttp\Client([
 			'headers' => [
@@ -98,9 +91,6 @@ class PaymentPaypalController
 				'Authorization' => 'Bearer ' . $this->access_token
 			]
 		]);
-
-
-
 
 		$url = 'https://api-m.sandbox.paypal.com/v1/payments/payment';
 		$data = [
@@ -122,7 +112,7 @@ class PaymentPaypalController
 							"insurance" => "0.00"
 						]
 					],
-					"description" => "{$formation->nomFormation}",
+					"description" => "{$formation->nom}",
 					"payment_options" => [
 						"allowed_payment_method" => "INSTANT_FUNDING_SOURCE"
 					],
@@ -130,7 +120,7 @@ class PaymentPaypalController
 						"items" =>
 						[
 							[
-								"name" => "{$formation->nomFormation}",
+								"name" => "{$formation->nom}",
 								"description" => "Online Course",
 								"quantity" => "1",
 								"price" => "{$formation->prix}",
@@ -144,12 +134,10 @@ class PaymentPaypalController
 			],
 			"note_to_payer" => "Contact us for any questions on your order.",
 			"redirect_urls" => [
-				"return_url" => URLROOT . '/PaymentPaypal/success/' . $idFormation,
-				"cancel_url" => URLROOT . '/PaymentPaypal/cancel/' . $idFormation
+				"return_url" => URLROOT . '/PaymentPaypal/success/' . $id_formation,
+				"cancel_url" => URLROOT . '/PaymentPaypal/cancel/' . $id_formation
 			]
 		];
-
-
 
 		$response = $client->post(
 			$url,
@@ -157,8 +145,6 @@ class PaymentPaypalController
 				'body' => json_encode($data)
 			]
 		);
-
-
 
 		$paypalData = json_decode($response->getBody());
 		$paymentID = $paypalData->id;
@@ -168,7 +154,7 @@ class PaymentPaypalController
 
 		$inscriptionData = [
 			"id_formation" => $formation->id_formation,
-			"id_etudiant" => $_SESSION['id_etudiant'],
+			"id_etudiant" => session('user')->get()->id_etudiant,
 			"id_formateur" => $formation->id_formateur,
 			"prix" => $formation->prix,
 			"transaction_info" => json_encode($paypalData),
@@ -180,25 +166,23 @@ class PaymentPaypalController
 
 		$this->inscriptionModel->create($inscriptionData);
 
-
 		// redirect to paypal page to make payment
 		header('location: ' . $approvalURL);
+		exit;
 	}
 
-	public function success($idFormation)
+	public function success($id_formation)
 	{
+		$formation = $this->formationModel->select($id_formation, ['slug']);
 		if (!isset($_GET['paymentId'], $_GET['token'], $_GET['PayerID'])) {
-			redirect('pageFormation/coursDetails/' . $idFormation);
-			exit;
+			return redirect('courses/' . $formation->slug);
 		}
 
-		$inscription = $this->inscriptionModel->getInscriptionByPaymentID($_GET['paymentId']);
+		$inscription = $this->inscriptionModel->wherePaymentID($_GET['paymentId']);
 
-
-		if (empty($inscription)) {
+		if (!$inscription) {
 			// payment ID n'existe pas
-			redirect('pageFormation/coursDetails/' . $idFormation);
-			exit;
+			return redirect('courses/' . $formation->slug);
 		}
 
 		$url = "https://api.sandbox.paypal.com/v1/payments/payment/{$inscription->payment_id}/execute";
@@ -218,25 +202,23 @@ class PaymentPaypalController
 		);
 
 		if ($response->getStatusCode() != 200) {
-			redirect('pageFormation/coursDetails/' . $idFormation);
-			exit;
+			return redirect('courses/' . $formation->slug);
 		}
 
 		$paymentState = json_decode($response->getBody())->state;
-		$this->inscriptionModel->updateInscriptionByPaymentID($_GET['paymentId'], $paymentState);
+		$this->inscriptionModel->updatePaymentState($_GET['paymentId'], $paymentState);
 		$formateurModel = new Formateur;
 		$formateurProfit = (100 - $this->adminModel->getProfitAndPaypalToken()->platform_pourcentage) / 100;
 		$formateurModel->updateBalance($inscription->id_formateur, $inscription->prix * $formateurProfit);
-		return view('payment/paymentSuccess');
+		return view('payments/paypal/paymentSuccess', ["id_formation" => $id_formation]);
 	}
 
-	public function cancel($idFormation)
+	public function cancel($id_formation)
 	{
+		$formation = $this->formationModel->select($id_formation, ['slug']);
 		if (isset($_GET['token'])) {
-			return view('payment/paymentCancel', ['idFormation' => $idFormation]);
-		} else {
-			redirect('pageFormation/coursDetails/' . $idFormation);
-			exit;
-		}
+			return view('payments/paypal/paymentCancel', ['slug' => $formation->slug]);
+		} 
+		return redirect('courses/' . $formation->slug);
 	}
 }

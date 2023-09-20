@@ -179,17 +179,20 @@ class Inscription
         $query->bindParam(':id_formation', $idFormation);
         $query->execute();
 
-        $inscriptions = $query->fetch(\PDO::FETCH_OBJ);
+        $inscription = $query->fetch(\PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
-            return true;
+            return $inscription;
         }
         return false;
     }
 
-    public function getInscriptionByPaymentID($paymentID)
+    public function wherePaymentID($paymentID)
     {
         $query = $this->connect->prepare("
-            SELECT * 
+            SELECT 
+                payment_id, 
+                id_formateur,
+                prix
             FROM inscriptions
             WHERE payment_id = :payment_id
         ");
@@ -204,7 +207,7 @@ class Inscription
         return false;
     }
 
-    public function updateInscriptionByPaymentID($paymentID, $paymentState)
+    public function updatePaymentState($paymentID, $paymentState)
     {
         $query = $this->connect->prepare("
             UPDATE inscriptions

@@ -113,7 +113,7 @@
                                     <?= $formation->mass_horaire ?>
                                 </li>
                                 <li><i class="fa-solid fa-users"></i> <?= $formation->total_inscriptions ?></li>
-                                <li><a class="buy" href="<?= URLROOT ?>/PaymentPaypal/makePayment/<?= $formation->id_formation ?>">Acheter</a></li>
+                                <li><a class="buy" href="<?= URLROOT ?>/paypal/payment/<?= $formation->id_formation ?>">Acheter</a></li>
                             </ul>
                             
                         </div>
