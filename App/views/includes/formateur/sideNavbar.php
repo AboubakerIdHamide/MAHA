@@ -47,6 +47,12 @@
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">receipt</i> Transactions
                         </a>
                     </li>
+                    <li class="sidebar-menu-item <?= parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) === '/maha/formateur/messages' ? 'active' : '' ?>">
+                        <a class="sidebar-menu-button"
+                           href="<?= URLROOT ?>/formateur/messages">
+                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">message</i> Messages
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

@@ -222,7 +222,8 @@ class Etudiant
 				nom,
 				prenom,
 				img,
-				email
+				email,
+				is_active
 			FROM etudiants
 			WHERE id_etudiant = :id;
 		");

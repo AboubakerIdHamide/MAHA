@@ -3,6 +3,9 @@
 use App\Models\Formateur;
 use App\Models\Inscription;
 use App\Models\Stocked;
+use App\Models\Message;
+use App\Models\Video;
+use App\Models\Etudiant;
 
 use App\Libraries\Request;
 use App\Libraries\Response;
@@ -499,5 +502,36 @@ class FormateurController
 	        return Response::json(null, 500, "Coudn't update your account, please try again later.");
         }
         return Response::json(null, 400, "You must provide a social profil link (facebook, linkedin, twitter).");
+    }
+
+	public function messages($id_etudiant = null)
+    {
+		$messageModel = new Message;
+		$videoModel = new Video;
+		$conversations = $messageModel->conversationsForFormateur($this->id_formateur, $id_etudiant);
+		// print_r2($conversations);
+		$myEtudiants = $messageModel->myEtudiants($this->id_formateur);
+		$allowedEtudiants = [];
+		foreach($myEtudiants as $etudiant) array_push($allowedEtudiants, $etudiant->id_etudiant);
+		
+		// Prevent getting conversations that user not allowed to
+		if($id_etudiant && !in_array($id_etudiant, $allowedEtudiants)){
+			return Response::json(null, 403, "Something went wrong!");
+		}
+
+		// Match video name with its formation
+		foreach ($conversations as $conversation) {
+			if (preg_match('/@([^@]+)@/', $conversation->message, $matches)) {
+				$nomVideo = $matches[1];
+				if($video = $videoModel->whereNom($nomVideo)){
+					$conversation->message = preg_replace('/@([^@]+)@/', "<div class=\"pb-2\"><a target=\"_blank\" href=\"".URLROOT."/etudiant/formation/{$video->id_formation}\">{$nomVideo}</a></div>", $conversation->message, 1);
+				}
+			}
+		}
+
+		$etudiantModel = new Etudiant;
+		$etudiant = $etudiantModel->find($id_etudiant);
+		
+        return view('formateurs/messages', compact('conversations', 'etudiant', 'myEtudiants'));
     }
 }

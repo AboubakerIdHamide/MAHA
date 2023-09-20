@@ -117,5 +117,59 @@ class Message
 		}
 		return [];
 	}
+
+	public function myEtudiants($id_formateur)
+	{
+		$query = $this->connect->prepare("
+			SELECT
+				DISTINCT i.id_etudiant,
+				nom,
+				prenom,
+				img,
+				is_active
+			FROM inscriptions i
+			JOIN etudiants AS f USING (id_etudiant)
+			WHERE id_formateur = :id_formateur
+		");
+
+		$query->bindValue(':id_formateur', $id_formateur);
+		$query->execute();
+
+		$myEtudiants = $query->fetchAll(\PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			return $myEtudiants;
+		}
+		return [];
+	}
+
+	public function conversationsForFormateur($id_formateur, $id_etudiant)
+	{
+		$query = $this->connect->prepare("
+			SELECT
+				`from`,
+				`to`,
+				message,
+				sent_at
+			FROM messages m
+			JOIN formateurs AS f ON m.`to` = f.id_formateur OR m.`from` = f.id_formateur
+			JOIN etudiants AS e ON m.`to` = e.id_etudiant OR m.`from` = e.id_etudiant
+			WHERE id_formateur = :id_formateur AND id_etudiant = :id_etudiant
+			ORDER BY sent_at
+		");
+
+		$query->bindValue(':id_formateur', $id_formateur);
+		$query->bindValue(':id_etudiant', $id_etudiant);
+		$query->execute();
+
+		$conversations = $query->fetchAll(\PDO::FETCH_OBJ);
+		if ($query->rowCount() > 0) {
+			foreach ($conversations as $conversation) {
+				$datetime = new Carbon($conversation->sent_at);
+				$conversation->sent_at = $datetime->diffForHumans();
+			}
+			return $conversations;
+		}
+		return [];
+	}
 }
 
