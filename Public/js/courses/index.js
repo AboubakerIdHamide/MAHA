@@ -53,7 +53,7 @@ $(function(){
                 renderCourses(courses, totalRecords, currentPage, nextPage);
                 addLoadMoreBtn(nextPage, currentPage, totalPages);
             },
-            fail: function(){
+            error: function(){
                 $courses.html('');
                 $courses.append(`
                     <div class="col-12">
