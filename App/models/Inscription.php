@@ -23,15 +23,15 @@ class Inscription
             INSERT INTO inscriptions(id_formation, id_etudiant, id_formateur, date_inscription, prix, transaction_info, payment_id, payment_state, approval_url) VALUES (:id_formation, :id_etudiant, :id_formateur, :date_inscription, :prix, :transaction_info, :payment_id, :payment_state, :approval_url)
         ");
 
-        $query->bindParam(':id_formation', $inscription['id_formation']);
-        $query->bindParam(':id_etudiant', $inscription['id_etudiant']);
-        $query->bindParam(':id_formateur', $inscription['id_formateur']);
-        $query->bindParam(':prix', $inscription['prix']);
-        $query->bindParam(':transaction_info', $inscription['transaction_info']);
-        $query->bindParam(':payment_id', $inscription['payment_id']);
-        $query->bindParam(':payment_state', $inscription['payment_state']);
-        $query->bindParam(':date_inscription', $inscription['date_inscription']);
-        $query->bindParam(':approval_url', $inscription['approval_url']);
+        $query->bindValue(':id_formation', $inscription['id_formation']);
+        $query->bindValue(':id_etudiant', $inscription['id_etudiant']);
+        $query->bindValue(':id_formateur', $inscription['id_formateur']);
+        $query->bindValue(':prix', $inscription['prix']);
+        $query->bindValue(':transaction_info', $inscription['transaction_info']);
+        $query->bindValue(':payment_id', $inscription['payment_id']);
+        $query->bindValue(':payment_state', $inscription['payment_state']);
+        $query->bindValue(':date_inscription', $inscription['date_inscription']);
+        $query->bindValue(':approval_url', $inscription['approval_url']);
         $query->execute();
 
         $lastInsertId = $this->connect->lastInsertId();
@@ -53,8 +53,8 @@ class Inscription
             AND payment_state = 'approved' AND etat = 'public'
         ");
 
-        $query->bindParam(":id_formateur", $id_formateur);
-        $query->bindParam(":id_formation", $id_formation);
+        $query->bindValue(":id_formateur", $id_formateur);
+        $query->bindValue(":id_formation", $id_formation);
         $query->execute();
 
         $total_apprenants = $query->fetch(\PDO::FETCH_OBJ)->total_apprenants;
@@ -71,7 +71,7 @@ class Inscription
 		    WHERE id_inscription = :id
         ");
 
-        $query->bindParam(':id', $id);
+        $query->bindValue(':id', $id);
         $query->execute();
 
         if ($query->rowCount() > 0) {
@@ -89,7 +89,7 @@ class Inscription
             WHERE id_etudiant = :id AND payment_state = 'approved'
         ");
 
-        $query->bindParam(':id', $id);
+        $query->bindValue(':id', $id);
         $query->execute();
 
         $response = $query->fetch(\PDO::FETCH_OBJ);
@@ -121,7 +121,7 @@ class Inscription
             LIMIT {$offset}, {$numberRecordsPerPage}
         ");
 
-        $query->bindParam(":id", $id);
+        $query->bindValue(":id", $id);
         $query->execute();
 
         $inscriptions = $query->fetchAll(\PDO::FETCH_OBJ);
@@ -152,7 +152,7 @@ class Inscription
             AND payment_state = 'approved'
         ");
 
-        $query->bindParam(":id_etudiant", $id_etudiant);
+        $query->bindValue(":id_etudiant", $id_etudiant);
         $query->execute();
 
         $inscriptions = $query->fetchAll(\PDO::FETCH_OBJ);
@@ -175,8 +175,8 @@ class Inscription
             AND id_formation = :id_formation
         ");
 
-        $query->bindParam(':id_etudiant', $idEtudiant);
-        $query->bindParam(':id_formation', $idFormation);
+        $query->bindValue(':id_etudiant', $idEtudiant);
+        $query->bindValue(':id_formation', $idFormation);
         $query->execute();
 
         $inscription = $query->fetch(\PDO::FETCH_OBJ);
@@ -186,7 +186,7 @@ class Inscription
         return false;
     }
 
-    public function wherePaymentID($paymentID)
+    public function wherePaymentID($payment_id, $id_etudiant)
     {
         $query = $this->connect->prepare("
             SELECT 
@@ -194,10 +194,13 @@ class Inscription
                 id_formateur,
                 prix
             FROM inscriptions
-            WHERE payment_id = :payment_id
+            WHERE payment_id = :payment_id 
+            AND payment_state = 'created'
+            AND id_etudiant = :id_etudiant
         ");
 
-        $query->bindParam(":payment_id", $paymentID);
+        $query->bindValue(":payment_id", $payment_id);
+        $query->bindValue(":id_etudiant", $id_etudiant);
         $query->execute();
 
         $inscription = $query->fetch(\PDO::FETCH_OBJ);
@@ -215,8 +218,8 @@ class Inscription
             WHERE payment_id = :payment_id
         ");
 
-        $query->bindParam(":payment_id", $paymentID);
-        $query->bindParam(":payment_state", $paymentState);
+        $query->bindValue(":payment_id", $paymentID);
+        $query->bindValue(":payment_state", $paymentState);
         $query->execute();
 
         if ($query->rowCount() > 0) {
@@ -237,7 +240,7 @@ class Inscription
             GROUP BY DATE(date_inscription)
         ");
 
-        $query->bindParam(":id_formateur", $idFormateur);
+        $query->bindValue(":id_formateur", $idFormateur);
         $query->execute();
 
         $inscriptions = $query->fetchAll(\PDO::FETCH_OBJ);

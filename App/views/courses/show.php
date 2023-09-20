@@ -117,7 +117,8 @@
                                     </div>
                                     <?php endif ?>
                                 </div>
-                                <a href="<?= URLROOT ?>/paypal/payment/<?= $formation->id_formation ?>" class="btn_1 full-width">Acheter dès maintenant</a>
+                                <a href="<?= URLROOT ?>/paypal/payment/<?= $formation->id_formation ?>" class="btn-paypal d-flex align-items-center justify-content-center gap-2"><span>Payer avec </span><i class="fa-brands fa-cc-paypal" style="color: white;font-size: 34px;"></i></a>
+                                <a href="<?= URLROOT ?>/stripe/payment/<?= $formation->id_formation ?>" class="btn-stripe d-flex align-items-center justify-content-center gap-2"><span>Payer avec </span><i class="fa-brands fa-cc-stripe" style="color: white;font-size: 34px;"></i></a>
                                 <div id="list_feat">
                                     <ul>
                                         <li><i class="fa-solid fa-clock"></i> <?= explode(':', $formation->mass_horaire)[0] ?>h

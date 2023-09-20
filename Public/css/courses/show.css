@@ -438,3 +438,32 @@ section#lessons {
   background-color: #ffc107;
   margin: 5px;
 }
+
+.btn-paypal {
+  font-weight: 600;
+  background-color: #009CDE;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.btn-stripe {
+  font-weight: 600;
+  margin-top: 10px;
+  background-color: #6369E7;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.btn-paypal:hover{
+  background-color: #ffc107;
+  color: #262626;
+}
+
+.btn-stripe:hover{
+  background-color: #262626;
+  color: white;
+}
