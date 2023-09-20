@@ -1,5 +1,4 @@
 $(function(){
-    const URLROOT = 'http://localhost/MAHA';
 	const $langues = $('input[name="langue"]');
 	const $niveaux = $('input[name="niveau"]');
 	const $categories = $('input[name="categorie"]');

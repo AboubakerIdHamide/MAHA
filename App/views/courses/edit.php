@@ -43,7 +43,7 @@
 
             /* Firefox */
             input[type=number] {
-              -moz-appearance: textfield;
+              --moz-appearance: textfield;
             }
         </style>    
     </head>
@@ -346,6 +346,7 @@
         <!-- Jquery Validation -->
         <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
 
+        <script>const URLROOT = `<?= URLROOT ?>`;</script>
         <script src="<?= JSROOT ?>/courses/edit.js"></script>
     </body>
 </html>

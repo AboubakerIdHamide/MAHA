@@ -19,7 +19,7 @@
     <link href="<?= CSSROOT ?>/icons/elegant-icons.css" rel="stylesheet" />
     <style>
     #hero_in.general::before {
-        background: url(<?= IMAGEROOT ?>/<?= $formateur->background_img ?>) center center no-repeat;
+        background: url("<?= IMAGEROOT ?>/<?= $formateur->background_img ?>") center center no-repeat;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;

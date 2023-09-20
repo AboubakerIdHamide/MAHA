@@ -1,6 +1,5 @@
 $(function () {
     const player = new Plyr('#player', {captions: {active: false}});
-    const URLROOT = 'http://localhost/MAHA';
     
     $(window).keypress(function(event){
         if($(".modal").hasClass('show')){

@@ -519,14 +519,11 @@
         <script src="<?= JSROOT ?>/plugins/dom-factory.js"></script>
         <script src="<?= JSROOT ?>/plugins/material-design-kit.js"></script>
 
-        <!-- Jquery UI -->
-        <script src="<?= JSROOT ?>/plugins/jquery-ui.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="<?= JSROOT ?>/plugins/bootstrap-4.min.js"></script>
 
         <!-- App JS -->
         <script src="<?= JSROOT ?>/plugins/app.js"></script>
-
-        <!-- Bootstrap -->
-        <script src="<?= JSROOT ?>/plugins/bootstrap-4.min.js"></script>
 
         <!-- Jquery Validator -->
         <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>

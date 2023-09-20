@@ -1,6 +1,4 @@
 $(function () {
-    const URLROOT = 'http://localhost/MAHA';
-
     // Validate login form
     const $loginForm = $('#login-form');
 

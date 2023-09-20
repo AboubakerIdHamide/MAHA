@@ -1,5 +1,4 @@
 $(function(){
-    const URLROOT = 'http://localhost/MAHA';
      $('[data-toggle="tooltip"]').tooltip()
     // ================ Player ===========================
     const players = {};

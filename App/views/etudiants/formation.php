@@ -1,4 +1,3 @@
-<?php //print_r2($formation) ?>
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
     <head>
@@ -247,6 +246,7 @@
         <!-- Jquery Validator -->
         <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
 
+        <script>const URLROOT = `<?= URLROOT ?>`;</script>
         <script src="<?= JSROOT ?>/etudiants/formation.js"></script>
     </body>
 </html>

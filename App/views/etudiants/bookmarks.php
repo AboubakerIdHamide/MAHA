@@ -1,4 +1,3 @@
-<?php //print_r2($bookmarks) ?>
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
     <head>
@@ -189,9 +188,8 @@
         <!-- Plyr -->
         <script src="<?= JSROOT ?>/plugins/plyr.min.js"></script>
 
-        <!-- <script src="<?= JSROOT ?>/etudiants/index.js"></script> -->
         <script>
-            const URLROOT = 'http://localhost/MAHA';
+            const URLROOT = `<?= URLROOT ?>`;
             const player = new Plyr('#player', {captions: {active: true}});
             
             // Open the overlay when the button is clicked

@@ -120,7 +120,7 @@
                                                                 <a href="#" class="dropdown-toggle text-muted" data-caret="false" data-toggle="dropdown" aria-expanded="false">
                                                                     <i class="material-icons">more_vert</i>
                                                                 </a>
-                                                                <div class="dropdown-menu dropdown-menu-right" style="">
+                                                                <div class="dropdown-menu dropdown-menu-right">
                                                                     <a href="javascript:void(0)" data-video='<?= json_encode($video) ?>' data-target="#edit-lesson" data-toggle="modal" class="dropdown-item edit-lesson"><i class="material-icons">edit</i> Edit</a>
                                                                     <div class="dropdown-divider"></div>
                                                                     <a data-id="<?= $video->id_video ?>" class="dropdown-item text-danger delete-video" href="javascript:void(0)"><i class="material-icons">delete</i> Delete</a>
@@ -331,8 +331,8 @@
         <script src="<?= JSROOT ?>/plugins/dom-factory.js"></script>
         <script src="<?= JSROOT ?>/plugins/material-design-kit.js"></script>
 
-        <!-- Jquery UI -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- Bootstrap -->
+        <script src="<?= JSROOT ?>/plugins/bootstrap-4.min.js"></script>
 
         <!-- App JS -->
         <script src="<?= JSROOT ?>/plugins/app.js"></script>
@@ -347,15 +347,13 @@
         <!-- Quill -->
         <script src="<?= JSROOT ?>/plugins/quill.min.js"></script>
 
-        <!-- Bootstrap -->
-        <script src="<?= JSROOT ?>/plugins/bootstrap-4.min.js"></script>
-
         <!-- Jquery Validation -->
         <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
 
         <!-- SweetAlert -->
         <script src="<?= JSROOT ?>/plugins/sweetalert.min.js"></script>
         
+        <script>const URLROOT = `<?= URLROOT ?>`;</script>
         <script src="<?= JSROOT ?>/videos/index.js"></script>
     </body>
 </html>

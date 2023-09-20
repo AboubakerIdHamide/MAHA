@@ -130,18 +130,16 @@
         <script src="<?= JSROOT ?>/plugins/dom-factory.js"></script>
         <script src="<?= JSROOT ?>/plugins/material-design-kit.js"></script>
 
-        <!-- Jquery UI -->
-        <script src="<?= JSROOT ?>/plugins/jquery-ui.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="<?= JSROOT ?>/plugins/bootstrap-4.min.js"></script>
 
         <!-- App JS -->
         <script src="<?= JSROOT ?>/plugins/app.js"></script>
         
-        <!-- Bootstrap -->
-        <script src="<?= JSROOT ?>/plugins/bootstrap-4.min.js"></script>
-        
         <!-- Flatpickr -->
         <script src="<?= JSROOT ?>/plugins/flatpickr.min.js"></script>
 
+        <script>const URLROOT = `<?= URLROOT ?>`;</script>
         <script src="<?= JSROOT ?>/formateurs/transactions.js"></script>
     </body>
 </html>

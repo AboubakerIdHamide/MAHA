@@ -1,5 +1,4 @@
 $(function(){
-	const URLROOT = 'http://localhost/MAHA';
 	// Video Player
 	const player = new Plyr('#player', {captions: {active: true}});
 

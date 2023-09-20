@@ -1,6 +1,4 @@
 $(function(){
-    const URLROOT = 'http://localhost/maha';
-
     //=========== Chart Handler ============
     const $selectYear = $('#select-year');
 

@@ -40,6 +40,7 @@
     </div>
     <script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
     <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
+    <script>const URLROOT = `<?= URLROOT ?>`;</script>
     <script src="<?= JSROOT ?>/auth/forgot.js"></script>
 </body>
 

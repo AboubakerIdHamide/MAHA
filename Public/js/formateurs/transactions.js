@@ -1,6 +1,4 @@
 $(function(){
-	const URLROOT = 'http://localhost/maha';
-
 	$("#transaction-days").flatpickr({ 
         mode: "range", 
         defaultDate: null,

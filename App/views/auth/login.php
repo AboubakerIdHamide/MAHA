@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="<?= CSSROOT ?>/auth/login.css" />
     <style>
         #login_bg {
-            background: url(<?= URLROOT ?>/public/images/banner_home.jpg) center center no-repeat fixed;
+            background: url('<?= URLROOT ?>/public/images/banner_home.jpg') center center no-repeat fixed;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
@@ -78,6 +78,7 @@
     <script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
     <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
     <script src="<?= JSROOT ?>/plugins/classie.js"></script>
+    <script>const URLROOT = `<?= URLROOT ?>`;</script>
     <script src="<?= JSROOT ?>/auth/login.js"></script> 
 </body>
 

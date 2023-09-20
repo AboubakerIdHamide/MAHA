@@ -1,4 +1,3 @@
-<?php //print_r2(session('user')->get()) ?>
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
     <head>
@@ -135,6 +134,7 @@
         <!-- App JS -->
         <script src="<?= JSROOT ?>/plugins/app.js"></script>
 
+        <script>const URLROOT = `<?= URLROOT ?>`;</script>
         <script src="<?= JSROOT ?>/etudiants/index.js"></script>
     </body>
 </html>

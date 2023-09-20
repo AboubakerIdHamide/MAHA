@@ -1,5 +1,4 @@
 $(function () {
-	const URLROOT = 'http://localhost/MAHA';
 	const $courses = $('#courses');
 	const $pagination = $('#pagination');
 

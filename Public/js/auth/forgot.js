@@ -1,6 +1,4 @@
 $(function(){
-    const URLROOT = 'http://localhost/MAHA';
-
     /*================ Handle forgot password ====================*/
     const $forgotForm = $('#forgot-form');
     

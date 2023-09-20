@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8">
@@ -169,15 +169,15 @@
         <!--/footer-->
     </div>
 
-<!-- Scripts -->
-<script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
-<script src="<?= JSROOT ?>/plugins/theia-sticky-sidebar.js"></script>
-<script src="<?= JSROOT ?>/plugins/jquery.mmenu.js"></script>
-<script src="<?= JSROOT ?>/plugins/sticky-kit.min.js"></script>
-<script src="<?= JSROOT ?>/plugins/wow.min.js"></script>
-<script src="<?= JSROOT ?>/plugins/icheck.min.js"></script>
-<script src="<?= JSROOT ?>/courses/index.js"></script>
-<script src="<?= JSROOT ?>/common.js"></script>
-
+    <!-- Scripts -->
+    <script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
+    <script src="<?= JSROOT ?>/plugins/theia-sticky-sidebar.js"></script>
+    <script src="<?= JSROOT ?>/plugins/jquery.mmenu.js"></script>
+    <script src="<?= JSROOT ?>/plugins/sticky-kit.min.js"></script>
+    <script src="<?= JSROOT ?>/plugins/wow.min.js"></script>
+    <script src="<?= JSROOT ?>/plugins/icheck.min.js"></script>
+    <script>const URLROOT = `<?= URLROOT ?>`;</script>
+    <script src="<?= JSROOT ?>/courses/index.js"></script>
+    <script src="<?= JSROOT ?>/common.js"></script>
 </body>
 </html>

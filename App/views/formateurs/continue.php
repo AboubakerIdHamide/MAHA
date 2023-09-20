@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="<?= CSSROOT ?>/plugins/selectric.css" /> 
     <style>
         #admission_bg {
-            background: url('<?= URLROOT ?>/public/images/banner_home.jpg') center center no-repeat fixed;
+            background: url("<?= URLROOT ?>/public/images/banner_home.jpg") center center no-repeat fixed;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;

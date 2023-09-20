@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="fr" dir="ltr">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -43,7 +43,7 @@
 
             /* Firefox */
             input[type=number] {
-              -moz-appearance: textfield;
+              --moz-appearance: textfield;
             }
         </style>    
     </head>
@@ -312,8 +312,8 @@
         <script src="<?= JSROOT ?>/plugins/dom-factory.js"></script>
         <script src="<?= JSROOT ?>/plugins/material-design-kit.js"></script>
 
-        <!-- Jquery UI -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- Bootstrap -->
+        <script src="<?= JSROOT ?>/plugins/bootstrap-4.min.js"></script>
 
         <!-- App JS -->
         <script src="<?= JSROOT ?>/plugins/app.js"></script>
@@ -324,12 +324,10 @@
         <!-- Quill -->
         <script src="<?= JSROOT ?>/plugins/quill.min.js"></script>
 
-        <!-- Bootstrap -->
-        <script src="<?= JSROOT ?>/plugins/bootstrap-4.min.js"></script>
-
         <!-- Jquery Validation -->
         <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
 
+        <script>const URLROOT = `<?= URLROOT ?>`;</script>
         <script src="<?= JSROOT ?>/courses/add.js"></script>
     </body>
 </html>
