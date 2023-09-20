@@ -1,6 +1,4 @@
 $(function(){
-    const urlRoot = 'http://localhost/maha';
-
     // Input field effect
 	(function () {
 		if (!String.prototype.trim) {
@@ -61,7 +59,7 @@ $(function(){
         },
         submitHandler: function(form){
             $.ajax({
-                url: `${urlRoot}/user/contactUs`,
+                url: `${URLROOT}/user/contactUs`,
                 type: "POST",
                 dataType: "json",
                 data: $(form).serialize(),
@@ -165,4 +163,8 @@ $(function(){
         }
     });
 
+    // Set type user in localStorage 
+    $('.join').click(function(){
+        localStorage.setItem('type', $(this).data('type'));
+    });
 });

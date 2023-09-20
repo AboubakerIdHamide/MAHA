@@ -19,13 +19,13 @@
     <link href="<?= CSSROOT ?>/vendors.css" rel="stylesheet" />
     <style>
         .hero_single.version_2 {
-            background: url(<?= IMAGEROOT ?>/banner_home.jpg) center center no-repeat;
+            background: url('<?= IMAGEROOT ?>/banner_home.jpg') center center no-repeat;
         }
 
         @media (max-width: 575px) {
           #custom-search-input input[type="submit"] {
             text-indent: -999px;
-            background: #92278f url(<?= IMAGEROOT ?>/home/search.svg) no-repeat center center;
+            background: #92278f url('<?= IMAGEROOT ?>/home/search.svg') no-repeat center center;
           }
         }
     </style>
@@ -206,7 +206,7 @@
                             <div>
                                 <h3>Voulez-vous <span style="color: #662d91">apprendre</span>?</h3>
                                 <p class="text-dark">Un apprentissage qui vous ressemble des compétences pour aujourd'hui.</p>
-                                <a href="<?= URLROOT ?>/user/register" class="btn_1">Rejoignez maintenant</a>
+                                <a data-type="etudiant" href="<?= URLROOT ?>/user/register" class="btn_1 join">Rejoignez maintenant</a>
                             </div>
                            <img src="<?= IMAGEROOT ?>/home/etudiant.png" alt="instructor illustration" class="img-fluid" />
                         </div>
@@ -216,7 +216,7 @@
                             <div>
                                 <h3>Voulez-vous <span style="color: #662d91">enseigner</span>?</h3>
                                 <p class="text-dark">Nous vous offrons les outils et les compétences nécessaires pour enseigner ce que vous aimez.</p>
-                                <a href="<?= URLROOT ?>/user/register" class="btn_1">Commencez à enseigner</a>
+                                <a data-type="formateur" href="<?= URLROOT ?>/user/register" class="btn_1 join">Commencez à enseigner</a>
                             </div>
                            <img src="<?= IMAGEROOT ?>/home/formateur.png" alt="instructor illustration" class="img-fluid" />
                         </div>
@@ -301,6 +301,7 @@
     <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
     <script src="<?= JSROOT ?>/plugins/wow.min.js"></script>
     <script src="<?= JSROOT ?>/common.js"></script>
+    <script>const URLROOT = `<?= URLROOT ?>`;</script>
     <script src="<?= JSROOT ?>/home.js"></script>
 </body>
 </html>

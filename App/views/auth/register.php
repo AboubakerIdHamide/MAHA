@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="<?= CSSROOT ?>/auth/register.css" />
     <style>
         #register_bg {
-            background: url(<?= URLROOT ?>/public/images/banner_home.jpg) center center no-repeat fixed;
+            background: url('<?= URLROOT ?>/public/images/banner_home.jpg') center center no-repeat fixed;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
@@ -120,11 +120,11 @@
             <div class="copy">© 2023 MAHA</div>
         </aside>
     </div>
-    <!-- /login -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
     <script src="<?= JSROOT ?>/plugins/jquery-3.6.3.min.js"></script>
     <script src="<?= JSROOT ?>/plugins/classie.js"></script>
     <script src="<?= JSROOT ?>/plugins/jquery.validate.min.js"></script>
+    <script>const URLROOT = 'http://localhost/MAHA';</script>
     <script src="<?= JSROOT ?>/auth/register.js"></script>
 </body>
 

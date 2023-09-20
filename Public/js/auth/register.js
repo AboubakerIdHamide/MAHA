@@ -1,6 +1,4 @@
 $(function () {
-	const URLROOT = 'http://localhost/MAHA';
-	
 	// Input field effect
     (function () {
         if (!String.prototype.trim) {
@@ -41,6 +39,13 @@ $(function () {
         $('body').delay(350);
         $(window).scroll();
     });
+
+	// Check selected type user from home page
+	const typeUser = localStorage.getItem('type');
+	if(typeUser){
+		$(`input[value="${typeUser}"]`).prop("checked", true);
+		localStorage.removeItem('type');
+	}
 
     // Register form validation
     const $registerForm = $("#register-form");
