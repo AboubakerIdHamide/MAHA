@@ -1,6 +1,4 @@
 $(function(){
-	const URLROOT = 'http://localhost/maha';
-
 	const phoneInput = document.querySelector("#tel");
   	const iti = intlTelInput(phoneInput, {
   		initialCountry: "auto",
@@ -133,7 +131,12 @@ $(function(){
         	}
 
         	const formData = new FormData(form);
-        	$(form).serializeArray().forEach((field) => formData.append(field.name, field.value))
+        	$(form).serializeArray().forEach((field) => {
+				if(field.name === 'tel'){
+					return formData.append(field.name, iti.getNumber())
+				}
+				return formData.append(field.name, field.value)
+			})
         	formData.append('method', 'PUT');
         	formData.append('tab', 'AccountTab');
            	
@@ -150,7 +153,7 @@ $(function(){
 		      success: function({data: formateur, messages}) {
 		      	currentAccountValues = newValues;
 		      	if(formateur?.img){
-		      		$('#avatar').attr('src', `${URLROOT}/public/images/${formateur.img}`);
+		      		$('.avatar').attr('src', `${URLROOT}/public/images/${formateur.img}`);
 		      	}
 		      	$('#account-alert').html(`
 		      		<div class="alert alert-light border-1 border-left-3 border-left-success d-flex justify-content-between">

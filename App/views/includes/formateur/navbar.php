@@ -168,7 +168,7 @@
                            href="javasript:void(0)"
                            role="button"><img src="<?= strpos(session('user')->get()->img, 'users') === 0 ? IMAGEROOT.'/'.session('user')->get()->img : session('user')->get()->img ?>"
                                  alt="Avatar Formateur"
-                                 class="rounded-circle"
+                                 class="avatar rounded-circle"
                                  width="40"></a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item"

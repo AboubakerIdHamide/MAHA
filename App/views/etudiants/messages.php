@@ -171,8 +171,7 @@
                                                     <button style="width: 3rem;" class="btn btn-sm btn-primary" type="submit"><i class="material-icons">send</i></button>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="nom" value="<?= session('user')->get()->nom ?>" />
-                                            <input type="hidden" name="image" value="<?= session('user')->get()->img ?>" />
+                                            <input type="hidden" name="sender" value="etudiant" />
                                             <input type="hidden" name="to" value="<?= $formateur->id_formateur ?>" />
                                         </form>
                                     </div>

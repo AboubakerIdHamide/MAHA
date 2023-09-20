@@ -108,7 +108,7 @@
                                                     <div class="media align-items-center">
                                                         <div class="media-left">
                                                             <div>
-                                                                <img id="avatar" class="rounded-pill" width="80" src="<?= strpos($formateur->img, 'users') === 0 ? IMAGEROOT.'/'.$formateur->img : $formateur->img ?>" alt="avatar" />
+                                                                <img class="avatar rounded-pill" width="80" src="<?= strpos($formateur->img, 'users') === 0 ? IMAGEROOT.'/'.$formateur->img : $formateur->img ?>" alt="avatar" />
                                                             </div>
                                                         </div>
                                                         <div class="media-body">
@@ -533,6 +533,7 @@
 
         <script src="<?= JSROOT ?>/plugins/intlTelInput.min.js"></script>
 
+        <script>const URLROOT = `<?= URLROOT ?>`;</script>
         <script src="<?= JSROOT ?>/formateurs/edit-profile.js"></script>
     </body>
 </html>
