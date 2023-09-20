@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Admin;
 use App\Models\Formation;
 use App\Models\Inscription;
 use App\Models\Formateur;
@@ -8,27 +7,19 @@ use App\Models\Formateur;
 class PaypalController
 {
 	private $access_token;
-	private $username;
-	private $password;
-	private $adminModel;
 	private $formationModel;
 	private $inscriptionModel;
 
 	public function __construct()
 	{
-		if (!session('user')->get()->type === 'etudiant') {
+		if (!auth() || !session('user')->get()->type === 'etudiant') {
 			return redirect('user/login');
 		}
 
 		$this->formationModel = new Formation;
 		$this->inscriptionModel = new Inscription;
-		$this->adminModel = new Admin;
-		$settings = $this->adminModel->getProfitAndPaypalToken();
-		$this->username = $settings->username_paypal;
-		$this->password = $settings->password_paypal;
 		$this->access_token = $this->_getAccessToken();
 	}
-
 
 	private function _getAccessToken()
 	{
@@ -40,8 +31,8 @@ class PaypalController
 			$url,
 			[
 				'auth' => [
-					$this->username, // username
-					$this->password // password
+					$_ENV['USERNAME_PAYPAL'], // username
+					$_ENV['PASSWORD_PAYPAL'] // password
 				],
 				'headers' => [
 					'Content-Type' => 'application/x-www-form-urlencoded'
@@ -57,7 +48,6 @@ class PaypalController
 		$paypalData = json_decode($response->getBody());
 		return $paypalData->access_token;
 	}
-
 
 	public function payment($id_formation = null)
 	{
@@ -81,6 +71,7 @@ class PaypalController
 			}
 
 			// redirect to paypal page to make payment, because the order already created
+			http_response_code(303);
 			header('location: ' . $inscription->approval_url);
 			exit;
 		}
@@ -134,8 +125,8 @@ class PaypalController
 			],
 			"note_to_payer" => "Contact us for any questions on your order.",
 			"redirect_urls" => [
-				"return_url" => URLROOT . '/PaymentPaypal/success/' . $id_formation,
-				"cancel_url" => URLROOT . '/PaymentPaypal/cancel/' . $id_formation
+				"return_url" => URLROOT . '/paypal/success/' . $id_formation,
+				"cancel_url" => URLROOT . '/paypal/cancel/' . $id_formation
 			]
 		];
 
@@ -152,7 +143,7 @@ class PaypalController
 		$createdDate = date_format(date_create($paypalData->create_time), "Y/m/d H:i:s");
 		$approvalURL = $paypalData->links[1]->href;
 
-		$inscriptionData = [
+		$inscription = [
 			"id_formation" => $formation->id_formation,
 			"id_etudiant" => session('user')->get()->id_etudiant,
 			"id_formateur" => $formation->id_formateur,
@@ -164,25 +155,29 @@ class PaypalController
 			"approval_url" => $approvalURL
 		];
 
-		$this->inscriptionModel->create($inscriptionData);
+		$this->inscriptionModel->create($inscription);
 
 		// redirect to paypal page to make payment
+		http_response_code(303);
 		header('location: ' . $approvalURL);
 		exit;
 	}
 
-	public function success($id_formation)
+	public function success($id_formation = null)
 	{
-		$formation = $this->formationModel->select($id_formation, ['slug']);
-		if (!isset($_GET['paymentId'], $_GET['token'], $_GET['PayerID'])) {
-			return redirect('courses/' . $formation->slug);
+		if (!auth() || !session('user')->get()->type === 'etudiant') {
+			return view('errors/page_404');
 		}
 
-		$inscription = $this->inscriptionModel->wherePaymentID($_GET['paymentId']);
+		$formation = $this->formationModel->select($id_formation, ['slug']);
+		if (!isset($_GET['paymentId'], $_GET['token'], $_GET['PayerID'])) {
+			return view('errors/page_404');
+		}
+
+		$inscription = $this->inscriptionModel->wherePaymentID($_GET['paymentId'] ?? "", session('user')->get()->id_etudiant);
 
 		if (!$inscription) {
-			// payment ID n'existe pas
-			return redirect('courses/' . $formation->slug);
+			return view('errors/page_404');
 		}
 
 		$url = "https://api.sandbox.paypal.com/v1/payments/payment/{$inscription->payment_id}/execute";
@@ -208,16 +203,20 @@ class PaypalController
 		$paymentState = json_decode($response->getBody())->state;
 		$this->inscriptionModel->updatePaymentState($_GET['paymentId'], $paymentState);
 		$formateurModel = new Formateur;
-		$formateurProfit = (100 - $this->adminModel->getProfitAndPaypalToken()->platform_pourcentage) / 100;
+		$formateurProfit = (100 - $_ENV['PLATFORM_PROFIL']) / 100;
 		$formateurModel->updateBalance($inscription->id_formateur, $inscription->prix * $formateurProfit);
-		return view('payments/paypal/paymentSuccess', ["id_formation" => $id_formation]);
+		return view('payments/paymentSuccess', ["id_formation" => $id_formation]);
 	}
 
-	public function cancel($id_formation)
+	public function cancel($id_formation = null)
 	{
+		if (!auth() || !session('user')->get()->type === 'etudiant') {
+			return view('errors/page_404');
+		}
+
 		$formation = $this->formationModel->select($id_formation, ['slug']);
 		if (isset($_GET['token'])) {
-			return view('payments/paypal/paymentCancel', ['slug' => $formation->slug]);
+			return view('payments/paymentCancel', ['slug' => $formation->slug]);
 		} 
 		return redirect('courses/' . $formation->slug);
 	}
